@@ -1,0 +1,1 @@
+$(function(){var a=new GMaps({div:"#map",lat:44.54,lng:-78.546})});

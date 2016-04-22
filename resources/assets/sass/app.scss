@@ -1,0 +1,16 @@
+@import "variables";
+
+@import "../../../vendor/twbs/bootstrap/scss/bootstrap";
+
+@import "components/footer";
+
+// Remove Google logo from maps
+/*
+.map {
+	a[href^="http://maps.google.com/maps"]{display:none !important}
+	a[href^="https://maps.google.com/maps"]{display:none !important}
+}
+*/
+
+@import "pages/home";
+@import "pages/explore";

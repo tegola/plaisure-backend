@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>{{ config('constants.name') }} - @yield('title')</title>
+
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body class="@yield('body_class')">
+
+		@yield('content')
+
+		<div class="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-md-push-4 text-xs-center text-md-right">
+						<ul class="list-inline">
+							<li class="list-inline-item"><a href="{{ route('site.explore') }}">Esplora</a></li>
+							<li class="list-inline-item"><a href="#">Azienda</a></li>
+							<li class="list-inline-item"><a href="#">Rivendica la tua attivit&agrave;</a></li>
+							<li class="list-inline-item"><a href="#">Gioca responsabilmente</a></li>
+							<li class="list-inline-item"><a href="#">Contatti</a></li>
+						</ul>
+					</div>
+					<div class="col-md-4 col-md-pull-8 text-xs-center text-md-left">
+						<ul class="list-inline">
+							<li class="list-inline-item">&copy; {{ date('Y') }} {{ config('constants.company') }}</li>
+							<li class="list-inline-item">P. IVA {{ config('constants.partita_iva')}}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- <script src="js/bootstrap.min.js"></script> -->
+		<script src="https://maps.googleapis.com/maps/api/js" defer></script>
+		<script src="{{ asset('js/app.js') }}"></script>
+	</body>
+</html>
