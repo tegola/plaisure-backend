@@ -45,5 +45,8 @@
 		<!-- <script src="js/bootstrap.min.js"></script> -->
 		<script src="https://maps.googleapis.com/maps/api/js" defer></script>
 		<script src="{{ asset('js/app.js') }}"></script>
+
+		<script src="https://use.typekit.net/qwv3xzz.js"></script>
+		<script>try{Typekit.load({ async: true });}catch(e){}</script>
 	</body>
 </html>
