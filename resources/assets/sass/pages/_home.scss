@@ -1,27 +1,74 @@
 .page-home {
-	.box {
-		background-color: #fff; // $body-bg;
-		border-radius: 5px; // $border-radius-large;
+	.content {
+		min-height: 100%;
+		width: 100%;
+		display: table;
 	}
-	.box-bottom {
-		background-color: #7dd194; // $brand-secondary;
-		color: #fff;
-		padding-top: 20px;
-		padding-bottom: 20px;
-		border-radius: 0 0 5px 5px; // $border-radius-large;
+	.content-inner {
+		display: table-cell;
+		vertical-align: middle;
+		padding: 3.5rem 0; // Top: navbar - Bottom: visual center
 	}
+
+	// Navbar
+	.navbar {
+		background-color: $body-bg;
+	}
+
+	// Map + overlay
 	.map {
 		background-color: #d9e7eb;
-		position: absolute;
+		position: fixed !important;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
 		z-index: -1;
 	}
-	.help-block {
-		color: inherit;
+	.map-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: -1;
+		background-color: rgba(saturate(#d9e7eb, 40%), 0.5);
 	}
+
+	// Box
+	.card {
+		border: 0;
+		margin-top: $spacer * 2;
+		margin-bottom: $spacer * 2;
+		border-radius: $border-radius-lg;
+	}
+	.logo {
+		background-image: url("../img/home-logo@2x.png");
+		width: 371px;
+		height: 190px;
+		background-size: 100%;
+		position: relative;
+		top: -70px;
+		left: -120px;
+		margin-bottom: -190px;
+	}
+	.hero-card-block {
+		padding: ($spacer * 4) 0;
+	}
+	.search-card-block {
+		padding: ($spacer * 2) 0;
+		background-color: #7dd194; // $brand-secondary;
+		color: #fff;
+		position: relative; // Stay above logo
+		@include border-bottom-radius($border-radius-lg);
+
+		.btn-primary {
+			background-color: rgba(#000, 0.25);
+			border-color: transparent !important;
+		}
+	}
+
+	// Footer
 	.footer {
 		background-color: $body-bg;
 	}

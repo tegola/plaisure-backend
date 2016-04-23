@@ -1,1 +1,13 @@
+$brand-primary: #2bb6d9;
+$brand-secondary: #7dd194;
+
+$font-family-sans-serif: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-size-root: 14px;
+
+// Buttons
+$btn-secondary-color: $brand-primary;
+// $btn-secondary-bg: #fff;
+$btn-secondary-border: $brand-primary;
+
+// Forms
+$input-btn-border-width: 2px;

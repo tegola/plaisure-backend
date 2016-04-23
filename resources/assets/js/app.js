@@ -45,22 +45,34 @@ $(function(){
 	if ($mapNode.height()) {
 		var geocoder = new google.maps.Geocoder();
 
-		// Create the "no labels" map style
-		var styledMap = new google.maps.StyledMapType({
-			elementType: 'labels',
-			stylers: [{ visibility: 'off' }]
-		});
-
-		// Create the static map with the custom style
+		// Create the static map with no labels
 		var map = new google.maps.Map($mapNode[0], {
 			disableDefaultUI: true,
 			scrollwheel: false,
 			draggable: false,
-			disableDoubleClickZoom: true,
-			mapTypeId: 'nolabels'
+			disableDoubleClickZoom: true
 		});
-		map.mapTypes.set('no_labels', styledMap);
-		map.setMapTypeId('no_labels');
+		map.setOptions({
+			styles: [
+				{ // Remove labels
+					"stylers": [{ "saturation": -100 }, { "gamma": 0.5 }]
+				},
+				{ // Remove color
+					"elementType": "labels",
+					"stylers": [{ "visibility": "off" }]
+				},
+				{ // Less visible highways
+					"featureType": "road.highway",
+					"stylers": [{ "lightness": 50 }]
+				},
+				{ // Thinner roads
+					"featureType": "road",
+					"elementType": "geometry.stroke",
+					"stylers": [{ "weight": 0.3 }]
+				}
+			]
+		});
+
 
 		// Locate user, then center map and set city name inside the search field
 		navigator.geolocation.getCurrentPosition(
@@ -97,7 +109,7 @@ $(function(){
 					var coords = results[0].geometry.location;
 
 					map.setCenter(coords);
-					map.setZoom(9);
+					map.setZoom(5);
 				});
 			}
 		);
