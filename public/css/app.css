@@ -4656,7 +4656,6 @@ a.bg-danger:focus, a.bg-danger:hover {
     display: none !important; } }
 
 .btn {
-  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1rem; }
 
@@ -4671,6 +4670,9 @@ a.bg-danger:focus, a.bg-danger:hover {
 */
 html, body {
   height: 100%; }
+
+body {
+  font-weight: 300; }
 
 .page-home .content {
   min-height: 100%;

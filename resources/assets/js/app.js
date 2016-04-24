@@ -73,46 +73,62 @@ $(function(){
 			]
 		});
 
+		var onBrowserPositionFound = function(position) {
+			var lat = position.coords.latitude;
+			var lng = position.coords.longitude;
+			var coords = new google.maps.LatLng(lat, lng);
+
+			// Recenter and zoom map
+			map.setCenter(coords);
+			map.setZoom(15);
+
+			// Fill lat and lng hidden fields
+			$('[name=lat]').val(lat);
+			$('[name=lng]').val(lng);
+
+			// Find city name and use it to fill the City field
+			geocoder.geocode({ 'location': coords }, function(results, status){
+				if (status !== google.maps.GeocoderStatus.OK) {
+					return;
+				}
+
+				$('[name=near]').val(findCityNameInResults(results));
+			});
+		};
+
+		var onBrowserPositionNotFound = function() {
+			// Find location using IP info
+			// or simply use the Italy position
+			$.get('http://ip-api.com/json').then(function(location, status){
+				if (status === 'success') {
+					var coords = new google.maps.LatLng(location.lat, location.lon);
+
+					// Recenter and zoom map
+					map.setCenter(coords);
+					map.setZoom(15);
+
+					// Fill lat and lng hidden fields
+					$('[name=lat]').val(location.lat);
+					$('[name=lng]').val(location.lon);
+
+					// Fill the city field
+					$('[name=near]').val(location.city);
+				} else {
+					geocoder.geocode({ 'address': 'Italy' }, function(results, status){
+						if (status !== google.maps.GeocoderStatus.OK) {
+							return;
+						}
+
+						map.setCenter(results[0].geometry.location);
+						map.setZoom(5);
+					});
+				}
+			});
+		};
+
 
 		// Locate user, then center map and set city name inside the search field
-		navigator.geolocation.getCurrentPosition(
-			function(position) {
-				var lat = position.coords.latitude;
-				var lng = position.coords.longitude;
-				var coords = new google.maps.LatLng(lat, lng);
-
-				// Recenter and zoom map
-				map.setCenter(coords);
-				map.setZoom(15);
-
-				// Fill lat and lng hidden fields
-				$('[name=lat]').val(lat);
-				$('[name=lng]').val(lng);
-
-				// Fill "near" textbox with current city
-				geocoder.geocode({ 'location': coords }, function(results, status){
-					if (status !== google.maps.GeocoderStatus.OK) {
-						return;
-					}
-
-					$('[name=near]').val(findCityNameInResults(results));
-				});
-			},
-			function(){
-				var geocoder = new google.maps.Geocoder();
-
-				geocoder.geocode({ 'address': 'Italy' }, function(results, status){
-					if (status !== google.maps.GeocoderStatus.OK) {
-						return;
-					}
-
-					var coords = results[0].geometry.location;
-
-					map.setCenter(coords);
-					map.setZoom(5);
-				});
-			}
-		);
+		navigator.geolocation.getCurrentPosition(onBrowserPositionFound, onBrowserPositionNotFound);
 	}
 });
 

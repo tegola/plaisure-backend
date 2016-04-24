@@ -21,6 +21,9 @@
 html, body {
 	height: 100%;
 }
+body {
+	font-weight: 300;
+}
 
 // Pages
 @import "pages/home";
