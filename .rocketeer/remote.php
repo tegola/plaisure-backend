@@ -13,7 +13,7 @@ return [
     ],
 
     // The number of releases to keep at all times
-    'keep_releases'  => 4,
+    'keep_releases'  => 3,
 
     // Folders
     ////////////////////////////////////////////////////////////////////
@@ -31,6 +31,7 @@ return [
     // user uploaded data, file-based databases, etc.
     'shared'         => [
         'storage',
+        '.env',
     ],
 
     // Execution
@@ -58,7 +59,7 @@ return [
 
         // The folders and files to set as web writable
         'files'    => [
-            'app/database/production.sqlite',
+            //'app/database/production.sqlite',
             'storage',
             'public',
         ],
