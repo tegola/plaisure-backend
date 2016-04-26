@@ -1,0 +1,38 @@
+.navbar-white {
+	background-color: $body-bg;
+	box-shadow: 0 1px 0 $hr-border-color;
+
+	.navbar-brand {
+		margin-top: 1px;
+		margin-bottom: 1px;
+		@extend .text-hide;
+		width: 162px;
+		height: 32px;
+		background: url("../img/navbar-logo-color-full@2x.png");
+		background-size: 100%;
+		background-repeat: no-repeat;
+	}
+	.navbar-badge {
+		display: inline-block;
+		margin-top: .375rem;
+
+		@include media-breakpoint-up(md) {
+			margin-right: $spacer * 3;
+		}
+	}
+	.navbar-badge-label {
+		background-color: $brand-primary-muted;
+		padding: .5em .3em .5em .5em;
+		margin-right: .25em;
+	}
+	.navbar-badge-text {
+		color: $brand-primary-muted;
+		font-size: .7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		display: inline-block;
+		vertical-align: -0.4rem;
+		line-height: 1.1;
+		font-weight: 500;
+	}
+}

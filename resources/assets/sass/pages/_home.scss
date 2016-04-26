@@ -1,39 +1,6 @@
 .page-home {
-	.content {
-		min-height: 100%;
-		width: 100%;
-		display: table;
-	}
-	.content-inner {
-		display: table-cell;
-		vertical-align: middle;
-		padding: 3.5rem 0; // Top: navbar - Bottom: visual center
-	}
-
-	// Navbar
-	.navbar {
-		background-color: $body-bg;
-	}
-
-	// Map + overlay
-	.map {
-		background-color: #d9e7eb;
-		position: fixed !important;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		z-index: -1;
-	}
-	.map-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		z-index: -1;
-		background-color: rgba(saturate(#d9e7eb, 40%), 0.5);
-	}
+	padding-top: $navbar-height;
+	background-color: hsl(hue($brand-primary), 35%, 90%);
 
 	// Box
 	.card {
@@ -41,35 +8,77 @@
 		margin-top: $spacer * 2;
 		margin-bottom: $spacer * 2;
 		border-radius: $border-radius-lg;
-	}
-	.logo {
-		background-image: url("../img/home-logo@2x.png");
-		width: 371px;
-		height: 190px;
-		background-size: 100%;
-		position: relative;
-		top: -70px;
-		left: -120px;
-		margin-bottom: -190px;
+		box-shadow: 0 0 0 1px $hr-border-color;
 	}
 	.hero-card-block {
-		padding: ($spacer * 4) 0;
+		padding: ($spacer * 3) 0 ($spacer * 4);
+		background-clip: padding-box;
+
+		h2 {
+			font-weight: 700;
+		}
+		p {
+			font-size: $font-size-h4;
+			color: $text-muted;
+			margin-bottom: 0;
+		}
 	}
 	.search-card-block {
 		padding: ($spacer * 2) 0;
-		background-color: #7dd194; // $brand-secondary;
+		background-color: $brand-secondary;
 		color: #fff;
 		position: relative; // Stay above logo
 		@include border-bottom-radius($border-radius-lg);
-
-		.btn-primary {
-			background-color: rgba(#000, 0.25);
-			border-color: transparent !important;
-		}
 	}
-
+	.form-control {
+		background-clip: padding-box;
+	}
+	.search-btn {
+		background-color: rgba(#000, 0.25);
+		border-color: transparent !important;
+	}
 	// Footer
 	.footer {
 		background-color: $body-bg;
+	}
+
+	@include media-breakpoint-up(md) {
+		background-color: hsl(hue($brand-primary), 75%, 90%);
+
+		// Cover-like layout
+		.content {
+			min-height: 100%;
+			width: 100%;
+			display: table;
+		}
+		.content-inner {
+			display: table-cell;
+			vertical-align: middle;
+			padding: 3.5rem 0; // Top: navbar - Bottom: visual center
+		}
+
+		// Map + overlay
+		.map {
+			background-color: #d9e7eb;
+			position: fixed !important;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: -1;
+			opacity: 0.5;
+		}
+
+		// Logo
+		.logo {
+			background-image: url("../img/home-logo@2x.png");
+			width: 371px;
+			height: 190px;
+			background-size: 100%;
+			position: relative;
+			top: -60px;
+			left: -120px;
+			margin-bottom: -190px;
+		}
 	}
 }

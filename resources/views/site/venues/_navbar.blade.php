@@ -11,7 +11,7 @@
 			<div class="form-group">
 				<input type="text" class="form-control" name="near" value="{{ $near }}" placeholder="Citt&agrave;">
 			</div>
-			<button type="submit" class="btn btn-secondary">Cerca</button>
+			<button type="submit" class="btn btn-primary">Cerca</button>
 		</form>
 
 		<div class="pull-xs-right">

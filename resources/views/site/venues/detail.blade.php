@@ -29,11 +29,11 @@
 
 			<div class="row">
 				<div class="col-xs-6">
-					<button class="btn btn-default">Salva nei posti preferiti</button>
+					<button class="btn btn-sm btn-secondary">Salva nei posti preferiti</button>
 				</div>
 				<div class="col-sm-offset-1 col-xs-5">
-					<input type="text" class="form-control" value="{{ Request::url() }}">
-					<button class="btn btn-default">Condividi</button>
+					<input type="text" class="form-control form-control-sm" value="{{ Request::url() }}">
+					<button class="btn btn-sm btn-secondary">Condividi</button>
 				</div>
 			</div>
 		</div>
@@ -47,7 +47,6 @@
 				@foreach ($nearby_venues as $nearby_venue)
 					<a href="{{ route('site.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a><br>
 				@endforeach
-				<p>...</p>
 			@endif
 
 			<hr>

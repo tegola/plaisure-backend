@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Request;
-use File;
 
 use App\Venue;
 use App\Http\Requests;
