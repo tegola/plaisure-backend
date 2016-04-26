@@ -19,6 +19,7 @@
 		}
 		p {
 			font-size: $font-size-h4;
+			line-height: $headings-line-height;
 			color: $text-muted;
 			margin-bottom: 0;
 		}
@@ -30,13 +31,10 @@
 		position: relative; // Stay above logo
 		@include border-bottom-radius($border-radius-lg);
 	}
-	.form-control {
-		background-clip: padding-box;
-	}
 	.search-btn {
-		background-color: rgba(#000, 0.25);
-		border-color: transparent !important;
+		@include button-variant(#fff, mix(#000, $brand-secondary, 20%), transparent);
 	}
+
 	// Footer
 	.footer {
 		background-color: $body-bg;
