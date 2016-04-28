@@ -6,7 +6,7 @@
 			<input type="hidden" name="lat" value="{{ $lat }}">
 			<input type="hidden" name="lng" value="{{ $lng }}">
 			<div class="form-group">
-				<input type="text" class="form-control" name="query" value="{{ $query }}" placeholder="Sto cercando&hellip;">
+				<input type="text" class="form-control" name="what" value="{{ $what }}" placeholder="Sto cercando&hellip;">
 			</div>
 			<div class="form-group">
 				<input type="text" class="form-control" name="near" value="{{ $near }}" placeholder="Citt&agrave;">

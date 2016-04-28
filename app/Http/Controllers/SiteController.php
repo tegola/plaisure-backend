@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 
 use App\Venue;
 use App\Http\Requests;
@@ -16,40 +16,37 @@ class SiteController extends Controller
 		return view('site.home', [
 			'lat' => session('user.lat', null),
 			'lng' => session('user.lng', null),
-			'query' => session('search.query', null),
+			'what' => session('search.what', null),
 			'near' => session('search.near', null),
 			'distance' => session('search.distance', null)
 		]);
 	}
 
-	public function explore()
+	public function explore(Request $request)
 	{
-		$query = Request::input('query');
-		$lat = Request::input('lat');
-		$lng = Request::input('lng');
-		$near = Request::input('near');
+
+		$what = $request->what;
+		$lat = $request->lat;
+		$lng = $request->lng;
+		$near = $request->near;
 		$distance = 30; // km
 
 		// Missing coordinates, find them by address
-		if ($near && !$lat && $lng) {
-			$position = $this->getLatLngFromAddress($near);
-
-			if ($position) {
-				$lat = $position['lat'];
-				$lng = $position['lng'];
-			}
+		if ($near && !$lat && !$lng && $position = $this->getLatLngFromAddress($near)) {
+			$lat = $position['lat'];
+			$lng = $position['lng'];
 		}
 
 		// Find venues
 		$venues = Venue::near($lat, $lng, $distance)
-			->where('name', 'like', "%{$query}%")
+			->where('name', 'like', "%{$what}%")
 			->get();
 
 		// Store position data in session
 		session([
 			'user.lat' => $lat,
 			'user.lng' => $lng,
-			'search.query' => $query,
+			'search.what' => $what,
 			'search.near' => $near,
 			'search.distance' => $distance
 		]);
@@ -57,7 +54,7 @@ class SiteController extends Controller
 		return view('site.venues.list', [
 			'lat' => $lat,
 			'lng' => $lng,
-			'query' => $query,
+			'what' => $what,
 			'near' => $near,
 			'distance' => $distance,
 			'venues' => $venues
@@ -74,7 +71,7 @@ class SiteController extends Controller
 		return view('site.venues.detail', [
 			'lat' => session('user.lat') ?: null,
 			'lng' => session('user.lng') ?: null,
-			'query' => session('search.query') ?: null,
+			'what' => session('search.what') ?: null,
 			'near' => session('search.near') ?: null,
 			'distance' => session('search.distance') ?: null,
 			'venue' => $venue,

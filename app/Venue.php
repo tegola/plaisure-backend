@@ -9,6 +9,36 @@ use DB;
 class Venue extends Model
 {
 	/**
+	 * Categories the venue is in
+	 *
+	 * @return App\Category
+	 */
+	public function categories()
+	{
+		return $this->belongsToMany('App\Category');
+	}
+
+	/**
+	 * Get the short address
+	 *
+	 * @return string
+	 */
+	public function getShortAddressAttribute()
+	{
+		return "{$this->address_street} {$this->address_number}, {$this->address_city }";
+	}
+
+	/**
+	 * Get the long address
+	 *
+	 * @return string
+	 */
+	public function getLongAddressAttribute()
+	{
+		return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
+	}
+
+	/**
 	 * Query builder scope to list neighboring locations
 	 * within a given distance from a given location
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
@@ -38,25 +68,5 @@ class Venue extends Model
 						+ SIN(RADIANS($lat))
 						* SIN(RADIANS($lat_column)))) AS distance")
 			)->orderBy('distance','asc');
-	}
-
-	/**
-	 * Get the short address
-	 *
-	 * @return string
-	 */
-	public function getShortAddressAttribute()
-	{
-		return "{$this->address_street} {$this->address_number}, {$this->address_city }";
-	}
-
-	/**
-	 * Get the long address
-	 *
-	 * @return string
-	 */
-	public function getLongAddressAttribute()
-	{
-		return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
 	}
 }

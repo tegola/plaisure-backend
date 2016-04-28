@@ -17,7 +17,13 @@
 	<div class="row">
 		<div class="col-sm-8 col-md-offset-1 col-md-7">
 			<h1>{{ $venue->name }}</h1>
-			<p class="lead">Sala VLT, ricevitoria</p>
+			@if ($venue->categories->count())
+				<p class="lead">
+					@foreach ($venue->categories as $category)
+						{{ $category->name }}
+					@endforeach
+				</p>
+			@endif
 			<p>{{ $venue->long_address }} &ndash; <strong>a soli {{ round($venue->distance) }} km da te!</strong></p>
 			<ul class="list-inline">
 				<li class="list-inline-item">{{ $venue->surface_size }} mq.</li>

@@ -53,20 +53,20 @@
 									<div class="row">
 										<div class="col-md-4 col-xl-5">
 											<div class="form-group">
-												<label class="initialism" for="form_query"><strong>Cosa</strong></label><br>
-												<input type="text" class="form-control form-control-lg" name="query" value="{{ $query }}" placeholder="Sto cercando&hellip;" id="form_query">
-												<div>Es. VLT, Bingo, Ricevitoria.</div>
+												<label class="initialism" for="form_what"><strong>Trova</strong></label><br>
+												<input type="text" class="form-control form-control-lg" name="what" value="{{ $what }}" placeholder="Sto cercando&hellip;" id="form_what">
+												<div class="small">Es. VLT, Bingo, Ricevitoria.</div>
 											</div>
 										</div>
 										<div class="col-md-5">
 											<div class="form-group">
-												<label class="initialism" for="form_near"><strong>Dove</strong></label><br>
+												<label class="initialism" for="form_near"><strong>Vicino</strong></label><br>
 												<input type="text" class="form-control form-control-lg" name="near" value="{{ $near }}" placeholder="Citt&agrave;" id="form_near">
 											</div>
 										</div>
 										<div class="col-md-3 col-xl-2">
 											<div class="form-group">
-												<label class="hidden-sm-down">&nbsp;</label>
+												<label class="initialism hidden-sm-down">&nbsp;</label>
 												<button type="submit" class="btn btn-lg btn-block search-btn">
 													<span class="icon icon-search"></span>
 													Cerca
