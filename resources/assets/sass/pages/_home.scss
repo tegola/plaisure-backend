@@ -31,6 +31,24 @@
 		position: relative; // Stay above logo
 		@include border-bottom-radius($border-radius-lg);
 	}
+	.search-near-control {
+		padding-right: ($btn-padding-x-lg * 2) + 1rem;
+	}
+	.search-locate-btn {
+		position: absolute;
+		top: 0;
+		right: 0;
+		color: $gray-light;
+
+		&:hover,
+		&:focus {
+			color: $brand-primary;
+		}
+
+		.no-geolocation & {
+			display: none;
+		}
+	}
 	.search-btn {
 		@include button-variant(#fff, mix(#000, $brand-secondary, 20%), transparent);
 	}
