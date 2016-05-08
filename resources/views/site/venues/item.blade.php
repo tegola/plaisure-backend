@@ -14,8 +14,7 @@
 		<p><strong>{{ round($venue->distance) }} km</strong> &ndash; {{ $venue->short_address }}</p>
 		<ul class="list-inline">
 			<li class="list-inline-item">{{ $venue->surface_size }} mq.</li>
-			<li class="list-inline-item">Informazione 2</li>
-			<li class="list-inline-item">Informazione 3</li>
+			<li class="list-inline-item">{{ $venue->estimated_machine_number }} macchine</li>
 		</ul>
 		<p class="text-muted">{{ $venue->address }}</p>
 	</div>

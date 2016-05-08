@@ -39,7 +39,11 @@ class SiteController extends Controller
 
 		// Find venues
 		$venues = Venue::near($lat, $lng, $distance)
-			->where('name', 'like', "%{$what}%")
+			->with('categories')
+			->where('name', 'like', "%{$what}%") // Venue name
+			->orWhereHas('categories', function($query) use ($what){ // Category name
+				$query->where('name', 'like', "%{$what}%");
+			})
 			->get();
 
 		// Store position data in session

@@ -30,6 +30,11 @@ function findCityNameInResults(results){
 	return name;
 }
 
+// ALL PAGES ------------------------------------------------------------------
+$(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+
 // HOME -----------------------------------------------------------------------
 $(function(){
 	// Stop if page was not found

@@ -15,7 +15,7 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-sm-8 col-md-offset-1 col-md-7">
+		<div class="col-md-8 col-lg-offset-1 col-lg-7">
 			<h1>{{ $venue->name }}</h1>
 			@if ($venue->categories->count())
 				<p class="lead">
@@ -27,8 +27,12 @@
 			<p>{{ $venue->long_address }} &ndash; <strong>a soli {{ round($venue->distance) }} km da te!</strong></p>
 			<ul class="list-inline">
 				<li class="list-inline-item">{{ $venue->surface_size }} mq.</li>
-				<li class="list-inline-item">Informazione 2</li>
-				<li class="list-inline-item">Informazione 3</li>
+				<li class="list-inline-item">
+					{{ $venue->estimated_machine_number }} macchine
+					@if ($venue->hasFakeMachineNumber())
+						<span class="label label-default" data-toggle="tooltip" title="Il numero di macchine è stimato in base alle dimensioni dei locali">Numero stimato</span>
+					@endif
+				</li>
 			</ul>
 
 			<hr>
@@ -43,7 +47,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-4 col-md-3">
+		<div class="col-md-4 col-lg-3">
 			<div class="card card-block">
 				Qui va la mappa
 			</div>

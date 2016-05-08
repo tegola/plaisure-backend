@@ -8,6 +8,32 @@ use DB;
 
 class Venue extends Model
 {
+	const SURFACE_TO_MACHINE_MULTIPLIER = 0.15;
+
+	/**
+	 * Get the estimated number of machines based on surface size
+	 *
+	 * @return integer  The estimated number
+	 */
+	public function getEstimatedMachineNumberAttribute()
+	{
+		if (!$this->machine_number && $this->surface_size) {
+			return round($this->surface_size * self::SURFACE_TO_MACHINE_MULTIPLIER);
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * Returns whether the machine number has been faked
+	 *
+	 * @return boolean
+	 */
+	public function hasFakeMachineNumber()
+	{
+		return $this->machine_number == 0;
+	}
+
 	/**
 	 * Categories the venue is in
 	 *
