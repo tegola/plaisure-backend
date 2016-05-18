@@ -31,7 +31,7 @@ class Venue extends Model
 	 */
 	public function hasFakeMachineNumber()
 	{
-		return $this->machine_number == 0;
+		return $this->machine_number === 0;
 	}
 
 	/**
@@ -65,6 +65,32 @@ class Venue extends Model
 	}
 
 	/**
+	 * Get the distance in readable format
+	 *
+	 * 0.8123 becomes 800 m
+	 * 1.2455 becomes 1.2 km
+	 * 10.245 becomes 10 km
+	 *
+	 * @return string Distance in meters or kilometers
+	 */
+	public function getFormattedDistanceAttribute()
+	{
+		if (!$this->distance) {
+			return;
+		}
+
+		if ($this->distance > 10) {
+			return round($this->distance) . ' km';
+		}
+		if ($this->distance > 1) {
+			return round($this->distance, 1) . ' km';
+		}
+		if ($this->distance < 1) {
+			return round($this->distance * 100) . ' m';
+		}
+	}
+
+	/**
 	 * Query builder scope to list neighboring locations
 	 * within a given distance from a given location
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
@@ -94,5 +120,15 @@ class Venue extends Model
 						+ SIN(RADIANS($lat))
 						* SIN(RADIANS($lat_column)))) AS distance")
 			)->orderBy('distance','asc');
+	}
+
+	public function scopeWithNameOrCategory($query, $name)
+	{
+		return $query
+			->with('categories')
+			->where('name', 'like', "%{$name}%") // Venue name
+			->orWhereHas('categories', function($query) use ($name){ // Category name
+				$query->where('name', 'like', "%{$name}%");
+			});
 	}
 }

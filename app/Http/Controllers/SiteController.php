@@ -22,6 +22,11 @@ class SiteController extends Controller
 		]);
 	}
 
+	public function suggestions()
+	{
+
+	}
+
 	public function explore(Request $request)
 	{
 
@@ -38,12 +43,8 @@ class SiteController extends Controller
 		}
 
 		// Find venues
-		$venues = Venue::near($lat, $lng, $distance)
-			->with('categories')
-			->where('name', 'like', "%{$what}%") // Venue name
-			->orWhereHas('categories', function($query) use ($what){ // Category name
-				$query->where('name', 'like', "%{$what}%");
-			})
+		$venues = Venue::withNameOrCategory($what)
+			->near($lat, $lng, $distance)
 			->get();
 
 		// Store position data in session

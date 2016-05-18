@@ -3720,6 +3720,49 @@ button.close {
     line-height: 1.1;
     font-weight: 500; }
 
+span.twitter-typeahead {
+  display: block !important; }
+
+.tt-menu {
+  width: 100%;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 1rem;
+  color: #373a3c;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.2rem; }
+
+.tt-suggestion {
+  padding: 3px 20px;
+  color: #373a3c;
+  white-space: nowrap; }
+
+.tt-selectable:focus, .tt-selectable:hover {
+  color: #2b2d2f;
+  background-color: #f5f5f5; }
+
+.tt-selectable.tt-cursor, .tt-selectable.tt-cursor:focus, .tt-selectable.tt-cursor:hover {
+  color: #fff;
+  text-decoration: none;
+  background-color: #2bb6d9;
+  outline: 0; }
+
+/*
+wrapper: 'twitter-typeahead',
+input: 'tt-input',
+hint: 'tt-hint',
+menu: 'tt-menu',
+dataset: 'tt-dataset',
+suggestion: 'tt-suggestion',
+selectable: 'tt-selectable',
+empty: 'tt-empty',
+open: 'tt-open',
+cursor: 'tt-cursor',
+highlight: 'tt-highlight'
+*/
 .modal-open {
   overflow: hidden; }
 

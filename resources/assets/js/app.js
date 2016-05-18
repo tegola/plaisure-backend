@@ -45,6 +45,37 @@ $(function(){
 	var $mapNode = $('.map');
 	var mapIsVisible = $mapNode.height();
 	var geocoder = new google.maps.Geocoder();
+	var typeSuggestions = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.nonword,
+		queryTokenizer: Bloodhound.tokenizers.nonword,
+		local: [
+			'Sala VLT',
+			'Ricevitoria',
+			'Sala Bingo',
+			'Agenzia scommesse'
+		]
+	});
+	var venueSuggestions = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.nonword,
+		queryTokenizer: Bloodhound.tokenizers.nonword,
+		remote: {
+			url: '/venues/suggestions'
+		}
+	});
+
+	// Init suggestion input
+	$('input[name=what]').typeahead({
+		hint: false,
+		minLength: 2
+	},
+	{
+		name: 'typeSuggestions',
+		source: typeSuggestions
+	},
+	{
+		name: 'venueSuggestions',
+		source: venueSuggestions
+	});
 
 	// Bind locate button to find precise location
 	$('[data-action=locate]').on('click', function(e){
