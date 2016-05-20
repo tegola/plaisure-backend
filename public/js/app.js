@@ -17660,39 +17660,48 @@ $(function(){
 	}
 
 	var $mapNode = $('.map');
+	var whatTextbox = $('input[name=what]');
 	var mapIsVisible = $mapNode.height();
 	var geocoder = new google.maps.Geocoder();
-	var typeSuggestions = new Bloodhound({
+	var suggestions = new Bloodhound({
 		datumTokenizer: Bloodhound.tokenizers.nonword,
 		queryTokenizer: Bloodhound.tokenizers.nonword,
-		local: [
-			'Sala VLT',
-			'Ricevitoria',
-			'Sala Bingo',
-			'Agenzia scommesse'
-		]
-	});
-	var venueSuggestions = new Bloodhound({
-		datumTokenizer: Bloodhound.tokenizers.nonword,
-		queryTokenizer: Bloodhound.tokenizers.nonword,
+		prefetch: {
+			url: '/venues/suggestions',
+			cache: false
+		},
 		remote: {
-			url: '/venues/suggestions'
+			url: '/venues/suggestions/{what}',
+			wildcard: '{what}'
 		}
 	});
 
 	// Init suggestion input
-	$('input[name=what]').typeahead({
-		hint: false,
-		minLength: 2
-	},
-	{
-		name: 'typeSuggestions',
-		source: typeSuggestions
-	},
-	{
-		name: 'venueSuggestions',
-		source: venueSuggestions
-	});
+	$('input[name=what]').typeahead(
+		{ hint: false },
+		{
+			name: 'suggestions',
+			source: suggestions,
+			display: 'name',
+			templates: {
+				suggestion: function(suggestion){
+					var template = $('<div></div>');
+
+					// Name
+					template.append($('<strong>').html(suggestion.name));
+
+					// Category and city
+					if (suggestion.type == 'venue') {
+						var html = [suggestion.category, suggestion.city].join(', ');
+
+						template.append($('<div>').html(html));
+					}
+
+					return template[0];
+				}
+			}
+		}
+	);
 
 	// Bind locate button to find precise location
 	$('[data-action=locate]').on('click', function(e){

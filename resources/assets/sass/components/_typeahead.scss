@@ -16,6 +16,10 @@ span.twitter-typeahead {
 	border: $dropdown-border-width solid $dropdown-border-color;
 	@include border-radius($border-radius);
 	@include box-shadow(0 6px 12px rgba(0,0,0,.175));
+
+	.input-group-lg &.tt-open {
+		top: $input-height-lg !important;
+	}
 }
 
 // Menu items

@@ -73,6 +73,7 @@ class Venue extends Model
 	 *
 	 * @return string Distance in meters or kilometers
 	 */
+	// FIXME: Move to a Helper
 	public function getFormattedDistanceAttribute()
 	{
 		if (!$this->distance) {
@@ -125,7 +126,6 @@ class Venue extends Model
 	public function scopeWithNameOrCategory($query, $name)
 	{
 		return $query
-			->with('categories')
 			->where('name', 'like', "%{$name}%") // Venue name
 			->orWhereHas('categories', function($query) use ($name){ // Category name
 				$query->where('name', 'like', "%{$name}%");
