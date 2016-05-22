@@ -52,9 +52,9 @@
 
 									<div class="row">
 										<div class="col-md-4">
-											<div class="form-group">
+											<div class="form-group dropdown">
 												<label class="initialism" for="form_what"><strong>Trova</strong></label><br>
-												<input type="text" class="form-control form-control-lg" name="what" placeholder="VLT, Bingo, Ricevitoria" id="form_what">
+												<input type="text" class="form-control form-control-lg" name="what" placeholder="VLT, Bingo, Ricevitoria" autocomplete="off" id="form_what">
 											</div>
 										</div>
 										<div class="col-md-5">

@@ -43,48 +43,44 @@ $(function(){
 	}
 
 	var $mapNode = $('.map');
-	var whatTextbox = $('input[name=what]');
+	var form = $('.search-card-block');
 	var mapIsVisible = $mapNode.height();
 	var geocoder = new google.maps.Geocoder();
-	var suggestions = new Bloodhound({
-		datumTokenizer: Bloodhound.tokenizers.nonword,
-		queryTokenizer: Bloodhound.tokenizers.nonword,
-		prefetch: {
-			url: '/venues/suggestions',
-			cache: false
-		},
-		remote: {
-			url: '/venues/suggestions/{what}',
-			wildcard: '{what}'
-		}
-	});
+
+	// Prepare
 
 	// Init suggestion input
-	$('input[name=what]').typeahead(
-		{ hint: false },
-		{
-			name: 'suggestions',
-			source: suggestions,
-			display: 'name',
-			templates: {
-				suggestion: function(suggestion){
-					var template = $('<div></div>');
+	$('input[name=what]').typeahead({
+		items: 5,
+		delay: 200,
+		separator: false, // Disable menu separators when reading data
+		source: function(query, cb){
+			$.get('/venues/suggestions', form.serializeArray()).then(cb);
+		},
+		matcher: function(suggestion){ // match all results, since search happens on the server
+			return true;
+		},
+		highlighter: function(text, suggestion){ // no highlight, just a renderer
+			var template = $('<div></div>');
 
-					// Name
-					template.append($('<strong>').html(suggestion.name));
+			// Name
+			template.append($('<strong>').html(suggestion.name));
 
-					// Category and city
-					if (suggestion.type == 'venue') {
-						var html = [suggestion.category, suggestion.city].join(', ');
+			// Category and city
+			if (suggestion.type == 'venue') {
+				var html = [suggestion.category, suggestion.city].join(', ');
 
-						template.append($('<div>').html(html));
-					}
+				template.append($('<div class="text-muted text-truncate">').html(html));
+			}
 
-					return template[0];
-				}
+			return template[0];
+		},
+		afterSelect: function(item){
+			if (item.type == 'venue' && item.id) {
+				location.href = '/venues/' + item.id; // FIXME: Eliminare gli url dal javascript
 			}
 		}
-	);
+	});
 
 	// Bind locate button to find precise location
 	$('[data-action=locate]').on('click', function(e){

@@ -23,15 +23,23 @@ class SiteController extends Controller
 		]);
 	}
 
-	public function suggestions($what = null)
+	public function suggestions(Request $request)
 	{
+		$what = $request->what;
+		$lat = $request->lat;
+		$lng = $request->lng;
+		$near = $request->near;
 		$venues = [];
 		$categories = [];
 		$suggestions = [];
 
 		// Find venues and categories
 		if ($what) {
-			$venues = Venue::with('categories')->withNameOrCategory($what)->take(5)->get();
+			$venues = Venue::with('categories')->withNameOrCategory($what);
+			if ($lat && $lng) {
+				$venues = $venues->near($lat, $lng, 10);
+			}
+			$venues = $venues->take(5)->get();
 			$categories = Category::where('name', 'like', "%{$what}%")->take(5)->get();
 		} else {
 			$categories = Category::take(5)->get();
