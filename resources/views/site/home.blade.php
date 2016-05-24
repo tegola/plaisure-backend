@@ -6,7 +6,7 @@
 @section('content')
 
 <nav class="navbar navbar-full navbar-fixed-top navbar-white">
-	<div class="container p-x-0">
+	<div class="container">
 		<a class="navbar-brand" href="{{ route('site.home') }}">{{ config('constants.name') }}</a>
 		<div class="pull-xs-right">
 			<span class="navbar-badge">
@@ -14,8 +14,8 @@
 				<span class="navbar-badge-text">Il gioco &egrave; vietato<br>ai minori di 18 anni</span>
 			</span>
 			<span class="hidden-sm-down">
-				<a class="btn btn-sm btn-secondary-outline" href="#">Accedi</a>
-				<a class="btn btn-sm btn-primary" href="#">Iscriviti</a>
+				<a class="btn btn-secondary-outline" href="#">Accedi</a>
+				<a class="btn btn-primary" href="#">Iscriviti</a>
 			</span>
 		</div>
 	</div>
@@ -44,7 +44,7 @@
 								</div>
 							</div>
 						</div>
-						<form class="card-block search-card-block" action="{{ route('site.explore') }}" method="get">
+						<form class="card-block search-card-block form-search" action="{{ route('site.explore') }}" method="get">
 							<input type="hidden" name="lat">
 							<input type="hidden" name="lng">
 							<div class="row">

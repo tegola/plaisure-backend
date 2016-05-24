@@ -3,8 +3,8 @@
 	box-shadow: 0 1px 0 $hr-border-color;
 
 	.navbar-brand {
-		margin-top: 1px;
-		margin-bottom: 1px;
+		margin-top: -1px;
+		margin-bottom: -1px;
 		@extend .text-hide;
 		width: 162px;
 		height: 32px;
@@ -14,7 +14,6 @@
 	}
 	.navbar-badge {
 		display: inline-block;
-		margin-top: .375rem;
 
 		@include media-breakpoint-up(md) {
 			margin-right: $spacer * 3;
@@ -22,12 +21,12 @@
 	}
 	.navbar-badge-label {
 		background-color: $brand-primary-muted;
-		padding: .5em .3em .5em .5em;
-		margin-right: .25em;
+		padding: 0.5em 0.3em 0.4em 0.5em;
+		margin-right: 0.25em;
 	}
 	.navbar-badge-text {
 		color: $brand-primary-muted;
-		font-size: .7rem;
+		font-size: 0.7rem;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		display: inline-block;

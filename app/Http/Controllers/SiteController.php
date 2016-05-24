@@ -25,7 +25,7 @@ class SiteController extends Controller
 
 	public function suggestions(Request $request)
 	{
-		$what = $request->what;
+		$what = trim($request->what);
 		$lat = $request->lat;
 		$lng = $request->lng;
 		$near = $request->near;
@@ -37,7 +37,7 @@ class SiteController extends Controller
 		if ($what) {
 			$venues = Venue::with('categories')->withNameOrCategory($what);
 			if ($lat && $lng) {
-				$venues = $venues->near($lat, $lng, 10);
+				$venues = $venues->near($lat, $lng, 20);
 			}
 			$venues = $venues->take(5)->get();
 			$categories = Category::where('name', 'like', "%{$what}%")->take(5)->get();

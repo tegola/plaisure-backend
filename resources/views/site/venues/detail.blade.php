@@ -53,15 +53,20 @@
 			</div>
 
 			@if ($nearby_venues->count())
-				<h5>Altre attivit&agrave; vicino a questa</h5>
-				@foreach ($nearby_venues as $nearby_venue)
-					<a href="{{ route('site.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a><br>
-				@endforeach
+				<h5>Attivit&agrave; vicine</h5>
+				<ul class="list-unstyled">
+					@foreach ($nearby_venues as $nearby_venue)
+						<li>
+							<strong><a href="{{ route('site.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a></strong><br>
+							<span class="text-muted">{{ $nearby_venue->address_city }}</span>
+						</li>
+					@endforeach
+				</ul>
 			@endif
 
 			<hr>
 
-			<h5>È la tua attivit&agrave;? <a href="#">Rivendicala subito.</a></h5>
+			<h5>&Egrave; la tua attivit&agrave;? <a href="#">Rivendicala subito.</a></h5>
 			<p>Migliora gratuitamente le informazioni in questa pagina e trova nuovi clienti.</p>
 		</div>
 	</div>

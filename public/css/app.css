@@ -3681,7 +3681,7 @@ button.close {
   width: 1em;
   height: 1em;
   fill: currentColor;
-  vertical-align: -0.1em; }
+  vertical-align: -0.15em; }
 
 .footer {
   padding-top: 1rem; }
@@ -3693,26 +3693,25 @@ button.close {
   background-color: #fff;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08); }
   .navbar-white .navbar-brand {
-    margin-top: 1px;
-    margin-bottom: 1px;
+    margin-top: -1px;
+    margin-bottom: -1px;
     width: 162px;
     height: 32px;
     background: url("../img/navbar-logo-color-full@2x.png");
     background-size: 100%;
     background-repeat: no-repeat; }
   .navbar-white .navbar-badge {
-    display: inline-block;
-    margin-top: .375rem; }
+    display: inline-block; }
     @media (min-width: 768px) {
       .navbar-white .navbar-badge {
         margin-right: 3rem; } }
   .navbar-white .navbar-badge-label {
     background-color: #acc7ce;
-    padding: .5em .3em .5em .5em;
-    margin-right: .25em; }
+    padding: 0.5em 0.3em 0.4em 0.5em;
+    margin-right: 0.25em; }
   .navbar-white .navbar-badge-text {
     color: #acc7ce;
-    font-size: .7rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     display: inline-block;
