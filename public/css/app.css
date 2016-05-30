@@ -4764,4 +4764,14 @@ a.bg-danger:focus, a.bg-danger:hover {
 .page-explore .map {
   height: 300px; }
 
+.page-detail {
+  background-color: #f9f9f9; }
+  .page-detail .map {
+    height: 150px; }
+  @media (min-width: 992px) {
+    .page-detail .map-column {
+      padding-left: 0; }
+    .page-detail .map {
+      height: 250px; } }
+
 /*# sourceMappingURL=app.css.map */

@@ -1,14 +1,14 @@
 <nav class="navbar navbar-full navbar-white">
-	<div class="container">
+	<div class="container{{ $fluid or null ? '-fluid' : ''}}">
 		<a class="navbar-brand" href="{{ route('site.home') }}">{{ config('constants.name') }}</a>
 		<form class="form-inline pull-xs-left form-search dropdown" action="{{ route('site.explore') }}" method="get">
 			<input type="hidden" name="lat" value="{{ $lat }}">
 			<input type="hidden" name="lng" value="{{ $lng }}">
 			<div class="form-group dropdown">
-				<input type="text" class="form-control" name="what" value="{{ $what }}" placeholder="Trova">
+				<input type="text" class="form-control" name="what" value="{{ $what }}" placeholder="Trova" autocomplete="off">
 			</div>
-			<div class="form-group">
-				<input type="text" class="form-control" name="near" value="{{ $near }}" placeholder="Vicino a">
+			<div class="form-group dropdown">
+				<input type="text" class="form-control" name="near" value="{{ $near }}" placeholder="Vicino a" autocomplete="off">
 			</div>
 			<button type="submit" class="btn btn-primary">
 				@include('site.icons.icon', ['name' => 'search'])

@@ -53,15 +53,15 @@
 									<div class="row">
 										<div class="col-md-4">
 											<div class="form-group dropdown">
-												<label class="initialism" for="form_what"><strong>Trova</strong></label><br>
-												<input type="text" class="form-control form-control-lg" name="what" placeholder="VLT, Bingo, Ricevitoria" autocomplete="off" id="form_what">
+												<label class="initialism"><strong>Trova</strong></label><br>
+												<input type="text" class="form-control form-control-lg" name="what" placeholder="VLT, Bingo, Ricevitoria" autocomplete="off">
 											</div>
 										</div>
 										<div class="col-md-5">
-											<div class="form-group">
-												<label class="initialism" for="form_near"><strong>Vicino a</strong></label><br>
+											<div class="form-group dropdown">
+												<label class="initialism"><strong>Vicino a</strong></label><br>
 												<div style="position: relative;">
-													<input type="text" class="form-control form-control-lg search-near-control" name="near" value="{{ $near }}" placeholder="Citt&agrave;" id="form_near">
+													<input type="text" class="form-control form-control-lg search-near-control" name="near" value="{{ $near }}" placeholder="Citt&agrave;" autocomplete="off">
 													<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa posizione esatta" aria-label="Usa posizione esatta" data-action="locate">@include('site.icons.icon', ['name' => 'location'])</button>
 												</div>
 											</div>

@@ -65,7 +65,6 @@ class VenuesTableSeeder extends Seeder
 
 			// Name and features
 			$venue->name = $line[1];
-			$venue->type = $line[7];
 			$venue->surface_size = $line[5];
 			$venue->machine_type = $line[7];
 

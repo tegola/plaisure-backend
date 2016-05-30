@@ -1,0 +1,16 @@
+.page-detail {
+	background-color: #f9f9f9;
+
+	.map {
+		height: 150px;
+	}
+
+	@include media-breakpoint-up(lg) {
+		.map-column {
+			padding-left: 0;
+		}
+		.map {
+			height: 250px;
+		}
+	}
+}

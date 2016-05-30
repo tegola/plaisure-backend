@@ -21,6 +21,8 @@ elixir(function(mix) {
     	// '../../../node_modules/typeahead.js/dist/bloodhound.js',
     	// '../../../node_modules/typeahead.js/dist/typeahead.jquery.js',
     	'../../../node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js',
-    	'app.js'
+
+        'app.js',
+    	'search-form.js'
     ], 'public/js/app.js');
 });

@@ -5,10 +5,10 @@
 
 @section('content')
 
-@include('site.venues._navbar')
-<div class="container">
+@include('site.venues._navbar', ['fluid' => 'true'])
+<div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-md-6">
 			<h3>Ricevitorie vicino a <strong>{{ $near }}</strong></h3>
 
 			@foreach ($venues as $venue)
@@ -16,7 +16,7 @@
 				@include('site.venues.item')
 			@endforeach
 		</div>
-		<div class="col-sm-6">
+		<div class="col-md-6 hidden-sm-down p-r-0">
 			<div class="map"></div>
 		</div>
 	</div>

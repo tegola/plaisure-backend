@@ -15690,57 +15690,6 @@ function findCityNameInResults(results){
 // ALL PAGES ------------------------------------------------------------------
 $(function(){
 	$('[data-toggle="tooltip"]').tooltip();
-
-	// Setup search form (home and navbar)
-	$('.form-search').each(function(index, form){
-		$form = $(form);
-
-		// Setup typeahead
-		$form.find('[name=what]').typeahead({
-			items: 5,
-			delay: 200,
-			separator: false, // Disable menu separators when reading data
-			source: function(query, cb){
-				$.get('/venues/suggestions', $form.serializeArray()).then(cb);
-			},
-			matcher: function(suggestion){ // match all results, since search happens on the server
-				return true;
-			},
-			highlighter: function(text, suggestion){ // no highlight, just a renderer
-				var template = $('<div></div>');
-
-				// Name
-				var nameContainer1 = $('<div class="text-truncate"></div>');
-				var nameContainer2 = $('<strong></strong>').html(suggestion.name).attr('title', suggestion.name);
-				nameContainer1.append(nameContainer2);
-				template.append(nameContainer1);
-
-				// Category and city
-				if (suggestion.type == 'venue') {
-					var metaText = [suggestion.category, suggestion.city].join(', ');
-					var metaContainer = $('<div class="text-muted text-truncate">').html(metaText).attr('title', metaText);
-					template.append(metaContainer);
-				}
-
-				return template[0];
-			},
-			afterSelect: function(item){
-				// Go to venue page on select
-				if (item.type == 'venue' && item.id) {
-					location.href = '/venues/' + item.id;
-				}
-			}
-		});
-
-		// Setup submit
-		/*
-		$form.on('submit', function(){
-			var values = $form.serializeArray();
-			console.log(values);
-			return false;
-		});
-		*/
-	});
 });
 
 // HOME -----------------------------------------------------------------------
@@ -15865,13 +15814,107 @@ $(function(){
 		return;
 	}
 
-	var lat = $('[name=lat]').val();
-	var lng = $('[name=lng]').val();
+	var $form = $('.form-search');
+	var lat = $form.find('[name=lat]').val();
+	var lng = $form.find('[name=lng]').val();
 	var coords = new google.maps.LatLng(lat, lng);
-	var $mapNode = $('.map');
-	var map = new google.maps.Map($mapNode[0], {
+	var $map = $('.map');
+
+	// Build the map and add pins
+	var map = new google.maps.Map($map[0], {
 		center: coords,
 		zoom: 15
 	});
+
+	var marker = new google.maps.Marker({
+		position: coords,
+		map: map
+	});
+	var infowindow = new google.maps.InfoWindow({
+		content: 'Pippo'
+	});
+	marker.addListener('click', function(){
+		infowindow.open(map, marker);
+	})
+});
+
+// DETAIL ---------------------------------------------------------------------
+$(function(){
+	// Stop if page was not found
+	if (!$('.page-detail').length) {
+		return;
+	}
+
+	var $map = $('.map');
+	var coords = new google.maps.LatLng($map.data('lat'), $map.data('lng'));
+
+	var map = new google.maps.Map($map[0], {
+		center: coords,
+		zoom: 15,
+		scrollwheel: false,
+		mapTypeControl: false,
+		streetViewControl: false
+	});
+});
+$(function(){
+	var $form = $('.form-search');
+	var whatTextbox = $form.find('[name=what]');
+	var nearTextbox = $form.find('[name=near]');
+
+	// Search typeahead
+	whatTextbox.typeahead({
+		items: 5,
+		delay: 200,
+		separator: false, // Disable menu separators when reading data
+		source: function(query, callback){
+			$.get('/venues/suggestions', $form.serializeArray()).then(callback);
+		},
+		matcher: function(suggestion){ // match all results, since search happens on the server
+			return true;
+		},
+		highlighter: function(text, suggestion){ // no highlight, just a renderer
+			var template = $('<div></div>');
+
+			// Name
+			var nameContainer1 = $('<div class="text-truncate"></div>');
+			var nameContainer2 = $('<strong></strong>').html(suggestion.name).attr('title', suggestion.name);
+			nameContainer1.append(nameContainer2);
+			template.append(nameContainer1);
+
+			// Category and city
+			if (suggestion.type == 'venue') {
+				var metaText = [suggestion.category, suggestion.city].join(', ');
+				var metaContainer = $('<div class="text-muted text-truncate">').html(metaText).attr('title', metaText);
+				template.append(metaContainer);
+			}
+
+			return template[0];
+		},
+		afterSelect: function(item){
+			// Go to venue page on select
+			if (item.type == 'venue' && item.id) {
+				location.href = '/venues/' + item.id;
+			}
+		}
+	});
+
+	// City typeahead
+	/*
+	nearTextbox.typeahead({
+		minLength: 3,
+		items: 5,
+		delay: 200,
+		separator: false,
+		source: function(query, callback){
+			$.get('https://maps.googleapis.com/maps/api/geocode/json', {
+				address: nearTextbox.val()
+			}).then(callback);
+		},
+		matcher: function(suggestion){ // match all results, since search happens on the server
+			return true;
+		}
+	});
+	*/
+
 });
 //# sourceMappingURL=app.js.map
