@@ -15675,7 +15675,6 @@ function findCityNameInResults(results){
 			if (name) {
 				return false;
 			}
-			console.log(address_component);
 
 			if ($.inArray('administrative_area_level_3', address_component.types) !== -1) {
 				name = address_component.long_name;
@@ -15835,7 +15834,7 @@ $(function(){
 	});
 	marker.addListener('click', function(){
 		infowindow.open(map, marker);
-	})
+	});
 });
 
 // DETAIL ---------------------------------------------------------------------

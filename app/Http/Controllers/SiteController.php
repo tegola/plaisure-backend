@@ -112,6 +112,11 @@ class SiteController extends Controller
 			->take(5)
 			->get();
 
+		// Prepare categories string
+		$venue_category_names = $venue->categories->map(function($cat){
+			return $cat->name;
+		});
+
 		return view('site.venues.detail', [
 			'lat' => session('user.lat') ?: null,
 			'lng' => session('user.lng') ?: null,
@@ -119,6 +124,7 @@ class SiteController extends Controller
 			'near' => session('search.near') ?: null,
 			'distance' => session('search.distance') ?: null,
 			'venue' => $venue,
+			'venue_category_string' => $venue_category_names->implode(','),
 			'nearby_venues' => $nearby_venues
 		]);
 	}

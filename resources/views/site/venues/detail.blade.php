@@ -1,107 +1,182 @@
 @extends('site.layout')
 
 @section('body_class', 'page-detail')
-@section('title', "{$venue->name} - Sala VLT, ricevitoria")
+@section('title', "{$venue->name} - {$venue_category_string}")
 
 @section('content')
 
 @include('site.venues._navbar')
 
-<div class="container m-t-2">
-	<div class="row">
-		<div class="col-md-9">
+<div class="card m-b-0">
+	<div class="container m-t-2">
+		<div class="row">
+			<div class="col-md-8">
+				@if ($venue->categories->count())
+					<p class="m-b-0 initialism text-muted">
+						{{ $venue_category_string }}
+					</p>
+				@endif
+				<h1 class="m-t-0">{{ $venue->name }}</h1>
+				<p>
+					{{ $venue->long_address }}
+					@if ($venue->distance)
+						&ndash; <strong>a soli {{ round($venue->distance) }} km da te!</strong>
+					@endif
+				</p>	
+			</div>
+			<div class="col-md-4 text-xs-right">
+				<p>
+					<a class="btn btn-secondary" href="#">Ottieni indicazioni</a>
+					<a class="btn btn-secondary" href="#">Salva</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="card-block" style="white-space: nowrap; overflow: auto;">
+	@for ($i = 0; $i < 8; $i++)
+		<img src="http://placehold.it/160">
+	@endfor
+</div>
 
+<div class="container">
+	<div class="card">
+		<div class="card-block row text-xs-center">
+			<div class="col-xs-4">
+				<strong>$$$</strong>
+				<h4 class="font-weight-normal">&euro; 42.425,09</h4>
+				<strong class="initialism text-muted">Mega Jackpot</strong>
+			</div>
+			<div class="col-xs-4">
+				<strong>$$</strong>
+				<h4 class="font-weight-normal">&euro; 4.007,14</h4>
+				<strong class="initialism text-muted">Super jackpot</strong>
+			</div>
+			<div class="col-xs-4">
+				<strong>$</strong>
+				<h4 class="font-weight-normal">&euro; 5.348,23</h4>
+				<strong class="initialism text-muted">Easy jackpot</strong>
+			</div>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-block">
+			<div class="embed-responsive embed-responsive-21by9">
+				<div class="map embed-responsive-item" data-lat="{{ $venue->geo_latitude }}" data-lng="{{ $venue->geo_longitude }}"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8">
 			<div class="card">
-				<div class="row">
-					<div class="col-lg-7 col-xl-8">
-						<div class="card-block">
-							<h1>{{ $venue->name }}</h1>
-							@if ($venue->categories->count())
-								<p class="lead text-muted">
-									@foreach ($venue->categories as $category)
-										{{ $category->name }}
-									@endforeach
-								</p>
-							@endif
-							<p>
-								{{ $venue->long_address }}
-								@if ($venue->distance)
-									&ndash; <strong>a soli {{ round($venue->distance) }} km da te!</strong>
-								@endif
-							</p>
-							<ul class="list-inline">
-								<li class="list-inline-item">
-									{{ $venue->surface_size }} mq.
-								</li>
-								<li class="list-inline-item">
-									{{ $venue->estimated_machine_number }} macchine
-									@if ($venue->hasFakeMachineNumber())
-										<span class="label label-default" data-toggle="tooltip" title="Il numero di macchine è stimato in base alle dimensioni dei locali">Numero stimato</span>
-									@endif
-								</li>
-							</ul>
-							<div class="row">
-								<div class="col-xs-5">
-									<button class="btn btn-sm btn-secondary">Salva</button>
-								</div>
-								<div class="col-xs-7">
-									<span class="input-group">
-										<input type="text" class="form-control form-control-sm" value="{{ Request::url() }}">
-										<span class="input-group-btn">
-											<button class="btn btn-sm btn-secondary">Condividi</button>
-										</span>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-5 col-xl-4">
-						<div class="map" data-lat="{{ $venue->geo_latitude }}" data-lng="{{ $venue->geo_longitude }}"></div>
-					</div>
-				</div>
-				<hr class="m-y-0">
-				<div class="card-block" style="white-space: nowrap; overflow: auto;">
-					@for ($i = 0; $i < 8; $i++)
-						<img src="http://placehold.it/200" alt="">
-					@endfor
-				</div>
-				<hr class="m-y-0">
 				<div class="card-block">
 					<div class="row">
-						<div class="col-xs-6">
-							Numero di VLT<br>
-							Numero di AWP<br>
-							Piattaforme disponibili<br>
-							Posti parcheggio<br>
-							Parcheggio privato<br>
-							Bar<br>
-							Ristorante<br>
-							POS<br>
-							Bancomat<br>
-							Pay per view<br>
-							Wi-Fi
+						<div class="col-md-4">
+							<strong>Dimensioni</strong>
 						</div>
-						<div class="col-xs-6">
-							Orari di apertura
+						<div class="col-md-8">
+							{{ $venue->surface_size }} mq.
+						</div>
+						<div class="col-md-4">
+							<strong>Numero di macchine</strong>
+						</div>
+						<div class="col-md-8">
+							{{ $venue->estimated_machine_number }} macchine
+							@if ($venue->hasFakeMachineNumber())
+								<span class="label label-default" data-toggle="tooltip" title="Il numero di macchine è stimato in base alle dimensioni dei locali">Numero stimato</span>
+							@endif
+						</div>
+						<div class="col-md-4">
+							<strong>Numero di VLT</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Numero di AWP</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Piattaforme disponibili</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Posti parcheggio</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Parcheggio privato</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Bar</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Ristorante</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>POS</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Bancomat</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Pay per view</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
+						</div>
+						<div class="col-md-4">
+							<strong>Wi-Fi</strong>
+						</div>
+						<div class="col-md-8">
+							<span class="text-muted">Non disponibile</span>
 						</div>
 					</div>
 				</div>
 			</div>
-
 		</div>
-		<div class="col-md-3">
-
-			<div class="row">
-				<div class="col-sm-6 col-md-12">
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-block">
 					<h5>&Egrave; la tua attivit&agrave;?</h5>
-					<p>Migliora gratuitamente le informazioni in questa pagina e trova nuovi clienti.</p>
-					<p><a class="btn btn-sm btn-secondary" href="#">Rivendica attivit&agrave;</a>
+					<p>Se sei proprietaro o gestore di questa attività, puoi rivendicarla gratuitamente e tenerla aggiornata costantemente, aggiungere foto, jackpot e tanto altro.</p>
+					<p class="m-b-0"><a class="btn btn-sm btn-secondary" href="#">Rivendica attivit&agrave;</a>
 				</div>
+				<hr class="m-y-0">
+
+				<div class="card-block">
+					<h5>Hai trovato un errore?</h5>
+					<p class="m-b-0">Se l'indirizzo è errato, l'attività non esiste, o se ci sono foto offensive, puoi <a href="#">segnalare questa attività</a>.
+				</div>
+
 				@if ($nearby_venues->count())
-					<div class="col-sm-6 col-md-12">
-						<hr class="hidden-sm-down m-b-2">
+					<hr class="m-y-0">
+					<div class="card-block">
 						<h5>Attivit&agrave; vicine</h5>
-						<ul class="list-unstyled">
+						<ul class="list-unstyled m-b-0">
 							@foreach ($nearby_venues as $nearby_venue)
 								<li>
 									<strong><a href="{{ route('site.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a></strong><br>
@@ -112,8 +187,8 @@
 					</div>
 				@endif
 			</div>
-
 		</div>
 	</div>
 </div>
+
 @endsection
