@@ -74,6 +74,11 @@ class SiteController extends Controller
 		$near = $request->near;
 		$distance = 30; // km
 
+		// Missing user position, go back to home
+		if (!$near && !$lat && !$lng) {
+			return redirect()->route('site.home');
+		}
+
 		// Missing coordinates, find them by address
 		if ($near && !$lat && !$lng && $position = $this->getLatLngFromAddress($near)) {
 			$lat = $position['lat'];
@@ -84,6 +89,7 @@ class SiteController extends Controller
 		$venues = Venue::withNameOrCategory($what)
 			->near($lat, $lng, $distance)
 			->with('categories')
+			->take(20)
 			->get();
 
 		// Store position data in session
@@ -127,6 +133,18 @@ class SiteController extends Controller
 			'venue_category_string' => $venue_category_names->implode(','),
 			'nearby_venues' => $nearby_venues
 		]);
+	}
+
+	public function claim() {
+		return view('site.venues.claim');
+	}
+
+	public function about() {
+		return view('site.about.company');
+	}
+
+	public function contact() {
+		return view('site.about.contact');
 	}
 
 	/**
