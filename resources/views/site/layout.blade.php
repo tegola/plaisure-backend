@@ -21,7 +21,7 @@
 		<div class="footer">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-8 col-md-push-4 text-xs-center text-md-right">
+					<div class="col-md-8 push-md-4 text-xs-center text-md-right">
 						<ul class="list-inline">
 							{{-- FIXME: Il link "Esplora" deve passare la città, altrimenti si viene ridirezionati alla home --}}
 							<li class="list-inline-item"><a href="{{ route('site.venues.explore') }}">Esplora</a></li>
@@ -31,7 +31,7 @@
 							<li class="list-inline-item"><a href="{{ route('site.about.contact') }}">Contatti</a></li>
 						</ul>
 					</div>
-					<div class="col-md-4 col-md-pull-8 text-xs-center text-md-left">
+					<div class="col-md-4 pull-md-8 text-xs-center text-md-left">
 						<ul class="list-inline">
 							<li class="list-inline-item">&copy; {{ date('Y') }} {{ config('constants.company') }}</li>
 							<li class="list-inline-item">P. IVA {{ config('constants.partita_iva')}}</li>

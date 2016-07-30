@@ -15866,23 +15866,79 @@ $(function(){
 	var lat = $form.find('[name=lat]').val();
 	var lng = $form.find('[name=lng]').val();
 	var coords = new google.maps.LatLng(lat, lng);
-	var $map = $('.map');
+	var currentTooltip;
 
-	// Build the map and add pins
-	var map = new google.maps.Map($map[0], {
+	// Build the map
+	var map = new google.maps.Map($('.map')[0], {
 		center: coords,
-		zoom: 15
+		zoom: 15,
+		mapTypeControl: false,
+		streetViewControl: false
 	});
 
-	var marker = new google.maps.Marker({
-		position: coords,
-		map: map
+	// Add venue markers
+	$('[data-lat][data-lng]').each(function(index, item){
+		var data = $(item).data();
+		var coords = new google.maps.LatLng(data.lat, data.lng);
+
+		// Add marker
+		var marker = new google.maps.Marker({
+			position: coords,
+			map: map
+		});
+
+		// Prepare the function to show tooltips
+		var showTooltip = function(tooltipToShow){
+			if (currentTooltip) {
+				if (currentTooltip == tooltipToShow) {
+					return;
+				}	
+				currentTooltip.close();
+			}
+			tooltipToShow.open(map, marker);
+			currentTooltip = tooltipToShow;
+		};
+
+		// Prepare tooltip
+		var tooltip = new google.maps.InfoWindow({
+			content: 'pippooooo'
+		});
+
+		// Show tooltip on marker and list item click
+		marker.addListener('click', function(){
+			showTooltip(tooltip);
+		});
+		$(item).on('click', function(){
+			showTooltip(tooltip);
+		});
 	});
-	var infowindow = new google.maps.InfoWindow({
-		content: 'Pippo'
-	});
-	marker.addListener('click', function(){
-		infowindow.open(map, marker);
+
+	// Make the "load more" button actually load inline
+	$('[data-action="load-more"]').on('click', function(){
+		var button = $(this);
+		var resultsContainer = $('#results');
+		var url = button.attr('href');
+
+		$.get(url).then(function(data){
+			// Update url
+			history.pushState({}, '', url);
+
+			// Update list
+			var resultsHtml = $('#results', data)[0].innerHTML;
+			resultsContainer.append(resultsHtml);
+
+			// Update load more button
+			var newButton = $('[data-action="load-more"]', data);
+			if (!newButton || newButton.attr('href') == url) {
+				button.remove();
+			} else {
+				button.attr('href', newButton.attr('href'));
+			}
+
+			// FIXME: Update map
+		});
+
+		return false;
 	});
 });
 

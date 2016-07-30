@@ -1,20 +1,37 @@
 @extends('site.layout')
 
 @section('body_class', 'page-explore')
-@section('title', "Ricevitorie a {$near}")
+@section('title', $what ? "Risultati per {$what} a {$near}" : "Tutti i risultati a {$near}")
 
 @section('content')
 
 @include('site.venues._navbar', ['fluid' => 'true'])
-<div class="container-fluid">
+<div class="container-fluid m-t-2">
 	<div class="row">
 		<div class="col-md-6">
-			<h3>Ricevitorie vicino a <strong>{{ $near }}</strong></h3>
+			<h3>
+				@if($what)
+					{{ $venues->count() }}
+					{{ $venues->count() == 1 ? 'risultato' : 'risultati' }}
+					per <strong class="text-info">{{ $what }}</strong>
+				@else
+					Tutti i risultati
+				@endif
+				a <strong>{{ $near }}</strong>
+			</h3>
 
-			@foreach ($venues as $venue)
+			<div id="results">
+				@foreach ($venues as $venue)
+					<hr>
+					@include('site.venues._item')
+				@endforeach
+			</div>
+
+			@if($venues->hasMorePages())
 				<hr>
-				@include('site.venues.item')
-			@endforeach
+				<a class="btn btn-outline-primary btn-block" href="{{ $venues->nextPageUrl() }}" data-action="load-more">Carica altro</a>
+			@endif
+
 		</div>
 		<div class="col-md-6 hidden-sm-down p-r-0">
 			<div class="map"></div>

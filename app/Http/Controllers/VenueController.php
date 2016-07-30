@@ -68,10 +68,10 @@ class VenueController extends Controller
 	public function explore(Request $request)
 	{
 		$what = $request->what;
-		$lat = $request->lat;
-		$lng = $request->lng;
-		$near = $request->near;
-		$distance = 30; // km
+		$lat = $request->lat ?: session('user.lat');
+		$lng = $request->lng ?: session('user.lng');
+		$near = $request->near ?: session('search.near');
+		$distance = $request->distance ?: session('search.distance') ?: 30; // km
 
 		// Missing user position, go back to home
 		if (!$near && !$lat && !$lng) {
@@ -88,8 +88,9 @@ class VenueController extends Controller
 		$venues = Venue::withNameOrCategory($what)
 			->near($lat, $lng, $distance)
 			->with('categories')
-			->take(20)
-			->get();
+			->simplePaginate();
+			// ->take(20)
+			// ->get();
 
 		// Store position data in session
 		session([

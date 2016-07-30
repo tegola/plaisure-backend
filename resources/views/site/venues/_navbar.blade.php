@@ -17,7 +17,7 @@
 		</form>
 		<div class="pull-xs-right">
 			<span class="hidden-sm-down">
-				<a class="btn btn-secondary-outline" href="#">Accedi</a>
+				<a class="btn btn-outline-secondary" href="#">Accedi</a>
 				<a class="btn btn-primary" href="#">Iscriviti</a>
 			</span>
 		</div>
