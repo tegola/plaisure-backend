@@ -23,11 +23,12 @@
 				<div class="row">
 					<div class="col-md-8 col-md-push-4 text-xs-center text-md-right">
 						<ul class="list-inline">
-							<li class="list-inline-item"><a href="{{ route('site.explore') }}">Esplora</a></li>
-							<li class="list-inline-item"><a href="{{ route('site.company') }}"">Azienda</a></li>
-							<li class="list-inline-item"><a href="{{ route('site.claim') }}">Rivendica la tua attivit&agrave;</a></li>
+							{{-- FIXME: Il link "Esplora" deve passare la città, altrimenti si viene ridirezionati alla home --}}
+							<li class="list-inline-item"><a href="{{ route('site.venues.explore') }}">Esplora</a></li>
+							<li class="list-inline-item"><a href="{{ route('site.about.company') }}"">Azienda</a></li>
+							<li class="list-inline-item"><a href="{{ route('site.venues.claim') }}">Rivendica la tua attivit&agrave;</a></li>
 							<li class="list-inline-item"><a href="#">Gioca responsabilmente</a></li>
-							<li class="list-inline-item"><a href="{{ route('site.contact') }}">Contatti</a></li>
+							<li class="list-inline-item"><a href="{{ route('site.about.contact') }}">Contatti</a></li>
 						</ul>
 					</div>
 					<div class="col-md-4 col-md-pull-8 text-xs-center text-md-left">

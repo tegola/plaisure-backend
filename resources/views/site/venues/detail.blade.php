@@ -179,7 +179,7 @@
 						<ul class="list-unstyled m-b-0">
 							@foreach ($nearby_venues as $nearby_venue)
 								<li>
-									<strong><a href="{{ route('site.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a></strong><br>
+									<strong><a href="{{ route('site.venues.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a></strong><br>
 									<span class="text-muted">{{ $nearby_venue->address_city }}</span>
 								</li>
 							@endforeach

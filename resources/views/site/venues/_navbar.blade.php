@@ -1,7 +1,7 @@
 <nav class="navbar navbar-full navbar-white">
 	<div class="container{{ $fluid or null ? '-fluid' : ''}}">
 		<a class="navbar-brand" href="{{ route('site.home') }}">{{ config('constants.name') }}</a>
-		<form class="form-inline pull-xs-left form-search dropdown" action="{{ route('site.explore') }}" method="get">
+		<form class="form-inline pull-xs-left form-search dropdown" action="{{ route('site.venues.explore') }}" method="get">
 			<input type="hidden" name="lat" value="{{ $lat }}">
 			<input type="hidden" name="lng" value="{{ $lng }}">
 			<div class="form-group dropdown">

@@ -9,9 +9,8 @@ use App\Category;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class SiteController extends Controller
+class VenueController extends Controller
 {
-
 	public function index()
 	{
 		return view('site.home', [
@@ -137,14 +136,6 @@ class SiteController extends Controller
 
 	public function claim() {
 		return view('site.venues.claim');
-	}
-
-	public function about() {
-		return view('site.about.company');
-	}
-
-	public function contact() {
-		return view('site.about.contact');
 	}
 
 	/**

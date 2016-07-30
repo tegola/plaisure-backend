@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-xs-8 col-sm-9 col-md-8 col-lg-9">
-		<h5><a href="{{ route('site.detail', ['venue' => $venue]) }}">{{ $venue->name }}</a></h5>
+		<h5><a href="{{ route('site.venues.detail', ['venue' => $venue]) }}">{{ $venue->name }}</a></h5>
 		<p>
 			@if ($venue->distance)
 				<strong>{{ $venue->formatted_distance }}</strong> &ndash;

@@ -10,7 +10,7 @@
 		<a class="navbar-brand" href="{{ route('site.home') }}">{{ config('constants.name') }}</a>
 		<div class="pull-xs-right">
 			<span class="navbar-badge">
-				<span class="label navbar-badge-label" aria-hidden="true">18+</span>
+				<span class="tag navbar-badge-tag" aria-hidden="true">18+</span>
 				<span class="navbar-badge-text">Il gioco &egrave; vietato<br>ai minori di 18 anni</span>
 			</span>
 			<span class="hidden-sm-down">
@@ -27,11 +27,11 @@
 
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-offset-1 col-lg-10">
+				<div class="offset-lg-1 col-lg-10">
 					<div class="card">
 						<div class="card-block hero-card-block">
 							<div class="row">
-								<div class="col-xs-offset-1 col-xs-10 col-md-7">
+								<div class="offset-xs-1 col-xs-10 col-md-7">
 									<h2>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h2>
 									<p>Più di 5000 sale tra cui&nbsp;scegliere!</p>
 									<div class="m-t-1 hidden-md-up">
@@ -44,11 +44,11 @@
 								</div>
 							</div>
 						</div>
-						<form class="card-block search-card-block form-search" action="{{ route('site.explore') }}" method="get">
+						<form class="card-block search-card-block form-search" action="{{ route('site.venues.explore') }}" method="get">
 							<input type="hidden" name="lat">
 							<input type="hidden" name="lng">
 							<div class="row">
-								<div class="col-xs-offset-1 col-xs-10">
+								<div class="offset-xs-1 col-xs-10">
 
 									<div class="row">
 										<div class="col-md-4">
