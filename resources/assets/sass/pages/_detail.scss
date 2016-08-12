@@ -1,6 +1,15 @@
 .page-detail {
 	background-color: #f9f9f9;
 
+	.result-icon {
+		width: 90px;
+		padding: 10px;
+		background-color: #76b1a2;
+		border-radius: 50%;
+		float: left;
+		margin-right: $grid-gutter-width;
+	}
+
 	.map {
 		//height: 150px;
 	}

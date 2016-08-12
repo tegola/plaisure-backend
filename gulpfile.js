@@ -18,8 +18,6 @@ elixir(function(mix) {
     	'../../../node_modules/jquery/dist/jquery.js',
     	'../../../node_modules/tether/dist/js/tether.js',
     	'../../../node_modules/bootstrap/dist/js/bootstrap.js',
-    	// '../../../node_modules/typeahead.js/dist/bloodhound.js',
-    	// '../../../node_modules/typeahead.js/dist/typeahead.jquery.js',
     	'../../../node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js',
 
         'app.js',

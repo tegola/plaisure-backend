@@ -4923,5 +4923,12 @@ a.text-danger:focus, a.text-danger:hover {
 
 .page-detail {
   background-color: #f9f9f9; }
+  .page-detail .result-icon {
+    width: 90px;
+    padding: 10px;
+    background-color: #76b1a2;
+    border-radius: 50%;
+    float: left;
+    margin-right: 30px; }
 
 /*# sourceMappingURL=app.css.map */

@@ -8,9 +8,10 @@
 @include('site.venues._navbar')
 
 <div class="card m-b-0">
-	<div class="container m-t-2">
-		<div class="row">
+	<div class="container m-t-2 m-b-1">
+		<div class="row clearfix">
 			<div class="col-md-8">
+				<img class="result-icon" src="{{ asset("img/avatars/{$venue->category_icon_name}") }}">
 				@if ($venue->categories->count())
 					<p class="m-b-0 initialism text-muted">
 						{{ $venue_category_string }}
