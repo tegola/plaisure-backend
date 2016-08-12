@@ -4901,6 +4901,23 @@ a.text-danger:focus, a.text-danger:hover {
         left: -120px;
         margin-bottom: -190px; } }
 
+.page-explore .result {
+  padding-top: 1rem;
+  padding-bottom: 1rem; }
+  .page-explore .result:hover {
+    background-color: #f9f9f9; }
+
+.page-explore .result + .result {
+  border-top: 1px solid rgba(0, 0, 0, 0.1); }
+
+.page-explore .result-icon {
+  width: 60px;
+  padding: 5px;
+  background-color: #76b1a2;
+  border-radius: 50%;
+  float: left;
+  margin-right: 15px; }
+
 .page-explore .map {
   height: 500px; }
 

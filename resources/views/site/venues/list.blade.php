@@ -22,14 +22,12 @@
 
 			<div id="results">
 				@foreach ($venues as $venue)
-					<hr>
 					@include('site.venues._item')
 				@endforeach
 			</div>
 
 			@if($venues->hasMorePages())
-				<hr>
-				<a class="btn btn-outline-primary btn-block" href="{{ $venues->nextPageUrl() }}" data-action="load-more">Carica altro</a>
+				<a class="btn btn-outline-primary btn-block" href="{{ $venues->nextPageUrl() }}" data-action="load-more">Vedi altri risultati&hellip;</a>
 			@endif
 
 		</div>

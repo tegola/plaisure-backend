@@ -91,6 +91,37 @@ class Venue extends Model
 		}
 	}
 
+
+	/**
+	 * Get the file icon name for the first venue category
+	 * 
+	 * @return String The file name
+	 */
+	// FIXME: Move to a Helper / Refactor
+	public function getCategoryIconNameAttribute()
+	{
+		$file_name = '';
+
+		if ($this->categories()->count()) {
+			switch ($this->categories()->first()->name) {
+				case 'Agenzia scommesse':
+					$file_name = 'token.svg';
+					break;
+				case 'Ricevitoria':
+					$file_name = 'receipt.svg';
+					break;
+				case 'Sala Bingo':
+					$file_name = 'bingo.svg';
+					break;
+				case 'Sala VLT':
+					$file_name = 'slot-machine.svg';
+					break;
+			}
+		}
+
+		return $file_name;
+	}
+
 	/**
 	 * Query builder scope to list neighboring locations
 	 * within a given distance from a given location

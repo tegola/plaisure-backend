@@ -71,9 +71,9 @@ class VenueController extends Controller
 		$lat = $request->lat ?: session('user.lat');
 		$lng = $request->lng ?: session('user.lng');
 		$near = $request->near ?: session('search.near');
-		$distance = $request->distance ?: session('search.distance') ?: 30; // km
+		$distance = $request->distance ?: session('search.distance') ?: config('constants.search_default_distance');
 
-		// Missing user position, go back to home
+		// No specified location or missing coordinates, go back to home page
 		if (!$near && !$lat && !$lng) {
 			return redirect()->route('site.home');
 		}

@@ -1,4 +1,26 @@
 .page-explore {
+	// Results
+	.result {
+		padding-top: $spacer;
+		padding-bottom: $spacer;
+
+		&:hover {
+			background-color: #f9f9f9;
+		}
+	}
+	.result + .result {
+		border-top: 1px solid $hr-border-color;
+	}
+	.result-icon {
+		width: 60px;
+		padding: 5px;
+		background-color: #76b1a2;
+		border-radius: 50%;
+		float: left;
+		margin-right: $grid-gutter-width / 2;
+	}
+
+	// Map
 	.map {
 		height: 500px;
 	}

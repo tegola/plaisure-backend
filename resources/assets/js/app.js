@@ -161,6 +161,7 @@ $(function(){
 	var lng = $form.find('[name=lng]').val();
 	var coords = new google.maps.LatLng(lat, lng);
 	var currentTooltip;
+	var hoverTimer;
 
 	// Build the map
 	var map = new google.maps.Map($('.map')[0], {
@@ -198,12 +199,18 @@ $(function(){
 			content: 'pippooooo'
 		});
 
-		// Show tooltip on marker and list item click
+		// Show tooltip on marker and list item hover
 		marker.addListener('click', function(){
 			showTooltip(tooltip);
 		});
-		$(item).on('click', function(){
-			showTooltip(tooltip);
+		$(item).on('mouseenter', function(){
+			clearTimeout(hoverTimer);
+			hoverTimer = setTimeout(function(){
+				showTooltip(tooltip);
+			}, 400);
+		});
+		$(item).on('mouseleave', function(){
+			clearTimeout(hoverTimer);
 		});
 	});
 
