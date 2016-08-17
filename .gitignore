@@ -1,8 +1,14 @@
+# Laravel
 /vendor
 /node_modules
 Homestead.yaml
 Homestead.json
 .env
 
+# Build caches
 .sass-cache
-/app/Http/Controllers/VenueController.php
+
+# Build files
+/public/css/app.css
+/public/js/app.js
+*.map
