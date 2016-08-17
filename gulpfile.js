@@ -11,6 +11,10 @@ var elixir = require('laravel-elixir');
  |
  */
 
+// No source maps (.map files)
+elixir.config.sourcemaps = false;
+
+// Build
 elixir(function(mix) {
     mix.sass('app.scss');
 
