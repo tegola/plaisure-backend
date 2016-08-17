@@ -47,7 +47,7 @@ $(function(){
 		source: function(query, process){
 			$.get('https://maps.googleapis.com/maps/api/geocode/json', {
 				address: nearTextbox.val(),
-				language: 'it'
+				language: 'it' // FIXME: Use user locale
 			}).then(function(data){
 				var locations = [];
 
