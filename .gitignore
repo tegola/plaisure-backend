@@ -9,6 +9,4 @@ Homestead.json
 .sass-cache
 
 # Build files
-/public/css/app.css
-/public/js/app.js
 *.map
