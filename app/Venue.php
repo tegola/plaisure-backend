@@ -9,6 +9,7 @@ use DB;
 class Venue extends Model
 {
 	const SURFACE_TO_MACHINE_MULTIPLIER = 0.15;
+	const MACHINE_TYPES = array('A', 'B', 'A/B');
 
 	/**
 	 * Get the estimated number of machines based on surface size
