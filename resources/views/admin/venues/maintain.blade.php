@@ -26,6 +26,7 @@
 	</ul>
 
 	@foreach ($errors->all() as $error)
+	pippo
 		<div class="alert alert-warning">
 			{{ $error }}
 		</div>

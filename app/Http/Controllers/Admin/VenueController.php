@@ -7,6 +7,7 @@ use File;
 use Carbon\Carbon;
 
 use App\Http\Requests;
+use App\Http\Requests\StoreVenue;
 use App\Http\Controllers\Controller;
 
 use App\Venue;
@@ -149,7 +150,7 @@ class VenueController extends Controller
 		))->withErrors($errors);
 	}
 
-	public function store(Request $request)
+	public function store(StoreVenue $request)
 	{
 		$venue_id = $request->input('venue[id]');
 
