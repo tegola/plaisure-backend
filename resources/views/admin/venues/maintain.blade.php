@@ -40,7 +40,8 @@
 		<br>
 		<br>
 	@else
-		<form method="post">
+		<form action="{{ route('admin.venues.store') }}" method="post">
+			{{ csrf_field() }}
 			@if ($venue->exists)
 				<input type="hidden" name="id" value="{{ $venue->id }}">
 			@endif
@@ -84,7 +85,7 @@
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label>Categoria</label>
-					<select class="form-control">
+					<select class="form-control" name="category">
 						<option value="">Scegli&hellip;</option>
 						@foreach ($categories as $category)
 							<option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -93,7 +94,7 @@
 				</div>
 				<div class="form-group col-md-3">
 					<label>Tipo apparecchi</label>
-					<select class="form-control">
+					<select class="form-control" name="machine_type">
 						<option value="">Scegli&hellip;</option>
 						@foreach ($machine_types as $type)
 							<option value="{{ $type }}" {{{ $venue->machine_type == $type ? 'selected' : '' }}}>{{ $type }}</option>
@@ -102,14 +103,14 @@
 				</div>
 				<div class="form-group col-md-3">
 					<label>Superficie (mq.)</label>
-				<input type="text" class="form-control" name="surface_size" value="{{ $venue->surface_size }}">
+					<input type="text" class="form-control" name="surface_size" value="{{ $venue->surface_size }}">
 				</div>
 			</div>
 
 			<div class="mt-3">
 				<h5>Indirizzo</h5>
 				@if ($venue_original_address)
-					<p class="text-muted">Originale: {{ $venue_original_address }} (<a href="#trova">Trova con Google Maps</a>)</p>
+					<p class="text-muted">Originale: {{ $venue_original_address }} (<a href="#" data-toggle="geocode" data-address="{{ $venue_original_address }}">Trova con Google Maps</a>)</p>
 				@endif
 			</div>
 			<hr>
@@ -163,12 +164,8 @@
 				</div>
 				<div class="col-md-5">
 					<div class="form-group">
-						<label>Mappa</label>
-						<div class="card card-default">
-							<div class="card-block text-xs-center text-muted">
-								Qui va la mappa
-							</div>
-						</div>
+						<label class="hidden-sm-down">&nbsp;</label>
+						<div class="map" style="height: 296px; border-radius: 5px"></div>
 					</div>
 				</div>
 			</div>

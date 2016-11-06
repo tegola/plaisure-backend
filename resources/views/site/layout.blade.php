@@ -39,7 +39,7 @@
 		{{-- Icons --}}
 		@include('site.icons.defs')
 
-		<script src="https://maps.googleapis.com/maps/api/js" defer></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key={{ config('constants.google_maps_api_key') }}" defer></script>
 		<script src="{{ asset('js/app.js') }}"></script>
 
 		<script src="https://use.typekit.net/qwv3xzz.js"></script>

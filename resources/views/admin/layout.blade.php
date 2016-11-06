@@ -34,7 +34,7 @@
 			<p>&copy; {{ date('Y') }} {{ config('constants.company') }}</p>
 		</div>
 
-		<script src="https://maps.googleapis.com/maps/api/js" defer></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key={{ config('constants.google_maps_api_key') }}" defer></script>
 		<script src="{{ asset('js/admin.js') }}"></script>
 	</body>
 </html>

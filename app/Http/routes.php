@@ -43,5 +43,6 @@ Route::group(['middleware' => ['web']], function(){
 
 		Route::any('venues/upload',   ['as' => 'venues.upload',   'uses' => 'VenueController@upload']);
 		Route::get('venues/maintain', ['as' => 'venues.maintain', 'uses' => 'VenueController@maintain']);
+		Route::post('venues/store',   ['as' => 'venues.store',    'uses' => 'VenueController@store']);
 	});
 });

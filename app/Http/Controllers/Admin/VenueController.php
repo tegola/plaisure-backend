@@ -52,6 +52,8 @@ class VenueController extends Controller
 
 	public function maintain(Request $request)
 	{
+		// FIXME: Manca il caso in cui il csv ha i dati aggiornati
+
 		$errors = [];
 		$venue = false;
 		$venue_original_address = '';
@@ -147,6 +149,10 @@ class VenueController extends Controller
 		))->withErrors($errors);
 	}
 
+	public function store(Request $request)
+	{
+		dd($request->all());
+	}
 }
 
 
