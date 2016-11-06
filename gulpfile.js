@@ -16,15 +16,29 @@ elixir.config.sourcemaps = false;
 
 // Build
 elixir(function(mix) {
-    mix.sass('app.scss');
+	// App stylesheets
+	mix.sass(['app/main.scss'], 'public/css/app.css');
 
-    mix.scripts([
-    	'../../../node_modules/jquery/dist/jquery.js',
-    	'../../../node_modules/tether/dist/js/tether.js',
-    	'../../../node_modules/bootstrap/dist/js/bootstrap.js',
-    	'../../../node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js',
+	// App scripts
+	mix.scripts([
+		'../../../node_modules/jquery/dist/jquery.js',
+		'../../../node_modules/tether/dist/js/tether.js',
+		'../../../node_modules/bootstrap/dist/js/bootstrap.js',
+		'../../../node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js',
 
-        'app.js',
-    	'search-form.js'
-    ], 'public/js/app.js');
+		'app/main.js',
+		'app/search-form.js'
+	], 'public/js/app.js');
+
+	// Admin stylesheets
+	mix.sass(['admin/main.scss'], 'public/css/admin.css');
+
+	// Admin scripts
+	mix.scripts([
+		'../../../node_modules/jquery/dist/jquery.js',
+		'../../../node_modules/tether/dist/js/tether.js',
+		'../../../node_modules/bootstrap/dist/js/bootstrap.js',
+
+		'admin/main.js',
+	], 'public/js/admin.js');
 });

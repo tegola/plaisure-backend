@@ -1,14 +1,14 @@
 <div class="row result" data-lat="{{ $venue->geo_latitude }}" data-lng="{{ $venue->geo_longitude }}">
 	<div class="col-xs-12">
 		<img class="result-icon" src="{{ asset("img/avatars/{$venue->category_icon_name}") }}">
-		<h5 class="m-b-0"><a href="{{ route('site.venues.detail', ['venue' => $venue]) }}">{{ $venue->name }}</a></h5>
-		<p class="m-b-0">
+		<h5 class="mb-0"><a href="{{ route('site.venues.detail', ['venue' => $venue]) }}">{{ $venue->name }}</a></h5>
+		<p class="mb-0">
 			@if ($venue->distance)
 				<strong>{{ $venue->formatted_distance }}</strong> &ndash;
 			@endif
 			{{ $venue->short_address }}
 		</p>
-		<ul class="list-inline small text-uppercase text-muted m-b-0">
+		<ul class="list-inline small text-uppercase text-muted mb-0">
 			@if ($venue->categories->count())
 				<li class="list-inline-item">{{ $venue->categories->first()->name }}</li>
 			@endif

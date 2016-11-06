@@ -34,7 +34,7 @@
 								<div class="offset-xs-1 col-xs-10 col-md-7">
 									<h2>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h2>
 									<p>Più di 5000 sale tra cui&nbsp;scegliere!</p>
-									<div class="m-t-1 hidden-md-up">
+									<div class="mt-1 hidden-md-up">
 										<a class="btn btn-primary" href="#">Iscriviti</a>
 										<a class="btn btn-outline-secondary" href="#">Accedi</a>
 									</div>

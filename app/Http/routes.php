@@ -39,10 +39,9 @@ Route::group(['middleware' => ['web']], function(){
 
 	// Admin
 	Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], function(){
-		Route::get('', ['as' => 'home', 'uses' => 'AdminController@index']);
+		Route::get('',                ['as' => 'home', 'uses' => 'AdminController@index']);
 
 		Route::any('venues/upload',   ['as' => 'venues.upload',   'uses' => 'VenueController@upload']);
 		Route::get('venues/maintain', ['as' => 'venues.maintain', 'uses' => 'VenueController@maintain']);
-		Route::get('venues/clean',    ['as' => 'venues.clean',    'uses' => 'VenueController@clean']);
 	});
 });
