@@ -152,7 +152,7 @@ class VenueController extends Controller
 
 	public function store(StoreVenue $request)
 	{
-		$venue_id = $request->input('venue[id]');
+		$venue_id = $request->input('id');
 
 		if ($venue_id) {
 			$venue = Venue::findOrFail($venue_id);
@@ -160,13 +160,13 @@ class VenueController extends Controller
 			$venue = new Venue;
 		}
 
-		$venue->fill($request->input('venue'));
+		$venue->fill($request->except(['id']));
 
 		// FIXME: Add validation
 		
-		$venue->save();
+		//$venue->save();
 
-		return back();
+		//return back();
 	}
 }
 

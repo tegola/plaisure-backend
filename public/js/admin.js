@@ -15053,15 +15053,15 @@ var Popover = function ($) {
 }();
 
 $(function(){
-	var streetField    = $('[name="venue[address_street]"]');
-	var numberField    = $('[name="venue[address_number]"]');
-	var postcodeField  = $('[name="venue[address_postcode]"]');
-	var cityField      = $('[name="venue[address_city]"]');
-	var provinceField  = $('[name="venue[address_province]"]');
-	var regionField    = $('[name="venue[address_region]"]');
-	var countryField   = $('[name="venue[address_country]"]');
-	var latitudeField  = $('[name="venue[geo_latitude]"]');
-	var longitudeField = $('[name="venue[geo_longitude]"]');
+	var streetField    = $('[name="address_street"]');
+	var numberField    = $('[name="address_number"]');
+	var postcodeField  = $('[name="address_postcode"]');
+	var cityField      = $('[name="address_city"]');
+	var provinceField  = $('[name="address_province"]');
+	var regionField    = $('[name="address_region"]');
+	var countryField   = $('[name="address_country"]');
+	var latitudeField  = $('[name="geo_latitude"]');
+	var longitudeField = $('[name="geo_longitude"]');
 
 	// Build the map
 	var hasCoords = latitudeField.val() && longitudeField.val();

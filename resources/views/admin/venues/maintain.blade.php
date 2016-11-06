@@ -26,7 +26,6 @@
 	</ul>
 
 	@foreach ($errors->all() as $error)
-	pippo
 		<div class="alert alert-warning">
 			{{ $error }}
 		</div>
@@ -44,10 +43,10 @@
 		<form action="{{ route('admin.venues.store') }}" method="post">
 			{{ csrf_field() }}
 			@if ($venue->exists)
-				<input type="hidden" name="venue[id]" value="{{ $venue->id }}">
+				<input type="hidden" name="id" value="{{ $venue->id }}">
 			@endif
-			<input type="hidden" name="venue[aams_census_code]" value="{{ $venue->aams_census_code }}">
-			<input type="hidden" name="venue[aams_subject_enrollment_code]" value="{{ $venue->aams_subject_enrollment_code }}">
+			<input type="hidden" name="aams_census_code" value="{{ $venue->aams_census_code }}">
+			<input type="hidden" name="aams_subject_enrollment_code" value="{{ $venue->aams_subject_enrollment_code }}">
 			<h5 class="mt-3">Informazioni</h5>
 			<hr>
 			<div class="row">
@@ -81,87 +80,89 @@
 			<hr>
 			<div class="form-group">
 				<label>Nome</label>
-				<input type="text" class="form-control" name="venue[name]" value="{{ $venue->name }}">
+				<input type="text" class="form-control" name="name" value="{{ $venue->name }}">
 			</div>
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label>Categoria</label>
-					<select class="form-control" name="venue[category_id]">
+					<select class="form-control" name="category_id">
 						<option value="">Scegli&hellip;</option>
 						@foreach ($categories as $category)
-							<option value="{{ $category->id }}">{{ $category->name }}</option>
+							<option value="{{ $category->id }}" {{ $venue->categories->count() && $venue->categories->first()->id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
 						@endforeach
 					</select>
 				</div>
 				<div class="form-group col-md-3">
 					<label>Tipo apparecchi</label>
-					<select class="form-control" name="venue[machine_type]">
+					<select class="form-control" name="machine_type">
 						<option value="">Scegli&hellip;</option>
 						@foreach ($machine_types as $type)
-							<option value="{{ $type }}" {{{ $venue->machine_type == $type ? 'selected' : '' }}}>{{ $type }}</option>
+							<option value="{{ $type }}" {{ $venue->machine_type == $type ? 'selected' : '' }}>{{ $type }}</option>
 						@endforeach
 					</select>
 				</div>
 				<div class="form-group col-md-3">
 					<label>Superficie (mq.)</label>
-					<input type="text" class="form-control" name="venue[surface_size]" value="{{ $venue->surface_size }}">
+					<input type="text" class="form-control" name="surface_size" value="{{ $venue->surface_size }}">
 				</div>
 			</div>
 
-			<div class="row mt-3 flex-items-xs-middle">
-				<div class="col-md-8">
-					<h5>Indirizzo</h5>
-					@if ($venue_original_address)
-						<p class="text-muted mb-0">Originale: {{ $venue_original_address }}</p>
-					@endif
-				</div>
-				<div class="col-md-4 text-md-right">
-					<a class="btn btn-secondary btn-block mt-1 hidden-md-up" href="#" data-toggle="geocode" data-address="{{ $venue_original_address }}">Cerca indirizzo</a>
-					<a class="btn btn-secondary hidden-sm-down" href="#" data-toggle="geocode" data-address="{{ $venue_original_address }}">Cerca indirizzo</a>
-				</div>
-			</div>
+			<h5 class="mt-3">Indirizzo</h5>
 			<hr>
+
+			@if (!$venue->exists)
+				<div class="form-group">
+					<label>Indirizzo originale</label>
+					<div class="input-group">
+						<input type="text" class="form-control" value="{{ $venue_original_address }}" readonly>
+						<span class="input-group-btn">
+							<a class="btn btn-secondary btn-block" href="#" data-toggle="geocode" data-address="{{ $venue_original_address }}">Cerca indirizzo</a>
+						</span>
+					</div>
+				</div>
+			@endif
 
 			<div class="row">
 				<div class="col-md-7">
 					<div class="row">
 						<div class="form-group col-xs-8">
 							<label>Via</label>
-							<input type="text" class="form-control" name="venue[address_street]" value="{{ $venue->address_street }}">
+							<input type="text" class="form-control" name="address_street" value="{{ $venue->address_street }}">
 						</div>
 						<div class="form-group col-xs-4">
 							<label>N. civico</label>
-							<input type="text" class="form-control" name="venue[address_number]" value="{{ $venue->address_number }}">
+							<input type="text" class="form-control" name="address_number" value="{{ $venue->address_number }}">
 						</div>
 						<div class="form-group col-md-6">
 							<label>Città</label>
-							<input type="text" class="form-control" name="venue[address_city]" value="{{ $venue->address_city }}">
+							<input type="text" class="form-control" name="address_city" value="{{ $venue->address_city }}">
 						</div>
 						<div class="form-group col-xs-6 col-md-3">
 							<label>CAP</label>
-							<input type="text" class="form-control" name="venue[address_postcode]" value="{{ $venue->address_postcode }}">
+							<input type="text" class="form-control" name="address_postcode" value="{{ $venue->address_postcode }}">
 						</div>
 						<div class="form-group col-xs-6 col-md-3">
 							<label>Provincia</label>
-							<input type="text" class="form-control" name="venue[address_province]" value="{{ $venue->address_province }}">
+							<input type="text" class="form-control" name="address_province" value="{{ $venue->address_province }}">
 						</div>
 						<div class="form-group col-md-6">
 							<label>Regione</label>
-							<input type="text" class="form-control" name="venue[address_region]" value="{{ $venue->address_region }}">
+							<input type="text" class="form-control" name="address_region" value="{{ $venue->address_region }}">
 						</div>
 						<div class="form-group col-md-6">
 							<label>Stato</label>
-							<input type="text" class="form-control" name="venue[address_country]" value="{{ $venue->address_country }}">
+							<input type="text" class="form-control" name="address_country" value="{{ $venue->address_country }}">
 						</div>
 					</div>
-					<div class="row">
-						<div class="form-group col-sm-6">
-							<label>Posizione</label>
-							<input type="text" class="form-control" name="venue[geo_latitude]" value="{{ $venue->geo_latitude }}" placeholder="Latitudine" readonly>
-						</div>
-						<div class="form-group col-sm-6">
-							<label class="hidden-xs-down">&nbsp;</label>
-							<input type="text" class="form-control" name="venue[geo_longitude]" value="{{ $venue->geo_longitude }}" placeholder="Longitudine" readonly>
+					<div class="form-group">
+						<label>Posizione</label>
+						<div class="row">
+							<div class="col-xs-6">
+								<input type="text" class="form-control" name="geo_latitude" value="{{ $venue->geo_latitude }}" placeholder="Latitudine" readonly>
+							</div>
+							<div class="col-xs-6">
+								<input type="text" class="form-control" name="geo_longitude" value="{{ $venue->geo_longitude }}" placeholder="Longitudine" readonly>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -173,11 +174,9 @@
 				</div>
 			</div>
 
-			<hr class="mt-3">
-
-			<div class="form-group text-xs-right">
+			<div class="form-group text-xs-right mt-3 mb-3">
 				@if ($mode == 'new' || $mode == 'update')
-					<button type="submit" class="btn btn-primary">{{{ $venue->exists ? 'Salva' : 'Aggiungi' }}} e continua</button>
+					<button type="submit" class="btn btn-primary">{{ $venue->exists ? 'Salva' : 'Aggiungi' }} e continua</button>
 				@elseif ($mode == 'delete')
 					<button type="submit" class="btn btn-danger">Elimina esercizio</button>
 				@endif

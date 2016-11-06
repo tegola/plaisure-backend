@@ -28,8 +28,15 @@ class StoreVenue extends FormRequest
             'aams_subject_enrollment_code' => 'required',
             'name'                         => 'required',
             'category_id'                  => 'required|integer',
-            'latitude'                     => 'required|numeric|between:-90,90',
-            'longitude'                    => 'required|numeric|between:-180,180'
+            'address_street'               => 'required',
+            'address_number'               => 'required',
+            'address_city'                 => 'required',
+            'address_postcode'             => 'required',
+            'address_province'             => 'required',
+            'address_region'               => 'required',
+            'address_country'              => 'required',
+            'geo_latitude'                 => 'required|numeric|between:-90,90',
+            'geo_longitude'                => 'required|numeric|between:-180,180'
         ];
     }
 }
