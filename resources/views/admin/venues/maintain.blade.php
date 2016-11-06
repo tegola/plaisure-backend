@@ -86,7 +86,7 @@
 				<div class="form-group col-md-6">
 					<label>Categoria</label>
 					<select class="form-control" name="category">
-						<option value="">Scegli&hellip;</option>
+						<option>Scegli&hellip;</option>
 						@foreach ($categories as $category)
 							<option value="{{ $category->id }}">{{ $category->name }}</option>
 						@endforeach
@@ -95,7 +95,7 @@
 				<div class="form-group col-md-3">
 					<label>Tipo apparecchi</label>
 					<select class="form-control" name="machine_type">
-						<option value="">Scegli&hellip;</option>
+						<option>Scegli&hellip;</option>
 						@foreach ($machine_types as $type)
 							<option value="{{ $type }}" {{{ $venue->machine_type == $type ? 'selected' : '' }}}>{{ $type }}</option>
 						@endforeach
@@ -154,11 +154,11 @@
 					<div class="row">
 						<div class="form-group col-sm-6">
 							<label>Posizione</label>
-							<input type="text" class="form-control" placeholder="Latitudine" name="geo_latitude" value="{{ $venue->geo_latitude }}">
+							<input type="text" class="form-control" placeholder="Latitudine" name="geo_latitude" value="{{ $venue->geo_latitude }}" readonly>
 						</div>
 						<div class="form-group col-sm-6">
 							<label class="hidden-xs-down">&nbsp;</label>
-							<input type="text" class="form-control" placeholder="Longitudine" name="geo_longitude" value="{{ $venue->geo_longitude }}">
+							<input type="text" class="form-control" placeholder="Longitudine" name="geo_longitude" value="{{ $venue->geo_longitude }}" readonly>
 						</div>
 					</div>
 				</div>

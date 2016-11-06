@@ -151,7 +151,15 @@ class VenueController extends Controller
 
 	public function store(Request $request)
 	{
-		dd($request->all());
+		$venue_id = $request->input('id');
+
+		if ($venue_id) {
+			$venue = Venue::findOrFail($venue_id);
+		} else {
+			$venue = new Venue;
+		}
+
+		dd($venue);
 	}
 }
 
