@@ -11,6 +11,23 @@ class Venue extends Model
 	const SURFACE_TO_MACHINE_MULTIPLIER = 0.15;
 	const MACHINE_TYPES = array('A', 'B', 'A/B');
 
+	protected $fillable = [
+		'aams_census_code',
+		'aams_subject_enrollment_code',
+		'name',
+		'surface_size',
+		'machine_type',
+		'address_street',
+		'address_number',
+		'address_city',
+		'address_postcode',
+		'address_province',
+		'address_region',
+		'address_country',
+		'geo_latitude',
+		'geo_longitude',
+	];
+
 	/**
 	 * Get the estimated number of machines based on surface size
 	 *

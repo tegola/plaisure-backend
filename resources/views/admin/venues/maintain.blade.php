@@ -43,10 +43,10 @@
 		<form action="{{ route('admin.venues.store') }}" method="post">
 			{{ csrf_field() }}
 			@if ($venue->exists)
-				<input type="hidden" name="id" value="{{ $venue->id }}">
+				<input type="hidden" name="venue[id]" value="{{ $venue->id }}">
 			@endif
-			<input type="hidden" name="aams_census_code" value="{{ $venue->aams_census_code }}">
-			<input type="hidden" name="aams_subject_enrollment_code" value="{{ $venue->aams_subject_enrollment_code }}">
+			<input type="hidden" name="venue[aams_census_code]" value="{{ $venue->aams_census_code }}">
+			<input type="hidden" name="venue[aams_subject_enrollment_code]" value="{{ $venue->aams_subject_enrollment_code }}">
 			<h5 class="mt-3">Informazioni</h5>
 			<hr>
 			<div class="row">
@@ -80,13 +80,13 @@
 			<hr>
 			<div class="form-group">
 				<label>Nome</label>
-				<input type="text" class="form-control" name="name" value="{{ $venue->name }}">
+				<input type="text" class="form-control" name="venue[name]" value="{{ $venue->name }}">
 			</div>
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label>Categoria</label>
-					<select class="form-control" name="category">
-						<option>Scegli&hellip;</option>
+					<select class="form-control" name="venue[category_id]">
+						<option value="">Scegli&hellip;</option>
 						@foreach ($categories as $category)
 							<option value="{{ $category->id }}">{{ $category->name }}</option>
 						@endforeach
@@ -94,8 +94,8 @@
 				</div>
 				<div class="form-group col-md-3">
 					<label>Tipo apparecchi</label>
-					<select class="form-control" name="machine_type">
-						<option>Scegli&hellip;</option>
+					<select class="form-control" name="venue[machine_type]">
+						<option value="">Scegli&hellip;</option>
 						@foreach ($machine_types as $type)
 							<option value="{{ $type }}" {{{ $venue->machine_type == $type ? 'selected' : '' }}}>{{ $type }}</option>
 						@endforeach
@@ -103,62 +103,64 @@
 				</div>
 				<div class="form-group col-md-3">
 					<label>Superficie (mq.)</label>
-					<input type="text" class="form-control" name="surface_size" value="{{ $venue->surface_size }}">
+					<input type="text" class="form-control" name="venue[surface_size]" value="{{ $venue->surface_size }}">
 				</div>
 			</div>
 
-			<div class="mt-3">
-				<h5>Indirizzo</h5>
-				@if ($venue_original_address)
-					<p class="text-muted">Originale: {{ $venue_original_address }} (<a href="#" data-toggle="geocode" data-address="{{ $venue_original_address }}">Trova con Google Maps</a>)</p>
-				@endif
+			<div class="row mt-3 flex-items-xs-middle">
+				<div class="col-md-8">
+					<h5>Indirizzo</h5>
+					@if ($venue_original_address)
+						<p class="text-muted mb-0">Originale: {{ $venue_original_address }}</p>
+					@endif
+				</div>
+				<div class="col-md-4 text-md-right">
+					<a class="btn btn-secondary btn-block mt-1 hidden-md-up" href="#" data-toggle="geocode" data-address="{{ $venue_original_address }}">Cerca indirizzo</a>
+					<a class="btn btn-secondary hidden-sm-down" href="#" data-toggle="geocode" data-address="{{ $venue_original_address }}">Cerca indirizzo</a>
+				</div>
 			</div>
 			<hr>
 
 			<div class="row">
 				<div class="col-md-7">
 					<div class="row">
-						<div class="form-group col-sm-8">
+						<div class="form-group col-xs-8">
 							<label>Via</label>
-							<input type="text" class="form-control" name="address_street" value="{{ $venue->address_street }}">
+							<input type="text" class="form-control" name="venue[address_street]" value="{{ $venue->address_street }}">
 						</div>
-						<div class="form-group col-sm-4">
-							<label>Numero civico</label>
-							<input type="text" class="form-control" name="address_number" value="{{ $venue->address_number }}">
+						<div class="form-group col-xs-4">
+							<label>N. civico</label>
+							<input type="text" class="form-control" name="venue[address_number]" value="{{ $venue->address_number }}">
 						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-sm-3">
-							<label>CAP</label>
-							<input type="text" class="form-control" name="address_postcode" value="{{ $venue->address_postcode }}">
-						</div>
-						<div class="form-group col-sm-6">
+						<div class="form-group col-md-6">
 							<label>Città</label>
-							<input type="text" class="form-control" name="address_city" value="{{ $venue->address_city }}">
+							<input type="text" class="form-control" name="venue[address_city]" value="{{ $venue->address_city }}">
 						</div>
-						<div class="form-group col-sm-3">
+						<div class="form-group col-xs-6 col-md-3">
+							<label>CAP</label>
+							<input type="text" class="form-control" name="venue[address_postcode]" value="{{ $venue->address_postcode }}">
+						</div>
+						<div class="form-group col-xs-6 col-md-3">
 							<label>Provincia</label>
-							<input type="text" class="form-control" name="address_province" value="{{ $venue->address_province }}">
+							<input type="text" class="form-control" name="venue[address_province]" value="{{ $venue->address_province }}">
 						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-sm-6">
+						<div class="form-group col-md-6">
 							<label>Regione</label>
-							<input type="text" class="form-control" name="address_region" value="{{ $venue->address_region }}">
+							<input type="text" class="form-control" name="venue[address_region]" value="{{ $venue->address_region }}">
 						</div>
-						<div class="form-group col-sm-6">
+						<div class="form-group col-md-6">
 							<label>Stato</label>
-							<input type="text" class="form-control" name="address_country" value="{{ $venue->address_country }}">
+							<input type="text" class="form-control" name="venue[address_country]" value="{{ $venue->address_country }}">
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group col-sm-6">
 							<label>Posizione</label>
-							<input type="text" class="form-control" placeholder="Latitudine" name="geo_latitude" value="{{ $venue->geo_latitude }}" readonly>
+							<input type="text" class="form-control" name="venue[geo_latitude]" value="{{ $venue->geo_latitude }}" placeholder="Latitudine" readonly>
 						</div>
 						<div class="form-group col-sm-6">
 							<label class="hidden-xs-down">&nbsp;</label>
-							<input type="text" class="form-control" placeholder="Longitudine" name="geo_longitude" value="{{ $venue->geo_longitude }}" readonly>
+							<input type="text" class="form-control" name="venue[geo_longitude]" value="{{ $venue->geo_longitude }}" placeholder="Longitudine" readonly>
 						</div>
 					</div>
 				</div>

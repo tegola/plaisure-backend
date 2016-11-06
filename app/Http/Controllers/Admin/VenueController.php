@@ -71,7 +71,7 @@ class VenueController extends Controller
 			// All venues in the CSV files that are missing in the DB
 			case 'new':
 				// Get all venues census codes from the DB
-				$census_codes = DB::table('venues')->pluck('aams_census_code');
+				$census_codes = DB::table('venues')->pluck('aams_census_code')->all();
 
 				// Scroll through the csv until an unknown census code is found
 				$csv_file = fopen($this->csv, 'r');
@@ -92,8 +92,8 @@ class VenueController extends Controller
 						$venue                               = new Venue;
 						$venue->aams_census_code             = $code;          // 0 = CODICE CENSIMENTO ESERCIZIO
 						$venue->name                         = trim($line[1]); // 1 = DENOMINAZIONE
-						//$venue->address_street               = trim($line[2]); // 2 = INDIRIZZO
-						//$venue->address_city                 = trim($line[3]); // 3 = COMUNE E PROVINCIA
+						// $venue->address_street               = trim($line[2]); // 2 = INDIRIZZO
+						// $venue->address_city                 = trim($line[3]); // 3 = COMUNE E PROVINCIA
 						// $venue->category                  = trim($line[4]); // 4 = TIPOLOGIA ESERCIZIO
 						$venue->surface_size                 = trim($line[5]); // 5 = SUPERFICIE DEL LOCALE IN MQ
 						$venue->aams_subject_enrollment_code = trim($line[6]); // 6 = CODICE ISCRIZIONE SOGGETTO
@@ -151,7 +151,7 @@ class VenueController extends Controller
 
 	public function store(Request $request)
 	{
-		$venue_id = $request->input('id');
+		$venue_id = $request->input('venue[id]');
 
 		if ($venue_id) {
 			$venue = Venue::findOrFail($venue_id);
@@ -159,7 +159,13 @@ class VenueController extends Controller
 			$venue = new Venue;
 		}
 
-		dd($venue);
+		$venue->fill($request->input('venue'));
+
+		// FIXME: Add validation
+		
+		$venue->save();
+
+		return back();
 	}
 }
 
