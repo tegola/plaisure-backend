@@ -8,15 +8,30 @@
 <nav class="navbar navbar-full navbar-fixed-top navbar-white">
 	<div class="container">
 		<a class="navbar-brand" href="{{ route('site.home') }}">{{ config('constants.name') }}</a>
-		<div class="pull-xs-right">
+		<div class="float-xs-right">
 			<span class="navbar-badge">
 				<span class="tag navbar-badge-tag" aria-hidden="true">18+</span>
 				<span class="navbar-badge-text">Il gioco &egrave; vietato<br>ai minori di 18 anni</span>
 			</span>
-			<span class="hidden-sm-down">
-				<a class="btn btn-outline-secondary" href="#">Accedi</a>
-				<a class="btn btn-primary" href="#">Iscriviti</a>
-			</span>
+			@if (Auth::guest())
+				<a class="btn btn-outline-secondary" href="{{ url('/login') }}">Accedi</a>
+				<a class="btn btn-primary" href="{{ url('/register') }}">Registrati</a>
+			@else
+				<span class="dropdown open">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="navbar-user-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</button>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-user-button">
+						<a class="dropdown-item" href="{{ route('site.user') }}">
+							<strong>{{ Auth::user()->name }}</strong><br>
+							<span class="text-muted">Visualizza il tuo profilo</span>
+						</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('navbar-user-logout-form').submit();">Esci</a>
+						<form id="navbar-user-logout-form" action="{{ url('/logout') }}" method="POST" hidden>
+							{{ csrf_field() }}
+						</form>
+					</div>
+				</span>
+			@endif
 		</div>
 	</div>
 </nav>
@@ -34,10 +49,6 @@
 								<div class="offset-xs-1 col-xs-10 col-md-7">
 									<h2>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h2>
 									<p>Più di 5000 sale tra cui&nbsp;scegliere!</p>
-									<div class="mt-1 hidden-md-up">
-										<a class="btn btn-primary" href="#">Iscriviti</a>
-										<a class="btn btn-outline-secondary" href="#">Accedi</a>
-									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="logo"></div>

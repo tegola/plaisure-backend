@@ -23,10 +23,17 @@ Route::group(['middleware' => ['web']], function(){
 
 		Route::get('about/company',      ['as' => 'about.company', 'uses' => 'AboutController@about']);
 		Route::get('about/contact',      ['as' => 'about.contact', 'uses' => 'AboutController@contact']);
+
+		Route::get('user',               ['as' => 'user', 'uses' => 'UserController@index']);
 	});
 
 	// Admin
-	Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], function(){
+	Route::group([
+		'prefix' => 'admin',
+		'as' => 'admin.',
+		'namespace' => 'Admin',
+		'middleware' => 'auth'
+	], function(){
 		Route::get('',                ['as' => 'home', 'uses' => 'AdminController@index']);
 
 		Route::any('venues/upload',   ['as' => 'venues.upload',   'uses' => 'VenueController@upload']);
@@ -34,3 +41,5 @@ Route::group(['middleware' => ['web']], function(){
 		Route::post('venues/store',   ['as' => 'venues.store',    'uses' => 'VenueController@store']);
 	});
 });
+ 
+Auth::routes();
