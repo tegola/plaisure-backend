@@ -141,6 +141,33 @@ class Venue extends Model
 	}
 
 	/**
+	 * Get the Google Maps URL
+	 * 
+	 * @return string
+	 */
+	public function getGoogleMapsUrlAttribute() {
+		$base_url = 'http://maps.google.com/?';
+
+		if ($this->geo_latitude && $this->geo_longitude) {
+			$final_url = "{$base_url}ll={$this->geo_latitude},{$this->geo_longitude}";
+		} else {
+			$address = join(', ', [
+				$this->address_street,
+				$this->address_number,
+				$this->address_city,
+				$this->address_postcode,
+				$this->address_province,
+				$this->address_region,
+				$this->address_country
+			]);
+			$address_encoded = urlencode($address);
+			$final_url = "{$base_url}q={$address_encoded}";
+		}
+
+		return $final_url;
+	}
+
+	/**
 	 * Query builder scope to list neighboring locations
 	 * within a given distance from a given location
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5

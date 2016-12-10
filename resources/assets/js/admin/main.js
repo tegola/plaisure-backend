@@ -22,8 +22,7 @@ $(function(){
 	});
 	var marker = new google.maps.Marker({
 		map: map,
-		draggable: true,
-		title: 'Trascina per riposizionare'
+		draggable: true
 	});
 	if (hasCoords) {
 		marker.setPosition(coords);

@@ -7,6 +7,13 @@
 <div class="container">
 
 	<h3>Manutenzione esercizi</h3>
+
+	@foreach ($errors->all() as $error)
+		<div class="alert alert-warning">
+			{{ $error }}
+		</div>
+	@endforeach
+
 	<ul class="nav nav-tabs mt-1">
 		<li class="nav-item">
 			<a class="nav-link {{ $mode == 'new' ? 'active' : '' }}" href="{{ route('admin.venues.maintain', ['mode' => 'new']) }}">
@@ -25,12 +32,6 @@
 		</li>
 	</ul>
 
-	@foreach ($errors->all() as $error)
-		<div class="alert alert-warning">
-			{{ $error }}
-		</div>
-	@endforeach
-
 	@if (!$venue)
 		<br>
 		<br>
@@ -47,10 +48,11 @@
 			@endif
 			<input type="hidden" name="aams_census_code" value="{{ $venue->aams_census_code }}">
 			<input type="hidden" name="aams_subject_enrollment_code" value="{{ $venue->aams_subject_enrollment_code }}">
+
 			<h5 class="mt-3">Informazioni</h5>
 			<hr>
 			<div class="row">
-				<div class="form-group col-xs-6 col-sm-3">
+				<div class="form-group col-xs-6 col-lg-3">
 					<label>ID</label>
 					<p>
 						@if ($venue->exists)
@@ -60,18 +62,24 @@
 						@endif
 					</p>
 				</div>
-				<div class="form-group col-xs-6 col-sm-3">
+				<div class="form-group col-xs-6 col-lg-3">
 					<label>Codice AAMS</label>
 					<p><code>{{ $venue->aams_census_code }}</code></p>
 				</div>
-				<div class="form-group col-xs-6 col-sm-3">
+				<div class="form-group col-xs-6 col-lg-3">
 					<label>Codice soggetto AAMS</label>
 					<p><code>{{ $venue->aams_subject_enrollment_code }}</code></p>
 				</div>
 				@if ($venue->updated_at)
-					<div class="form-group col-xs-6 col-sm-3">
+					<div class="form-group col-xs-6 col-lg-3">
 						<label>Ultimo aggiornamento</label>
-						<p><code>{{ $venue->updated_at }}</code></p>
+						<p>{{ $venue->updated_at }}</p>
+					</div>
+				@endif
+				@if ($venue->exists)
+					<div class="form-group col-xs-12">
+						<label>Indirizzo esterno</label>
+						<p><a href="{{ route('site.venues.detail', array('venue' => $venue)) }}">{{ route('site.venues.detail', array('venue' => $venue)) }}</a></p>
 					</div>
 				@endif
 			</div>
@@ -84,15 +92,6 @@
 			</div>
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label>Categoria</label>
-					<select class="form-control" name="category_id">
-						<option value="">Scegli&hellip;</option>
-						@foreach ($categories as $category)
-							<option value="{{ $category->id }}" {{ $venue->categories->count() && $venue->categories->first()->id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-						@endforeach
-					</select>
-				</div>
-				<div class="form-group col-md-3">
 					<label>Tipo apparecchi</label>
 					<select class="form-control" name="machine_type">
 						<option value="">Scegli&hellip;</option>
@@ -101,10 +100,23 @@
 						@endforeach
 					</select>
 				</div>
-				<div class="form-group col-md-3">
+				<div class="form-group col-md-6">
 					<label>Superficie (mq.)</label>
 					<input type="text" class="form-control" name="surface_size" value="{{ $venue->surface_size }}">
 				</div>
+			</div>
+
+			<h5 class="mt-3">Categorie</h5>
+			<hr>
+
+			<div class="row form-group">
+				@foreach ($categories as $category)
+					<div class="col-sm-6 col-md-4 col-lg-3">
+						<label>
+							<input type="checkbox" name="category_id[]" value="{{ $category->id }}" {{ $venue->categories->contains($category) ? 'checked' : '' }}> {{ $category->name }}
+						</label>
+					</div>
+				@endforeach
 			</div>
 
 			<h5 class="mt-3">Indirizzo</h5>
@@ -123,7 +135,7 @@
 			@endif
 
 			<div class="row">
-				<div class="col-md-7">
+				<div class="col-lg-7">
 					<div class="row">
 						<div class="form-group col-xs-8">
 							<label>Via</label>
@@ -166,9 +178,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-5">
+				<div class="col-lg-5">
 					<div class="form-group">
-						<label class="hidden-sm-down">&nbsp;</label>
+						<label>Posizione esatta (trascina per riposizionare)</label>
 						<div class="map" style="height: 296px; border-radius: 5px"></div>
 					</div>
 				</div>

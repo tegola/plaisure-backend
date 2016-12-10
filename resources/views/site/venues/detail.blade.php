@@ -27,7 +27,7 @@
 			</div>
 			<div class="col-md-4 text-xs-right">
 				<p>
-					<a class="btn btn-secondary" href="#">Ottieni indicazioni</a>
+					<a class="btn btn-secondary" href="{{ $venue->google_maps_url }}" target="_blank">Ottieni indicazioni</a>
 					<a class="btn btn-secondary" href="#">Salva</a>
 				</p>
 			</div>

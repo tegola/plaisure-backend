@@ -21,7 +21,12 @@
 					<button class="btn btn-secondary dropdown-toggle" type="button" id="navbar-user-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-user-button">
 						<a class="dropdown-item" href="{{ route('site.user') }}">
-							<strong>{{ Auth::user()->name }}</strong><br>
+							<strong>
+								{{ Auth::user()->name }}
+								@if (Auth::user()->isAdmin())
+									(admin)
+								@endif
+							</strong><br>
 							<span class="text-muted">Visualizza il tuo profilo</span>
 						</a>
 						<div class="dropdown-divider"></div>

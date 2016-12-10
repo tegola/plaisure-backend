@@ -28,12 +28,7 @@ Route::group(['middleware' => ['web']], function(){
 	});
 
 	// Admin
-	Route::group([
-		'prefix' => 'admin',
-		'as' => 'admin.',
-		'namespace' => 'Admin',
-		'middleware' => 'auth'
-	], function(){
+	Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function(){
 		Route::get('',                ['as' => 'home', 'uses' => 'AdminController@index']);
 
 		Route::any('venues/upload',   ['as' => 'venues.upload',   'uses' => 'VenueController@upload']);

@@ -27,4 +27,18 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $casts = [
+        'is_admin' => 'boolean'
+    ];
+
+    /**
+     * Get the admin status
+     * 
+     * @return boolean
+     */
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
 }

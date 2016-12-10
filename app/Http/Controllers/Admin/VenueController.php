@@ -134,6 +134,7 @@ class VenueController extends Controller
 			// Deletable venues -----------------------------------------------
 			// Existing venues that haven't been found in the CSV
 			case 'delete':
+				// TODO: ...
 				break;
 		}
 		
@@ -166,7 +167,7 @@ class VenueController extends Controller
 		
 		//$venue->save();
 
-		//return back();
+		return back();
 	}
 }
 
