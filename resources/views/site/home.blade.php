@@ -5,19 +5,19 @@
 
 @section('content')
 
-<nav class="navbar navbar-full navbar-fixed-top navbar-white">
-	<div class="container">
+<nav class="navbar fixed-top navbar-white">
+	<div class="container d-flex justify-content-between">
 		<a class="navbar-brand" href="{{ route('site.home') }}">{{ config('constants.name') }}</a>
-		<div class="float-xs-right">
+		<div>
 			<span class="navbar-badge">
-				<span class="tag navbar-badge-tag" aria-hidden="true">18+</span>
+				<span class="badge navbar-badge-tag" aria-hidden="true">18+</span>
 				<span class="navbar-badge-text">Il gioco &egrave; vietato<br>ai minori di 18 anni</span>
 			</span>
 			@if (Auth::guest())
 				<a class="btn btn-outline-secondary" href="{{ url('/login') }}">Accedi</a>
 				<a class="btn btn-primary" href="{{ url('/register') }}">Registrati</a>
 			@else
-				<span class="dropdown open">
+				<span class="dropdown">
 					<button class="btn btn-secondary dropdown-toggle" type="button" id="navbar-user-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-user-button">
 						<a class="dropdown-item" href="{{ route('site.user') }}">
@@ -51,7 +51,7 @@
 					<div class="card">
 						<div class="card-block hero-card-block">
 							<div class="row">
-								<div class="offset-xs-1 col-xs-10 col-md-7">
+								<div class="offset-1 col-10 col-md-7">
 									<h2>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h2>
 									<p>Più di 5000 sale tra cui&nbsp;scegliere!</p>
 								</div>
@@ -64,7 +64,7 @@
 							<input type="hidden" name="lat">
 							<input type="hidden" name="lng">
 							<div class="row">
-								<div class="offset-xs-1 col-xs-10">
+								<div class="offset-1 col-10">
 
 									<div class="row">
 										<div class="col-md-4">

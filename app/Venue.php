@@ -146,10 +146,10 @@ class Venue extends Model
 	 * @return string
 	 */
 	public function getGoogleMapsUrlAttribute() {
-		$base_url = 'http://maps.google.com/?';
+		$base_url = 'http://maps.google.com/?q=';
 
 		if ($this->geo_latitude && $this->geo_longitude) {
-			$final_url = "{$base_url}ll={$this->geo_latitude},{$this->geo_longitude}";
+			$final_url = "{$base_url}{$this->geo_latitude},{$this->geo_longitude}";
 		} else {
 			$address = join(', ', [
 				$this->address_street,
@@ -161,7 +161,7 @@ class Venue extends Model
 				$this->address_country
 			]);
 			$address_encoded = urlencode($address);
-			$final_url = "{$base_url}q={$address_encoded}";
+			$final_url = "{$base_url}{$address_encoded}";
 		}
 
 		return $final_url;

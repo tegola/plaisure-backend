@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container h-100">
-	<div class="row h-100 flex-items-xs-middle">
-		<div class="col-xs-12 offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6">
+	<div class="row h-100 align-items-center">
+		<div class="col-12 offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6">
 
 			<div class="card">
 				<div class="card-block">
@@ -22,14 +22,14 @@
 						{{ csrf_field() }}
 
 						<div class="row">
-							<div class="col-xs-12 col-md-8 col-xl-9 form-group {{ $errors->has('email') ? ' has-error' : '' }}">
+							<div class="col-12 col-md-8 col-xl-9 form-group {{ $errors->has('email') ? ' has-error' : '' }}">
 								<label for="email" class="sr-only">Indirizzo email</label>
 								<input id="email" type="email" class="form-control form-control-lg" name="email" value="{{ old('email') }}" placeholder="Indirizzo email" required autofocus>
 								@if ($errors->has('email'))
 									<div class="form-control-feedback">{{ $errors->first('email') }}</div>
 								@endif
 							</div>
-							<div class="form-group col-xs-12 col-md-4 col-xl-3">
+							<div class="form-group col-12 col-md-4 col-xl-3">
 								<button type="submit" class="btn btn-primary btn-lg btn-block">Invia</button>
 							</div>
 						</div>

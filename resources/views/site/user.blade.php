@@ -20,7 +20,7 @@
 				<dd>{{ $user->created_at }}</dd>
 			</dl>
 		</div>
-		<div class="col-md-4 text-xs-right">
+		<div class="col-md-4 text-right">
 			<p>
 				<a class="btn btn-secondary" href="#">Ottieni indicazioni</a>
 				<a class="btn btn-secondary" href="#">Salva</a>

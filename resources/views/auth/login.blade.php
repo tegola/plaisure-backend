@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="container h-100">
-	<div class="row h-100 flex-items-xs-middle">
-		<div class="col-xs-12 offset-sm-2 col-sm-8 offset-md-3 col-md-6 offset-lg-4 col-lg-4">
+	<div class="row h-100 align-items-center">
+		<div class="col-12 offset-sm-2 col-sm-8 offset-md-3 col-md-6 offset-lg-4 col-lg-4">
 
 			<div class="card">
-				<div class="card-block text-xs-center">
+				<div class="card-block text-center">
 					<h4 class="card-title mb-0">Accedi a ProntoGioco</h4>
 				</div>
 				<hr class="my-0">
@@ -47,7 +47,7 @@
 				</div>
 				<hr class="my-0">
 				<div class="card-block">
-					<p class="text-xs-center mb-0">
+					<p class="text-center mb-0">
 						<a href="{{ url('/password/reset') }}">Hai dimenticato la password?</a>
 					</p>
 				</div>

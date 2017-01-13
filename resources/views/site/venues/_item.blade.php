@@ -1,5 +1,5 @@
 <div class="row result" data-lat="{{ $venue->geo_latitude }}" data-lng="{{ $venue->geo_longitude }}">
-	<div class="col-xs-12">
+	<div class="col-12">
 		<img class="result-icon" src="{{ asset("img/avatars/{$venue->category_icon_name}") }}">
 		<h5 class="mb-0"><a href="{{ route('site.venues.detail', ['venue' => $venue]) }}">{{ $venue->name }}</a></h5>
 		<p class="mb-0">

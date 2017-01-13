@@ -14,7 +14,7 @@
 		</div>
 	@endforeach
 
-	<ul class="nav nav-tabs mt-1">
+	<ul class="nav nav-tabs my-4">
 		<li class="nav-item">
 			<a class="nav-link {{ $mode == 'new' ? 'active' : '' }}" href="{{ route('admin.venues.maintain', ['mode' => 'new']) }}">
 				Aggiungi <span class="hidden-sm-down">nuovi esercizi</span>
@@ -35,7 +35,7 @@
 	@if (!$venue)
 		<br>
 		<br>
-		<h5 class="text-muted mb-0 text-xs-center">
+		<h5 class="text-muted mb-0 text-center">
 			Nessun esercizio da modificare per la modalit&agrave; scelta.
 		</h5>
 		<br>
@@ -52,7 +52,7 @@
 			<h5 class="mt-3">Informazioni</h5>
 			<hr>
 			<div class="row">
-				<div class="form-group col-xs-6 col-lg-3">
+				<div class="form-group col-6 col-lg-3">
 					<label>ID</label>
 					<p>
 						@if ($venue->exists)
@@ -62,22 +62,22 @@
 						@endif
 					</p>
 				</div>
-				<div class="form-group col-xs-6 col-lg-3">
+				<div class="form-group co-6 col-lg-3">
 					<label>Codice AAMS</label>
 					<p><code>{{ $venue->aams_census_code }}</code></p>
 				</div>
-				<div class="form-group col-xs-6 col-lg-3">
+				<div class="form-group col-6 col-lg-3">
 					<label>Codice soggetto AAMS</label>
 					<p><code>{{ $venue->aams_subject_enrollment_code }}</code></p>
 				</div>
 				@if ($venue->updated_at)
-					<div class="form-group col-xs-6 col-lg-3">
+					<div class="form-group col-6 col-lg-3">
 						<label>Ultimo aggiornamento</label>
 						<p>{{ $venue->updated_at }}</p>
 					</div>
 				@endif
 				@if ($venue->exists)
-					<div class="form-group col-xs-12">
+					<div class="form-group col-12">
 						<label>Indirizzo esterno</label>
 						<p><a href="{{ route('site.venues.detail', array('venue' => $venue)) }}">{{ route('site.venues.detail', array('venue' => $venue)) }}</a></p>
 					</div>
@@ -137,11 +137,11 @@
 			<div class="row">
 				<div class="col-lg-7">
 					<div class="row">
-						<div class="form-group col-xs-8">
+						<div class="form-group col-8">
 							<label>Via</label>
 							<input type="text" class="form-control" name="address_street" value="{{ $venue->address_street }}">
 						</div>
-						<div class="form-group col-xs-4">
+						<div class="form-group col-4">
 							<label>N. civico</label>
 							<input type="text" class="form-control" name="address_number" value="{{ $venue->address_number }}">
 						</div>
@@ -149,11 +149,11 @@
 							<label>Città</label>
 							<input type="text" class="form-control" name="address_city" value="{{ $venue->address_city }}">
 						</div>
-						<div class="form-group col-xs-6 col-md-3">
+						<div class="form-group col-6 col-md-3">
 							<label>CAP</label>
 							<input type="text" class="form-control" name="address_postcode" value="{{ $venue->address_postcode }}">
 						</div>
-						<div class="form-group col-xs-6 col-md-3">
+						<div class="form-group col-6 col-md-3">
 							<label>Provincia</label>
 							<input type="text" class="form-control" name="address_province" value="{{ $venue->address_province }}">
 						</div>
@@ -169,10 +169,10 @@
 					<div class="form-group">
 						<label>Posizione</label>
 						<div class="row">
-							<div class="col-xs-6">
+							<div class="col-6">
 								<input type="text" class="form-control" name="geo_latitude" value="{{ $venue->geo_latitude }}" placeholder="Latitudine" readonly>
 							</div>
-							<div class="col-xs-6">
+							<div class="col-6">
 								<input type="text" class="form-control" name="geo_longitude" value="{{ $venue->geo_longitude }}" placeholder="Longitudine" readonly>
 							</div>
 						</div>
@@ -186,7 +186,7 @@
 				</div>
 			</div>
 
-			<div class="form-group text-xs-right mt-3 mb-3">
+			<div class="form-group text-right my-3">
 				@if ($mode == 'new' || $mode == 'update')
 					<button type="submit" class="btn btn-primary">{{ $venue->exists ? 'Salva' : 'Aggiungi' }} e continua</button>
 				@elseif ($mode == 'delete')

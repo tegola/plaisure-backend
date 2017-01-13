@@ -1,21 +1,25 @@
-<nav class="navbar navbar-full navbar-white">
-	<div class="container{{ $fluid or null ? '-fluid' : ''}}">
+<nav class="navbar navbar-toggleable navbar-white d-md-flex justify-content-between">
+	@if (!isset($fluid))
+	<div class="container d-md-flex justify-content-between">
+	@endif
 		<a class="navbar-brand" href="{{ route('site.home') }}">{{ config('constants.name') }}</a>
-		<form class="form-inline float-xs-left form-search dropdown" action="{{ route('site.venues.explore') }}" method="get">
+
+		<form class="form-inline form-search dropdown" action="{{ route('site.venues.explore') }}" method="get">
 			<input type="hidden" name="lat" value="{{ $lat }}">
 			<input type="hidden" name="lng" value="{{ $lng }}">
 			<div class="form-group dropdown">
-				<input type="text" class="form-control" name="what" value="{{ $what }}" placeholder="Trova" autocomplete="off">
+				<input type="text" class="form-control mr-sm-2" name="what" value="{{ $what }}" placeholder="Trova" autocomplete="off">
 			</div>
 			<div class="form-group dropdown">
-				<input type="text" class="form-control" name="near" value="{{ $near }}" placeholder="Vicino a" autocomplete="off">
+				<input type="text" class="form-control mr-sm-2" name="near" value="{{ $near }}" placeholder="Vicino a" autocomplete="off">
 			</div>
 			<button type="submit" class="btn btn-primary">
 				@include('site.icons.icon', ['name' => 'search'])
 				<span class="sr-only">Cerca</span>
 			</button>
 		</form>
-		<div class="float-xs-right">
+
+		<div>
 			@if (Auth::guest())
 				<a class="btn btn-outline-secondary" href="{{ url('/login') }}">Accedi</a>
 				<a class="btn btn-primary" href="{{ url('/register') }}">Registrati</a>
@@ -36,5 +40,7 @@
 				</span>
 			@endif
 		</div>
+	@if (!isset($fluid))
 	</div>
+	@endif
 </nav>

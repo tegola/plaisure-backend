@@ -7,14 +7,17 @@
 //
 // Grayscale and brand colors for use across Bootstrap.
 
-$brand-primary       :#2bb6d9;
-$brand-primary-muted :#acc7ce;
-$brand-secondary     :#7dd194;
+// Create grayscale
+$gray-dark:                 #292b2c !default;
+$gray:                      #464a4c !default;
+$gray-light:                #636c72 !default;
+$gray-lighter:              #c3c2ca !default;
+$gray-lightest:             #f7f7f9 !default;
 
-// Options
-//
-// Quickly modify global styling by enabling or disabling optional features.
-$enable-flex: true;
+// Reassign color vars to semantic color scheme
+$brand-primary:       #2bb6d9;
+$brand-primary-muted: #acc7ce;
+$brand-secondary:     #7dd194;
 
 
 // Typography
@@ -22,7 +25,6 @@ $enable-flex: true;
 // Font, line-height, and color for body text, headings, and more.
 
 $font-family-sans-serif: "museo-sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-$font-size-root: 14px;
 
 
 // Components
@@ -40,6 +42,7 @@ $btn-padding-y-lg: 1rem;
 $input-border-color: rgba(#000, .08);
 $input-border-focus: rgba(#000, .25);
 $input-padding-y-lg: 1rem;
+$input-color-placeholder: $gray-lighter;
 
 
 // Navbar

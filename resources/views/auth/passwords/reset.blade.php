@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container h-100">
-	<div class="row h-100 flex-items-xs-middle">
-		<div class="col-xs-12 offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6">
+	<div class="row h-100 align-items-center">
+		<div class="col-12 offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6">
 
 			<div class="card">
 				<div class="card-block">

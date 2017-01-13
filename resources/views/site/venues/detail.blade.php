@@ -25,7 +25,7 @@
 					@endif
 				</p>	
 			</div>
-			<div class="col-md-4 text-xs-right">
+			<div class="col-md-4 text-right">
 				<p>
 					<a class="btn btn-secondary" href="{{ $venue->google_maps_url }}" target="_blank">Ottieni indicazioni</a>
 					<a class="btn btn-secondary" href="#">Salva</a>
@@ -42,18 +42,18 @@
 
 <div class="container">
 	<div class="card">
-		<div class="card-block row text-xs-center">
-			<div class="col-xs-4">
+		<div class="card-block row text-center">
+			<div class="col-4">
 				<strong>$$$</strong>
 				<h4 class="font-weight-normal">&euro; 42.425,09</h4>
 				<strong class="initialism text-muted">Mega Jackpot</strong>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-4">
 				<strong>$$</strong>
 				<h4 class="font-weight-normal">&euro; 4.007,14</h4>
 				<strong class="initialism text-muted">Super jackpot</strong>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-4">
 				<strong>$</strong>
 				<h4 class="font-weight-normal">&euro; 5.348,23</h4>
 				<strong class="initialism text-muted">Easy jackpot</strong>
