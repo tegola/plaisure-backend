@@ -1,35 +1,69 @@
+.navbar-logo {
+	display: block;
+	width: 196px;
+	height: 42px;
+
+	.navbar-brand:active & {
+		opacity: .85;
+	}
+}
+.navbar-age-warning-badge {
+	background-color: $body-color;
+	padding: .5em .3em .4em .5em;
+	margin-right: .25em;
+}
+.navbar-age-warning-text {
+	font-size: $font-size-xs;
+	text-transform: uppercase;
+	letter-spacing: .05em;
+	display: inline-block;
+	vertical-align: -.4rem;
+	line-height: 1.1;
+	font-weight: 500;
+}
+
+.navbar-main {
+	z-index: $zindex-navbar + 1;
+}
+
+// Small variant
+.navbar-slim {
+	padding-top: $navbar-slim-padding-y;
+	padding-bottom: $navbar-slim-padding-y;
+
+	.navbar-logo {
+		width: 160px;
+		height: 34px;
+	}
+}
+
+// Transparent style
+.navbar-transparent {
+	border-bottom: 1px solid rgba(#000, .05);
+}
+
+// White style
 .navbar-white {
-	background-color: $body-bg;
-	box-shadow: 0 1px 0 $hr-border-color;
+	background-color: white;
+	border-bottom: 1px solid rgba(#000, .05);
+}
 
-	.navbar-brand {
-		@extend .text-hide;
-		width: 162px;
-		height: 32px;
-		background: url("../img/navbar-logo-color-full@2x.png");
-		background-size: 100%;
-		background-repeat: no-repeat;
-	}
-	.navbar-badge {
-		display: inline-block;
+// Secondary
+.navbar-secondary {
+	background-color: $palette-green-300;
+	box-shadow: 0 5px 50px rgba($palette-green-300, .5);
+}
 
-		@include media-breakpoint-up(md) {
-			margin-right: $spacer * 3;
-		}
+// Dark style (dark green)
+.navbar-dark {
+	background-color: $palette-dark-green-500;
+	color: white;
+
+	.pg-logo-shadow {
+		display: none;
 	}
-	.navbar-badge-tag {
-		background-color: $brand-primary-muted;
-		padding: 0.5em 0.3em 0.4em 0.5em;
-		margin-right: 0.25em;
-	}
-	.navbar-badge-text {
-		color: $brand-primary-muted;
-		font-size: 0.7rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		display: inline-block;
-		vertical-align: -0.4rem;
-		line-height: 1.1;
-		font-weight: 500;
+	.pg-logo-text,
+	.pg-logo-symbol {
+		fill: white;
 	}
 }

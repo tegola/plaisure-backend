@@ -1,5 +1,54 @@
 .btn {
 	text-transform: uppercase;
-	letter-spacing: 0.08em;
 	cursor: pointer;
+	font-family: inherit;
+
+	letter-spacing: 0.15em;
+	font-size: $font-size-sm;
+	line-height: 1.2rem; // Align to ex-button height
+
+	.icon {
+		width: $font-size-base;
+		height: $font-size-base;
+	}
+}
+.btn-lg {
+	letter-spacing: 0.08em;
+	font-size: $font-size-base;
+	line-height: $line-height-base;
+
+	.icon {
+		width: $font-size-lg;
+		height: $font-size-lg;
+	}
+}
+
+// Normal buttons
+.btn-accent {
+	@include button-variant(white, $brand-accent, $brand-accent);
+}
+.btn-neutral {
+	@include button-variant(white, $gray, $gray);
+}
+
+// Inverse buttons
+.btn-inverse-primary {
+  @include button-variant($btn-primary-bg, $btn-primary-color, $btn-primary-color);
+}
+.btn-inverse-secondary {
+  @include button-variant($btn-secondary-bg, $btn-secondary-color, $btn-secondary-color);
+}
+.btn-inverse-accent {
+	@include button-variant($brand-accent, white, white);
+}
+.btn-inverse-neutral {
+	@include button-variant($gray, white, white);
+}
+
+// Outline buttons
+.btn-outline-accent {
+	@include button-outline-variant($brand-accent);
+}
+.btn-outline-neutral {
+	@include button-outline-variant(rgba(white, .66));
 }

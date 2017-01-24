@@ -101,7 +101,7 @@ class VenueController extends Controller
 			'search.distance' => $distance
 		]);
 
-		return view('site.venues.list', [
+		return view('site.venues.explore', [
 			'lat' => $lat,
 			'lng' => $lng,
 			'what' => $what,

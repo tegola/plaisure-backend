@@ -1,28 +1,14 @@
-<nav class="navbar navbar-toggleable navbar-white d-md-flex justify-content-between">
+<nav class="navbar navbar-toggleable navbar-main navbar-dark navbar-slim d-md-flex justify-content-between">
 	@if (!isset($fluid))
 	<div class="container d-md-flex justify-content-between">
 	@endif
-		<a class="navbar-brand" href="{{ route('site.home') }}">{{ config('constants.name') }}</a>
-
-		<form class="form-inline form-search dropdown" action="{{ route('site.venues.explore') }}" method="get">
-			<input type="hidden" name="lat" value="{{ $lat }}">
-			<input type="hidden" name="lng" value="{{ $lng }}">
-			<div class="form-group dropdown">
-				<input type="text" class="form-control mr-sm-2" name="what" value="{{ $what }}" placeholder="Trova" autocomplete="off">
-			</div>
-			<div class="form-group dropdown">
-				<input type="text" class="form-control mr-sm-2" name="near" value="{{ $near }}" placeholder="Vicino a" autocomplete="off">
-			</div>
-			<button type="submit" class="btn btn-primary">
-				@include('site.icons.icon', ['name' => 'search'])
-				<span class="sr-only">Cerca</span>
-			</button>
-		</form>
-
+		<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('constants.name') }}">
+			@include('site.vectors.logo', ['class' => 'navbar-logo'])
+		</a>
 		<div>
 			@if (Auth::guest())
-				<a class="btn btn-outline-secondary" href="{{ url('/login') }}">Accedi</a>
-				<a class="btn btn-primary" href="{{ url('/register') }}">Registrati</a>
+				<a class="btn btn-outline-neutral" href="{{ url('/login') }}">Accedi</a>
+				<a class="btn btn-secondary" href="{{ url('/register') }}">Iscriviti</a>
 			@else
 				<span class="dropdown open">
 					<button class="btn btn-secondary dropdown-toggle" type="button" id="navbar-user-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</button>
@@ -44,3 +30,34 @@
 	</div>
 	@endif
 </nav>
+
+<div class="navbar navbar-secondary">
+	@if (!isset($fluid))
+	<div class="container">
+	@endif
+		<form class="form-search dropdown" action="{{ route('site.venues.explore') }}" method="get">
+			<input type="hidden" name="lat" value="{{ $lat }}">
+			<input type="hidden" name="lng" value="{{ $lng }}">
+			<div class="row">
+				<div class="col-xs-6 col-md-5 col-lg-5">
+					<div class="form-group mb-0 dropdown">
+						<input type="text" class="form-control form-control-lg" name="what" value="{{ $what }}" placeholder="Trova sale VLT, Bingo, ricevitorie&hellip;" autocomplete="off">
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-4 col-lg-3 pl-md-0">
+					<div class="form-group mb-0 dropdown">
+						<input type="text" class="form-control form-control-lg" name="near" value="{{ $near }}" placeholder="Vicino a&hellip;" autocomplete="off">
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-2 pl-md-0">
+					<button type="submit" class="btn btn-accent btn-lg">
+						@include('site.icons.icon', ['name' => 'search'])
+						Cerca
+					</button>
+				</div>
+			</div>
+		</form>
+	@if (!isset($fluid))
+	</div>
+	@endif
+</div>

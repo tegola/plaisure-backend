@@ -8,16 +8,42 @@
 // Grayscale and brand colors for use across Bootstrap.
 
 // Create grayscale
-$gray-dark:                 #292b2c !default;
-$gray:                      #464a4c !default;
-$gray-light:                #636c72 !default;
-$gray-lighter:              #c3c2ca !default;
-$gray-lightest:             #f7f7f9 !default;
+$gray-dark:     #333;
+$gray:          #666;
+$gray-light:    #999;
+$gray-lighter:  #ccc;
+$gray-lightest: #f2f2f2;
+
+// Create a color palette
+$palette-blue-100: #d4f0f7;
+$palette-blue-200: #aae1ef;
+$palette-blue-300: #7fd3e8;
+$palette-blue-400: #55c4e0;
+$palette-blue-500: #2bb6d9;
+
+$palette-fuchsia-100: #fbd5de;
+$palette-fuchsia-200: #f7acbd;
+$palette-fuchsia-300: #f3829c;
+$palette-fuchsia-400: #ef597b;
+$palette-fuchsia-500: #eb305a;
+
+$palette-green-100: #e5f5e9;
+$palette-green-200: #cbecd4;
+$palette-green-300: #b1e3be;
+$palette-green-400: #97daa9;
+$palette-green-500: #7dd194;
+
+$palette-dark-green-100: #d1d9d8;
+$palette-dark-green-200: #a4b3b2;
+$palette-dark-green-300: #768d8c;
+$palette-dark-green-400: #496766;
+$palette-dark-green-500: #1c4240;
 
 // Reassign color vars to semantic color scheme
-$brand-primary:       #2bb6d9;
+$brand-primary:       $palette-blue-500;
 $brand-primary-muted: #acc7ce;
-$brand-secondary:     #7dd194;
+$brand-secondary:     $palette-green-500;
+$brand-accent:        $palette-fuchsia-500;
 
 
 // Typography
@@ -25,7 +51,11 @@ $brand-secondary:     #7dd194;
 // Font, line-height, and color for body text, headings, and more.
 
 $font-family-sans-serif: "museo-sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-size-xs:           .7rem;
 
+$font-weight-bold:       500;
+
+$headings-font-weight:   300;
 
 // Components
 $border-radius:    .2rem;
@@ -34,16 +64,23 @@ $border-radius-sm: .15rem;
 
 
 // Buttons
-$btn-font-weight:  700;
-$btn-padding-y-lg: 1rem;
+$btn-font-weight:      400;
+$btn-padding-x:        1.75rem;
+$btn-padding-x-lg:     1.25rem;
+$btn-padding-y-lg:     .8rem;
+
+$btn-secondary-color:  white;
+$btn-secondary-bg:     $brand-secondary;
+$btn-secondary-border: $brand-secondary;
 
 
 // Forms
-$input-border-color: rgba(#000, .08);
-$input-border-focus: rgba(#000, .25);
-$input-padding-y-lg: 1rem;
+$input-border-color:      rgba(#000, .08);
+$input-border-focus:      rgba(#000, .25);
+$input-padding-x-lg:      1.25rem;
+$input-padding-y-lg:      .8rem;
 $input-color-placeholder: $gray-lighter;
 
 
 // Navbar
-$navbar-height: 48px;
+$navbar-slim-padding-y: .25rem; // FIXME: Replace with spacer

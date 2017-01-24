@@ -16021,6 +16021,7 @@ $(function(){
 		items: 5,
 		delay: 200,
 		separator: false, // Disable menu separators when reading data
+		autoSelect: false,
 		source: function(query, process){
 			$.get('/venues/suggestions', $form.serializeArray()).then(process);
 		},

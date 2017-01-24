@@ -1,35 +1,67 @@
 .page-home {
-	padding-top: $navbar-height;
-	background-color: hsl(hue($brand-primary), 35%, 90%);
-
-	// Box
-	.card {
-		border: 0;
-		margin-top: $spacer * 2;
-		margin-bottom: $spacer * 2;
-		border-radius: $border-radius-lg;
-		box-shadow: 0 0 0 1px $hr-border-color;
+	.pg-logo-text,
+	.pg-logo-symbol,
+	.pg-logo-shadow {
+		fill: $palette-dark-green-500;
 	}
-	.hero-card-block {
-		padding: ($spacer * 3) 0 ($spacer * 4);
-		background-clip: padding-box;
+	.hero {
+		min-height: 85vh;
+		position: relative;
+		background-color: rgba(mix($palette-green-500, black, 90%), 0.5);
+		display: flex;
+		flex-direction: column;
+	}
+	.hero-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 
-		h2 {
-			font-weight: 700;
+		.logo {
+			width: 100px;
+			height: 145px;
+			margin-top: $spacer
+		}
+		h1 {
+			margin-top: $spacer * 2;
+			margin-bottom: $spacer;
+			font-weight: 500;
+			line-height: $line-height-lg;
 		}
 		p {
 			font-size: $font-size-h4;
 			line-height: $headings-line-height;
-			color: $text-muted;
-			margin-bottom: 0;
+			color: white;
+			margin-bottom: $spacer * 3;
 		}
 	}
-	.search-card-block {
-		padding: ($spacer * 2) 0;
-		background-color: $brand-secondary;
-		color: #fff;
-		position: relative; // Stay above logo
-		@include border-bottom-radius($border-radius-lg);
+
+	.map {
+		background-color: #d9e7eb;
+		position: absolute !important;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: -1;
+		opacity: 0.5;
+	}
+
+	// Search
+	.search-form-control:focus {
+		box-shadow: 0 8px 30px rgba(black, 0.1);
+	}
+	.search-submit-btn {
+		box-shadow: 0 10px 30px rgba($brand-accent, 0.25);
+
+		&:hover,
+		&:focus {
+			box-shadow: 0 10px 30px rgba($brand-accent, 0.5);
+		}
+		&:active {
+			transition: 0.1s;
+			box-shadow: 0 3px 5px rgba($brand-accent, 0.4)
+		}
 	}
 	.search-near-control {
 		padding-right: ($btn-padding-x-lg * 2) + 1rem;
@@ -42,59 +74,11 @@
 
 		&:hover,
 		&:focus {
-			color: $brand-primary;
+			color: $brand-accent;
 		}
 
 		.no-geolocation & {
 			display: none;
-		}
-	}
-	.search-btn {
-		@include button-variant(#fff, mix(#000, $brand-secondary, 20%), transparent);
-	}
-
-	// Footer
-	.footer {
-		background-color: $body-bg;
-	}
-
-	@include media-breakpoint-up(md) {
-		background-color: hsl(hue($brand-primary), 75%, 90%);
-
-		// Cover-like layout
-		.content {
-			min-height: 100%;
-			width: 100%;
-			display: table;
-		}
-		.content-inner {
-			display: table-cell;
-			vertical-align: middle;
-			padding: 3.5rem 0; // Top: navbar - Bottom: visual center
-		}
-
-		// Map + overlay
-		.map {
-			background-color: #d9e7eb;
-			position: fixed !important;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			z-index: -1;
-			opacity: 0.5;
-		}
-
-		// Logo
-		.logo {
-			background-image: url("../img/home-logo@2x.png");
-			width: 371px;
-			height: 190px;
-			background-size: 100%;
-			position: relative;
-			top: -60px;
-			left: -120px;
-			margin-bottom: -190px;
 		}
 	}
 }
