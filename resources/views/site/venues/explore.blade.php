@@ -8,8 +8,6 @@
 @include('site.venues._navbar', ['fluid' => 'true'])
 
 <div class="wrapper">
-	<div class="map"></div>
-
 	<div class="venue-list">
 		<div class="container-fluid">
 			<h5>
@@ -20,7 +18,7 @@
 				@else
 					Tutti i risultati
 				@endif
-				a <strong>{{ $near }}</strong>
+				vicino a <strong>{{ $near }}</strong>
 			</h5>
 			<hr>
 
@@ -58,6 +56,7 @@
 			@endif
 		</div>
 	</div>
+	<div class="map"></div>
 </div>
 
 @endsection

@@ -1,0 +1,15 @@
+Home:
+ ☐ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google
+ ☐ Ottimizzazione per mobile
+ 
+Ricerca:
+ ☐ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate
+ ☐ Ricerca per via, oltre che per città
+
+Esplora:
+ ☐ Plottare _tutti_ i risultati sulla mappa
+
+
+
+Futuro:
+ ☐ Supporto per dare un indirizzo email agli utenti

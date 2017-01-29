@@ -176,6 +176,8 @@ $(function(){
 		var data = $(item).data();
 		var coords = new google.maps.LatLng(data.lat, data.lng);
 
+		console.log('item', item);
+
 		// Add marker
 		var marker = new google.maps.Marker({
 			position: coords,
@@ -196,7 +198,7 @@ $(function(){
 
 		// Prepare tooltip
 		var tooltip = new google.maps.InfoWindow({
-			content: 'pippooooo'
+			content: [data.lat, data.lng].join(',')
 		});
 
 		// Show tooltip on marker and list item hover

@@ -4,6 +4,32 @@ $(function(){
 	var nearTextbox = $form.find('[name=near]');
 	var latField = $form.find('[name=lat]');
 	var lngField = $form.find('[name=lng]');
+	var submitButton = $form.find('[submit]');
+	var geocoder = new google.maps.Geocoder();
+	var bannedComponentTypes = [];
+
+	var formatGeocoderResult = function(result) {
+		var street, city;
+
+		$(result.address_components).each(function(index, address_component){
+			$(address_component.types).each(function(index, type){
+				switch (type) {
+					case 'route':
+						street = address_component.long_name;
+						break;
+					case 'administrative_area_level_3':
+						city = address_component.long_name;
+						break;
+				}
+			});
+		});
+
+		if (street && city) {
+			return [street, city].join(', ');
+		} else {
+			return street || city;
+		}
+	};
 
 	// What typeahead
 	whatTextbox.typeahead({
@@ -40,35 +66,57 @@ $(function(){
 		}
 	});
 
+	// Latitude/longitude reset when typing
+	nearTextbox.on('keydown', function(){
+		latField.val('');
+		lngField.val('');
+	});
+
 	// Location typeahead
 	nearTextbox.typeahead({
 		minLength: 2,
 		items: 8,
-		delay: 200,
+		delay: 300,
 		source: function(query, process){
-			$.get('https://maps.googleapis.com/maps/api/geocode/json', {
+			geocoder.geocode({
 				address: nearTextbox.val(),
-				language: 'it' // FIXME: Use user locale
-			}).then(function(data){
-				var locations = [];
+			}, function(results, status){
+				if (status != google.maps.GeocoderStatus.OK) {
+					return;
+				}
 
-				$(data.results).each(function(index, result){
-					// Add location to list only if it's a city
+				var items = [];
+
+				// Add location to list only if it's not a banned type
+				$(results).each(function(index, result){
+					console.log(result);
+					var found = false;
+
 					$(result.address_components).each(function(index, address_component){
-						if ($.inArray('administrative_area_level_3', address_component.types) !== -1) {
-							locations.push({
-								'name': address_component.long_name,
-								'lat': result.geometry.location.lat,
-								'lng': result.geometry.location.lng
-							});
-							return false;
-						}
+						if (found) return false;
+						$(address_component.types).each(function(index, type){
+							if (found) return false;
+							if (bannedComponentTypes.indexOf(type) < 0) {
+								console.log('formatted address', formatGeocoderResult(result));
+								items.push({
+									'name': formatGeocoderResult(result), // result.formatted_address,
+									'lat': result.geometry.location.lat(),
+									'lng': result.geometry.location.lng()
+								});
+								found = true;
+							} else {
+								//console.log('banned', type);
+							}
+						});
 					});
 				});
 
 				// Pass locations to next step
-				process(locations);
+				process(items);
 			});
+		},
+		matcher: function(item) {
+			return item;
 		},
 		highlighter: function(text, suggestion){ // no highlight, just a renderer
 			var template = $('<div></div>');
@@ -84,5 +132,4 @@ $(function(){
 			lngField.val(item.lng);
 		}
 	});
-
 });

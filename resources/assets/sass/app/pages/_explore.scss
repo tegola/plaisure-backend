@@ -22,7 +22,6 @@
 		display: none;
 	}
 
-
 	@include media-breakpoint-up(md) {
 		overflow: hidden; // Fix scrollbar issues
 		display: flex;
@@ -31,27 +30,21 @@
 		.wrapper {
 			flex: 1;
 			display: flex;
-			position: relative;
-		}
-		.map {
-			display: block;
-			flex: 1;
 		}
 		.venue-list {
-			position: absolute;
-			top: $spacer * 2;
-			bottom: $spacer * 2;
-			left: $spacer * 2;
-			border-radius: $border-radius-lg;
 			background-color: $body-bg;
 			overflow: auto;
 			padding-top: $spacer;
 			padding-bottom: $spacer;
 			background-clip: padding-box;
-			border: 1px solid rgba(black, .08);
-			box-shadow: 0 10px 30px rgba(black, .15);
+			box-shadow: 1px 0 0 rgba(black, 0.08), 0 10px 30px rgba(black, .15);
+			z-index: 1;
 
-			@include make-col(6);
+			@include make-col(5);
+		}
+		.map {
+			display: block;
+			flex: 1;
 		}
 		.footer {
 			display: none;
@@ -60,7 +53,7 @@
 
 	@include media-breakpoint-up(lg) {
 		.venue-list {
-			@include make-col(5);
+			@include make-col(4);
 		}
 	}
 }

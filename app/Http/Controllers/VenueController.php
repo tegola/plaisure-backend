@@ -148,9 +148,11 @@ class VenueController extends Controller
 	 */
 	private function getLatLngFromAddress($address) {
 		$api_url = "http://maps.googleapis.com/maps/api/geocode/json";
+		// FIXME: Pass region per site and language per user locale
 		$querystring = http_build_query(array(
 			'address' => $address,
-			'language' => 'it' // FIXME: Use user locale
+			'language' => 'it',
+			'region' => 'IT'
 		));
 
 		// Ask Google Maps and stop if it doesn't work

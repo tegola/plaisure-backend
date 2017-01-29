@@ -20,7 +20,7 @@
 						<ul class="list-inline">
 							{{-- FIXME: Il link "Esplora" deve passare la città, altrimenti si viene ridirezionati alla home --}}
 							<li class="list-inline-item"><a href="{{ route('site.venues.explore') }}">Esplora</a></li>
-							<li class="list-inline-item"><a href="{{ route('site.about.company') }}"">Azienda</a></li>
+							<li class="list-inline-item"><a href="{{ route('site.about.company') }}">Azienda</a></li>
 							<li class="list-inline-item"><a href="{{ route('site.venues.claim') }}">Rivendica la tua attivit&agrave;</a></li>
 							<li class="list-inline-item"><a href="#">Gioca responsabilmente</a></li>
 							<li class="list-inline-item"><a href="{{ route('site.about.contact') }}">Contatti</a></li>
@@ -39,7 +39,8 @@
 		{{-- Icons --}}
 		@include('site.icons.defs')
 
-		<script src="https://maps.googleapis.com/maps/api/js?key={{ config('constants.google_maps_api_key') }}" defer></script>
+		{{-- FIXME: Pass region per site and language per user locale --}}
+		<script src="https://maps.googleapis.com/maps/api/js?key={{ config('constants.google_maps_api_key') }}&language=it&region=IT" defer></script>
 		<script src="{{ asset('js/app.js') }}"></script>
 
 		<script src="https://use.typekit.net/qwv3xzz.js"></script>

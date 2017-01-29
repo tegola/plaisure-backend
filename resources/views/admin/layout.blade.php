@@ -35,7 +35,8 @@
 			<p>&copy; {{ date('Y') }} {{ config('constants.company') }}</p>
 		</div>
 
-		<script src="https://maps.googleapis.com/maps/api/js?key={{ config('constants.google_maps_api_key') }}" defer></script>
+		{{-- FIXME: Pass region per site and language per user locale --}}
+		<script src="https://maps.googleapis.com/maps/api/js?key={{ config('constants.google_maps_api_key') }}&language=it&region=IT" defer></script> 
 		<script src="{{ asset('js/admin.js') }}"></script>
 	</body>
 </html>
