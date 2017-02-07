@@ -29,6 +29,17 @@ class Venue extends Model
 	];
 
 	/**
+	 * The accessors to append to the model's array form.
+	 *
+	 * @var array
+	 */
+	protected $appends = [
+		'short_address',
+		'long_address',
+		'category_icon_name'
+	];
+
+	/**
 	 * Get the estimated number of machines based on surface size
 	 *
 	 * @return integer  The estimated number

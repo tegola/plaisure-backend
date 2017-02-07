@@ -3,60 +3,74 @@
 @section('body_class', 'page-explore')
 @section('title', $what ? "Risultati per {$what} a {$near}" : "Tutti i risultati a {$near}")
 
+@section('scripts')
+<script src="{{ asset('js/app/explore.js') }}"></script>
+@endsection
+
 @section('content')
 
-@include('site.venues._navbar', ['fluid' => 'true'])
+@include('site.venues._navbarVue', ['fluid' => 'true'])
 
 <div class="wrapper">
 	<div class="venue-list">
 		<div class="container-fluid">
 			<h5>
-				@if($what)
-					{{ $venues->count() }}
-					{{ $venues->count() == 1 ? 'risultato' : 'risultati' }}
-					per &ldquo;<strong>{{ $what }}</strong>&rdquo;
-				@else
+				<template v-if="what">
+					@{{ venues.length }} @{{ venues.length | singularOrPlural('risultato', 'risultati') }}
+					per &ldquo;<strong>@{{ what }}</strong>&rdquo;
+				</template>
+				<template v-else>
 					Tutti i risultati
-				@endif
-				vicino a <strong>{{ $near }}</strong>
+				</template>
+				vicino a <strong>@{{ near }}</strong>
 			</h5>
 			<hr>
 
-			<div id="results">
-				@foreach ($venues as $venue)
-					<div class="venue" data-lat="{{ $venue->geo_latitude }}" data-lng="{{ $venue->geo_longitude }}">
-						<img class="venue-icon" src="{{ asset("img/avatars/{$venue->category_icon_name}") }}">
+			<template v-if="!venues.data.length">
+				Nessun risultato
+			</template>
+			<template v-else>
+				<div v-for="venue in venues.data" class="venue">
+					<img class="venue-icon" :src="'/img/avatars/' + venue.category_icon_name">
 
-						<div class="venue-body">
-							<h5 class="mb-1"><strong><a href="{{ route('site.venues.detail', ['venue' => $venue]) }}">{{ $venue->name }}</a></strong></h5>
-							@if ($venue->categories->count())
-								<p class="small text-uppercase text-muted">{{ $venue->categories->first()->name }}</p>
-							@endif
-							<p class="mb-0">
-								@if ($venue->distance)
-									<strong>{{ $venue->formatted_distance }}</strong> &ndash;
-								@endif
-								{{ $venue->short_address }}
-							</p>
-							<ul class="list-inline mb-0 ">
-								<li class="list-inline-item"><a class="text-muted" href="#">Mostra sulla mappa</a></li>
-								<li class="list-inline-item text-muted">&middot;</li>
-								<li class="list-inline-item"><a class="text-muted" href="#">Aggiungi ai preferiti</a></li>
-							</ul>
-							<hr class="mb-0">
-						</div>
+					<div class="venue-body">
+						<h5 class="mb-1">
+							<strong><a :href="'/venues/' + venue.id">@{{ venue.name }}</a></strong>
+						</h5>
+						<p v-if="venue.categories.length" class="small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
+						<p class="mb-0">
+							<strong v-if="venue.distance">@{{ venue.distance | formatDistance }}</strong>
+							@{{ venue.short_address }}
+						</p>
+						<ul class="list-inline mb-0 ">
+							<li class="list-inline-item"><a class="text-muted" href="javascript:void(0)" @click="select(venue)">Mostra sulla mappa</a></li>
+							<li class="list-inline-item text-muted">&middot;</li>
+							<li class="list-inline-item"><a class="text-muted" href="javascript:void(0)" @click="toggleFavorite(venue)">Aggiungi ai preferiti</a></li>
+						</ul>
+						<hr class="mb-0">
 					</div>
-				@endforeach
-			</div>
-
-			@if ($venues->hasMorePages())
-				<div class="text-center">
-					<a class="btn btn-outline-primary" href="{{ $venues->nextPageUrl() }}" data-action="load-more">Carica altri risultati&hellip;</a>
 				</div>
-			@endif
+
+				@if ($venues->hasMorePages())
+					<div class="text-center">
+						<button class="btn btn-outline-primary" @click="loadMore">Carica altri risultati&hellip;</button>
+					</div>
+				@endif
+			</template>
 		</div>
 	</div>
-	<div class="map"></div>
+	<gmap-map class="map" :center="center" :zoom="15" :options="mapOptions">
+		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" @click="select(venue)">
+			<gmap-info-window :opened="venue == currentVenue" class="pippo">
+				<div style="background-color: #f9f9f9">
+					<h4>@{{venue.name}}</h4>
+					<p v-if="venue.categories.length" class="small text-uppercase text-muted my-0">@{{ venue.categories[0].name }}</p>
+					<img src="http://placehold.it/200x140"><br>
+					<button class="btn btn-sm btn-secondary" @click="toggleFavorite(venue)">Aggiungi ai preferiti</button>
+				</div>
+			</gmap-info-window>
+		</gmap-marker>
+	</gmap-map>
 </div>
 
 @endsection

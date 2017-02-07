@@ -15898,6 +15898,7 @@ $(function(){
 });
 
 // EXPLORE --------------------------------------------------------------------
+/*
 $(function(){
 	// Stop if page was not found
 	if (!$('.page-explore').length) {
@@ -15923,8 +15924,6 @@ $(function(){
 	$('[data-lat][data-lng]').each(function(index, item){
 		var data = $(item).data();
 		var coords = new google.maps.LatLng(data.lat, data.lng);
-
-		console.log('item', item);
 
 		// Add marker
 		var marker = new google.maps.Marker({
@@ -15992,6 +15991,7 @@ $(function(){
 		return false;
 	});
 });
+*/
 
 // DETAIL ---------------------------------------------------------------------
 $(function(){
@@ -16037,7 +16037,9 @@ $(function(){
 			});
 		});
 
-		if (street && city) {
+		if (!street && !city) {
+			return null;
+		} else if (street && city) {
 			return [street, city].join(', ');
 		} else {
 			return street || city;
@@ -16110,12 +16112,14 @@ $(function(){
 						$(address_component.types).each(function(index, type){
 							if (found) return false;
 							if (bannedComponentTypes.indexOf(type) < 0) {
-								console.log('formatted address', formatGeocoderResult(result));
-								items.push({
-									'name': formatGeocoderResult(result), // result.formatted_address,
-									'lat': result.geometry.location.lat(),
-									'lng': result.geometry.location.lng()
-								});
+								var formattedAddress = formatGeocoderResult(result);
+								if (formattedAddress) {
+									items.push({
+										'name': formatGeocoderResult(result), // result.formatted_address,
+										'lat': result.geometry.location.lat(),
+										'lng': result.geometry.location.lng()
+									});
+								}
 								found = true;
 							} else {
 								//console.log('banned', type);

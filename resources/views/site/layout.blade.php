@@ -8,10 +8,12 @@
 		<title>{{ config('constants.name') }} - @yield('title')</title>
 
 		<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+		@yield('stylesheets')
 	</head>
-	<body class="@yield('body_class')">
-
-		@yield('content')
+	<body class="page @yield('body_class')">
+		<div class="page-content">
+			@yield('content')
+		</div>
 
 		<div class="footer">
 			<div class="container">
@@ -39,9 +41,12 @@
 		{{-- Icons --}}
 		@include('site.icons.defs')
 
+		{{-- Common Javascript view for values passed by Laravel --}}
+		@include('scripts')
+
 		{{-- FIXME: Pass region per site and language per user locale --}}
-		<script src="https://maps.googleapis.com/maps/api/js?key={{ config('constants.google_maps_api_key') }}&language=it&region=IT" defer></script>
-		<script src="{{ asset('js/app.js') }}"></script>
+		<script src="{{ asset('js/app/main.js') }}"></script>
+		@yield('scripts')
 
 		<script src="https://use.typekit.net/qwv3xzz.js"></script>
 		<script>try{Typekit.load({ async: true });}catch(e){}</script>

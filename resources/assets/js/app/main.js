@@ -150,6 +150,7 @@ $(function(){
 });
 
 // EXPLORE --------------------------------------------------------------------
+/*
 $(function(){
 	// Stop if page was not found
 	if (!$('.page-explore').length) {
@@ -175,8 +176,6 @@ $(function(){
 	$('[data-lat][data-lng]').each(function(index, item){
 		var data = $(item).data();
 		var coords = new google.maps.LatLng(data.lat, data.lng);
-
-		console.log('item', item);
 
 		// Add marker
 		var marker = new google.maps.Marker({
@@ -244,6 +243,7 @@ $(function(){
 		return false;
 	});
 });
+*/
 
 // DETAIL ---------------------------------------------------------------------
 $(function(){

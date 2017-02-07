@@ -150,7 +150,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /* Third-party Service Providers */
-        // ...
+        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -1,8 +1,6 @@
 .page-explore {
-	.content-container {
-		margin-top: $spacer * 3;
-		margin-bottom: $spacer * 3;
-	}
+	overflow-x: hidden; // Fix scrollbar issues
+	
 	.venue {
 		display: flex;
 		align-items: flex-start;
@@ -23,10 +21,13 @@
 	}
 
 	@include media-breakpoint-up(md) {
-		overflow: hidden; // Fix scrollbar issues
 		display: flex;
-		flex-direction: column;
 
+		.page-content {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+		}
 		.wrapper {
 			flex: 1;
 			display: flex;

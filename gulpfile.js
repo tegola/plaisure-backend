@@ -25,10 +25,11 @@ elixir(function(mix) {
 		'../../../node_modules/tether/dist/js/tether.js',
 		'../../../node_modules/bootstrap/dist/js/bootstrap.js',
 		'../../../node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js',
-
 		'app/main.js',
 		'app/search-form.js'
-	], 'public/js/app.js');
+	], 'public/js/app/main.js');
+
+	mix.webpack('app/explore.js', 'public/js/app/explore.js');
 
 	// Admin stylesheets
 	mix.sass(['admin/main.scss'], 'public/css/admin.css');
@@ -38,7 +39,6 @@ elixir(function(mix) {
 		'../../../node_modules/jquery/dist/jquery.js',
 		'../../../node_modules/tether/dist/js/tether.js',
 		'../../../node_modules/bootstrap/dist/js/bootstrap.js',
-
 		'admin/main.js',
 	], 'public/js/admin.js');
 });

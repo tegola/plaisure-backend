@@ -24,7 +24,9 @@ $(function(){
 			});
 		});
 
-		if (street && city) {
+		if (!street && !city) {
+			return null;
+		} else if (street && city) {
 			return [street, city].join(', ');
 		} else {
 			return street || city;
@@ -97,12 +99,14 @@ $(function(){
 						$(address_component.types).each(function(index, type){
 							if (found) return false;
 							if (bannedComponentTypes.indexOf(type) < 0) {
-								console.log('formatted address', formatGeocoderResult(result));
-								items.push({
-									'name': formatGeocoderResult(result), // result.formatted_address,
-									'lat': result.geometry.location.lat(),
-									'lng': result.geometry.location.lng()
-								});
+								var formattedAddress = formatGeocoderResult(result);
+								if (formattedAddress) {
+									items.push({
+										'name': formatGeocoderResult(result), // result.formatted_address,
+										'lat': result.geometry.location.lat(),
+										'lng': result.geometry.location.lng()
+									});
+								}
 								found = true;
 							} else {
 								//console.log('banned', type);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use JavaScript;
 use Illuminate\Http\Request;
 
 use App\Venue;
@@ -99,6 +100,16 @@ class VenueController extends Controller
 			'search.what' => $what,
 			'search.near' => $near,
 			'search.distance' => $distance
+		]);
+
+		// Pass venues to javascript
+		Javascript::put([
+			'lat' => $lat,
+			'lng' => $lng,
+			'what' => $what,
+			'near' => $near,
+			'distance' => $distance,
+			'venues' => $venues->toArray()
 		]);
 
 		return view('site.venues.explore', [
