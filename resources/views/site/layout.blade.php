@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="{{ config('app.locale') }}">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -7,7 +7,7 @@
 
 		<title>{{ config('constants.name') }} - @yield('title')</title>
 
-		<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+		<link rel="stylesheet" href="{{ mix('css/app.css') }}">
 		@yield('stylesheets')
 	</head>
 	<body class="page @yield('body_class')">
@@ -45,7 +45,7 @@
 		@include('scripts')
 
 		{{-- FIXME: Pass region per site and language per user locale --}}
-		<script src="{{ asset('js/app/main.js') }}"></script>
+		<script src="{{ mix('js/app/main.js') }}"></script>
 		@yield('scripts')
 
 		<script src="https://use.typekit.net/qwv3xzz.js"></script>

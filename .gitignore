@@ -1,12 +1,9 @@
-# Laravel
-/vendor
 /node_modules
-Homestead.yaml
+/public/storage
+/public/hot
+/storage/*.key
+/vendor
+/.idea
 Homestead.json
+Homestead.yaml
 .env
-
-# Build caches
-.sass-cache
-
-# Build files
-*.map

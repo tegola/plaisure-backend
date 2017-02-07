@@ -4,7 +4,7 @@
 @section('title', $what ? "Risultati per {$what} a {$near}" : "Tutti i risultati a {$near}")
 
 @section('scripts')
-<script src="{{ asset('js/app/explore.js') }}"></script>
+<script src="{{ mix('js/app/explore.js') }}"></script>
 @endsection
 
 @section('content')

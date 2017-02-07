@@ -27,6 +27,6 @@ class CreateCategoryVenuePivotTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('category_venue');
+		Schema::dropIfExists('category_venue');
 	}
 }

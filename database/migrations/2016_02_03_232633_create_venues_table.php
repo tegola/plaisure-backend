@@ -48,6 +48,6 @@ class CreateVenuesTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('venues');
+		Schema::dropIfExists('venues');
 	}
 }

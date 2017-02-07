@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="{{ config('app.locale') }}">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -7,7 +7,7 @@
 
 		<title>{{ config('constants.name') }} - Amministrazione - @yield('title')</title>
 
-		<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+		<link rel="stylesheet" href="{{ mix('css/admin.css') }}">
 	</head>
 	<body>
 		<nav class="navbar navbar-toggleable-sm navbar-light bg-faded mb-3">
@@ -37,6 +37,6 @@
 
 		{{-- FIXME: Pass region per site and language per user locale --}}
 		<script src="https://maps.googleapis.com/maps/api/js?key={{ config('constants.google_maps_api_key') }}&language=it&region=IT" defer></script> 
-		<script src="{{ asset('js/admin.js') }}"></script>
+		<script src="{{ mix('js/admin.js') }}"></script>
 	</body>
 </html>
