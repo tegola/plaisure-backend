@@ -45,7 +45,12 @@
 						<ul class="list-inline mb-0 ">
 							<li class="list-inline-item"><a class="text-muted" href="javascript:void(0)" @click="select(venue)">Mostra sulla mappa</a></li>
 							<li class="list-inline-item text-muted">&middot;</li>
-							<li class="list-inline-item"><a class="text-muted" href="javascript:void(0)" @click="toggleFavorite(venue)">Aggiungi ai preferiti</a></li>
+							<li class="list-inline-item">
+								<a class="text-muted" href="javascript:void(0)" @click="toggleFavorite(venue)">
+								@include('site.icons.icon', ['name' => 'heart-outline'])
+								Aggiungi ai preferiti
+								</a>
+							</li>
 						</ul>
 						<hr class="mb-0">
 					</div>
@@ -61,13 +66,18 @@
 	</div>
 	<gmap-map class="map" :center="center" :zoom="15" :options="mapOptions">
 		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" @click="select(venue)">
-			<gmap-info-window :opened="venue == currentVenue" class="pippo">
-				<div style="background-color: #f9f9f9">
-					<h4>@{{venue.name}}</h4>
-					<p v-if="venue.categories.length" class="small text-uppercase text-muted my-0">@{{ venue.categories[0].name }}</p>
-					<img src="http://placehold.it/200x140"><br>
-					<button class="btn btn-sm btn-secondary" @click="toggleFavorite(venue)">Aggiungi ai preferiti</button>
-				</div>
+			<gmap-info-window :opened="venue == currentVenue" v-cloak>
+				<h5>@{{venue.name}}</h5>
+				<p v-if="venue.categories.length" class="small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
+				<p class="mb-0">
+					<strong v-if="venue.distance">@{{ venue.distance | formatDistance }}</strong>
+					@{{ venue.short_address }}
+				</p>
+				<p>
+					<button class="px-2 btn btn-outline-accent" title="Aggiungi ai preferiti" aria-label="Aggiungi ai preferiti" @click="toggleFavorite(venue)">
+						@include('site.icons.icon', ['name' => 'heart-outline'])
+					</button>
+				</p>
 			</gmap-info-window>
 		</gmap-marker>
 	</gmap-map>

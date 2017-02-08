@@ -8,19 +8,14 @@
 	line-height: 1.2rem; // Align to ex-button height
 
 	.icon {
-		width: $font-size-base;
-		height: $font-size-base;
+		width: $icon-size-base;
+		height: $icon-size-base;
 	}
 }
 .btn-lg {
 	letter-spacing: 0.08em;
 	font-size: $font-size-base;
 	line-height: $line-height-base;
-
-	.icon {
-		width: $font-size-lg;
-		height: $font-size-lg;
-	}
 }
 
 // Normal buttons

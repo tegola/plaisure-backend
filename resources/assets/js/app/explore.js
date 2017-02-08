@@ -27,12 +27,7 @@ new Vue({
 
 	computed: {
 		center: function(){
-			if (this.currentVenue) {
-				return {
-					lat: this.currentVenue.geo_latitude,
-					lng: this.currentVenue.geo_longitude
-				};
-			} else if (this.lat && this.lng) {
+			if (this.lat && this.lng) {
 				return {
 					lat: this.lat,
 					lng: this.lng
@@ -44,7 +39,7 @@ new Vue({
 	},
 
 	filters: {
-		singularOrPlural: function(count, singularName, pluralName) {
+		singularOrPlural(count, singularName, pluralName) {
 			return parseInt(count) == 1 ? singularName : pluralName;
 		},
 		formatDistance: function(distance) {
