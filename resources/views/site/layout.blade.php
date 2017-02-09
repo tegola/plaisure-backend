@@ -41,10 +41,9 @@
 		{{-- Icons --}}
 		@include('site.icons.defs')
 
-		{{-- Common Javascript view for values passed by Laravel --}}
+		{{-- Common Javascript view for values passed by JavascriptProvider --}}
 		@include('scripts')
 
-		{{-- FIXME: Pass region per site and language per user locale --}}
 		<script src="{{ mix('js/app/main.js') }}"></script>
 		@yield('scripts')
 

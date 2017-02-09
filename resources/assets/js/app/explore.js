@@ -3,9 +3,11 @@
 import * as VueGoogleMaps from 'vue2-google-maps';
 import Vue from 'vue';
 
+import formatDistance from '../utilities/format-distance';
+
 Vue.use(VueGoogleMaps, {
 	load: {
-		key: 'AIzaSyC7HUu36wqXlH_E27AMOFFF9v7t1809Upk' // FIXME: Load from laravel config
+		key: pg.constants.googleMapsApiKey
 	}
 });
 
@@ -39,20 +41,11 @@ new Vue({
 	},
 
 	filters: {
-		singularOrPlural(count, singularName, pluralName) {
-			return parseInt(count) == 1 ? singularName : pluralName;
-		},
-		formatDistance: function(distance) {
-			if (!distance) return null;
-
-			if (distance > 10) return Math.round(distance) + ' km';
-			if (distance > 1) return distance.toFixed(1) + ' km';
-			if (distance < 1) return Math.round(distance * 100) + ' m';
-		}
+		formatDistance: formatDistance
 	},
 
 	watchers: {
-		near: function(newNear) {
+		near: function() {
 			this.lat = null;
 			this.lng = null;
 		}

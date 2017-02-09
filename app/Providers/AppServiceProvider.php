@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Javascript;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +15,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Javascript::put([
+            'constants' => [
+                'googleMapsApiKey' => config('constants.google_maps_api_key')
+            ]
+        ]);
     }
 
     /**

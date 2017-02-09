@@ -16,10 +16,10 @@ mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css');
 
 // App scripts
 mix.js([
-	'node_modules/jquery/dist/jquery.js',
-	'node_modules/tether/dist/js/tether.js',
-	'node_modules/bootstrap/dist/js/bootstrap.js',
-	'node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js',
+	//'node_modules/jquery/dist/jquery.js',
+	//'node_modules/tether/dist/js/tether.js',
+	//'node_modules/bootstrap/dist/js/bootstrap.js',
+	//'node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js',
 	'resources/assets/js/app/main.js',
 	'resources/assets/js/app/search-form.js'
 ], 'public/js/app/main.js')

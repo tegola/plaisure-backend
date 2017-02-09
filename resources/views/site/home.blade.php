@@ -6,7 +6,7 @@
 @section('content')
 
 <div class="hero">
-	<div class="map"></div>
+	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :options="mapOptions"></gmap-map>
 	<nav class="navbar navbar-transparent">
 		<div class="container d-flex justify-content-between align-items-center">
 			<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('constants.name') }}">
@@ -57,8 +57,8 @@
 		</div>
 
 		<form class="form-search" action="{{ route('site.venues.explore') }}" method="get">
-			<input type="hidden" name="lat">
-			<input type="hidden" name="lng">
+			<input type="hidden" name="lat" :value="lat">
+			<input type="hidden" name="lng" :value="lng">
 			
 			<div class="row">
 				<div class="col-xs-12 offset-md-1 col-md-5 col-lg-4">
@@ -71,8 +71,8 @@
 					<div class="form-group dropdown">
 						<label class="initialism"><strong>Vicino a</strong></label><br>
 						<div style="position: relative;">
-							<input type="text" class="form-control form-control-lg search-form-control search-near-control" name="near" value="{{ $near }}" placeholder="Citt&agrave;" autocomplete="off">
-							<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" data-action="locate" tabindex="-1">@include('site.icons.icon', ['name' => 'location'])</button>
+							<input type="text" class="form-control form-control-lg search-form-control search-near-control" name="near" :value="near" placeholder="Citt&agrave;" autocomplete="off">
+							<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" :click="locate()" tabindex="-1">@include('site.icons.icon', ['name' => 'location'])</button>
 						</div>
 					</div>
 				</div>
