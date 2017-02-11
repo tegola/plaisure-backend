@@ -1,3 +1,4 @@
+/*
 $(function(){
 	var $form = $('.form-search');
 	var whatTextbox = $form.find('[name=what]');
@@ -137,3 +138,4 @@ $(function(){
 		}
 	});
 });
+*/

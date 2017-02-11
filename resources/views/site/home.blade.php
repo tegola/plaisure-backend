@@ -55,38 +55,7 @@
 				</div>
 			</div>
 		</div>
-
-		<form class="form-search" action="{{ route('site.venues.explore') }}" method="get">
-			<input type="hidden" name="lat" :value="lat">
-			<input type="hidden" name="lng" :value="lng">
-			
-			<div class="row">
-				<div class="col-xs-12 offset-md-1 col-md-5 col-lg-4">
-					<div class="form-group dropdown">
-						<label class="initialism"><strong>Trova</strong></label><br>
-						<input type="text" class="form-control form-control-lg search-form-control" name="what" placeholder="VLT, Bingo, Ricevitoria" autocomplete="off" autofocus>
-					</div>
-				</div>
-				<div class="col-xs-12 col-md-5 col-lg-4">
-					<div class="form-group dropdown">
-						<label class="initialism"><strong>Vicino a</strong></label><br>
-						<div style="position: relative;">
-							<input type="text" class="form-control form-control-lg search-form-control search-near-control" name="near" :value="near" placeholder="Citt&agrave;" autocomplete="off">
-							<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" :click="locate()" tabindex="-1">@include('site.icons.icon', ['name' => 'location'])</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 offset-md-1 col-md-10 offset-lg-0 col-lg-2">
-					<div class="form-group">
-						<label class="initialism hidden-md-down">&nbsp;</label>
-						<button type="submit" class="btn btn-lg btn-block btn-accent search-submit-btn">
-							@include('site.icons.icon', ['name' => 'search'])
-							Cerca
-						</button>
-					</div>
-				</div>
-			</div>
-		</form>
+		<pg-search-form action="{{ route('site.venues.explore') }}" :lat="lat" :lng="lng" :what="what" :near="near" @locate="onLocationUpdate"></pg-search-form>
 	</div>
 </div>
 @endsection

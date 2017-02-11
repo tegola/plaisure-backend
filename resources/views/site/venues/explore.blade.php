@@ -1,7 +1,7 @@
 @extends('site.layout')
 
 @section('body_class', 'page-explore')
-@section('title', $what ? "Risultati per {$what} a {$near}" : "Tutti i risultati a {$near}")
+@section('title', $what ? "Risultati per {$what} a {$near}" : "Tutti i risultati vicino {$near}")
 
 @section('scripts')
 <script src="{{ mix('js/app/explore.js') }}"></script>
@@ -9,7 +9,7 @@
 
 @section('content')
 
-@include('site.venues._navbarVue', ['fluid' => 'true'])
+@include('site.venues._navbar', ['fluid' => 'true'])
 
 <div class="wrapper">
 	<div class="venue-list">
@@ -22,7 +22,7 @@
 				<template v-else>
 					Tutti i risultati
 				</template>
-				vicino a <strong>@{{ near }}</strong>
+				vicino <strong>@{{ near }}</strong>
 			</h5>
 			<hr>
 
