@@ -35,28 +35,7 @@
 	@if (!isset($fluid))
 	<div class="container">
 	@endif
-		<form class="form-search dropdown" action="{{ route('site.venues.explore') }}" method="get">
-			<input type="hidden" name="lat" v-model="lat">
-			<input type="hidden" name="lng" v-model="lng">
-			<div class="row">
-				<div class="col-xs-6 col-md-5 col-lg-5">
-					<div class="form-group mb-0 dropdown">
-						<input type="text" class="form-control form-control-lg" name="what" v-model="what" placeholder="Trova sale VLT, Bingo, ricevitorie&hellip;" autocomplete="off">
-					</div>
-				</div>
-				<div class="col-xs-6 col-md-4 col-lg-3 pl-md-0">
-					<div class="form-group mb-0 dropdown">
-						<input type="text" class="form-control form-control-lg" name="near" v-model="near" placeholder="Vicino a&hellip;" autocomplete="off">
-					</div>
-				</div>
-				<div class="col-xs-12 col-md-2 pl-md-0">
-					<button type="submit" class="btn btn-accent btn-lg" :disabled="!lat || !lng">
-						@include('site.icons.icon', ['name' => 'search'])
-						Cerca
-					</button>
-				</div>
-			</div>
-		</form>
+		<pg-search-form action="{{ route('site.venues.explore') }}" :lat="lat" :lng="lng" :what="what" :near="near"></pg-search-form>
 	@if (!isset($fluid))
 	</div>
 	@endif

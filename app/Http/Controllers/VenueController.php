@@ -69,8 +69,8 @@ class VenueController extends Controller
 	public function explore(Request $request)
 	{
 		$what = $request->what;
-		$lat = $request->lat ?: session('user.lat');
-		$lng = $request->lng ?: session('user.lng');
+		$lat = $request->lat ? floatval($request->lat) : session('user.lat');
+		$lng = $request->lng ? floatval($request->lng) : session('user.lng');
 		$near = $request->near ?: session('search.near');
 		$distance = $request->distance ?: session('search.distance') ?: config('constants.search_default_distance');
 

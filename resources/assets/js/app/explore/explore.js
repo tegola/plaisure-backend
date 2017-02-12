@@ -1,9 +1,10 @@
 // FIXME: Port to ES6
 
-import * as VueGoogleMaps from 'vue2-google-maps';
+// import $ from 'jquery';
 import Vue from 'vue';
-
-import formatDistance from '../utilities/format-distance';
+import * as VueGoogleMaps from 'vue2-google-maps';
+import SearchForm from './search-form.vue';
+import formatDistance from '../../utilities/format-distance';
 
 Vue.use(VueGoogleMaps, {
 	load: {
@@ -13,6 +14,10 @@ Vue.use(VueGoogleMaps, {
 
 new Vue({
 	el: '.page-content',
+
+	components: {
+		'pg-search-form': SearchForm
+	},
 
 	data: {
 		lat: pg.lat,
@@ -28,15 +33,22 @@ new Vue({
 	},
 
 	computed: {
-		center: function(){
+		mapCenter(){
 			if (this.lat && this.lng) {
 				return {
 					lat: this.lat,
 					lng: this.lng
 				};
 			} else {
-				return null;
+				// Default to italy
+				return {
+					lat: 41.2053112,
+					lng: 8.0860841
+				};
 			}
+		},
+		mapZoom() {
+			return (this.lat && this.lng) ? 15 : 5;
 		}
 	},
 
@@ -45,22 +57,22 @@ new Vue({
 	},
 
 	watchers: {
-		near: function() {
+		near() {
 			this.lat = null;
 			this.lng = null;
 		}
 	},
 
 	methods: {
-		loadMore: function() {
+		loadMore() {
 			console.log('loadMore');
 		},
 
-		select: function(venue) {
+		select(venue) {
 			this.currentVenue = venue;
 		},
 
-		toggleFavorite: function(venue) {
+		toggleFavorite(venue) {
 			console.log('aggiungo ai preferiti', venue);
 		}
 	}

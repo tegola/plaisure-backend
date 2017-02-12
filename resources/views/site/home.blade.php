@@ -3,6 +3,10 @@
 @section('title', 'Homepage')
 @section('body_class', 'page-home')
 
+@section('scripts')
+<script src="{{ mix('js/app/home.js') }}"></script>
+@endsection
+
 @section('content')
 
 <div class="hero">

@@ -1,31 +1,15 @@
-/* global require, google */
+/* global google */
 
 import $ from 'jquery';
 import Vue from 'vue';
 import * as VueGoogleMaps from 'vue2-google-maps';
-import Tether from 'tether';
-
-import SearchForm from './components/search-form.vue';
-
-// Register Tether as a global var before requiring bootstrap
-window.Tether = Tether;
-
-require('bootstrap');
-require('bootstrap-3-typeahead');
-
-// Support for showing geolocation controls
-$('html').addClass(navigator.geolocation ? 'has-geolocation' : 'no-geolocation');
+import SearchForm from './search-form.vue';
 
 // Register Vue Google Maps
 Vue.use(VueGoogleMaps, {
 	load: {
 		key: pg.constants.googleMapsApiKey
 	}
-});
-
-// ALL PAGES ------------------------------------------------------------------
-$(function(){
-	$('[data-toggle="tooltip"]').tooltip();
 });
 
 // HOME -----------------------------------------------------------------------

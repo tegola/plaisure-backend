@@ -64,7 +64,7 @@
 			</template>
 		</div>
 	</div>
-	<gmap-map class="map" :center="center" :zoom="15" :options="mapOptions">
+	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :options="mapOptions">
 		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" @click="select(venue)">
 			<gmap-info-window :opened="venue == currentVenue" v-cloak>
 				<h5 class="mb-1">

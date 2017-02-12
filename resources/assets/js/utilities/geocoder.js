@@ -1,13 +1,25 @@
 import $ from 'jquery'; // FIXME: Remove jquery dependency
 
-function geocode(lat, lng, callback) {
+const errorMsg = 'Location not found.';
+
+function geocode(callback) {
+	$.get('https://freegeoip.net/json/').then((location) => {
+		if (!location) {
+			callback(new Error(errorMsg));
+		}
+
+		callback(null, location);
+	});
+}
+
+function reverse(lat, lng, callback) {
 	if (!lat || !lng) return null;
 
 	$.get('http://maps.googleapis.com/maps/api/geocode/json', {
 		latlng: [lat, lng].join()
 	}, (data) => {
 		if (data.status != 'OK' || !data.results) {
-			callback(new Error(data.error_message || 'Couldn\'t find the address.'));
+			callback(new Error(data.error_message || errorMsg));
 		} else {
 			callback(null, format(data.results[0]));
 		}
@@ -108,4 +120,4 @@ function format(result) {
 	return extractedObj;
 }
 
-export default geocode;
+export { geocode, reverse };

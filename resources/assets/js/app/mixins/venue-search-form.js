@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import geocode from '../../utilities/geocoder';
+import * as geocoder from '../../utilities/geocoder';
 
 export default {
 	props: {
@@ -33,10 +33,10 @@ export default {
 	},
 
 	computed: {
-		locationInputIcon() {
+		locateButtonIcon() {
 			return this.isLocating ? 'circle-outline-notch' : this.locationFound ? 'location' : 'location-outline';
 		},
-		isLocationInputDisabled() {
+		isLocateButtonDisabled() {
 			return this.isLocating || this.locationFound;
 		}
 	},
@@ -48,14 +48,15 @@ export default {
 
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
+					console.log('get current position');
 					self.lat = position.coords.latitude;
 					self.lng = position.coords.longitude;
 
 					// Find city name and use it to fill the City field
-					geocode(self.lat, self.lng, (error, location) => {
+					geocoder.reverse(self.lat, self.lng, (error, location) => {
 						if (error) return;
 
-						self.near = location.administrativeLevels.level3long;
+						self.near = location.administrativeLevels.level3long; // FIXME: Use street and city
 						self.isLocating = false;
 						self.locationFound = true;
 
@@ -80,7 +81,7 @@ export default {
 
 		// If no location is set, find a generic one using IP info
 		if (!this.lat || !this.lng || !this.near) {
-			$.get('https://freegeoip.net/json/').then((location) => {
+			geocoder.geocode((error, location) => {
 				if (!location) return;
 
 				self.lat = location.latitude;

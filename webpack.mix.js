@@ -11,32 +11,35 @@ const { mix } = require('laravel-mix');
  |
  */
 
-// App stylesheets
-mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css');
+// FIXME: Autoload jquery and Tether, extract them in separate files
 
-// App scripts
-mix.js([
-	//'node_modules/jquery/dist/jquery.js',
-	//'node_modules/tether/dist/js/tether.js',
-	//'node_modules/bootstrap/dist/js/bootstrap.js',
-	//'node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js',
-	'resources/assets/js/app/main.js',
-	'resources/assets/js/app/search-form.js'
-], 'public/js/app/main.js')
-.version();
+// App
+mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
+	.js('resources/assets/js/app/base.js', 'public/js/app/base.js')
+	.js('resources/assets/js/app/home/home.js', 'public/js/app/home.js')
+	.js('resources/assets/js/app/explore/explore.js', 'public/js/app/explore.js')
+	.autoload({
+		'jquery': ['$', 'jQuery'],
+		'tether': ['Tether'],
+		'vue': ['Vue'],
+		'vue2-google-maps': ['VueGoogleMaps']
+	})
+	.extract([
+		'jquery',
+		'vue',
+		'vue2-google-maps',
+		'tether',
+		'bootstrap',
+		'bootstrap-3-typeahead'
+	], 'public/js/app/vendor.js')
+	.version();
 
-mix.js('resources/assets/js/app/explore.js', 'public/js/app/explore.js')
-.version();
-
-// Admin stylesheets
+// Admin
 mix.sass('resources/assets/sass/admin/main.scss', 'public/css/admin.css')
-.version();
-
-// Admin scripts
-mix.js([
-	'node_modules/jquery/dist/jquery.js',
-	'node_modules/tether/dist/js/tether.js',
-	'node_modules/bootstrap/dist/js/bootstrap.js',
-	'resources/assets/js/admin/main.js',
-], 'public/js/admin.js')
-.version();
+	.js([
+		'node_modules/jquery/dist/jquery.js',
+		'node_modules/tether/dist/js/tether.js',
+		'node_modules/bootstrap/dist/js/bootstrap.js',
+		'resources/assets/js/admin/main.js',
+	], 'public/js/admin.js')
+	.version();
