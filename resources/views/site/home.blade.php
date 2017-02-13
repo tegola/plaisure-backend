@@ -61,5 +61,11 @@
 		</div>
 		<pg-search-form action="{{ route('site.venues.explore') }}" :lat="lat" :lng="lng" :what="what" :near="near" @locate="onLocationUpdate"></pg-search-form>
 	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
 </div>
 @endsection

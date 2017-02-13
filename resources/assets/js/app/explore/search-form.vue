@@ -27,13 +27,8 @@
 <script>
 	import Vue from 'vue';
 	import VenueSearchFormMixin from '../mixins/venue-search-form';
-	import Icon from '../components/icon.vue';
 
 	export default Vue.extend({
-		mixins: [VenueSearchFormMixin],
-
-		components: {
-			'pg-icon': Icon
-		}
+		mixins: [VenueSearchFormMixin]
 	});
 </script>

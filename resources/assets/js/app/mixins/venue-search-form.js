@@ -1,7 +1,14 @@
-import $ from 'jquery';
+//import $ from 'jquery';
 import * as geocoder from '../../utilities/geocoder';
+import InputTypeahead from '../components/input-typeahead.vue';
+import Icon from '../components/icon.vue';
 
 export default {
+	components: {
+		'pg-input-typeahead': InputTypeahead,
+		'pg-icon': Icon,
+	},
+
 	props: {
 		action: {
 			type: String,

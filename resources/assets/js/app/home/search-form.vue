@@ -5,9 +5,9 @@
 		
 		<div class="row">
 			<div class="col-xs-12 offset-md-1 col-md-5 col-lg-4">
-				<div class="form-group dropdown">
+				<div class="form-group">
 					<label class="initialism"><strong>Trova</strong></label><br>
-					<input type="text" class="form-control form-control-lg search-form-control" name="what" placeholder="VLT, Bingo, Ricevitoria" autocomplete="off" autofocus>
+					<pg-input-typeahead classes="form-control form-control-lg search-form-control" name="what" placeholder="VLT, Bingo, Ricevitoria" autofocus url="/venues/suggestions"></pg-input-typeahead>
 				</div>
 			</div>
 			<div class="col-xs-12 col-md-5 col-lg-4">
@@ -40,10 +40,6 @@
 	import Icon from '../components/icon.vue';
 
 	export default Vue.extend({
-		mixins: [VenueSearchFormMixin],
-
-		components: {
-			'pg-icon': Icon
-		}
+		mixins: [VenueSearchFormMixin]
 	});
 </script>
