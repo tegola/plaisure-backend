@@ -5,7 +5,16 @@
 		<div class="row">
 			<div class="col-xs-6 col-md-5 col-lg-5">
 				<div class="form-group mb-0 dropdown">
-					<input type="text" class="form-control form-control-lg" name="what" :value="what" placeholder="Trova sale VLT, Bingo, ricevitorie..." autocomplete="off">
+					<pg-input-typeahead
+						ref="whatTypeahead"
+						classes="form-control form-control-lg"
+						name="what"
+						placeholder="Trova sale VLT, Bingo, ricevitorie..."
+						autofocus
+						url="/venues/suggestions"
+						:value="query"
+						@select="selectSuggestion">
+					</pg-input-typeahead>
 				</div>
 			</div>
 			<div class="col-xs-6 col-md-4 col-lg-3 pl-md-0">

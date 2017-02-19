@@ -1,20 +1,18 @@
-/* global google */
-
-import $ from 'jquery';
-import Vue from 'vue';
-import * as VueGoogleMaps from 'vue2-google-maps';
-import SearchForm from './search-form.vue';
+import $ from 'jquery'
+import Vue from 'vue'
+import * as VueGoogleMaps from 'vue2-google-maps'
+import SearchForm from './search-form.vue'
 
 // Register Vue Google Maps
 Vue.use(VueGoogleMaps, {
 	load: {
 		key: pg.constants.googleMapsApiKey
 	}
-});
+})
 
 // HOME -----------------------------------------------------------------------
 
-var $homePage = $('.page-home .page-content');
+var $homePage = $('.page-home .page-content')
 
 if ($homePage) {
 	new Vue({
@@ -62,27 +60,27 @@ if ($homePage) {
 					return {
 						lat: this.lat,
 						lng: this.lng
-					};
+					}
 				} else {
 					// Default to italy
 					return {
 						lat: 41.2053112,
 						lng: 8.0860841
-					};
+					}
 				}
 			},
 			mapZoom() {
-				return (this.lat && this.lng) ? 15 : 5;
+				return (this.lat && this.lng) ? 15 : 5
 			}
 		},
 		methods: {
 			onLocationUpdate(lat, lng, near) {
-				this.lat = lat;
-				this.lng = lng;
-				this.near = near;
+				this.lat = lat
+				this.lng = lng
+				this.near = near
 			}
 		}
-	});
+	})
 }
 
 // EXPLORE --------------------------------------------------------------------

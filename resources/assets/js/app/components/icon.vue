@@ -4,6 +4,12 @@
 
 <script>
 	export default {
-		props: ['icon', 'spinning']
+		props: {
+			icon: {
+				type: String,
+				required: true
+			},
+			spinning: Boolean
+		}
 	}
 </script>

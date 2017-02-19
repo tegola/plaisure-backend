@@ -7,16 +7,36 @@
 			<div class="col-xs-12 offset-md-1 col-md-5 col-lg-4">
 				<div class="form-group">
 					<label class="initialism"><strong>Trova</strong></label><br>
-					<pg-input-typeahead classes="form-control form-control-lg search-form-control" name="what" placeholder="VLT, Bingo, Ricevitoria" autofocus url="/venues/suggestions"></pg-input-typeahead>
+					<pg-input-typeahead
+						classes="form-control form-control-lg search-form-control"
+						name="what"
+						placeholder="VLT, Bingo, Ricevitoria"
+						autofocus
+						:value="query"
+						:suggestions="venueSuggestions"
+						item-component="pg-venue-suggestion-item"
+						@input="loadVenueSuggestions"
+						@select="selectVenueSuggestion">
+					</pg-input-typeahead>
 				</div>
 			</div>
 			<div class="col-xs-12 col-md-5 col-lg-4">
 				<div class="form-group dropdown">
 					<label class="initialism"><strong>Vicino a</strong></label><br>
-					<div style="position: relative;">
-						<input type="text" class="form-control form-control-lg search-form-control search-near-control" name="near" :value="near" placeholder="Città" autocomplete="off">
+					<div style="position: relative">
+						<pg-input-typeahead
+							classes="form-control form-control-lg search-form-control search-near-control"
+							name="near"
+							placeholder="Città"
+							autofocus
+							:value="near"
+							:suggestions="locationSuggestions"
+							item-component="pg-location-suggestion-item"
+							@input="loadLocationSuggestions"
+							@select="selectLocationSuggestion">
+						</pg-input-typeahead>
 						<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="isLocateButtonDisabled" tabindex="-1">
-							<pg-icon :icon="locateButtonIcon" :spinning="isLocating"></pg-icon>
+							<pg-icon :icon="locateButtonIcon" :spinning="location.isSearching"></pg-icon>
 						</button>
 					</div>
 				</div>
@@ -35,11 +55,10 @@
 </template>
 
 <script>
-	import Vue from 'vue';
-	import VenueSearchFormMixin from '../mixins/venue-search-form';
-	import Icon from '../components/icon.vue';
+	import Vue from 'vue'
+	import VenueSearchFormMixin from '../mixins/venue-search-form'
 
 	export default Vue.extend({
 		mixins: [VenueSearchFormMixin]
-	});
+	})
 </script>

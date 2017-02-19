@@ -1,6 +1,7 @@
 <template>
 	<div :class="dropdownClass">
 		<input
+			ref="input"
 			type="text"
 			:class="classes"
 			:name="name"
@@ -9,60 +10,60 @@
 			:autofocus="autofocus"
 			autocomplete="off"
 			v-model="query"
-			@focus="onFocus"
-			@blur="onBlur"
+			@focus="setFocus(true)"
+			@blur="setFocus(false)"
 			@keydown.down="down"
 			@keydown.up="up"
-			@keydown.enter="hit"
-			@keydown.esc="reset"
-			@input="update">
+			@keydown.enter="select"
+			@input="input">
 		<div v-if="isOpen" class="dropdown-menu w-100">
-			<!-- Replace with custom slot content -->
-			<a v-for="(item, index) in items"
+			<component v-for="(item, index) in items"
+				:is="itemComponent"
+				:item="item"
 				:class="itemClass(index)"
-				:href="'prova'"
-				@mousedown="hit"
-				@mousemove="setActive(index)">
-				{{ item.name }} - {{ item.type }}
-			</a>
+				@mousedown="select"
+				@mouseover="setActive(index)">
+			</component>
 		</div>
 	</div>
 </template>
 
 <script>
-	import $ from 'jquery' // FIXME: Replace with something else (axios? fetch?)
-
 	export default {
 		props: {
-			// Input
 			classes: String,
 			name: String,
 			value: [String, Number],
 			placeholder: String,
 			autofocus: Boolean,
-
-			// XHR
-			url: {
+			itemComponent: {
 				type: String,
 				required: true
 			},
-			limit: {
-				type: Number,
-				default: 5
+			suggestions: {
+				type: Array,
+				default: []
 			}
 		},
 
 		data() {
 			return {
-				isFocused: false,
-				isLoading: false,
+				focused: false,
 				query: this.value,
-				items: [],
 				current: -1
 			}
 		},
 
+		watch: {
+			items() {
+				this.current = -1
+			}
+		},
+
 		computed: {
+			items() {
+				return this.suggestions
+			},
 			dropdownClass() {
 				return {
 					'dropdown': true,
@@ -70,16 +71,7 @@
 				}
 			},
 			isOpen() {
-				return this.isFocused && this.items.length > 0
-			},
-			hasItems() {
-				return this.items.length > 0
-			},
-			isEmpty() {
-				return !this.query
-			},
-			isDirty() {
-				return !!this.query
+				return this.focused && this.items.length > 0
 			}
 		},
 
@@ -90,52 +82,15 @@
 					'active': this.current === index
 				}
 			},
-			update() {
-				if (!this.query) {
-					return this.reset()
+
+			input() {
+				this.$emit('input', this.query)
+			},
+
+			up(e) {
+				if (this.items.length) {
+					e.preventDefault()
 				}
-
-				if (this.minChars && this.query.length < this.minChars) {
-					return
-				}
-
-				this.isLoading = true
-
-				// FIXME: Replace with axios or fetch?
-				$.get(this.url, {
-					[this.name]: this.query
-				}).done((data) => {
-					console.log(data)
-					this.items = this.limit ? data.slice(0, this.limit) : data
-					this.current = -1
-				}).always(() => {
-					this.isLoading = false
-				})
-			},
-
-			reset() {
-				this.items = []
-				this.query = ''
-				this.isLoading = false
-			},
-
-			setActive (index) {
-				this.current = index
-			},
-
-			activeClass (index) {
-				return {
-					active: this.current === index
-				}
-			},
-
-			hit() {
-				if (this.current !== -1) {
-					this.onHit(this.items[this.current])
-				}
-			},
-
-			up() {
 				if (this.current > 0) {
 					this.current--
 				} else if (this.current === -1) {
@@ -145,7 +100,10 @@
 				}
 			},
 
-			down() {
+			down(e) {
+				if (this.items.length) {
+					e.preventDefault()
+				}
 				if (this.current < this.items.length - 1) {
 					this.current++
 				} else {
@@ -153,16 +111,21 @@
 				}
 			},
 
-			onFocus() {
-				this.isFocused = true
+			select(e) {
+				e.preventDefault()
+
+				if (this.current === -1) return
+
+				this.$emit('select', this.items[this.current])
+				this.$refs.input.blur()
 			},
 
-			onBlur() {
-				this.isFocused = false
+			setActive(index) {
+				this.current = index
 			},
 
-			onHit() {
-				
+			setFocus(focused) {
+				this.focused = focused
 			}
 		}
 	}
