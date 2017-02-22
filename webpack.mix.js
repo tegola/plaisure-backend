@@ -11,13 +11,12 @@ const { mix } = require('laravel-mix');
  |
  */
 
-// FIXME: Autoload jquery and Tether, extract them in separate files
-
 // App
 mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
 	.js('resources/assets/js/app/base.js', 'public/js/app/base.js')
 	.js('resources/assets/js/app/home/home.js', 'public/js/app/home.js')
 	.js('resources/assets/js/app/explore/explore.js', 'public/js/app/explore.js')
+	.js('resources/assets/js/app/detail.js', 'public/js/app/detail.js')
 	.autoload({
 		'jquery': ['$', 'jQuery'],
 		'tether': ['Tether'],
@@ -29,8 +28,7 @@ mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
 		'vue',
 		'vue2-google-maps',
 		'tether',
-		'bootstrap',
-		'bootstrap-3-typeahead'
+		'bootstrap'
 	], 'public/js/app/vendor.js')
 	.version();
 

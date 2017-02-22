@@ -55,6 +55,9 @@
 		},
 
 		watch: {
+			value(value) {
+				this.query = value
+			},
 			items() {
 				this.current = -1
 			}
@@ -78,12 +81,12 @@
 		methods: {
 			itemClass(index) {
 				return {
-					'dropdown-item': true,
 					'active': this.current === index
 				}
 			},
 
 			input() {
+				this.focused = true // make sure the dropdown is open (see the select() function below)
 				this.$emit('input', this.query)
 			},
 
@@ -111,13 +114,11 @@
 				}
 			},
 
-			select(e) {
-				e.preventDefault()
-
+			select() {
 				if (this.current === -1) return
 
 				this.$emit('select', this.items[this.current])
-				this.$refs.input.blur()
+				this.focused = false // Force-close dropdown
 			},
 
 			setActive(index) {

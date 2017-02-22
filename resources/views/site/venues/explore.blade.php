@@ -67,19 +67,21 @@
 	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :options="mapOptions">
 		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" @click="select(venue)">
 			<gmap-info-window :opened="venue == currentVenue" v-cloak>
-				<h5 class="mb-1">
-					<strong><a :href="'/venues/' + venue.id">@{{ venue.name }}</a></strong>
-				</h5>
-				<p v-if="venue.categories.length" class="small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
-				<p class="mb-0">
-					<strong v-if="venue.distance">@{{ venue.distance | formatDistance }}</strong>
-					@{{ venue.short_address }}
-				</p>
-				<p>
-					<button class="px-2 btn btn-outline-accent" title="Aggiungi ai preferiti" aria-label="Aggiungi ai preferiti" @click="toggleFavorite(venue)">
-						@include('site.icons.icon', ['name' => 'heart-outline'])
-					</button>
-				</p>
+				<div class="infowindow-content">
+					<h5>
+						<strong><a :href="'/venues/' + venue.id">@{{ venue.name }}</a></strong>
+					</h5>
+					<p v-if="venue.categories.length" class="small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
+					<p class="mb-0">
+						<strong v-if="venue.distance">@{{ venue.distance | formatDistance }}</strong>
+						@{{ venue.short_address }}
+					</p>
+					<p>
+						<button class="px-2 btn btn-outline-accent" title="Aggiungi ai preferiti" aria-label="Aggiungi ai preferiti" @click="toggleFavorite(venue)">
+							@include('site.icons.icon', ['name' => 'heart-outline'])
+						</button>
+					</p>
+				</div>
 			</gmap-info-window>
 		</gmap-marker>
 	</gmap-map>

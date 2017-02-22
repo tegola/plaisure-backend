@@ -3,6 +3,10 @@
 @section('body_class', 'page-detail')
 @section('title', "{$venue->name} - {$venue_category_string}")
 
+@section('scripts')
+<script src="{{ mix('js/app/detail.js') }}"></script>
+@endsection
+
 @section('content')
 
 @include('site.venues._navbar')

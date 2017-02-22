@@ -16,8 +16,13 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Javascript::put([
-            'constants' => [
-                'googleMapsApiKey' => config('constants.google_maps_api_key')
+            'config' => [
+                'locale' => config('app.locale'),
+                'googleMapsApiKey' => config('constants.google_maps_api_key'),
+                'defaultMapCenter' => [
+                    'lat' => 41.2053112,
+                    'lng' => 8.0860841
+                ]
             ]
         ]);
     }

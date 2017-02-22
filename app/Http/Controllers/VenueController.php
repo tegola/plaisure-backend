@@ -14,13 +14,7 @@ class VenueController extends Controller
 {
 	public function index()
 	{
-		return view('site.home', [
-			'lat' => session('user.lat', null),
-			'lng' => session('user.lng', null),
-			'what' => session('search.what', null),
-			'near' => session('search.near', null),
-			'distance' => session('search.distance', null)
-		]);
+		return view('site.home');
 	}
 
 	public function suggestions(Request $request)

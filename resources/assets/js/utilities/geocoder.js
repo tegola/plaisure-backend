@@ -1,14 +1,20 @@
 import $ from 'jquery' // FIXME: Remove jquery dependency
 
 const errorMsg = 'Location not found.'
-const googleGeocodeUrl = 'http://maps.googleapis.com/maps/api/geocode/json'
+const googleGeocoderUrl = 'http://maps.googleapis.com/maps/api/geocode/json'
+const googleGeocoderOptions = {
+	language: 'it',
+	region: 'it'
+}
 
 function geocode(address, callback) {
 	if (!address) return null
 
-	$.get(googleGeocodeUrl, {
+	const opts = $.extend(googleGeocoderOptions, {
 		address: address
-	}, (data) => {
+	})
+
+	$.get(googleGeocoderUrl, opts, (data) => {
 		if (data.status != 'OK' || !data.results) {
 			callback(new Error(data.error_message || errorMsg))
 		} else {
@@ -31,9 +37,11 @@ function geocodeByIp(callback) {
 function reverse(lat, lng, callback) {
 	if (!lat || !lng) return null
 
-	$.get(googleGeocodeUrl, {
+	const opts = $.extend(googleGeocoderOptions, {
 		latlng: [lat, lng].join()
-	}, (data) => {
+	})
+
+	$.get(googleGeocoderUrl, opts, (data) => {
 		if (data.status != 'OK' || !data.results) {
 			callback(new Error(data.error_message || errorMsg))
 		} else {
