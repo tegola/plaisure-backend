@@ -3,6 +3,7 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 import SearchForm from './search-form.vue'
 
 // Register Vue Google Maps
+// FIXME: Pass region per site and language per user locale
 Vue.use(VueGoogleMaps, {
 	load: {
 		key: pg.config.googleMapsApiKey,

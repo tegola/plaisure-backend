@@ -2,9 +2,11 @@ import $ from 'jquery' // FIXME: Remove jquery dependency
 
 const errorMsg = 'Location not found.'
 const googleGeocoderUrl = 'http://maps.googleapis.com/maps/api/geocode/json'
+// FIXME: Pass region per site and language per user locale
 const googleGeocoderOptions = {
-	language: 'it',
-	region: 'it'
+	key: pg.config.googleMapsApiKey,
+	language: pg.config.locale,
+	region: pg.config.locale
 }
 
 function geocode(address, callback) {

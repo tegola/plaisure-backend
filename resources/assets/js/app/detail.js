@@ -3,6 +3,7 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 import SearchForm from './explore/search-form.vue' // FIXME: make it a common file
 
 // Register Vue Google Maps
+// FIXME: Pass region per site and language per user locale
 Vue.use(VueGoogleMaps, {
 	load: {
 		key: pg.config.googleMapsApiKey,
@@ -20,14 +21,14 @@ new Vue({
 	},
 
 	data: {
-		mapCenter: {
-			lat: pg.lat,
-			lng: pg.lng,
-		},
+		lat: pg.lat,
+		lng: pg.lng,
+		what: pg.what,
+		near: pg.near,
 		mapOptions: {
-			scrollwheel: false,
-			mapTypeControl: false,
-			streetViewControl: false
+			disableDefaultUI: true,
+			draggable: false,
+			scrollwheel: false
 		}
 	}
 })

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Site;
 
 use Illuminate\Http\Request;
 use Auth;
+
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {

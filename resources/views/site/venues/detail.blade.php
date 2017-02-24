@@ -56,7 +56,9 @@
 	</div>
 
 	<div class="embed-responsive embed-responsive-21by9">
-		<div class="map embed-responsive-item" data-lat="{{ $venue->geo_latitude }}" data-lng="{{ $venue->geo_longitude }}"></div>
+		<gmap-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
+			<gmap-marker :position="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }">
+		</gmap-map>
 	</div>
 
 	<div class="row">

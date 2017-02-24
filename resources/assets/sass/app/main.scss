@@ -20,6 +20,7 @@
 @import "../../../../node_modules/bootstrap/scss/buttons";
 
 @import "scaffolding";
+@import "google-maps-reset";
 
 // Components
 @import "../../../../node_modules/bootstrap/scss/transitions";
@@ -45,10 +46,11 @@
 @import "components/icons";
 @import "components/footer";
 @import "components/forms";
-@import "components/google-autocomplete";
+@import "components/google-maps-autocomplete";
 @import "components/logo";
 @import "components/navbar";
 @import "components/typeahead";
+@import "components/venue-infowindow";
 
 // Components w/ JavaScript
 @import "../../../../node_modules/bootstrap/scss/modal";

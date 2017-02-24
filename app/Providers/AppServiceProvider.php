@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Javascript;
 use Illuminate\Support\ServiceProvider;
+use App;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
         //
         Javascript::put([
             'config' => [
-                'locale' => config('app.locale'),
+                'locale' => App::getLocale(),
                 'googleMapsApiKey' => config('constants.google_maps_api_key'),
                 'defaultMapCenter' => [
                     'lat' => 41.2053112,

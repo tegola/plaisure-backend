@@ -14,17 +14,19 @@
 Route::group(['middleware' => ['web']], function(){
 	// Site
 	Route::group(['as' => 'site.'], function(){
-		Route::get('',                   ['as' => 'home',        'uses' => 'VenueController@index']);
+		Route::get('',                   ['as' => 'home',               'uses' => 'Site\HomeController@render']);
 
-		Route::get('venues/suggestions', ['as' => 'venues.suggestions', 'uses' => 'VenueController@suggestions']);
-		Route::get('venues/explore',     ['as' => 'venues.explore',     'uses' => 'VenueController@explore']);
-		Route::get('venues/claim',       ['as' => 'venues.claim',       'uses' => 'VenueController@claim']);
-		Route::get('venues/{venue}',     ['as' => 'venues.detail',      'uses' => 'VenueController@detail']); // TODO: /v/nome-sala/hash_per_id
+		Route::get('venues/suggestions', ['as' => 'venues.suggestions', 'uses' => 'Site\SearchController@suggestions']);
+		Route::get('venues/explore',     ['as' => 'venues.explore',     'uses' => 'Site\ExploreController@render']);
+		Route::get('venues/search',      ['as' => 'venues.search',      'uses' => 'Site\ExploreController@search']);
+		Route::get('venues/claim',       ['as' => 'venues.claim',       'uses' => 'Site\ClaimController@render']);
+		Route::get('venues/{venue}',     ['as' => 'venues.detail',      'uses' => 'Site\DetailController@render']); // TODO: /v/nome-sala/hash_per_id
 
-		Route::get('about/company',      ['as' => 'about.company', 'uses' => 'AboutController@about']);
-		Route::get('about/contact',      ['as' => 'about.contact', 'uses' => 'AboutController@contact']);
+		Route::get('about/company',      ['as' => 'about.company',      'uses' => 'Site\AboutController@company']);
+		Route::get('about/contact',      ['as' => 'about.contact',      'uses' => 'Site\AboutController@contact']);
 
-		Route::get('user',               ['as' => 'user', 'uses' => 'UserController@index']);
+		Route::get('user',               ['as' => 'user',               'uses' => 'Site\UserController@index']);
+
 	});
 
 	// Admin

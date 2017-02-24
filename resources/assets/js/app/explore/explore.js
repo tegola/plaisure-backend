@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import SearchForm from './search-form.vue'
@@ -5,6 +6,7 @@ import formatDistance from '../../utilities/format-distance'
 import singularOrPlural from '../../utilities/singular-or-plural'
 
 // Register Vue Google Maps
+// FIXME: Pass region per site and language per user locale
 Vue.use(VueGoogleMaps, {
 	load: {
 		key: pg.config.googleMapsApiKey,
@@ -29,7 +31,13 @@ new Vue({
 		venues: pg.venues,
 		mapOptions: {
 			mapTypeControl: false,
-			streetViewControl: false
+			streetViewControl: false,
+			styles: [
+				{ // Hide points of interest
+					'featureType': 'poi',
+					'stylers': [{ 'visibility': 'off' }]
+				}
+			]
 		},
 		currentVenue: null
 	},
@@ -68,7 +76,23 @@ new Vue({
 
 	methods: {
 		loadMore() {
-			console.log('loadMore')
+			const self = this;
+			const nextPage = this.venues.next_page_url ? this.venues.current_page + 1 : null
+
+			if (!nextPage) {
+				return
+			}
+
+			$.get('/venues/search', {
+				page: nextPage,
+				what: this.what,
+				lat: this.lat,
+				lng: this.lng,
+				near: this.near
+			}, (venues) => {
+				console.log(venues)
+				self.venues = venues
+			})
 		},
 
 		select(venue) {
@@ -79,34 +103,5 @@ new Vue({
 			console.log('aggiungo ai preferiti', venue)
 		}
 	}
-	/*
-	// Make the "load more" button actually load inline
-	$('[data-action="load-more"]').on('click', function(){
-		var button = $(this)
-		var resultsContainer = $('#results')
-		var url = button.attr('href')
-
-		$.get(url).then(function(data){
-			// Update url
-			history.pushState({}, '', url)
-
-			// Update list
-			var resultsHtml = $('#results', data)[0].innerHTML
-			resultsContainer.append(resultsHtml)
-
-			// Update load more button
-			var newButton = $('[data-action="load-more"]', data)
-			if (!newButton || newButton.attr('href') == url) {
-				button.remove()
-			} else {
-				button.attr('href', newButton.attr('href'))
-			}
-
-			// FIXME: Update map
-		})
-
-		return false
-	})
-	*/
 })
 

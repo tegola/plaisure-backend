@@ -56,31 +56,26 @@
 					</div>
 				</div>
 
-				@if ($venues->hasMorePages())
-					<div class="text-center">
+				<div v-if="venues.next_page_url" class="venue">
+					<div class="venue-body">
 						<button class="btn btn-outline-primary" @click="loadMore">Carica altri risultati&hellip;</button>
 					</div>
-				@endif
+				</div>
 			</template>
 		</div>
 	</div>
 	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :options="mapOptions">
 		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" @click="select(venue)">
 			<gmap-info-window :opened="venue == currentVenue" v-cloak>
-				<div class="infowindow-content">
-					<h5>
-						<strong><a :href="'/venues/' + venue.id">@{{ venue.name }}</a></strong>
-					</h5>
-					<p v-if="venue.categories.length" class="small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
-					<p class="mb-0">
-						<strong v-if="venue.distance">@{{ venue.distance | formatDistance }}</strong>
-						@{{ venue.short_address }}
-					</p>
-					<p>
-						<button class="px-2 btn btn-outline-accent" title="Aggiungi ai preferiti" aria-label="Aggiungi ai preferiti" @click="toggleFavorite(venue)">
-							@include('site.icons.icon', ['name' => 'heart-outline'])
-						</button>
-					</p>
+				<div class="venue-infowindow">
+					<img class="venue-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
+
+					<h5 class="mt-2 mb-1"><strong><a :href="'/venues/' + venue.id">@{{ venue.name }}</a></strong></h5>
+					<p v-if="venue.categories.length" class="my-0 small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
+
+					<p class="my-2">@{{ venue.short_address }}</p>
+
+					<a class="btn btn-sm btn-outline-primary" :href="'/venues/' + venue.id">Dettagli</a>
 				</div>
 			</gmap-info-window>
 		</gmap-marker>

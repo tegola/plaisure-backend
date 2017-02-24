@@ -1,0 +1,13 @@
+.venue-infowindow {
+	width: 250px;
+	padding-top: $spacer / 2;
+	padding-bottom: $spacer / 2;
+	padding-left: 23px; // Visual center with google maps' infowindow right padding
+	text-align: center;
+}
+.venue-infowindow-icon {
+	width: 80px;
+	padding: 5px;
+	background-color: #76b1a2;
+	border-radius: 50%;
+}
