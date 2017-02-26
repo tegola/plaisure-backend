@@ -13,29 +13,24 @@
 
 Route::group(['middleware' => ['web']], function(){
 	// Site
-	Route::group(['as' => 'site.'], function(){
-		Route::get('',                   ['as' => 'home',               'uses' => 'Site\HomeController@render']);
-
-		Route::get('venues/suggestions', ['as' => 'venues.suggestions', 'uses' => 'Site\SearchController@suggestions']);
-		Route::get('venues/explore',     ['as' => 'venues.explore',     'uses' => 'Site\ExploreController@render']);
-		Route::get('venues/search',      ['as' => 'venues.search',      'uses' => 'Site\ExploreController@search']);
-		Route::get('venues/claim',       ['as' => 'venues.claim',       'uses' => 'Site\ClaimController@render']);
-		Route::get('venues/{venue}',     ['as' => 'venues.detail',      'uses' => 'Site\DetailController@render']); // TODO: /v/nome-sala/hash_per_id
-
-		Route::get('about/company',      ['as' => 'about.company',      'uses' => 'Site\AboutController@company']);
-		Route::get('about/contact',      ['as' => 'about.contact',      'uses' => 'Site\AboutController@contact']);
-
-		Route::get('user',               ['as' => 'user',               'uses' => 'Site\UserController@index']);
-
+	Route::group(['as' => 'site.', 'namespace' => 'Site'], function(){
+		Route::get('',                   'HomeController@render')->name('home');
+		Route::get('venues/suggestions', 'SearchController@suggestions')->name('venues.suggestions');
+		Route::get('venues/explore',     'ExploreController@render')->name('venues.explore');
+		Route::get('venues/search',      'ExploreController@search')->name('venues.search');
+		Route::get('venues/claim',       'ClaimController@render')->name('venues.claim');
+		Route::get('venues/{venue}',     'DetailController@render')->name('venues.detail'); // TODO: /v/nome-sala/hash_per_id
+		Route::get('about/company',      'AboutController@company')->name('about.company');
+		Route::get('about/contact',      'AboutController@contact')->name('about.contact');
+		Route::get('user',               'UserController@index')->name('user');
 	});
 
 	// Admin
 	Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function(){
-		Route::get('',                ['as' => 'home', 'uses' => 'AdminController@index']);
-
-		Route::any('venues/upload',   ['as' => 'venues.upload',   'uses' => 'VenueController@upload']);
-		Route::get('venues/maintain', ['as' => 'venues.maintain', 'uses' => 'VenueController@maintain']);
-		Route::post('venues/store',   ['as' => 'venues.store',    'uses' => 'VenueController@store']);
+		Route::get('',                'AdminController@index')->name('home');
+		Route::any('venues/upload',   'VenueController@upload')->name('venues.upload');
+		Route::get('venues/maintain', 'VenueController@maintain')->name('venues.maintain');
+		Route::post('venues/store',   'VenueController@store')->name('venues.store');
 	});
 });
  

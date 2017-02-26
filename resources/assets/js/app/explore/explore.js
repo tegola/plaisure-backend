@@ -50,11 +50,7 @@ new Vue({
 					lng: this.lng
 				}
 			} else {
-				// Default to italy
-				return {
-					lat: 41.2053112,
-					lng: 8.0860841
-				}
+				return pg.config.defaultMapCenter
 			}
 		},
 		mapZoom() {

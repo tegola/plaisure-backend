@@ -13,78 +13,58 @@ use App\Http\Controllers\Controller;
 
 class ExploreController extends Controller
 {
-	public function render(Request $request)
+	public function __construct(Request $request) {
+		$this->page = $request->page ?: 1;
+		$this->what = $request->what;
+		$this->lat = floatval($request->lat);
+		$this->lng = floatval($request->lng);
+		$this->near = $request->near;
+		$this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
+		//$this->bounds = $request->bounds;
+	}
+
+	public function render()
 	{
-		$what = $request->what;
-		$lat = floatval($request->lat);
-		$lng = floatval($request->lng);
-		$near = $request->near;
-		//$bounds = $request->bounds;
-		$distance = config('constants.search_default_distance'); // FIXME: Move to bounds
-
-		// No specified location or missing coordinates
-		if (!$near && !$lat && !$lng) {
-			return redirect()->route('site.home'); // FIXME: Find user location and prefill the textbox
-		}
-
-		// Missing coordinates, find them by address
-		if ($near && !$lat && !$lng && $position = $this->getLatLngFromAddress($near)) {
-			$lat = $position['lat'];
-			$lng = $position['lng'];
-		}
-
-		// Find venues complete with categories
-		$venues = Venue::withNameOrCategory($what)
-			->near($lat, $lng, $distance)
-			->with('categories')
-			->simplePaginate();
-			// ->take(20)
-			// ->get();
+		// Search
+		$venues = $this->search();
 
 		// Pass venues to javascript
 		Javascript::put([
-			'lat' => $lat,
-			'lng' => $lng,
-			'what' => $what,
-			'near' => $near,
-			'distance' => $distance,
+			'lat' => $this->lat,
+			'lng' => $this->lng,
+			'what' => $this->what,
+			'near' => $this->near,
 			'venues' => $venues->toArray()
 		]);
 
 		return view('site.venues.explore', [
-			'lat' => $lat,
-			'lng' => $lng,
-			'what' => $what,
-			'near' => $near,
-			'venues' => $venues
+			//'lat' => $this->lat,
+			//'lng' => $this->lng,
+			'what' => $this->what,
+			'near' => $this->near,
+			'venues' => $venues,
+			'categories' => Category::all()
 		]);
 	}
 
-	public function search(Request $request)
+	public function search()
 	{
-		$page = $request->page ?: 1;
-		$what = $request->what;
-		$lat = floatval($request->lat);
-		$lng = floatval($request->lng);
-		$near = $request->near;
-		$distance = config('constants.search_default_distance'); // FIXME: Move to bounds
-
 		// No specified location or missing coordinates, return empty array
-		if (!$near && !$lat && !$lng) {
+		if (!$this->near && !$this->lat && !$this->lng) {
 			return [];
 		}
 
-		// Missing coordinates, find them by address
-		if ($near && !$lat && !$lng && $position = $this->getLatLngFromAddress($near)) {
-			$lat = $position['lat'];
-			$lng = $position['lng'];
+		// Missing coordinates, find them by address, or return empty array
+		if ($this->near && !$this->lat && !$this->lng && $position = $this->getLatLngFromAddress($this->near)) {
+			$this->lat = $position['lat'];
+			$this->lng = $position['lng'];
 		}
 
 		// Find venues complete with categories
-		return Venue::withNameOrCategory($what)
-			->near($lat, $lng, $distance)
+		return Venue::withNameOrCategory($this->what)
+			->near($this->lat, $this->lng, $this->distance)
 			->with('categories')
-			->simplePaginate(20, ['*'], 'page', $page); // paginate() does not work with the 'distance' column
+			->simplePaginate(20, ['*'], 'page', $this->page); // paginate() does not work with the 'distance' column
 	}
 
 	/**

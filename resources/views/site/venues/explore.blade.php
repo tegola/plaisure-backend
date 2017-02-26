@@ -11,6 +11,18 @@
 
 @include('site.venues._navbar', ['fluid' => 'true'])
 
+<div class="navbar align-items-start">
+	<div class="form-group">
+		<label>Tipo</label>
+		<select class="form-control" name="category">
+			<option value="">Tutti</option>
+			@foreach($categories as $category)
+				<option value="{{ $category->id }}">{{ $category->name }}</option>
+			@endforeach
+		</select>
+	</div>
+</div>
+
 <div class="wrapper">
 	<div class="venue-list">
 		<div class="container-fluid">
