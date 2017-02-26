@@ -20,6 +20,16 @@
 		display: none;
 	}
 
+	// Filters
+	.filterbar {
+		background-color: $body-bg;
+		z-index: $zindex-navbar; // Stay above venue list
+		display: flex;
+		flex-direction: row; // column on small screens
+		padding: $navbar-padding-y $navbar-padding-x;
+		box-shadow: 0 1px 0 rgba(black, .08);
+	}
+
 	@include media-breakpoint-up(md) {
 		display: flex;
 
@@ -38,7 +48,7 @@
 			padding-top: $spacer;
 			padding-bottom: $spacer;
 			background-clip: padding-box;
-			box-shadow: 1px 0 0 rgba(black, 0.08), 0 10px 30px rgba(black, .15);
+			box-shadow: 1px 0 0 rgba(black, 0.08);
 			z-index: 1;
 
 			@include make-col(5);

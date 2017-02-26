@@ -11,15 +11,26 @@
 
 @include('site.venues._navbar', ['fluid' => 'true'])
 
-<div class="navbar align-items-start">
-	<div class="form-group">
-		<label>Tipo</label>
-		<select class="form-control" name="category">
-			<option value="">Tutti</option>
-			@foreach($categories as $category)
-				<option value="{{ $category->id }}">{{ $category->name }}</option>
-			@endforeach
-		</select>
+<div class="filterbar">
+	<div class="form-inline justify-content-between">
+		<div class="form-group">
+			<label>Tipo</label>
+			<select class="form-control" name="category">
+				<option value="">Tutti</option>
+				@foreach($categories as $category)
+					<option value="{{ $category->id }}">{{ $category->name }}</option>
+				@endforeach
+			</select>
+		</div>
+		<div class="form-group">
+			<label></label>
+			<div class="form-check">
+				<label class="form-check-label">
+					<input type="checkbox" class="form-check-input" name="follow_map" value="1">
+					Cerca mentre mi sposto sulla mappa
+				</label>
+			</div>
+		</div>
 	</div>
 </div>
 

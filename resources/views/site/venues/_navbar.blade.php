@@ -5,6 +5,7 @@
 		<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('constants.name') }}">
 			@include('site.vectors.logo', ['class' => 'navbar-logo'])
 		</a>
+		<pg-search-form class="navbar-search" action="{{ route('site.venues.explore') }}" :lat="lat" :lng="lng" :what="what" :near="near"></pg-search-form>
 		<div>
 			@if (Auth::guest())
 				<a class="btn btn-outline-neutral" href="{{ url('/login') }}">Accedi</a>
@@ -30,7 +31,7 @@
 	</div>
 	@endif
 </nav>
-
+{{-- 
 <div class="navbar navbar-secondary">
 	@if (!isset($fluid))
 	<div class="container">
@@ -40,3 +41,4 @@
 	</div>
 	@endif
 </div>
+--}}

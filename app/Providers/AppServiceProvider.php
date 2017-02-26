@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
                 'locale' => App::getLocale(),
                 'googleMapsApiKey' => config('constants.google_maps_api_key'),
                 'defaultMapCenter' => [
+                    // Italy
                     'lat' => 41.2053112,
                     'lng' => 8.0860841
                 ]
