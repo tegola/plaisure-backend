@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
-	public function render()
+	public function index()
 	{
 		return view('site.home');
 	}

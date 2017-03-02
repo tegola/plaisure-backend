@@ -10,13 +10,14 @@
 			:autofocus="autofocus"
 			autocomplete="off"
 			v-model="query"
-			@focus="setFocus(true)"
-			@blur="setFocus(false)"
 			@keydown.down="down"
 			@keydown.up="up"
+			@keydown.esc="esc"
 			@keydown.enter="select"
-			@input="input">
-		<div v-if="isOpen" class="dropdown-menu w-100">
+			@input="input"
+			@focus="focus"
+			@blur="blur">
+		<div v-if="open && items.length" class="dropdown-menu w-100">
 			<component v-for="(item, index) in items"
 				:is="itemComponent"
 				:item="item"
@@ -48,6 +49,7 @@
 
 		data() {
 			return {
+				open: false,
 				focused: false,
 				query: this.value,
 				current: -1
@@ -55,9 +57,6 @@
 		},
 
 		watch: {
-			value(value) {
-				this.query = value
-			},
 			items() {
 				this.current = -1
 			}
@@ -70,11 +69,8 @@
 			dropdownClass() {
 				return {
 					'dropdown': true,
-					'show': this.isOpen
+					'show': this.open && this.items.length
 				}
-			},
-			isOpen() {
-				return this.focused && this.items.length > 0
 			}
 		},
 
@@ -86,14 +82,20 @@
 			},
 
 			input() {
-				this.focused = true // make sure the dropdown is open (see the select() function below)
+				this.open = true
 				this.$emit('input', this.query)
+			},
+
+			esc() {
+				this.open = false
 			},
 
 			up(e) {
 				if (this.items.length) {
+					this.open = true
 					e.preventDefault()
 				}
+
 				if (this.current > 0) {
 					this.current--
 				} else if (this.current === -1) {
@@ -105,8 +107,10 @@
 
 			down(e) {
 				if (this.items.length) {
+					this.open = true
 					e.preventDefault()
 				}
+
 				if (this.current < this.items.length - 1) {
 					this.current++
 				} else {
@@ -114,19 +118,25 @@
 				}
 			},
 
+			focus() {
+				if (this.items.length) {
+					this.open = true
+				}
+			},
+
+			blur() {
+				this.open = false
+			},
+
 			select() {
 				if (this.current === -1) return
 
+				this.open = false
 				this.$emit('select', this.items[this.current])
-				this.focused = false // Force-close dropdown
 			},
 
 			setActive(index) {
 				this.current = index
-			},
-
-			setFocus(focused) {
-				this.focused = focused
 			}
 		}
 	}

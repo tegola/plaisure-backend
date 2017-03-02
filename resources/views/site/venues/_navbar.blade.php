@@ -1,11 +1,30 @@
-<nav class="navbar navbar-toggleable navbar-main navbar-dark navbar-slim d-md-flex justify-content-between">
-	@if (!isset($fluid))
-	<div class="container d-md-flex justify-content-between">
+@php
+	if (!isset($fluid)) $fluid = false;
+	if (!isset($class)) $class = 'navbar-dark navbar-slim';
+	if (!isset($show_search)) $show_search = true;
+@endphp
+
+<nav class="navbar navbar-toggleable-md {{ $class }}">
+	@if (!$fluid)
+	<div class="container">
 	@endif
-		<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('constants.name') }}">
+		<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
 			@include('site.vectors.logo', ['class' => 'navbar-logo'])
 		</a>
-		<pg-search-form class="navbar-search" action="{{ route('site.venues.explore') }}" :lat="lat" :lng="lng" :what="what" :near="near"></pg-search-form>
+		<form class="navbar-search" action="{{ route('site.venues.explore') }}">
+			<input type="hidden" name="lat" :value="latitude">
+			<input type="hidden" name="lng" :value="longitude">
+
+			<gmap-autocomplete
+				class="form-control form-control-lg navbar-search-form-control"
+				ref="locationAutocomplete"
+				name="near"
+				placeholder="Cerca vicino a..."
+				:value="near"
+				:options="{ types: ['geocode'] }"
+				@place_changed="onSuggestionSelect">
+			</gmap-autocomplete>
+		</form>
 		<div>
 			@if (Auth::guest())
 				<a class="btn btn-outline-neutral" href="{{ url('/login') }}">Accedi</a>
@@ -27,18 +46,7 @@
 				</span>
 			@endif
 		</div>
-	@if (!isset($fluid))
+	@if (!$fluid)
 	</div>
 	@endif
 </nav>
-{{-- 
-<div class="navbar navbar-secondary">
-	@if (!isset($fluid))
-	<div class="container">
-	@endif
-		<pg-search-form action="{{ route('site.venues.explore') }}" :lat="lat" :lng="lng" :what="what" :near="near"></pg-search-form>
-	@if (!isset($fluid))
-	</div>
-	@endif
-</div>
---}}

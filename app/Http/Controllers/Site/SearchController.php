@@ -25,7 +25,7 @@ class SearchController extends Controller
 		if ($what) {
 			$venues = Venue::with('categories')->withNameOrCategory($what);
 			if ($lat && $lng) {
-				$venues = $venues->near($lat, $lng, 20);
+				$venues = $venues->near($lat, $lng, config('constants.search_default_distance'));
 			}
 			$venues = $venues->take(5)->get();
 			$categories = Category::where('name', 'like', "%{$what}%")->take(5)->get();

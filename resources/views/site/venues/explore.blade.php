@@ -1,7 +1,7 @@
 @extends('site.layout')
 
 @section('body_class', 'page-explore')
-@section('title', $what ? "Risultati per {$what} a {$near}" : "Tutti i risultati vicino {$near}")
+@section('title', $near)
 
 @section('scripts')
 <script src="{{ mix('js/app/explore.js') }}"></script>
@@ -11,9 +11,9 @@
 
 @include('site.venues._navbar', ['fluid' => 'true'])
 
-<div class="filterbar">
-	<div class="form-inline justify-content-between">
-		<div class="form-group">
+<div class="filterbar d-flex align-items-center justify-content-between">
+	<div class="form-inline d-flex align-items-center">
+		<div class="form-group mr-2">
 			<label>Tipo</label>
 			<select class="form-control" name="category">
 				<option value="">Tutti</option>
@@ -23,15 +23,15 @@
 			</select>
 		</div>
 		<div class="form-group">
-			<label></label>
-			<div class="form-check">
-				<label class="form-check-label">
-					<input type="checkbox" class="form-check-input" name="follow_map" value="1">
-					Cerca mentre mi sposto sulla mappa
-				</label>
-			</div>
+			<label class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" v-model="followMap">
+				<span class="custom-control-indicator"></span>
+				<span class="custom-control-description">Cerca mentre sposto la mappa</span>
+			</label>
 		</div>
+		<div>@{{ latitude }} - @{{ longitude }}</div>
 	</div>
+	<button v-if="!followMap" class="btn btn-secondary" @click="load">Cerca in questa zona</button>
 </div>
 
 <div class="wrapper">
@@ -53,7 +53,7 @@
 				Nessun risultato
 			</template>
 			<template v-else>
-				<div v-for="venue in venues.data" class="venue">
+				<div v-for="venue in venues.data" class="venue" @mouseover="highlight(venue)" @mouseout="highlight()">
 					<img class="venue-icon" :src="'/img/avatars/' + venue.category_icon_name">
 
 					<div class="venue-body">
@@ -87,9 +87,9 @@
 			</template>
 		</div>
 	</div>
-	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :options="mapOptions">
-		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" @click="select(venue)">
-			<gmap-info-window :opened="venue == currentVenue" v-cloak>
+	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :options="mapOptions" @bounds_changed="onMapBoundsChange" @center_changed="onMapCenterChange">
+		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue == highlightedVenue ? '*' : null" @click="select(venue)">
+			<gmap-info-window :opened="venue == selectedVenue" v-cloak>
 				<div class="venue-infowindow">
 					<img class="venue-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
 

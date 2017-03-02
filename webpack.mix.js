@@ -14,8 +14,8 @@ const { mix } = require('laravel-mix');
 // App
 mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
 	.js('resources/assets/js/app/base.js', 'public/js/app/base.js')
-	.js('resources/assets/js/app/home/home.js', 'public/js/app/home.js')
-	.js('resources/assets/js/app/explore/explore.js', 'public/js/app/explore.js')
+	.js('resources/assets/js/app/home.js', 'public/js/app/home.js')
+	.js('resources/assets/js/app/explore.js', 'public/js/app/explore.js')
 	.js('resources/assets/js/app/detail.js', 'public/js/app/detail.js')
 	.autoload({
 		'jquery': ['$', 'jQuery'],

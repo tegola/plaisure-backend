@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 
-		<title>{{ config('constants.name') }} - Amministrazione - @yield('title')</title>
+		<title>{{ config('app.name') }} - Amministrazione - @yield('title')</title>
 
 		<link rel="stylesheet" href="{{ mix('css/admin.css') }}">
 	</head>
@@ -14,7 +14,7 @@
 			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<a class="navbar-brand" href="{{ route('admin.home') }}">{{ config('constants.name') }} - Amministrazione</a>
+			<a class="navbar-brand" href="{{ route('admin.home') }}">{{ config('app.name') }} - Amministrazione</a>
 
 			<div class="collapse navbar-collapse" id="navbar-collapse">
 				<ul class="navbar-nav mr-auto">

@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 class DetailController extends Controller
 {
-	public function render(Venue $venue) {
+	public function index(Venue $venue) {
 		// Get nearby venues
 		$nearby_venues = Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
 			->where('id', '!=', $venue->id)

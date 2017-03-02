@@ -23,7 +23,7 @@ class ExploreController extends Controller
 		//$this->bounds = $request->bounds;
 	}
 
-	public function render()
+	public function index()
 	{
 		// Search
 		$venues = $this->search();
@@ -51,7 +51,7 @@ class ExploreController extends Controller
 	{
 		// No specified location or missing coordinates, return empty array
 		if (!$this->near && !$this->lat && !$this->lng) {
-			return [];
+			return response()->json([]);
 		}
 
 		// Missing coordinates, find them by address, or return empty array

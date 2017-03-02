@@ -17,6 +17,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Javascript::put([
+            'app' => [
+                'name' => config('app.name')
+            ],
             'config' => [
                 'locale' => App::getLocale(),
                 'googleMapsApiKey' => config('constants.google_maps_api_key'),

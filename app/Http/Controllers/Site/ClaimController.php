@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class ClaimController extends Controller
 {
-	public function render() {
+	public function index() {
 		return view('site.venues.claim');
 	}
 }
