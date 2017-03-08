@@ -29,7 +29,6 @@
 				<span class="custom-control-description">Cerca mentre sposto la mappa</span>
 			</label>
 		</div>
-		<div>@{{ latitude }} - @{{ longitude }}</div>
 	</div>
 	<button v-if="!followMap" class="btn btn-secondary" @click="load">Cerca in questa zona</button>
 </div>
@@ -37,6 +36,7 @@
 <div class="wrapper">
 	<div class="venue-list">
 		<div class="container-fluid">
+			<pre>@{{ mapBounds }}</pre>
 			<h5>
 				<template v-if="what">
 					@{{ venues.length }} @{{ venues.length | singularOrPlural('risultato', 'risultati') }}
@@ -79,7 +79,7 @@
 					</div>
 				</div>
 
-				<div v-if="venues.next_page_url" class="venue">
+				<div v-if="hasMorePages" class="venue">
 					<div class="venue-body">
 						<button class="btn btn-outline-primary" @click="loadMore">Carica altri risultati&hellip;</button>
 					</div>
@@ -87,7 +87,7 @@
 			</template>
 		</div>
 	</div>
-	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :options="mapOptions" @bounds_changed="onMapBoundsChange" @center_changed="onMapCenterChange">
+	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
 		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue == highlightedVenue ? '*' : null" @click="select(venue)">
 			<gmap-info-window :opened="venue == selectedVenue" v-cloak>
 				<div class="venue-infowindow">

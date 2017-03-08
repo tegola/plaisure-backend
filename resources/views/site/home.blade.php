@@ -9,7 +9,7 @@
 @section('content')
 
 <div class="hero">
-	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :options="mapOptions"></gmap-map>
+	<gmap-map class="map" :center="center" :zoom="zoom" :options="mapOptions"></gmap-map>
 	<nav class="navbar navbar-transparent">
 		<div class="container d-flex justify-content-between align-items-center">
 			<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
@@ -60,8 +60,12 @@
 		</div>
 
 		<form class="form-search" action="{{ route('site.venues.explore') }}" method="get" @submit="onSubmit">
-			<input type="hidden" name="lat" :value="latitude">
-			<input type="hidden" name="lng" :value="longitude">
+			<input type="hidden" name="center_lat" v-model="center.lat">
+			<input type="hidden" name="center_lng" v-model="center.lng">
+			<input type="hidden" name="ne_lat" v-model="ne.lat">
+			<input type="hidden" name="ne_lng" v-model="ne.lng">
+			<input type="hidden" name="sw_lat" v-model="sw.lat">
+			<input type="hidden" name="sw_lng" v-model="sw.lng">
 			<div class="row">
 				<div class="col-xs-12 offset-md-1 col-md-5 col-lg-4">
 					<div class="form-group">

@@ -40,10 +40,9 @@ new Vue({
 		},
 		isSearchingLocation: false,
 		isLocationFound: false,
-		latitude: 0,
-		longitude: 0,
-
-		// Italy
+		center: { lat: pg.config.defaultMapCenter.lat, lng: pg.config.defaultMapCenter.lng },
+		ne: { lat: null, lng: null },
+		sw: { lat: null, lng: null },
 		mapOptions: {
 			disableDefaultUI: true,
 			scrollwheel: false,
@@ -71,18 +70,8 @@ new Vue({
 	},
 
 	computed: {
-		mapCenter(){
-			if (this.latitude && this.longitude) {
-				return {
-					lat: this.latitude,
-					lng: this.longitude
-				}
-			} else {
-				return pg.config.defaultMapCenter
-			}
-		},
-		mapZoom() {
-			return (this.latitude && this.longitude) ? 15 : 5
+		zoom() {
+			return this.center.lat && this.center.lng ? 15 : 5
 		},
 		locateButtonIcon() {
 			return this.isSearchingLocation ? 'circle-outline-notch' : this.isLocationFound ? 'location' : 'location-outline'
@@ -91,35 +80,36 @@ new Vue({
 			return this.isSearchingLocation || this.isLocationFound
 		},
 		isSubmitButtonDisabled() {
-			return !this.latitude || !this.longitude
+			return !this.center.lat || !this.center.lng
 		}
 	},
 
 	methods: {
 		locate() {
-			const self = this
 			this.isSearchingLocation = true
 
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
-					self.latitude = position.coords.latitude
-					self.longitude = position.coords.longitude
+					this.center = {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					}
 
 					// Find city name and use it to fill the City field
-					geocoder.reverse(self.latitude, self.longitude, (error, location) => {
-						self.isLocationFound = location ? true : false
-						self.isSearchingLocation = false
+					geocoder.reverse(this.center.lat, this.center.lng, (error, location) => {
+						this.isLocationFound = location ? true : false
+						this.isSearchingLocation = false
 
 						if (error) {
 							alert(locationNotFoundMsg)
 						} else {
-							self.locationQuery = location.administrativeLevels.level3long // FIXME: Use street and city
+							this.locationQuery = location.administrativeLevels.level3long // FIXME: Use street and city
 						}
 					})
 				},
 				() => {
-					self.isSearchingLocation = false
-					self.isLocationFound = false
+					this.isSearchingLocation = false
+					this.isLocationFound = false
 					alert(locationNotFoundMsg)
 				},
 				{
@@ -140,8 +130,12 @@ new Vue({
 			// Load suggestions and use them
 			$.get('/venues/suggestions', {
 				what: value,
-				lat: this.latitude,
-				lng: this.longitude,
+				center_lat: this.center.lat,
+				center_lng: this.center.lng,
+				sw_lat: this.sw.lat,
+				sw_lng: this.sw.lng,
+				ne_lat: this.ne.lat,
+				ne_lng: this.ne.lng,
 				near: this.locationQuery
 			}).done((data) => {
 				this.venueSuggestions = data
@@ -159,29 +153,32 @@ new Vue({
 			this.venueQuery = item.name
 		},
 
-		selectLocationSuggestion(item) {
-			if (!item.geometry) {
-				return
-			}
+		selectLocationSuggestion(suggestion) {
+			const viewport = suggestion.geometry.viewport
 
-			// Get location
-			this.latitude = item.geometry.location.lat()
-			this.longitude = item.geometry.location.lng()
+			this.center = this._extractCoords(viewport.getCenter())
+			this.ne = this._extractCoords(viewport.getNorthEast())
+			this.sw = this._extractCoords(viewport.getSouthWest())
 
 			// Get the input value as a shortcut for the formatted address
 			this.locationQuery = this.$refs.locationAutocomplete.$refs.input.value
 		},
 
 		onSubmit(e) {
-			if (!this.locationQuery || !this.latitude || !this.longitude) {
+			if (!this.locationQuery || !this.center) {
 				e.preventDefault()
+			}
+		},
+
+		_extractCoords(input) {
+			return {
+				lat: input.lat(),
+				lng: input.lng()
 			}
 		}
 	},
 
 	mounted() {
-		const self = this
-
 		// Prevent submitting the form when the locations dropdown is open
 		// (key events are not handled by gmap-autocomplete)
 		$(this.$refs.locationAutocomplete.$refs.input).on('keydown', (e) => {
@@ -191,16 +188,17 @@ new Vue({
 		})
 
 		// If no location is set, find a generic one using IP info
-		// FIXME: move outside
-		if (!this.latitude || !this.longitude || !this.locationQuery) {
+		if ((!this.center.lat && !this.center.lng) || !this.locationQuery) {
 			geocoder.geocodeByIp((error, location) => {
 				if (!location) return
 
-				self.latitude = location.latitude
-				self.longitude = location.longitude
-				self.locationQuery = location.city
+				this.center = {
+					lat: location.latitude,
+					lng: location.longitude
+				}
+				this.locationQuery = location.city
 
-				self.$emit('locate', self.latitude, self.longitude, self.locationQuery)
+				this.$emit('locate', this.center.lat, this.center.lng, this.locationQuery)
 			})
 		}
 

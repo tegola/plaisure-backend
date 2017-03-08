@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import $ from 'jquery'
 import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
@@ -15,6 +16,7 @@ Vue.use(VueGoogleMaps, {
 	}
 })
 
+
 new Vue({
 	el: '.page-content',
 
@@ -26,9 +28,19 @@ new Vue({
 	data: {
 		latitude: pg.lat,
 		longitude: pg.lng,
-		what: pg.what,
-		near: pg.near,
 		venues: pg.venues,
+		what: pg.searchParams.what,
+		near: pg.searchParams.near,
+		mapCenter: {
+			lat: pg.searchParams.center_lat,
+			lng: pg.searchParams.center_lng
+		},
+		mapBounds: {
+			north: pg.searchParams.ne_lat,
+			east: pg.searchParams.ne_lng,
+			south: pg.searchParams.sw_lat,
+			west: pg.searchParams.sw_lng
+		},
 		mapOptions: {
 			mapTypeControl: false,
 			streetViewControl: false,
@@ -39,25 +51,20 @@ new Vue({
 				}
 			]
 		},
+		
 		followMap: true,
 		highlightedVenue: null,
 		selectedVenue: null
 	},
 
 	computed: {
-		mapCenter(){
-			if (this.latitude && this.longitude) {
-				return {
-					lat: this.latitude,
-					lng: this.longitude
-				}
-			} else {
-				return pg.config.defaultMapCenter
-			}
-		},
 		mapZoom() {
 			return (this.latitude && this.longitude) ? 15 : 5
-		}
+		},
+
+		hasMorePages() {
+			return this.venues.next_page_url ? true : false
+		},
 	},
 
 	watch: {
@@ -69,9 +76,9 @@ new Vue({
 
 	methods: {
 		onSuggestionSelect(item) {
-			// Get location
-			this.latitude = item.geometry ? item.geometry.location.lat() : null
-			this.longitude = item.geometry ? item.geometry.location.lng() : null
+			if (item.geometry && item.geometry.viewport) {
+				this.boundsToPositionData(item.geometry.viewport)
+			}
 
 			// Get the input value as a shortcut for the formatted address
 			this.near = this.$refs.locationAutocomplete.$refs.input.value
@@ -80,46 +87,58 @@ new Vue({
 			this.load()
 		},
 
-		onMapBoundsChange(viewport) {
-			//console.log(viewport)
+		onMapBoundsChange(bounds) {
+			this.boundsToPositionData(bounds)
+			this.load()
 		},
 
-		onMapCenterChange(location) {
-			console.log('map center change')
+		boundsToPositionData(bounds) {
+			//const center = bounds.getCenter()
+			const ne = bounds.getNorthEast()
+			const sw = bounds.getSouthWest()
 
-			// Save location
-			this.latitude = location.lat()
-			this.longitude = location.lng()
-
-			// TODO: Reload if "followMap" is active
+			/*
+			this.mapCenter = {
+				lat: center.lat(),
+				lng: center.lng()
+			}*/
+			this.mapBounds = {
+				north: ne.lat(),
+				east: ne.lng(),
+				south: sw.lat(),
+				west: sw.lng()
+			}
 		},
 
 		load(page = 1) {
-			$.get('/venues/search', {
-				page: page,
+			console.log('load')
+
+			const searchParams = {
 				what: this.what,
-				lat: this.latitude,
-				lng: this.longitude,
-				near: this.near
-			}, (venues) => {
+				near: this.near,
+				page: page,
+				//center_lat: this.mapCenter.lat,
+				//center_lng: this.mapCenter.lng,
+				ne_lat: this.mapBounds.north,
+				ne_lng: this.mapBounds.east,
+				sw_lat: this.mapBounds.south,
+				sw_lng: this.mapBounds.west,
+			}
+
+			// Load venues
+			$.get('/venues/search', searchParams, (venues) => {
 				this.venues = venues
 			})
 
-			this.updateUrl()
+			// Update url
+			const baseName = _.last(location.pathname.split('/'))
+			const params = $.param(searchParams, _.omit(['page']))
+
+			window.history.replaceState({}, '', `${baseName}?${params}`)
 		},
 
 		loadMore() {
 			this.load(this.venues.current_page + 1)
-		},
-
-		updateUrl() {
-			const params = $.param({
-				what: this.what,
-				lat: this.latitude,
-				lng: this.longitude,
-				near: this.near
-			})
-			window.history.replaceState({}, '', `explore?${params}`)
 		},
 
 		highlight(venue) {

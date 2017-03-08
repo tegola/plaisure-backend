@@ -14,8 +14,8 @@ class SearchController extends Controller
 	public function suggestions(Request $request)
 	{
 		$what = trim($request->what);
-		$lat = $request->lat;
-		$lng = $request->lng;
+		$center_lat = $request->center_lat;
+		$center_lng = $request->center_lng;
 		$near = $request->near;
 		$venues = [];
 		$categories = [];
@@ -24,8 +24,8 @@ class SearchController extends Controller
 		// Find venues and categories
 		if ($what) {
 			$venues = Venue::with('categories')->withNameOrCategory($what);
-			if ($lat && $lng) {
-				$venues = $venues->near($lat, $lng, config('constants.search_default_distance'));
+			if ($center_lat && $center_lng) {
+				$venues = $venues->near($center_lat, $center_lng, config('constants.search_default_distance'));
 			}
 			$venues = $venues->take(5)->get();
 			$categories = Category::where('name', 'like', "%{$what}%")->take(5)->get();

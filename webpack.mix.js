@@ -18,12 +18,14 @@ mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
 	.js('resources/assets/js/app/explore.js', 'public/js/app/explore.js')
 	.js('resources/assets/js/app/detail.js', 'public/js/app/detail.js')
 	.autoload({
+		'lodash': ['_', 'lodash'],
 		'jquery': ['$', 'jQuery'],
 		'tether': ['Tether'],
 		'vue': ['Vue'],
 		'vue2-google-maps': ['VueGoogleMaps']
 	})
 	.extract([
+		'lodash',
 		'jquery',
 		'vue',
 		'vue2-google-maps',

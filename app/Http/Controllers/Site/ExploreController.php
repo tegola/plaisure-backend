@@ -14,13 +14,16 @@ use App\Http\Controllers\Controller;
 class ExploreController extends Controller
 {
 	public function __construct(Request $request) {
-		$this->page = $request->page ?: 1;
 		$this->what = $request->what;
-		$this->lat = floatval($request->lat);
-		$this->lng = floatval($request->lng);
 		$this->near = $request->near;
+		$this->page = $request->page ?: 1;
 		$this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
-		//$this->bounds = $request->bounds;
+		$this->center_lat = $request->has('center_lat') ? floatval($request->center_lat) : null;
+		$this->center_lng = $request->has('center_lng') ? floatval($request->center_lng) : null;
+		$this->ne_lat = $request->has('ne_lat') ? floatval($request->ne_lat) : null;
+		$this->ne_lng = $request->has('ne_lng') ? floatval($request->ne_lng) : null;
+		$this->sw_lat = $request->has('sw_lat') ? floatval($request->sw_lat) : null;
+		$this->sw_lng = $request->has('sw_lng') ? floatval($request->sw_lng) : null;
 	}
 
 	public function index()
@@ -28,18 +31,25 @@ class ExploreController extends Controller
 		// Search
 		$venues = $this->search();
 
-		// Pass venues to javascript
-		Javascript::put([
-			'lat' => $this->lat,
-			'lng' => $this->lng,
+		$search_params = [
 			'what' => $this->what,
 			'near' => $this->near,
-			'venues' => $venues->toArray()
+			'page' => $this->page,
+			'center_lat' => $this->center_lat,
+			'center_lng' => $this->center_lng,
+			'ne_lat' => $this->ne_lat,
+			'ne_lng' => $this->ne_lng,
+			'sw_lat' => $this->sw_lat,
+			'sw_lng' => $this->sw_lng,
+		];
+
+		// Pass initial data to view
+		Javascript::put([
+			'searchParams' => $search_params,
+			'venues' => $venues
 		]);
 
 		return view('site.venues.explore', [
-			//'lat' => $this->lat,
-			//'lng' => $this->lng,
 			'what' => $this->what,
 			'near' => $this->near,
 			'venues' => $venues,
@@ -49,32 +59,46 @@ class ExploreController extends Controller
 
 	public function search()
 	{
-		// No specified location or missing coordinates, return empty array
-		if (!$this->near && !$this->lat && !$this->lng) {
-			return response()->json([]);
+		// Find missing center and bounds by searching for the location name
+		if ((!$this->ne_lat || !$this->ne_lng || !$this->sw_lat || !$this->sw_lng) && (!$this->center_lat || !$this->center_lng)) {
+			if ($this->near && $position = $this->getPositionFromAddress($this->near)) {
+				foreach($position as $key => $value) {
+					$this->$key = $value;
+				}
+			} else {
+				return response()->json([]);
+			}
 		}
 
-		// Missing coordinates, find them by address, or return empty array
-		if ($this->near && !$this->lat && !$this->lng && $position = $this->getLatLngFromAddress($this->near)) {
-			$this->lat = $position['lat'];
-			$this->lng = $position['lng'];
+		// Start loading venues
+		$venues = Venue::with('categories');
+
+		// Filter by bounds or by center
+		if ($this->ne_lat && $this->ne_lng && $this->sw_lat && $this->sw_lng) {
+			// Find in bounds
+			$venues->inBounds($this->ne_lat, $this->ne_lng, $this->sw_lat, $this->sw_lng);
+		} elseif ($this->center_lat && $this->center_lng) {
+			// Find from center plus distance
+			$venues->near($this->center_lat, $this->center_lng, $this->distance);
 		}
 
-		// Find venues complete with categories
-		return Venue::withNameOrCategory($this->what)
-			->near($this->lat, $this->lng, $this->distance)
-			->with('categories')
-			->simplePaginate(20, ['*'], 'page', $this->page); // paginate() does not work with the 'distance' column
+		// Filter by name or category
+		if ($this->what) {
+			$venues->withNameOrCategory($this->what);
+		}
+
+		// Return results
+		return $venues->simplePaginate(20, ['*'], 'page', $this->page); // paginate() does not work with the 'distance' column
 	}
 
 	/**
-	 * Try to get latitude and longitude of an address
-	 * but stop gracefully if it doesn't work
+	 * Try to get center and bounds  of an address but stop gracefully if it
+	 * doesn't work
 	 *
 	 * @param  String  $address
 	 * @return Array
 	 */
-	private function getLatLngFromAddress($address) {
+	private function getPositionFromAddress($address) {
 		$api_url = "https://maps.googleapis.com/maps/api/geocode/json";
 		// FIXME: Pass region per site and language per user locale
 		$querystring = http_build_query(array(
@@ -93,11 +117,15 @@ class ExploreController extends Controller
 		if ($geocode->status != 'OK') return;
 
 		// Find lat and lng
-		$location = $geocode->results[0]->geometry->location;
+		$geometry = $geocode->results[0]->geometry;
 
 		return [
-			'lat' => $location->lat,
-			'lng' => $location->lng
+			'center_lat' => $geometry->location->lat,
+			'center_lng' => $geometry->location->lng,
+			'ne_lat' => $geometry->bounds->northeast->lat,
+			'ne_lng' => $geometry->bounds->northeast->lng,
+			'sw_lat' => $geometry->bounds->southwest->lat,
+			'sw_lng' => $geometry->bounds->southwest->lng
 		];
 	}
 }

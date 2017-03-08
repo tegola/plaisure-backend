@@ -178,6 +178,16 @@ class Venue extends Model
 		return $final_url;
 	}
 
+	public function scopeInBounds($query, $ne_lat, $ne_lng, $sw_lat, $sw_lng)
+	{
+		return $query->where([
+			['geo_latitude', '>=', $sw_lat],
+			['geo_latitude', '<=', $ne_lat],
+			['geo_longitude', '>=', $sw_lng],
+			['geo_longitude', '<=', $ne_lng]
+		]);
+	}
+
 	/**
 	 * Query builder scope to list neighboring locations
 	 * within a given distance from a given location
