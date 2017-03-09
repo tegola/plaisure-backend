@@ -3,6 +3,9 @@ module.exports = {
 		"browser": true,
 		"es6": true
 	},
+	"globals": {
+		"pg": true // ProntoGioco
+	},
 	"extends": "eslint:recommended",
 	"plugins": ["vue"],
 	"parserOptions": {
@@ -21,9 +24,10 @@ module.exports = {
 		"quotes": [
 			"error",
 			"single"
-		]
-	},
-	"globals": {
-		"pg": true // ProntoGioco
+		],
+        "semi": [
+            "error",
+            "always"
+        ]
 	}
 };

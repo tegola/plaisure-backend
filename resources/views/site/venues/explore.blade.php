@@ -13,7 +13,7 @@
 
 <div class="filterbar d-flex align-items-center justify-content-between">
 	<div class="form-inline d-flex align-items-center">
-		<div class="form-group mr-2">
+		<div class="form-group">
 			<label>Tipo</label>
 			<select class="form-control" name="category">
 				<option value="">Tutti</option>
@@ -22,21 +22,22 @@
 				@endforeach
 			</select>
 		</div>
-		<div class="form-group">
-			<label class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input" v-model="followMap">
-				<span class="custom-control-indicator"></span>
-				<span class="custom-control-description">Cerca mentre sposto la mappa</span>
-			</label>
-		</div>
 	</div>
-	<button v-if="!followMap" class="btn btn-secondary" @click="load">Cerca in questa zona</button>
+
+	<div>
+		<label class="custom-control custom-checkbox mb-0">
+			<input type="checkbox" class="custom-control-input" v-model="followMap">
+			<span class="custom-control-indicator"></span>
+			<span class="custom-control-description text-muted">Cerca mentre sposto la mappa</span>
+		</label>
+		<button v-if="mapNeedsRefresh" class="btn btn-sm btn-primary" @click="load">Cerca in questa zona</button>
+	</div>
 </div>
 
 <div class="wrapper">
 	<div class="venue-list">
 		<div class="container-fluid">
-			<pre>@{{ mapBounds }}</pre>
+			<pre>@{{ searchParams }}</pre>
 			<h5>
 				<template v-if="what">
 					@{{ venues.length }} @{{ venues.length | singularOrPlural('risultato', 'risultati') }}
@@ -87,9 +88,9 @@
 			</template>
 		</div>
 	</div>
-	<gmap-map class="map" :center="mapCenter" :zoom="mapZoom" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
-		<gmap-marker v-for="venue in venues.data" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue == highlightedVenue ? '*' : null" @click="select(venue)">
-			<gmap-info-window :opened="venue == selectedVenue" v-cloak>
+	<gmap-map class="map" :center="mapCenter" :zoom="10" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
+		<gmap-marker v-for="venue in venues.data" :key="venue.id" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue.id == highlightedVenueId ? '*' : null" @click="select(venue)">
+			<gmap-info-window v-cloak :opened="venue.id == selectedVenueId" :options="infoWindowOptions">
 				<div class="venue-infowindow">
 					<img class="venue-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
 

@@ -1,9 +1,9 @@
-import _ from 'lodash'
-import $ from 'jquery'
-import Vue from 'vue'
-import * as VueGoogleMaps from 'vue2-google-maps'
-import formatDistance from '../utilities/format-distance'
-import singularOrPlural from '../utilities/singular-or-plural'
+import _ from 'lodash';
+import $ from 'jquery';
+import Vue from 'vue';
+import * as VueGoogleMaps from 'vue2-google-maps';
+import formatDistance from '../utilities/format-distance';
+import singularOrPlural from '../utilities/singular-or-plural';
 
 // Register Vue Google Maps
 // FIXME: Pass region per site and language per user locale
@@ -14,7 +14,7 @@ Vue.use(VueGoogleMaps, {
 		region: pg.config.locale,
 		libraries: 'places'
 	}
-})
+});
 
 
 new Vue({
@@ -26,14 +26,21 @@ new Vue({
 	},
 
 	data: {
-		latitude: pg.lat,
-		longitude: pg.lng,
+		searchParams: pg.searchParams,
 		venues: pg.venues,
-		what: pg.searchParams.what,
-		near: pg.searchParams.near,
+		what: pg.searchParams.what, // FIXME: Remove
+		near: pg.searchParams.near, // FIXME: Remove
+		
+		isFirstLoad: true,
+		mapNeedsRefresh: false,
+		followMap: true,
+		highlightedVenueId: null,
+		selectedVenueId: null,
+
+		// View-related, not really used after here
 		mapCenter: {
-			lat: pg.searchParams.center_lat,
-			lng: pg.searchParams.center_lng
+			lat: pg.searchParams.c_lat,
+			lng: pg.searchParams.c_lng
 		},
 		mapBounds: {
 			north: pg.searchParams.ne_lat,
@@ -51,106 +58,117 @@ new Vue({
 				}
 			]
 		},
-		
-		followMap: true,
-		highlightedVenue: null,
-		selectedVenue: null
+		infoWindowOptions: {
+			disableAutoPan: true
+		}
 	},
 
 	computed: {
-		mapZoom() {
-			return (this.latitude && this.longitude) ? 15 : 5
-		},
-
 		hasMorePages() {
-			return this.venues.next_page_url ? true : false
+			return this.venues.next_page_url ? true : false;
 		},
 	},
 
 	watch: {
-		// Update page title when position name changes
-		near(newValue) {
-			document.title = newValue ? `${newValue} - ${pg.app.name}` : pg.app.name
+		followMap(newValue) {
+			if (newValue) this.loadFromBegin();
 		}
 	},
 
 	methods: {
 		onSuggestionSelect(item) {
 			if (item.geometry && item.geometry.viewport) {
-				this.boundsToPositionData(item.geometry.viewport)
+				this.storeBounds(item.geometry.viewport);
 			}
 
 			// Get the input value as a shortcut for the formatted address
-			this.near = this.$refs.locationAutocomplete.$refs.input.value
+			this.searchParams.near = this.$refs.locationAutocomplete.$refs.input.value;
 
 			// Reload
-			this.load()
+			this.searchParams.page = 1;
+			this.loadFromBegin();
 		},
 
 		onMapBoundsChange(bounds) {
-			this.boundsToPositionData(bounds)
-			this.load()
-		},
+			if (this.isFirstLoad) {
+				this.isFirstLoad = false;
+				return;
+			}
 
-		boundsToPositionData(bounds) {
-			//const center = bounds.getCenter()
-			const ne = bounds.getNorthEast()
-			const sw = bounds.getSouthWest()
+			// Store bounds
+			this.storeBounds(bounds);
 
-			/*
-			this.mapCenter = {
-				lat: center.lat(),
-				lng: center.lng()
-			}*/
-			this.mapBounds = {
-				north: ne.lat(),
-				east: ne.lng(),
-				south: sw.lat(),
-				west: sw.lng()
+			// Load or mark as needed
+			if (this.followMap) {
+				this.loadFromBegin();
+			} else {
+				this.mapNeedsRefresh = true;
 			}
 		},
 
-		load(page = 1) {
-			console.log('load')
+		storeBounds(bounds) {
+			const c = bounds.getCenter();
+			const ne = bounds.getNorthEast();
+			const sw = bounds.getSouthWest();
+			const p = this.searchParams;
 
-			const searchParams = {
-				what: this.what,
-				near: this.near,
-				page: page,
-				//center_lat: this.mapCenter.lat,
-				//center_lng: this.mapCenter.lng,
-				ne_lat: this.mapBounds.north,
-				ne_lng: this.mapBounds.east,
-				sw_lat: this.mapBounds.south,
-				sw_lng: this.mapBounds.west,
-			}
+			// Store position in search params
+			p.c_lat = c.lat();
+			p.c_lng = c.lng();
+			p.ne_lat = ne.lat();
+			p.ne_lng = ne.lng();
+			p.sw_lat = sw.lat();
+			p.sw_lng = sw.lng();
+		},
+
+		load() {
+			console.log('load');
 
 			// Load venues
-			$.get('/venues/search', searchParams, (venues) => {
-				this.venues = venues
-			})
+			$.get('/venues/search', this.searchParams, (venues) => {
+				this.venues = venues;
+			});
 
 			// Update url
-			const baseName = _.last(location.pathname.split('/'))
-			const params = $.param(searchParams, _.omit(['page']))
+			const baseName = _.last(location.pathname.split('/'));
+			const params = $.param(this.searchParams, _.omit(['page']));
 
-			window.history.replaceState({}, '', `${baseName}?${params}`)
+			window.history.replaceState({}, '', `${baseName}?${params}`);
+
+			// Update title
+			document.title = this.searchParams.near ? `${this.searchParams.near} - ${pg.app.name}` : pg.app.name;
+
+			// Reset need to refresh the map
+			this.mapNeedsRefresh = false;
 		},
 
 		loadMore() {
-			this.load(this.venues.current_page + 1)
+			this.searchParams.page = this.searchParams.page + 1;
+			this.load();
+		},
+
+		loadFromBegin() {
+			this.searchParams.page = 1;
+			this.load();
 		},
 
 		highlight(venue) {
-			this.highlightedVenue = venue || null
+			this.highlightedVenueId = venue ? venue.id : null;
 		},
 
 		select(venue) {
-			this.selectedVenue = venue
+			// Always hide if no venue is passed
+			if (!venue) {
+				this.selectedVenueId = null;
+				return;
+			}
+
+			// Select/deselect
+			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		},
 
 		toggleFavorite(venue) {
-			console.log('aggiungo ai preferiti', venue)
+			console.log('aggiungo ai preferiti', venue);
 		}
 	},
 
@@ -159,9 +177,9 @@ new Vue({
 		// (key events are not handled by gmap-autocomplete)
 		$(this.$refs.locationAutocomplete.$refs.input).on('keydown', (e) => {
 			if (e.which == 13 && $('.pac-container:visible').length) {
-				e.preventDefault()
+				e.preventDefault();
 			}
-		})
+		});
 	}
-})
+});
 

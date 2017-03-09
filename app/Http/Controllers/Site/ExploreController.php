@@ -18,8 +18,8 @@ class ExploreController extends Controller
 		$this->near = $request->near;
 		$this->page = $request->page ?: 1;
 		$this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
-		$this->center_lat = $request->has('center_lat') ? floatval($request->center_lat) : null;
-		$this->center_lng = $request->has('center_lng') ? floatval($request->center_lng) : null;
+		$this->c_lat = $request->has('c_lat') ? floatval($request->c_lat) : null;
+		$this->c_lng = $request->has('c_lng') ? floatval($request->c_lng) : null;
 		$this->ne_lat = $request->has('ne_lat') ? floatval($request->ne_lat) : null;
 		$this->ne_lng = $request->has('ne_lng') ? floatval($request->ne_lng) : null;
 		$this->sw_lat = $request->has('sw_lat') ? floatval($request->sw_lat) : null;
@@ -35,8 +35,8 @@ class ExploreController extends Controller
 			'what' => $this->what,
 			'near' => $this->near,
 			'page' => $this->page,
-			'center_lat' => $this->center_lat,
-			'center_lng' => $this->center_lng,
+			'c_lat' => $this->c_lat,
+			'c_lng' => $this->c_lng,
 			'ne_lat' => $this->ne_lat,
 			'ne_lng' => $this->ne_lng,
 			'sw_lat' => $this->sw_lat,
@@ -60,7 +60,7 @@ class ExploreController extends Controller
 	public function search()
 	{
 		// Find missing center and bounds by searching for the location name
-		if ((!$this->ne_lat || !$this->ne_lng || !$this->sw_lat || !$this->sw_lng) && (!$this->center_lat || !$this->center_lng)) {
+		if ((!$this->ne_lat || !$this->ne_lng || !$this->sw_lat || !$this->sw_lng) && (!$this->c_lat || !$this->c_lng)) {
 			if ($this->near && $position = $this->getPositionFromAddress($this->near)) {
 				foreach($position as $key => $value) {
 					$this->$key = $value;
@@ -77,9 +77,9 @@ class ExploreController extends Controller
 		if ($this->ne_lat && $this->ne_lng && $this->sw_lat && $this->sw_lng) {
 			// Find in bounds
 			$venues->inBounds($this->ne_lat, $this->ne_lng, $this->sw_lat, $this->sw_lng);
-		} elseif ($this->center_lat && $this->center_lng) {
+		} elseif ($this->c_lat && $this->c_lng) {
 			// Find from center plus distance
-			$venues->near($this->center_lat, $this->center_lng, $this->distance);
+			$venues->near($this->c_lat, $this->c_lng, $this->distance);
 		}
 
 		// Filter by name or category
@@ -120,8 +120,8 @@ class ExploreController extends Controller
 		$geometry = $geocode->results[0]->geometry;
 
 		return [
-			'center_lat' => $geometry->location->lat,
-			'center_lng' => $geometry->location->lng,
+			'c_lat' => $geometry->location->lat,
+			'c_lng' => $geometry->location->lng,
 			'ne_lat' => $geometry->bounds->northeast->lat,
 			'ne_lng' => $geometry->bounds->northeast->lng,
 			'sw_lat' => $geometry->bounds->southwest->lat,

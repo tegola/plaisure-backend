@@ -12,15 +12,19 @@
 			@include('site.vectors.logo', ['class' => 'navbar-logo'])
 		</a>
 		<form class="navbar-search" action="{{ route('site.venues.explore') }}">
-			<input type="hidden" name="lat" :value="latitude">
-			<input type="hidden" name="lng" :value="longitude">
+			<input type="hidden" name="c_lat" :value="searchParams.c_lat">
+			<input type="hidden" name="c_lng" :value="searchParams.c_lng">
+			<input type="hidden" name="ne_lat" :value="searchParams.ne_lat">
+			<input type="hidden" name="ne_lng" :value="searchParams.ne_lng">
+			<input type="hidden" name="sw_lat" :value="searchParams.sw_lat">
+			<input type="hidden" name="sw_lng" :value="searchParams.sw_lng">
 
 			<gmap-autocomplete
 				class="form-control form-control-lg navbar-search-form-control"
 				ref="locationAutocomplete"
 				name="near"
 				placeholder="Cerca vicino a..."
-				:value="near"
+				:value="searchParams.near"
 				:options="{ types: ['geocode'] }"
 				@place_changed="onSuggestionSelect">
 			</gmap-autocomplete>
