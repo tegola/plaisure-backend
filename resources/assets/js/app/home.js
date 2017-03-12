@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import $ from 'jquery';
 import Vue from 'vue';
 import * as VueGoogleMaps from 'vue2-google-maps';
@@ -19,7 +20,7 @@ Vue.use(VueGoogleMaps, {
 	}
 });
 
-new Vue({
+window.vm = new Vue({
 	el: '.page-content',
 
 	components: {
@@ -129,9 +130,10 @@ new Vue({
 			);
 		},
 
-		loadVenueSuggestions(value) {
-			// Reset if no value is set
+		loadVenueSuggestions: _.debounce(function(value) {
+			// Reset if empty
 			if (!value) {
+				this.category = null;
 				this.venueQuery = null;
 				this.venueSuggestions = [];
 				return;
@@ -150,7 +152,7 @@ new Vue({
 			}).done((data) => {
 				this.venueSuggestions = data;
 			});
-		},
+		}, 300),
 
 		selectVenueSuggestion(item) {
 			// If it's a venue, go to detail page,
@@ -171,7 +173,7 @@ new Vue({
 			this.sw = this._extractCoords(viewport.getSouthWest());
 
 			// Get the input value as a shortcut for the formatted address
-			this.locationQuery = this.$refs.locationAutocomplete.$refs.input.value;
+			this.locationQuery = this.$refs.locationAutocomplete.value;
 		},
 
 		onSubmit(e) {
@@ -189,9 +191,14 @@ new Vue({
 	},
 
 	mounted() {
-		// Prevent submitting the form when the locations dropdown is open
-		// (key events are not handled by gmap-autocomplete)
 		$(this.$refs.locationAutocomplete.$refs.input).on('keydown', (e) => {
+			// Reset location data. We only accept Google maps suggestions
+			this.isLocationFound = false;
+			this.center = { lat: null, lng: null };
+			this.ne = { lat: null, lng: null };
+			this.sw = { lat: null, lng: null };
+
+			// Prevent submitting the form when the locations dropdown is open
 			if (e.which == 13 && $('.pac-container:visible').length) {
 				e.preventDefault();
 			}
@@ -212,6 +219,7 @@ new Vue({
 			});
 		}
 
+		// Make sure tooltips are booted
 		$('[data-toggle="tooltip"]').tooltip();
 	}
 });

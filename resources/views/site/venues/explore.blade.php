@@ -22,7 +22,10 @@
 				@endforeach
 			</select>
 		</div>
-		<div v-if="venues.length > 0" class="ml-2 text-muted" v-cloak>@{{ venues.length }} @{{ venues.length | singularOrPlural('risultato', 'risultati') }}</div>
+		<div v-if="venues.length > 0" class="ml-2 text-muted" v-cloak>
+			@{{ venues.length }}<template v-if="hasMorePages">+</template>
+			@{{ venues.length | singularOrPlural('risultato', 'risultati') }}
+		</div>
 	</div>
 
 	<div>
@@ -38,6 +41,9 @@
 <div class="wrapper">
 	<div class="venue-list">
 		<div class="container-fluid">
+			<div v-if="hasMorePages" class="alert alert-info" v-cloak>
+				Il numero di risultati &egrave; stato limitato automaticamente. Fai zoom sulla zona interessata per visualizzare pi&ugrave; dettagli.
+			</div>
 			<template v-if="!venues.length">
 				Nessun risultato
 			</template>
@@ -67,18 +73,12 @@
 						<hr class="mb-0">
 					</div>
 				</div>
-
-				<div v-if="hasMorePages" class="venue">
-					<div class="venue-body">
-						<button class="btn btn-outline-primary" @click="loadMore">Carica altri risultati&hellip;</button>
-					</div>
-				</div>
 			</template>
 		</div>
 	</div>
 	<gmap-map class="map" ref="map" :center="mapCenter" :zoom="11" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
 		<gmap-marker v-for="venue in venues" :key="venue.id" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue.id == highlightedVenueId ? '*' : null" @click="select(venue)">
-			<gmap-info-window v-cloak :opened="venue.id == selectedVenueId" :options="infoWindowOptions">
+			<gmap-info-window v-cloak :opened="venue.id == selectedVenueId">
 				<div class="venue-infowindow">
 					<img class="venue-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
 

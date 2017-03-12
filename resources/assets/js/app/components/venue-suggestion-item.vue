@@ -17,13 +17,13 @@
 		computed: {
 			metadata() {
 				if (this.item.category && this.item.city) {
-					return [this.item.category, this.item.city].join(', ')
+					return [this.item.category, this.item.city].join(', ');
 				} else if (this.item.category || this.item.city) {
-					return this.item.category || this.item.city
+					return this.item.category || this.item.city;
 				} else {
-					return null
+					return null;
 				}
 			}
 		}
-	}
+	};
 </script>

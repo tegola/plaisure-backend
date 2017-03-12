@@ -11,5 +11,5 @@
 			},
 			spinning: Boolean
 		}
-	}
+	};
 </script>

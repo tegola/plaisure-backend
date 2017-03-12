@@ -16,7 +16,6 @@ class ExploreController extends Controller
 	public function __construct(Request $request) {
 		$this->near = $request->near;
 		$this->category = $request->has('category') ? intval($request->category) : null;
-		$this->page = $request->page ?: 1;
 		$this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
 		$this->c_lat = $request->has('c_lat') ? floatval($request->c_lat) : null;
 		$this->c_lng = $request->has('c_lng') ? floatval($request->c_lng) : null;
@@ -36,7 +35,6 @@ class ExploreController extends Controller
 		$searchParams = [
 			'near' => $this->near,
 			'category' => $this->category,
-			'page' => $this->page,
 			'c_lat' => $this->c_lat,
 			'c_lng' => $this->c_lng,
 			'ne_lat' => $this->ne_lat,
@@ -83,7 +81,7 @@ class ExploreController extends Controller
 		}
 
 		// Return results
-		return $venues->simplePaginate(40, ['*'], 'page', $this->page); // paginate() does not work with the 'distance' column
+		return $venues->simplePaginate(50);
 	}
 
 	private function hasLocationData()

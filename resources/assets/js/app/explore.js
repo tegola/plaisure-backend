@@ -52,9 +52,6 @@ window.vm = new Vue({
 					'stylers': [{ 'visibility': 'off' }]
 				}
 			]
-		},
-		infoWindowOptions: {
-			disableAutoPan: true
 		}
 	},
 
@@ -63,13 +60,13 @@ window.vm = new Vue({
 			return this.pager && this.pager.data ? this.pager.data : [];
 		},
 		hasMorePages() {
-			return this.pager.next_page_url ? true : false;
+			return this.pager && this.pager.next_page_url ? true : false;
 		},
 	},
 
 	watch: {
 		followMap(newValue) {
-			if (newValue) this.loadFromBegin();
+			if (newValue) this.load();
 		}
 	},
 
@@ -81,15 +78,15 @@ window.vm = new Vue({
 			}
 
 			// Get the input value as a shortcut for the formatted address
-			this.searchParams.near = this.$refs.locationAutocomplete.$refs.input.value;
+			this.searchParams.near = this.$refs.locationAutocomplete.value;
 
 			// Reload
-			this.loadFromBegin();
+			this.load();
 		},
 
 		onCategoryChange(e) {
 			this.searchParams.category = e.target.value;
-			this.loadFromBegin();
+			this.load();
 		},
 
 		onMapBoundsChange(bounds) {
@@ -98,7 +95,7 @@ window.vm = new Vue({
 
 			// Load or mark as needed
 			if (this.followMap) {
-				this.loadFromBegin();
+				this.load();
 			} else {
 				this.mapNeedsRefresh = true;
 			}
@@ -148,16 +145,6 @@ window.vm = new Vue({
 			this.mapNeedsRefresh = false;
 		}, 200),
 
-		loadMore() {
-			this.searchParams.page = this.searchParams.page + 1;
-			this.load();
-		},
-
-		loadFromBegin() {
-			this.searchParams.page = 1;
-			this.load();
-		},
-
 		highlight(venue) {
 			this.highlightedVenueId = venue ? venue.id : null;
 		},
@@ -188,7 +175,7 @@ window.vm = new Vue({
 		});
 
 		// Load
-		this.loadFromBegin();
+		this.load();
 	}
 });
 
