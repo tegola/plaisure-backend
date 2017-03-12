@@ -178,6 +178,17 @@ class Venue extends Model
 		return $final_url;
 	}
 
+	/**
+	 * Query builder to scope in the specified location bounds.
+	 *
+	 * @param  Illuminate\Database\Query\Builder  $query   Query builder instance
+	 * @param  float                              $ne_lat  North-East latitude (or just North)
+	 * @param  float                              $ne_lng  North-East longitude (or just East)
+	 * @param  float                              $sw_lat  South-West latitude (or just South)
+	 * @param  float                              $sw_lng  South-West longitude (or just West)
+     *
+	 * @return Illuminate\Database\Query\Builder           Modified query builder
+	 */
 	public function scopeInBounds($query, $ne_lat, $ne_lng, $sw_lat, $sw_lng)
 	{
 		return $query->where([
@@ -210,7 +221,7 @@ class Venue extends Model
 		$lat_column = 'geo_latitude';
 		$lng_column = 'geo_longitude';
 
-		return $query->having('distance','<=',$radius)
+		return $query->having('distance', '<=' ,$radius)
 			->select(DB::raw("*,
 				 ($unit * ACOS(COS(RADIANS($lat))
 						* COS(RADIANS($lat_column))
