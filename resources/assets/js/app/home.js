@@ -32,6 +32,7 @@ new Vue({
 	},
 
 	data: {
+		category: null,
 		venueQuery: '',
 		venueSuggestions: [],
 		locationQuery: '',
@@ -152,14 +153,14 @@ new Vue({
 		},
 
 		selectVenueSuggestion(item) {
-			// If it's a venue, go to detail page
-			if (item.type == 'venue' && item.id) {
+			// If it's a venue, go to detail page,
+			// otherwise store the category name and value
+			if (item.type == 'venue') {
 				location.href = `/venues/${item.id}`;
-				return;
+			} else if (item.type == 'category') {
+				this.category = item.id;
+				this.venueQuery = item.name;
 			}
-
-			// Else just set the category name
-			this.venueQuery = item.name;
 		},
 
 		selectLocationSuggestion(suggestion) {

@@ -23,7 +23,7 @@ class SearchController extends Controller
 
 		// Find venues and categories
 		if ($what) {
-			$venues = Venue::with('categories')->withNameOrCategory($what);
+			$venues = Venue::with('categories')->withNameOrCategoryName($what);
 			if ($center_lat && $center_lng) {
 				$venues = $venues->near($center_lat, $center_lng, config('constants.search_default_distance'));
 			}
@@ -51,6 +51,6 @@ class SearchController extends Controller
 			]);
 		}
 
-		return response()->json($suggestions);
+		return $suggestions;
 	}
 }

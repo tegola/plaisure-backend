@@ -60,6 +60,7 @@
 		</div>
 
 		<form class="form-search" action="{{ route('site.venues.explore') }}" method="get" @submit="onSubmit">
+			<input type="hidden" name="category" v-model="category">
 			<input type="hidden" name="c_lat" v-model="center.lat">
 			<input type="hidden" name="c_lng" v-model="center.lng">
 			<input type="hidden" name="ne_lat" v-model="ne.lat">

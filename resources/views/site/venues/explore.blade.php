@@ -14,14 +14,15 @@
 <div class="filterbar d-flex align-items-center justify-content-between">
 	<div class="form-inline d-flex align-items-center">
 		<div class="form-group">
-			<label>Tipo</label>
-			<select class="form-control" name="category">
+			<label class="mr-2">Tipo</label>
+			<select class="form-control" name="category" :value="searchParams.category" @input="onCategoryChange">
 				<option value="">Tutti</option>
 				@foreach($categories as $category)
 					<option value="{{ $category->id }}">{{ $category->name }}</option>
 				@endforeach
 			</select>
 		</div>
+		<div v-if="venues.length > 0" class="ml-2 text-muted" v-cloak>@{{ venues.length }} @{{ venues.length | singularOrPlural('risultato', 'risultati') }}</div>
 	</div>
 
 	<div>
@@ -37,24 +38,11 @@
 <div class="wrapper">
 	<div class="venue-list">
 		<div class="container-fluid">
-			<pre>@{{ searchParams }}</pre>
-			<h5>
-				<template v-if="what">
-					@{{ venues.length }} @{{ venues.length | singularOrPlural('risultato', 'risultati') }}
-					per &ldquo;<strong>@{{ what }}</strong>&rdquo;
-				</template>
-				<template v-else>
-					Tutti i risultati
-				</template>
-				vicino <strong>@{{ near }}</strong>
-			</h5>
-			<hr>
-
-			<template v-if="!venues.data.length">
+			<template v-if="!venues.length">
 				Nessun risultato
 			</template>
 			<template v-else>
-				<div v-for="venue in venues.data" class="venue" @mouseover="highlight(venue)" @mouseout="highlight()">
+				<div v-for="venue in venues" class="venue" @mouseover="highlight(venue)" @mouseout="highlight()">
 					<img class="venue-icon" :src="'/img/avatars/' + venue.category_icon_name">
 
 					<div class="venue-body">
@@ -88,8 +76,8 @@
 			</template>
 		</div>
 	</div>
-	<gmap-map class="map" :center="mapCenter" :zoom="10" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
-		<gmap-marker v-for="venue in venues.data" :key="venue.id" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue.id == highlightedVenueId ? '*' : null" @click="select(venue)">
+	<gmap-map class="map" ref="map" :center="mapCenter" :zoom="11" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
+		<gmap-marker v-for="venue in venues" :key="venue.id" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue.id == highlightedVenueId ? '*' : null" @click="select(venue)">
 			<gmap-info-window v-cloak :opened="venue.id == selectedVenueId" :options="infoWindowOptions">
 				<div class="venue-infowindow">
 					<img class="venue-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">

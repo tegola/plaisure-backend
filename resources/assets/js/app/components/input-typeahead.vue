@@ -22,8 +22,8 @@
 				:is="itemComponent"
 				:item="item"
 				:class="itemClass(index)"
-				@mousedown="select"
-				@mouseover="setActive(index)">
+				@mouseover="setActive(index)"
+				@mousedown="select">
 			</component>
 		</div>
 	</div>
@@ -132,11 +132,13 @@
 				if (this.current === -1) return
 
 				this.open = false
+				alert('select');
 				this.$emit('select', this.items[this.current])
 			},
 
 			setActive(index) {
-				this.current = index
+				console.log('setActive', index);
+				this.current = index;
 			}
 		}
 	}

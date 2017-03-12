@@ -220,7 +220,7 @@ class Venue extends Model
 			)->orderBy('distance','asc');
 	}
 
-	public function scopeWithNameOrCategory($query, $name)
+	public function scopeWithNameOrCategoryName($query, $name)
 	{
 		return $query
 			->where('name', 'like', "%{$name}%") // Venue name

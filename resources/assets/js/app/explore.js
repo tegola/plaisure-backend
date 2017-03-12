@@ -17,7 +17,7 @@ Vue.use(VueGoogleMaps, {
 });
 
 
-new Vue({
+window.vm = new Vue({
 	el: '.page-content',
 
 	filters: {
@@ -27,17 +27,12 @@ new Vue({
 
 	data: {
 		searchParams: pg.searchParams,
-		venues: pg.venues,
-		what: pg.searchParams.what, // FIXME: Remove
-		near: pg.searchParams.near, // FIXME: Remove
-		
-		isFirstLoad: true,
+		pager: null,
+
 		mapNeedsRefresh: false,
 		followMap: true,
 		highlightedVenueId: null,
 		selectedVenueId: null,
-
-		// View-related, not really used after here
 		mapCenter: {
 			lat: pg.searchParams.c_lat,
 			lng: pg.searchParams.c_lng
@@ -64,8 +59,11 @@ new Vue({
 	},
 
 	computed: {
+		venues() {
+			return this.pager && this.pager.data ? this.pager.data : [];
+		},
 		hasMorePages() {
-			return this.venues.next_page_url ? true : false;
+			return this.pager.next_page_url ? true : false;
 		},
 	},
 
@@ -79,22 +77,22 @@ new Vue({
 		onSuggestionSelect(item) {
 			if (item.geometry && item.geometry.viewport) {
 				this.storeBounds(item.geometry.viewport);
+				this.fitBounds();
 			}
 
 			// Get the input value as a shortcut for the formatted address
 			this.searchParams.near = this.$refs.locationAutocomplete.$refs.input.value;
 
 			// Reload
-			this.searchParams.page = 1;
+			this.loadFromBegin();
+		},
+
+		onCategoryChange(e) {
+			this.searchParams.category = e.target.value;
 			this.loadFromBegin();
 		},
 
 		onMapBoundsChange(bounds) {
-			if (this.isFirstLoad) {
-				this.isFirstLoad = false;
-				return;
-			}
-
 			// Store bounds
 			this.storeBounds(bounds);
 
@@ -110,23 +108,31 @@ new Vue({
 			const c = bounds.getCenter();
 			const ne = bounds.getNorthEast();
 			const sw = bounds.getSouthWest();
-			const p = this.searchParams;
+			const params = this.searchParams;
 
 			// Store position in search params
-			p.c_lat = c.lat();
-			p.c_lng = c.lng();
-			p.ne_lat = ne.lat();
-			p.ne_lng = ne.lng();
-			p.sw_lat = sw.lat();
-			p.sw_lng = sw.lng();
+			params.c_lat = c.lat();
+			params.c_lng = c.lng();
+			params.ne_lat = ne.lat();
+			params.ne_lng = ne.lng();
+			params.sw_lat = sw.lat();
+			params.sw_lng = sw.lng();
 		},
 
-		load() {
-			console.log('load');
+		fitBounds() {
+			this.mapBounds = {
+				north: this.searchParams.ne_lat,
+				east: this.searchParams.ne_lng,
+				south: this.searchParams.sw_lat,
+				west: this.searchParams.sw_lng
+			};
+			this.$refs.map.fitBounds(this.mapBounds);
+		},
 
+		load: _.debounce(function() { // Fat arrows don't work with debounce
 			// Load venues
-			$.get('/venues/search', this.searchParams, (venues) => {
-				this.venues = venues;
+			$.get('/venues/search', this.searchParams, (pager) => {
+				this.pager = pager;
 			});
 
 			// Update url
@@ -140,7 +146,7 @@ new Vue({
 
 			// Reset need to refresh the map
 			this.mapNeedsRefresh = false;
-		},
+		}, 200),
 
 		loadMore() {
 			this.searchParams.page = this.searchParams.page + 1;
@@ -180,6 +186,9 @@ new Vue({
 				e.preventDefault();
 			}
 		});
+
+		// Load
+		this.loadFromBegin();
 	}
 });
 

@@ -14,8 +14,8 @@ use App\Http\Controllers\Controller;
 class ExploreController extends Controller
 {
 	public function __construct(Request $request) {
-		$this->what = $request->what;
 		$this->near = $request->near;
+		$this->category = $request->has('category') ? intval($request->category) : null;
 		$this->page = $request->page ?: 1;
 		$this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
 		$this->c_lat = $request->has('c_lat') ? floatval($request->c_lat) : null;
@@ -28,12 +28,14 @@ class ExploreController extends Controller
 
 	public function index()
 	{
-		// Search
-		$venues = $this->search();
+		// Make sure we have all location data
+		if (!$this->hasLocationData()) {
+			return response()->json([]);
+		}
 
-		$search_params = [
-			'what' => $this->what,
+		$searchParams = [
 			'near' => $this->near,
+			'category' => $this->category,
 			'page' => $this->page,
 			'c_lat' => $this->c_lat,
 			'c_lng' => $this->c_lng,
@@ -43,31 +45,22 @@ class ExploreController extends Controller
 			'sw_lng' => $this->sw_lng,
 		];
 
+		$categories = Category::all();
+
 		// Pass initial data to view
-		Javascript::put([
-			'searchParams' => $search_params,
-			'venues' => $venues
-		]);
+		Javascript::put(compact('searchParams'));
 
 		return view('site.venues.explore', [
-			'what' => $this->what,
 			'near' => $this->near,
-			'venues' => $venues,
-			'categories' => Category::all()
+			'categories' => $categories
 		]);
 	}
 
 	public function search()
 	{
-		// Find missing center and bounds by searching for the location name
-		if ((!$this->ne_lat || !$this->ne_lng || !$this->sw_lat || !$this->sw_lng) && (!$this->c_lat || !$this->c_lng)) {
-			if ($this->near && $position = $this->getPositionFromAddress($this->near)) {
-				foreach($position as $key => $value) {
-					$this->$key = $value;
-				}
-			} else {
-				return response()->json([]);
-			}
+		// Make sure we have all location data
+		if (!$this->hasLocationData()) {
+			return response()->json([]);
 		}
 
 		// Start loading venues
@@ -82,50 +75,64 @@ class ExploreController extends Controller
 			$venues->near($this->c_lat, $this->c_lng, $this->distance);
 		}
 
-		// Filter by name or category
-		if ($this->what) {
-			$venues->withNameOrCategory($this->what);
+		// Filter by category
+		if ($this->category) {
+			$venues->whereHas('categories', function($query) {
+				$query->where('id', $this->category);
+			});
 		}
 
 		// Return results
-		return $venues->simplePaginate(20, ['*'], 'page', $this->page); // paginate() does not work with the 'distance' column
+		return $venues->simplePaginate(40, ['*'], 'page', $this->page); // paginate() does not work with the 'distance' column
+	}
+
+	private function hasLocationData()
+	{
+		if (!$this->ne_lat || !$this->ne_lng || !$this->sw_lat || !$this->sw_lng || !$this->c_lat || !$this->c_lng) {
+			return $this->getLocationData();
+		}
+
+		return true;
 	}
 
 	/**
-	 * Try to get center and bounds  of an address but stop gracefully if it
-	 * doesn't work
+	 * Get center and bounds with Google Maps geocoder
 	 *
-	 * @param  String  $address
-	 * @return Array
+	 * @return boolean
 	 */
-	private function getPositionFromAddress($address) {
+	private function getLocationData()
+	{
+		// Stop if no location name is provided
+		if (!$this->near) {
+			return false;
+		}
+
 		$api_url = "https://maps.googleapis.com/maps/api/geocode/json";
-		// FIXME: Pass region per site and language per user locale
 		$querystring = http_build_query(array(
 			'key' => config('constants.google_maps_api_key'),
-			'address' => $address,
+			'address' => $this->near,
 			'language' => App::getLocale(),
 			'region' => App::getLocale()
 		));
 
 		// Ask Google Maps and stop if it doesn't work
 		$response = file_get_contents("{$api_url}?$querystring");
-		if (!$response) return;
+		if (!$response) return false;
 
 		// Check geocode results
 		$geocode = json_decode($response);
-		if ($geocode->status != 'OK') return;
+		if ($geocode->status != 'OK') return false;
 
-		// Find lat and lng
+		// Find coords
 		$geometry = $geocode->results[0]->geometry;
 
-		return [
-			'c_lat' => $geometry->location->lat,
-			'c_lng' => $geometry->location->lng,
-			'ne_lat' => $geometry->bounds->northeast->lat,
-			'ne_lng' => $geometry->bounds->northeast->lng,
-			'sw_lat' => $geometry->bounds->southwest->lat,
-			'sw_lng' => $geometry->bounds->southwest->lng
-		];
+		$this->c_lat = $geometry->location->lat;
+		$this->c_lng = $geometry->location->lng;
+		$this->ne_lat = $geometry->bounds->northeast->lat;
+		$this->ne_lng = $geometry->bounds->northeast->lng;
+		$this->sw_lat = $geometry->bounds->southwest->lat;
+		$this->sw_lng = $geometry->bounds->southwest->lng;
+
+		return true;
 	}
 }
