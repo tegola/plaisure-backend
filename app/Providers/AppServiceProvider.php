@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Javascript;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use App;
 
 class AppServiceProvider extends ServiceProvider
