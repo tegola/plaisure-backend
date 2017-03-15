@@ -15,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Support utf8mb4 in MySQL <5.7.7
+        // https://laravel.com/docs/master/migrations#creating-indexes
+        Schema::defaultStringLength(191);
+
         Javascript::put([
             'app' => [
                 'name' => config('app.name')
