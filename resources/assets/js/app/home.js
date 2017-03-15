@@ -7,6 +7,8 @@ import InputTypeahead from './components/input-typeahead.vue';
 import Icon from './components/icon.vue';
 import VenueSuggestionItem from './components/venue-suggestion-item.vue';
 
+window.Vue = Vue;
+
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
 
 // Register Vue Google Maps
@@ -91,6 +93,7 @@ window.vm = new Vue({
 			return this.isSearchingLocation || this.isLocationFound;
 		},
 		isSubmitButtonDisabled() {
+			// FIXME: Same as onSubmit down below?
 			return !this.center.lat || !this.center.lng;
 		}
 	},
@@ -130,15 +133,22 @@ window.vm = new Vue({
 			);
 		},
 
-		loadVenueSuggestions: _.debounce(function(value) {
+		onWhatInput(value) {
 			// Reset if empty
 			if (!value) {
-				this.category = null;
 				this.venueQuery = null;
 				this.venueSuggestions = [];
 				return;
 			}
 
+			// Always reset the category (it will be set back when selecting
+			// a suggestion)
+			this.category = null;
+
+			this.loadVenueSuggestions(value);
+		},
+
+		loadVenueSuggestions: _.debounce(function(value) {
 			// Load suggestions and use them
 			$.get('/venues/suggestions', {
 				what: value,
@@ -158,7 +168,7 @@ window.vm = new Vue({
 			// If it's a venue, go to detail page,
 			// otherwise store the category name and value
 			if (item.type == 'venue') {
-				location.href = `/venues/${item.id}`;
+				location.href = item.url;
 			} else if (item.type == 'category') {
 				this.category = item.id;
 				this.venueQuery = item.name;
@@ -166,6 +176,7 @@ window.vm = new Vue({
 		},
 
 		selectLocationSuggestion(suggestion) {
+			console.log(suggestion);
 			const viewport = suggestion.geometry.viewport;
 
 			this.center = this._extractCoords(viewport.getCenter());
@@ -191,33 +202,35 @@ window.vm = new Vue({
 	},
 
 	mounted() {
-		$(this.$refs.locationAutocomplete.$refs.input).on('keydown', (e) => {
-			// Reset location data. We only accept Google maps suggestions
-			this.isLocationFound = false;
-			this.center = { lat: null, lng: null };
-			this.ne = { lat: null, lng: null };
-			this.sw = { lat: null, lng: null };
+		const $autocompleteInput = $(this.$refs.locationAutocomplete.$refs.input);
 
-			// Prevent submitting the form when the locations dropdown is open
+		// Prevent submitting the form when the locations dropdown is open
+		$autocompleteInput.on('keydown', (e) => {
 			if (e.which == 13 && $('.pac-container:visible').length) {
 				e.preventDefault();
 			}
 		});
 
+		// Reset location data when the input is empty
+		$autocompleteInput.on('keyup', (e) => {
+			if (e.target.value) return;
+
+			this.isLocationFound = false;
+			this.center = { lat: null, lng: null };
+			this.ne = { lat: null, lng: null };
+			this.sw = { lat: null, lng: null };
+		});
+
 		// If no location is set, find a generic one using IP info
-		if ((!this.center.lat && !this.center.lng) || !this.locationQuery) {
-			geocoder.geocodeByIp((error, location) => {
-				if (!location) return;
+		geocoder.geocodeByIp((error, location) => {
+			if (!location) return;
 
-				this.center = {
-					lat: location.latitude,
-					lng: location.longitude
-				};
-				this.locationQuery = location.city;
-
-				this.$emit('locate', this.center.lat, this.center.lng, this.locationQuery);
-			});
-		}
+			this.center = {
+				lat: location.latitude,
+				lng: location.longitude
+			};
+			this.locationQuery = location.city;
+		});
 
 		// Make sure tooltips are booted
 		$('[data-toggle="tooltip"]').tooltip();

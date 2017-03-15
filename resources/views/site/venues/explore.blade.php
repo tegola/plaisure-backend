@@ -9,7 +9,7 @@
 
 @section('content')
 
-@include('site.venues._navbar', ['fluid' => 'true'])
+@include('site.venues._navbar', ['fluid' => 'true', 'vue_support' => true])
 
 <div class="filterbar d-flex align-items-center justify-content-between">
 	<div class="form-inline d-flex align-items-center">

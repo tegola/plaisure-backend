@@ -47,7 +47,8 @@ class SearchController extends Controller
 				"id" => $v->id,
 				"name" => $v->name,
 				"category" => $v->categories()->first()->name,
-				"city" => $v->address_city
+				"city" => $v->address_city,
+				"url" => route('site.venues.detail', ['venue' => $v])
 			]);
 		}
 

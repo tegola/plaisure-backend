@@ -2,6 +2,7 @@
 	if (!isset($fluid)) $fluid = false;
 	if (!isset($class)) $class = 'navbar-dark navbar-slim';
 	if (!isset($show_search)) $show_search = true;
+	if (!isset($vue_support)) $vue_support = false;
 @endphp
 
 <nav class="navbar navbar-toggleable-md {{ $class }}">
@@ -12,19 +13,19 @@
 			@include('site.vectors.logo', ['class' => 'navbar-logo'])
 		</a>
 		<form class="navbar-search" action="{{ route('site.venues.explore') }}">
-			<input type="hidden" name="c_lat" :value="searchParams.c_lat">
-			<input type="hidden" name="c_lng" :value="searchParams.c_lng">
-			<input type="hidden" name="ne_lat" :value="searchParams.ne_lat">
-			<input type="hidden" name="ne_lng" :value="searchParams.ne_lng">
-			<input type="hidden" name="sw_lat" :value="searchParams.sw_lat">
-			<input type="hidden" name="sw_lng" :value="searchParams.sw_lng">
+			<input type="hidden" name="c_lat" @if($vue_support) :value="searchParams.c_lat" @endif>
+			<input type="hidden" name="c_lng" @if($vue_support) :value="searchParams.c_lng" @endif>
+			<input type="hidden" name="ne_lat" @if($vue_support) :value="searchParams.ne_lat" @endif>
+			<input type="hidden" name="ne_lng" @if($vue_support) :value="searchParams.ne_lng" @endif>
+			<input type="hidden" name="sw_lat" @if($vue_support) :value="searchParams.sw_lat" @endif>
+			<input type="hidden" name="sw_lng" @if($vue_support) :value="searchParams.sw_lng" @endif>
 
 			<gmap-autocomplete
 				class="form-control form-control-lg navbar-search-form-control"
 				ref="locationAutocomplete"
 				name="near"
 				placeholder="Cerca vicino a..."
-				:value="searchParams.near"
+				@if($vue_support) :value="searchParams.near" @endif
 				:options="{ types: ['geocode'] }"
 				@place_changed="onSuggestionSelect">
 			</gmap-autocomplete>

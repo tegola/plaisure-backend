@@ -79,7 +79,7 @@
 							:value="venueQuery"
 							:suggestions="venueSuggestions"
 							item-component="pg-venue-suggestion-item"
-							@input="loadVenueSuggestions"
+							@input="onWhatInput"
 							@select="selectVenueSuggestion">
 						</pg-input-typeahead>
 					</div>

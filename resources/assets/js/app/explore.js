@@ -65,6 +65,22 @@ window.vm = new Vue({
 	},
 
 	watch: {
+		// Automatically update url and title
+		searchParams: {
+			deep: true,
+			handler(newValue) {
+				// Update url
+				const baseName = _.last(location.pathname.split('/'));
+				const params = $.param(newValue, _.omit(['page']));
+
+				window.history.replaceState({}, '', `${baseName}?${params}`);
+
+				// Update title
+				document.title = newValue.near ? `${newValue.near} - ${pg.app.name}` : pg.app.name;
+			}
+		},
+
+		// Automatically load when following the map
 		followMap(newValue) {
 			if (newValue) this.load();
 		}
@@ -89,7 +105,7 @@ window.vm = new Vue({
 			this.load();
 		},
 
-		onMapBoundsChange(bounds) {
+		onMapBoundsChange: _.debounce(function(bounds) { // Fat arrow functions do not work with debounce
 			// Store bounds
 			this.storeBounds(bounds);
 
@@ -99,21 +115,23 @@ window.vm = new Vue({
 			} else {
 				this.mapNeedsRefresh = true;
 			}
-		},
+		}, 200),
 
 		storeBounds(bounds) {
 			const c = bounds.getCenter();
 			const ne = bounds.getNorthEast();
 			const sw = bounds.getSouthWest();
-			const params = this.searchParams;
 
-			// Store position in search params
-			params.c_lat = c.lat();
-			params.c_lng = c.lng();
-			params.ne_lat = ne.lat();
-			params.ne_lng = ne.lng();
-			params.sw_lat = sw.lat();
-			params.sw_lng = sw.lng();
+			// Store position in search params in a single swoop, to avoid
+			// stressing the watcher
+			_.extend(this.searchParams, {
+				c_lat: c.lat(),
+				c_lng: c.lng(),
+				ne_lat: ne.lat(),
+				ne_lng: ne.lng(),
+				sw_lat: sw.lat(),
+				sw_lng: sw.lng()
+			});			
 		},
 
 		fitBounds() {
@@ -126,24 +144,15 @@ window.vm = new Vue({
 			this.$refs.map.fitBounds(this.mapBounds);
 		},
 
-		load: _.debounce(function() { // Fat arrows don't work with debounce
+		load() {
 			// Load venues
 			$.get('/venues/search', this.searchParams, (pager) => {
 				this.pager = pager;
 			});
 
-			// Update url
-			const baseName = _.last(location.pathname.split('/'));
-			const params = $.param(this.searchParams, _.omit(['page']));
-
-			window.history.replaceState({}, '', `${baseName}?${params}`);
-
-			// Update title
-			document.title = this.searchParams.near ? `${this.searchParams.near} - ${pg.app.name}` : pg.app.name;
-
 			// Reset need to refresh the map
 			this.mapNeedsRefresh = false;
-		}, 200),
+		},
 
 		highlight(venue) {
 			this.highlightedVenueId = venue ? venue.id : null;

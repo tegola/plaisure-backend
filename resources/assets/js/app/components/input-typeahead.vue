@@ -140,8 +140,11 @@
 				this.select();
 			},
 
-			select() {
+			select(e) {
 				if (this.current === -1) return;
+
+				// Stop enter key if still open
+				if (this.open) e.preventDefault();
 
 				this.open = false;
 				this.$emit('select', this.items[this.current]);
