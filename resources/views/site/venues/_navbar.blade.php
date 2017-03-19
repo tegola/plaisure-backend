@@ -27,7 +27,7 @@
 				placeholder="Cerca vicino a..."
 				@if($vue_support) :value="searchParams.near" @endif
 				:options="{ types: ['geocode'] }"
-				@place_changed="onSuggestionSelect">
+				@if($vue_support) @place_changed="onSuggestionSelect" @endif>
 			</gmap-autocomplete>
 		</form>
 		<div>

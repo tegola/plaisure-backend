@@ -1,3 +1,15 @@
+import $ from 'jquery';
+import Vue from 'vue';
+//import * as VueGoogleMaps from 'vue2-google-maps';
+//import * as geocoder from '../utilities/geocoder';
+
+new Vue({
+	el: '#app',
+	data: {
+		prova: 'ciao'
+	}
+});
+
 $(function(){
 	var streetField    = $('[name="address_street"]');
 	var numberField    = $('[name="address_number"]');

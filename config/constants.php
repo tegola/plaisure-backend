@@ -8,7 +8,7 @@ return [
 
 	'venues_csv_path' => 'app/esercizi.csv',
 
-	'search_default_distance' => 20,
+	'search_default_distance' => 8,
 
 	'google_maps_api_key' => 'AIzaSyC7HUu36wqXlH_E27AMOFFF9v7t1809Upk'
 ];

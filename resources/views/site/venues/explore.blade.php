@@ -76,7 +76,7 @@
 			</template>
 		</div>
 	</div>
-	<gmap-map class="map" ref="map" :center="mapCenter" :zoom="11" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
+	<gmap-map class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
 		<gmap-marker v-for="venue in venues" :key="venue.id" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue.id == highlightedVenueId ? '*' : null" @click="select(venue)">
 			<gmap-info-window v-cloak :opened="venue.id == selectedVenueId">
 				<div class="venue-infowindow">

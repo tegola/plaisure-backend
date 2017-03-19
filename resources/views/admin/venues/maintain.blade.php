@@ -2,7 +2,13 @@
 
 @section('title', 'Carica esercizi')
 
+@section('scripts')
+<script src="{{ mix('js/admin/maintain.js') }}"></script>
+@endsection
+
 @section('content')
+
+@{{ prova }}
 
 <div class="container">
 
