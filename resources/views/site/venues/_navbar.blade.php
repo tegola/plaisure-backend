@@ -20,15 +20,20 @@
 			<input type="hidden" name="sw_lat" @if($vue_support) :value="searchParams.sw_lat" @endif>
 			<input type="hidden" name="sw_lng" @if($vue_support) :value="searchParams.sw_lng" @endif>
 
-			<gmap-autocomplete
-				class="form-control form-control-lg navbar-search-form-control"
-				ref="locationAutocomplete"
-				name="near"
-				placeholder="Cerca vicino a..."
-				@if($vue_support) :value="searchParams.near" @endif
-				:options="{ types: ['geocode'] }"
-				@if($vue_support) @place_changed="onSuggestionSelect" @endif>
-			</gmap-autocomplete>
+			<div class="input-group">
+				<span class="input-group-addon navbar-search-input-group-addon">
+					<pg-icon icon="search"></pg-icon>
+				</span>
+				<gmap-autocomplete
+					class="form-control form-control-lg navbar-search-form-control"
+					ref="locationAutocomplete"
+					name="near"
+					placeholder="Cerca vicino a..."
+					@if($vue_support) :value="searchParams.near" @endif
+					:options="{ types: ['geocode'] }"
+					@if($vue_support) @place_changed="onSuggestionSelect" @endif>
+				</gmap-autocomplete>
+			</div>
 		</form>
 		<div>
 			@if (Auth::guest())

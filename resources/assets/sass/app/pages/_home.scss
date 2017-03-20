@@ -4,9 +4,6 @@
 	.pg-logo-shadow {
 		fill: $palette-dark-green-500;
 	}
-	.pg-logo-shadow {
-		fill-opacity: 0.1; // FIXME: Why it has to be overridden?
-	}
 	.hero {
 		min-height: 85vh;
 		position: relative;
