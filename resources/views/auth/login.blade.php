@@ -1,58 +1,52 @@
 @extends('site.layout')
 
 @section('content')
-<div class="container h-100">
-	<div class="row h-100 align-items-center">
-		<div class="col-12 offset-sm-2 col-sm-8 offset-md-3 col-md-6 offset-lg-4 col-lg-4">
+@include('site.venues._navbar', ['show_search' => false])
 
-			<div class="card">
-				<div class="card-block text-center">
-					<h4 class="card-title mb-0">Accedi a ProntoGioco</h4>
+<div class="container my-5">
+	<div class="text-center mb-5">
+		<h2>Accedi</h2>
+		<p class="lead text-muted">Inserisci email e password per accedere a {{ config('app.name') }}.</p>
+	</div>
+
+	<div class="row">
+		<div class="offset-md-3 col-md-6 offset-xl-4 col-xl-4">
+			<form role="form" method="post" action="{{ url('/login') }}">
+				{{ csrf_field() }}
+
+				<div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
+					<label for="email">Indirizzo email</label>
+					<input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+					@if ($errors->has('email'))
+						<div class="form-control-feedback">{{ $errors->first('email') }}</div>
+					@endif
 				</div>
-				<hr class="my-0">
-				<div class="card-block">
-					<form class="form-horizontal" role="form" method="post" action="{{ url('/login') }}">
-						{{ csrf_field() }}
 
-						<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-							<label for="email" class="sr-only">Indirizzo email</label>
-							<input id="email" type="email" class="form-control form-control-lg" name="email" value="{{ old('email') }}" placeholder="Indirizzo email" required autofocus>
-							@if ($errors->has('email'))
-								<div class="form-control-feedback">{{ $errors->first('email') }}</div>
-							@endif
-						</div>
-
-						<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-							<label for="password" class="sr-only">Password</label>
-							<input id="password" type="password" class="form-control form-control-lg" name="password" placeholder="Password" required>
-							@if ($errors->has('password'))
-								<div class="form-control-feedback">{{ $errors->first('password') }}</div>
-							@endif
-						</div>
-
-						{{--
-						<div class="form-group">
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="remember"> Ricorda i miei dati
-								</label>
-							</div>
-						</div>
-						--}}
-
-						<div class="form-group mb-0">
-							<button type="submit" class="btn btn-primary btn-lg btn-block">Accedi</button>
-						</div>
-					</form>
+				<div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
+					<label for="password">Password</label>
+					<a class="float-right" href="{{ url('/password/reset') }}">Password dimenticata?</a>
+					<input id="password" type="password" class="form-control" name="password" required>
+					@if ($errors->has('password'))
+						<div class="form-control-feedback">{{ $errors->first('password') }}</div>
+					@endif
 				</div>
-				<hr class="my-0">
-				<div class="card-block">
-					<p class="text-center mb-0">
-						<a href="{{ url('/password/reset') }}">Hai dimenticato la password?</a>
-					</p>
-				</div>
-			</div>
 
+				<div class="form-group">
+					<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" name="remember">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">Resta connesso</span>
+					</label>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-block">Accedi</button>
+				</div>
+			</form>
+
+			<p class="text-center mb-0">
+				
+			</p>
 		</div>
 	</div>
 </div>

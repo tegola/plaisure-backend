@@ -7,6 +7,8 @@
 		opacity: .85;
 	}
 }
+
+// Age warning badge
 .navbar-age-warning-badge {
 	background-color: $body-color;
 	padding: .5em .3em .4em .5em;
@@ -38,13 +40,17 @@
 	padding-left: 0;
 	border-color: transparent !important;
 	background-color: transparent !important;
-	color: white !important;
+	color: rgba(white, 0.5);
 
 	&::placeholder {
 		color: rgba(white, 0.5);
 	}
-	&:focus::placeholder {
-		color: rgba(white, 0.25);
+	&:focus {
+		color: white;
+
+		&::placeholder {
+			color: rgba(white, 0.25);
+		}
 	}
 }
 
@@ -62,6 +68,21 @@
 // Transparent style
 .navbar-transparent {
 	border-bottom: 1px solid rgba(#000, .05);
+	color: $palette-dark-green-500;
+
+	.pg-logo-text,
+	.pg-logo-symbol,
+	.pg-logo-shadow {
+		fill: $palette-dark-green-500;
+	}
+
+	.navbar-age-warning-badge {
+		background-color: $palette-dark-green-500;
+		color: #fff;
+	}
+	.navbar-age-warning-text {
+		color: inherit;
+	}
 }
 
 // White style

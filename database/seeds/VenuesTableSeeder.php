@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Venue;
+use App\Models\Venue;
 
 class VenuesTableSeeder extends Seeder
 {

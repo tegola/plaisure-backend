@@ -1,9 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
 use DB;
 
 class Venue extends Model
@@ -66,11 +65,11 @@ class Venue extends Model
 	/**
 	 * Categories the venue is in
 	 *
-	 * @return App\Category
+	 * @return App\Models\Category
 	 */
 	public function categories()
 	{
-		return $this->belongsToMany('App\Category');
+		return $this->belongsToMany('App\Models\Category');
 	}
 
 	/**

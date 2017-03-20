@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Site;
 
 use Illuminate\Http\Request;
 
-use App\Venue;
-use App\Category;
+use App\Models\Venue;
+use App\Models\Category;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 

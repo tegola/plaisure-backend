@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
 	return [
 		'name' => $faker->name,
 		'email' => $faker->email,
@@ -21,7 +21,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 
-$factory->define(App\Venue::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Venue::class, function (Faker\Generator $faker) {
 	return [
 		// AAMS data
 		'aams_census_code' => $faker->unique()->ean13,
