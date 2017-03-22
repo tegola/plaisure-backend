@@ -2,7 +2,9 @@
 namespace Deployer;
 
 require 'recipe/laravel.php';
+require 'vendor/deployer/recipes/local.php';
 require 'vendor/deployer/recipes/rsync.php';
+require 'vendor/deployer/recipes/npm.php';
 
 // Fix date message
 date_default_timezone_set('Europe/Rome');
@@ -13,8 +15,34 @@ set('ssh_type', 'native');
 set('ssh_multiplexing', true);
 set('writable_mode', 'chmod');
 set('default_stage', 'test');
+set('local_deploy_path', '/tmp/deployer');
+set('repository', 'git@bitbucket.org:tegola/prontogioco.git');
 
-set('rsync_src', __DIR__);
+// RSYNC files from /tmp/deployer
+set('rsync_src', function() {
+    $local_src = get('local_release_path');
+    if (is_callable($local_src)){
+        $local_src = $local_src();
+    }
+    return $local_src;
+});
+add('rsync', [
+    'exclude' => [
+        '.git',
+        '.sass-cache',
+        '.env',
+        '*.log*',
+        '._*',
+        '.DS_Store',
+        'deploy.php',
+        'resources/assets',
+        'node_modules', // built locally
+        'public/storage',
+        'public/hot',
+        'storage/*.key'
+    ]
+]);
+/*
 set('rsync', [ // FIXME: Try switching to add() and avoid repeating everything
     'exclude' => [
         '.git',
@@ -41,6 +69,7 @@ set('rsync', [ // FIXME: Try switching to add() and avoid repeating everything
     'options' => ['delete'],
     'timeout' => 300,
 ]);
+*/
 
 add('shared_files', []);
 add('shared_dirs', []);
@@ -62,53 +91,41 @@ server('production', 'prontogioco.it')
 
 // Tasks
 
-desc('Building CSS and JS locally');
-task('asset:build', function() {
-    runLocally('npm run production');
-});
+task('npm:local:build', function() {
+    runLocally("cd {{local_release_path}} && {{local/bin/npm}} run production");
+})->desc('Build CSS and JS locally');
 
-desc('Running migrations -> artisan:migrate');
-task('db:migrate', 'artisan:migrate')->onlyOn('production');
+task('artisan:migrate')->desc('Run migrations')->onlyOn('production');
 
-desc('Resetting database');
-task('db:refresh', function () {
+task('artisan:migrate:refresh', function () {
     run('{{bin/php}} {{release_path}}/artisan migrate:refresh --seed --force');
-})->onlyOn('test');
-
-desc('Rolling back the database -> artisan:migrate:rollback');
-task('db:rollback', 'artisan:migrate:rollback');
+})->desc('Reset database')->onlyOn('test');
 
 task('deploy', [
-    'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
-    // 'npm:local:install',
-    'asset:build',
-    'rsync',
-    'deploy:shared',
-    // 'deploy:vendors',
-    'deploy:writable',
-    'db:refresh', // only test
-    'db:migrate', // only production
-    'artisan:view:clear',
-    'artisan:cache:clear',
-    'artisan:config:cache',
-    'artisan:optimize',
-    'deploy:symlink',
-    'deploy:unlock',
-    'cleanup',
-]);
-
-/*
-desc('Restart PHP-FPM service');
-task('php-fpm:restart', function () {
-    // The user must have rights for restart service
-    // /etc/sudoers: username ALL=NOPASSWD:/bin/systemctl restart php-fpm.service
-    run('sudo systemctl restart php-fpm.service');
-});
-after('deploy:symlink', 'php-fpm:restart');
-*/
+    'local:prepare',           // Create dirs locally
+    'local:release',           // Release number locally
+    'local:update_code',       // git clone locally
+    'local:vendors',           // composer install locally
+    'npm:local:install',       // npm install locally
+    'npm:local:build',         // Build locally
+    'local:symlink',           // Symlink /current locally
+    'deploy:prepare',          // Create dirs on server
+    'deploy:lock',             // Lock deploys on server
+    'deploy:release',          // Release number on server
+    'rsync',                   // Send files to server
+    'deploy:writable',         // Ensure paths are writable on server
+    'deploy:shared',           // Shared and .env linking on server
+    'artisan:view:clear',      // Optimize on server
+    'artisan:cache:clear',     // Optimize on server
+    'artisan:config:cache',    // Optimize on server
+    'artisan:optimize',        // Optimize on server
+    'artisan:migrate',         // Migrate DB on production server
+    'artisan:migrate:refresh', // Refresh DB on test server
+    'deploy:symlink',          // Symlink /current on server
+    'deploy:unlock',           // Unlock deploys on server
+    'cleanup',                 // Cleanup old releases on server
+    'local:cleanup'            // Cleanup old releases locally
+])->desc('Deploy your project');
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
-//after('deploy:failed', 'db:rollback');

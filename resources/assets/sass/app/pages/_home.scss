@@ -1,9 +1,4 @@
 .page-home {
-	.pg-logo-text,
-	.pg-logo-symbol,
-	.pg-logo-shadow {
-		fill: $palette-dark-green-500;
-	}
 	.hero {
 		min-height: 85vh;
 		position: relative;
@@ -16,6 +11,12 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+
+		.pg-logo-text,
+		.pg-logo-symbol,
+		.pg-logo-shadow {
+			fill: $palette-dark-green-500;
+		}
 
 		.logo {
 			display: none;
