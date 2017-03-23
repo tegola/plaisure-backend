@@ -56,21 +56,18 @@
 					<img class="venue-icon" :src="'/img/avatars/' + venue.category_icon_name">
 
 					<div class="venue-body">
-						<h5 class="mb-1">
-							<strong><a :href="'/venues/' + venue.id">@{{ venue.name }}</a></strong>
+						<h5 class="mb-1 font-weight-bold">
+							<a class="text-inherit" :href="'/venues/' + venue.id">@{{ venue.name }}</a>
 						</h5>
-						<p v-if="venue.categories.length" class="small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
-						<p class="mb-0">
-							<strong v-if="venue.distance">@{{ venue.distance | formatDistance }}</strong>
-							@{{ venue.short_address }}
-						</p>
-						<ul class="list-inline mb-0 ">
-							<li class="list-inline-item"><a class="text-muted" href="javascript:void(0)" @click="select(venue)">Mostra sulla mappa</a></li>
-							<li class="list-inline-item text-muted">&middot;</li>
+						<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">@{{ venue.categories[0].name }}</p>
+						<p>@{{ venue.short_address }}</p>
+						<ul class="list-inline mb-0">
 							<li class="list-inline-item">
-								<a class="text-muted" href="javascript:void(0)" @click="toggleFavorite(venue)">
-								@include('site.icons.icon', ['name' => 'heart-outline'])
-								Aggiungi ai preferiti
+								<a class="font-weight-bold" href="javascript:void(0)" @click="select(venue)">Mostra sulla mappa</a>
+							</li>
+							<li class="list-inline-item ml-3">
+								<a class="text-accent font-weight-bold" href="javascript:void(0)" @click="toggleFavorite(venue)">
+									@include('site.icons.icon', ['name' => 'heart-outline', 'class' => 'mr-2'])Aggiungi ai preferiti
 								</a>
 							</li>
 						</ul>
@@ -86,7 +83,9 @@
 				<div class="venue-infowindow">
 					<img class="venue-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
 
-					<h5 class="mt-2 mb-1"><strong><a :href="'/venues/' + venue.id">@{{ venue.name }}</a></strong></h5>
+					<h5 class="mt-2 mb-1 font-weight-bold">
+						<a class="text-inherit" :href="'/venues/' + venue.id">@{{ venue.name }}</a>
+					</h5>
 					<p v-if="venue.categories.length" class="my-0 small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
 
 					<p class="my-2">@{{ venue.short_address }}</p>

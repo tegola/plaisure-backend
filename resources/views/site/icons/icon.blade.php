@@ -1,1 +1,1 @@
-<svg class="icon icon-{{ $name }}"><use xlink:href="#icon-{{ $name }}"></use></svg>
+<svg class="icon icon-{{ $name }} {{ $class or '' }}"><use xlink:href="#icon-{{ $name }}"></use></svg>

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import $ from 'jquery';
 import Vue from 'vue';
 import * as VueGoogleMaps from 'vue2-google-maps';
-import formatDistance from '../utilities/format-distance';
+// import formatDistance from '../utilities/format-distance';
 import singularOrPlural from '../utilities/singular-or-plural';
 
 // Register Vue Google Maps
@@ -21,7 +21,7 @@ window.vm = new Vue({
 	el: '.page-content',
 
 	filters: {
-		formatDistance: formatDistance,
+		// formatDistance: formatDistance,
 		singularOrPlural: singularOrPlural
 	},
 

@@ -61,7 +61,8 @@
 
 // Utility classes
 @import "../../../../node_modules/bootstrap/scss/utilities";
-@import "utilities";
+@import "utilities/text";
+@import "utilities/visibility";
 
 // Pages
 @import "pages/home";
