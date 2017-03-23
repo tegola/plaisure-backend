@@ -45,5 +45,5 @@
 	@include button-outline-variant($brand-accent);
 }
 .btn-outline-neutral {
-	@include button-outline-variant(rgba(white, .66));
+	@include button-outline-variant(rgba($gray, .66));
 }

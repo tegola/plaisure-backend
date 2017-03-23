@@ -1,6 +1,6 @@
 @php
 	if (!isset($fluid)) $fluid = false;
-	if (!isset($class)) $class = 'navbar-dark navbar-slim';
+	if (!isset($class)) $class = 'navbar-dark';
 	if (!isset($show_search)) $show_search = true;
 	if (!isset($vue_support)) $vue_support = false;
 @endphp

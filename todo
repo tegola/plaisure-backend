@@ -1,15 +1,19 @@
+Generale:
+  ☐ Aggiustare il footer
+  ☐ Ottimizzazione per mobile
+
 Home:
- ✔ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google @done (3/15/2017, 10:55:45 PM)
- ☐ Ottimizzazione per mobile
+  ✔ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google @done (3/15/2017, 10:55:45 PM)
+  ☐ Ottimizzazione per mobile
  
 Ricerca:
- ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
- ✔ Ricerca per via, oltre che per città @done (3/15/2017, 10:55:55 PM)
+  ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
+  ✔ Ricerca per via, oltre che per città @done (3/15/2017, 10:55:55 PM)
 
 Esplora:
- ☐ Plottare _tutti_ i risultati sulla mappa
+  ☐ Plottare _tutti_ i risultati sulla mappa
 
 
 
 Futuro:
- ☐ Supporto per dare un indirizzo email agli utenti
+  ☐ Supporto per dare un indirizzo email agli utenti

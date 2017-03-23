@@ -1,10 +1,8 @@
 .page-detail {
-	.result-icon {
+	.header-icon {
 		width: 90px;
 		padding: 10px;
-		background-color: #76b1a2;
+		background-color: $palette-green-500;
 		border-radius: 50%;
-		float: left;
-		margin-right: $grid-gutter-width-base;
 	}
 }

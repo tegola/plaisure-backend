@@ -14,7 +14,7 @@ class DetailController extends Controller
 		// Get nearby venues
 		$nearby_venues = Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
 			->where('id', '!=', $venue->id)
-			->take(5)
+			->take(3)
 			->get();
 
 		// Prepare categories string
