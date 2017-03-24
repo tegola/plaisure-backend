@@ -1,7 +1,7 @@
 @extends('site.layout')
 
 @section('content')
-@include('site.venues._navbar', ['show_search' => false])
+@include('site.components.navbar', ['show_search' => false])
 
 <div class="container my-5">
 	<div class="text-center mb-5">

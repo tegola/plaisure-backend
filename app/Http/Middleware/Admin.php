@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Auth;
+use Gate;
 
 class Admin
 {
@@ -16,10 +17,10 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->isAdmin()) {
+        if (Gate::allows('administer')) {
             return $next($request);
         }
 
-        return redirect()->route('site.home'); // FIXME: To login?
+        return redirect()->route('site.home');
     }
 }

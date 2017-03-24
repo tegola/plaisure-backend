@@ -5,7 +5,7 @@
 
 @section('content')
 
-@include('site.venues._navbar')
+@include('site.components.navbar')
 
 <div class="container my-5">
 	<div class="row">

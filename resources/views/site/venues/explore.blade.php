@@ -9,7 +9,7 @@
 
 @section('content')
 
-@include('site.venues._navbar', [
+@include('site.components.navbar', [
 	'fluid' => 'true',
 	'class' => 'navbar-dark navbar-slim',
 	'vue_support' => true

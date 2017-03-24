@@ -16,7 +16,7 @@
 
 @section('content')
 
-@include('site.venues._navbar')
+@include('site.components.navbar')
 
 {{-- Header --}}
 <div class="container mt-4 mb-3">

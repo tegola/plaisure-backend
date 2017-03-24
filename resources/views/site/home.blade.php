@@ -30,12 +30,15 @@
 							<a class="dropdown-item" href="{{ route('site.user') }}">
 								<strong>
 									{{ Auth::user()->name }}
-									@if (Auth::user()->isAdmin())
-										(admin)
-									@endif
+									{{ Gate::allows('administer') ? '(amministratore)' : '' }}
 								</strong><br>
 								<span class="text-muted">Visualizza il tuo profilo</span>
 							</a>
+							@if(Gate::allows('administer'))
+								<a class="dropdown-item" href="{{ route('admin.home') }}">
+									Vai all'amministrazione
+								</a>
+							@endif
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('navbar-user-logout-form').submit();">Esci</a>
 							<form id="navbar-user-logout-form" action="{{ url('/logout') }}" method="POST" hidden>

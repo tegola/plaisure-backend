@@ -10,8 +10,8 @@ use App\Http\Requests;
 use App\Http\Requests\StoreVenue;
 use App\Http\Controllers\Controller;
 
-use App\Venue;
-use App\Category;
+use App\Models\Venue;
+use App\Models\Category;
 use DB;
 
 class VenueController extends Controller
