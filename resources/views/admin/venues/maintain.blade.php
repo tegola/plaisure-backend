@@ -2,13 +2,11 @@
 
 @section('title', 'Carica esercizi')
 
-@section('scripts')
-<script src="{{ mix('js/admin/maintain.js') }}"></script>
-@endsection
-
 @section('content')
 
-@{{ prova }}
+<pga-maintain-page inline-template>
+	<div>@{{ prova }}</div>
+</pga-maintain-page>
 
 <div class="container">
 

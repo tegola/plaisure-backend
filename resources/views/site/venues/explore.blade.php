@@ -62,10 +62,10 @@
 						<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">@{{ venue.categories[0].name }}</p>
 						<p>@{{ venue.short_address }}</p>
 						<ul class="list-inline mb-0">
-							<li class="list-inline-item">
+							<li class="list-inline-item mr-3">
 								<a class="font-weight-bold" href="javascript:void(0)" @click="select(venue)">Mostra sulla mappa</a>
 							</li>
-							<li class="list-inline-item ml-3">
+							<li class="list-inline-item">
 								<a class="text-accent font-weight-bold" href="javascript:void(0)" @click="toggleFavorite(venue)">
 									@include('site.icons.icon', ['name' => 'heart-outline', 'class' => 'mr-2'])Aggiungi ai preferiti
 								</a>

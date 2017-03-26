@@ -1,16 +1,27 @@
-const { mix } = require('laravel-mix');
+let mix = require('laravel-mix');
+
+// Autoload libraries
+mix.autoload({
+	'lodash': ['_', 'lodash'],
+	'jquery': ['$', 'jQuery'],
+	'tether': ['Tether'],
+	'vue': ['Vue'],
+	'vue2-google-maps': ['VueGoogleMaps']
+});
+
+// Extract some libraries in a common file
+mix.extract([
+	'lodash',
+	'jquery',
+	'vue',
+	'vue2-google-maps',
+	'tether',
+	'bootstrap'
+], 'public/js/vendor.js');
 
 // Admin
 mix.sass('resources/assets/sass/admin/main.scss', 'public/css/admin.css');
-mix.js('resources/assets/js/admin/maintain.js', 'public/js/admin')
-	// .autoload({
-	// 	'lodash': ['_', 'lodash'],
-	// 	'jquery': ['$', 'jQuery'],
-	// 	'tether': ['Tether'],
-	// 	'vue': ['Vue'],
-	// 	'vue2-google-maps': ['VueGoogleMaps']
-	// })
-	// .extract(['lodash', 'jquery', 'vue', 'vue2-google-maps', 'tether', 'bootstrap'], 'public/js/admin/vendor.js')
+mix.js('resources/assets/js/admin/main.js', 'public/js/admin')
 	.version();
 
 // App
@@ -19,12 +30,4 @@ mix.js('resources/assets/js/app/base.js', 'public/js/app')
 	.js('resources/assets/js/app/home.js', 'public/js/app')
 	.js('resources/assets/js/app/explore.js', 'public/js/app')
 	.js('resources/assets/js/app/detail.js', 'public/js/app')
-	.autoload({
-		'lodash': ['_', 'lodash'],
-		'jquery': ['$', 'jQuery'],
-		'tether': ['Tether'],
-		'vue': ['Vue'],
-		'vue2-google-maps': ['VueGoogleMaps']
-	})
-	.extract(['lodash', 'jquery', 'vue', 'vue2-google-maps', 'tether', 'bootstrap'], 'public/js/app/vendor.js')
 	.version();

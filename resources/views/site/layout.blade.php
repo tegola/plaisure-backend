@@ -44,14 +44,11 @@
 			</div>
 		</div>
 
-		{{-- Icons --}}
 		@include('site.icons.defs')
 
-		{{-- Common Javascript view for values passed by JavascriptProvider --}}
 		@include('scripts')
-
-		<script src="{{ mix('js/app/manifest.js') }}"></script>
-		<script src="{{ mix('js/app/vendor.js') }}"></script>
+		<script src="{{ mix('js/manifest.js') }}"></script>
+		<script src="{{ mix('js/vendor.js') }}"></script>
 		<script src="{{ mix('js/app/base.js') }}"></script>
 		@yield('scripts')
 
