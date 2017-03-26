@@ -170,6 +170,7 @@ return [
          * Third-party Service Providers
          */
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
+        Roumen\Sitemap\SitemapServiceProvider::class,
 
         /*
          * Application Service Providers...
