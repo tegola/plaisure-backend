@@ -15,6 +15,10 @@ class CreateVenuesTable extends Migration
 		Schema::create('venues', function (Blueprint $table) {
 			$table->increments('id');
 
+			// User relationship
+			$table->integer('user_id')->unsigned()->nullable();
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+
 			// AAMS data
 			$table->string('aams_census_code')->unique();
 			$table->string('aams_subject_enrollment_code');

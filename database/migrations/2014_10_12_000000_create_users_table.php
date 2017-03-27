@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
 			$table->string('email')->unique();
 			$table->string('password', 60);
 			$table->rememberToken();
+			$table->string('aams_subject_enrollment_code');
 			$table->boolean('is_admin');
 			$table->timestamps();
 		});

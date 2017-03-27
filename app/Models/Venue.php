@@ -89,7 +89,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the estimated number of machines based on surface size
+	 * Get the estimated number of machines based on surface size.
 	 *
 	 * @return integer  The estimated number
 	 */
@@ -103,7 +103,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Returns whether the machine number has been faked
+	 * Returns whether the machine number has been faked.
 	 *
 	 * @return boolean
 	 */
@@ -113,17 +113,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Categories the venue is in
-	 *
-	 * @return App\Models\Category
-	 */
-	public function categories()
-	{
-		return $this->belongsToMany('App\Models\Category');
-	}
-
-	/**
-	 * Get the short address
+	 * Get the short address.
 	 *
 	 * @return string
 	 */
@@ -133,7 +123,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the long address
+	 * Get the long address.
 	 *
 	 * @return string
 	 */
@@ -143,7 +133,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the distance in readable format
+	 * Get the distance in readable format.
 	 *
 	 * 0.8123 becomes 800 m
 	 * 1.2455 becomes 1.2 km
@@ -171,9 +161,9 @@ class Venue extends Model
 
 
 	/**
-	 * Get the file icon name for the first venue category
+	 * Get the file icon name for the first venue category.
 	 * 
-	 * @return String The file name
+	 * @return string
 	 */
 	// FIXME: Move to a Helper / Refactor
 	public function getCategoryIconNameAttribute()
@@ -201,7 +191,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the Google Maps URL
+	 * Get the Google Maps URL.
 	 * 
 	 * @return string
 	 */
@@ -225,6 +215,26 @@ class Venue extends Model
 		}
 
 		return $final_url;
+	}
+
+	/**
+	 * User that claimed this venue.
+	 * 
+	 * @return \App\Models\User
+	 */
+	public function user()
+	{
+		return $this->belongsTo('App\Models\User');
+	}
+
+	/**
+	 * Categories the venue is in.
+	 *
+	 * @return \App\Models\Category
+	 */
+	public function categories()
+	{
+		return $this->belongsToMany('App\Models\Category');
 	}
 
 	/**

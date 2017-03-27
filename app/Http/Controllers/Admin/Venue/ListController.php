@@ -15,8 +15,8 @@ class ListController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		// Load venues
-		$venues = Venue::orderBy('name');
+		// Load venues sorted by update date
+		$venues = Venue::oldest('updated_at');
 
 		// Search
 		if ($request->has('query')) {

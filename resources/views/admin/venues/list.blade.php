@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Attivit&agrave;')
+@section('title', 'Esercizi')
 
 @section('content')
 
@@ -10,7 +10,7 @@
 			<h3>@yield('title')</h3>
 			@if($venues->total())
 				<p class="text-muted mb-2 mb-md-0">
-					{{ $venues->total() }} {{ old('query') ? 'trovate' : 'totali' }}
+					{{ $venues->total() }} {{ old('query') ? 'trovati' : 'totali' }}
 				</p>
 			@endif
 		</div>
@@ -22,6 +22,9 @@
 					<input type="text" class="form-control" name="query" value="{{ old('query') }}" placeholder="Cerca nome, città, provincia o codice AAMS&hellip;">
 				</div>
 				<button type="submit" class="btn btn-primary ml-2">Cerca</button>
+				<a class="btn btn-secondary ml-2 {{ old('query') ? '' : 'disabled' }}" href="{{ route('admin.venues.index') }}" title="Reimposta ricerca" data-toggle="tooltip">
+					<i class="fa fa-undo"></i>
+				</a>
 			</form>
 		</div>
 	</div>
@@ -35,7 +38,7 @@
 					<th>Citt&agrave;</th>
 					<th>Codice AAMS</th>
 					<th class="text-right">Aggiunto</th>
-					<th class="text-right">Aggiornato</th>
+					<th class="text-right">Aggiornato <i class="fa fa-caret-down"></i></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -66,7 +69,7 @@
 
 	@else
 		
-		<h4 class="text-center text-muted my-5 py-5">Nessuna attività trovata.</h4>
+		<h4 class="text-center text-muted my-5 py-5">Nessun esercizio trovata.</h4>
 
 	@endif
 

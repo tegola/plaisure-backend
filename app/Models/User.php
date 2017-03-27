@@ -41,4 +41,14 @@ class User extends Authenticatable
     {
         return $this->is_admin;
     }
+
+    /**
+     * Venues claimed by this user.
+     * 
+     * @return [\App\Models\Venue]
+     */
+    public function venues()
+    {
+        return $this->hasMany('App\Models\Venue');
+    }
 }

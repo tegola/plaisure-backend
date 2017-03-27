@@ -12,5 +12,9 @@ new Vue({
 
 	components: {
 		'pga-venue-form-page': venueFormPage
+	},
+
+	mounted() {
+		$('[data-toggle="tooltip"]').tooltip();
 	}
 });
