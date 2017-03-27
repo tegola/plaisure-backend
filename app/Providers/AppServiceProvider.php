@@ -29,8 +29,8 @@ class AppServiceProvider extends ServiceProvider
                 'googleMapsApiKey' => config('constants.google_maps_api_key'),
                 'defaultMapCenter' => [
                     // Italy
-                    'lat' => 41.2053112,
-                    'lng' => 8.0860841
+                    'lat' => 41.909,
+                    'lng' => 12.255
                 ]
             ]
         ]);

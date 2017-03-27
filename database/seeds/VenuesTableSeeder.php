@@ -66,7 +66,12 @@ class VenuesTableSeeder extends Seeder
 			// Name and features
 			$venue->name = $line[1];
 			$venue->surface_size = $line[5];
-			$venue->machine_type = $line[7];
+
+			switch ($line[7]) {
+				case 'A': $venue->machine_type = Venue::MACHINE_TYPE_A; break;
+				case 'B': $venue->machine_type = Venue::MACHINE_TYPE_B; break;
+				case 'A/B': $venue->machine_type = Venue::MACHINE_TYPE_AB; break;
+			}
 
 			// Address
 			$venue->address_street = isset($line[8]) ? $line[8] : "";

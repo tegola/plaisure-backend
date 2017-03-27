@@ -4,34 +4,16 @@
 
 @section('content')
 
-<pga-maintain-page inline-template>
-	<div class="container">
+<pga-venue-form-page inline-template>
+	<div class="container my-5">
 
-		<h3>Manutenzione esercizi</h3>
+		<h3 class="mb-5">Modifica esercizio</h3>
 
 		@foreach ($errors->all() as $error)
 			<div class="alert alert-warning">
 				{{ $error }}
 			</div>
 		@endforeach
-
-		<ul class="nav nav-tabs my-4">
-			<li class="nav-item">
-				<a class="nav-link {{ $mode == 'new' ? 'active' : '' }}" href="{{ route('admin.venues.maintain', ['mode' => 'new']) }}">
-					Aggiungi <span class="hidden-sm-down">nuovi esercizi</span>
-				</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link {{ $mode == 'update' ? 'active' : '' }}" href="{{ route('admin.venues.maintain', ['mode' => 'update']) }}">
-					Aggiorna <span class="hidden-sm-down">esercizi esistenti</span>
-				</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link {{ $mode == 'delete' ? 'active' : '' }}" href="{{ route('admin.venues.maintain', ['mode' => 'delete']) }}">
-					Rimuovi <span class="hidden-sm-down">esercizi obsoleti</span> 
-				</a>
-			</li>
-		</ul>
 
 		@if (!$venue)
 			<br>
@@ -96,9 +78,7 @@
 						<label>Tipo apparecchi</label>
 						<select class="form-control" name="machine_type" v-model="venue.machine_type">
 							<option value="">Scegli&hellip;</option>
-							@foreach ($machine_types as $type)
-								<option value="{{ $type }}" {{ $venue->machine_type == $type ? 'selected' : '' }}>{{ $type }}</option>
-							@endforeach
+							<option v-for="(name, id) in machineTypes" :value="id">@{{ name }}</option>
 						</select>
 					</div>
 					<div class="form-group col-md-6">
@@ -111,13 +91,12 @@
 				<hr>
 
 				<div class="row form-group">
-					@foreach ($categories as $category)
-						<div class="col-sm-6 col-md-4 col-lg-3">
-							<label>
-								<input type="checkbox" name="category_id[]" value="{{ $category->id }}" {{ $venue->categories->contains($category->id) ? 'checked' : '' }}> {{ $category->name }}
-							</label>
-						</div>
-					@endforeach
+					<div class="col-sm-6 col-md-4 col-lg-3" v-for="(name, id) in categories">
+						<label>
+							<input type="checkbox" name="category_id[]" :value="id" v-model.number="venueCategories">
+							@{{ name }}
+						</label>
+					</div>
 				</div>
 
 				<h5 class="mt-3">Indirizzo</h5>
@@ -184,7 +163,7 @@
 							<label>Posizione esatta (trascina per riposizionare)</label>
 							<div class="embed-responsive embed-responsive-16by9" style="height: 296px; border-radius: 5px">
 								<g-map class="embed-responsive-item" :center="mapCenter" :zoom="mapZoom">
-									<g-map-marker :position="mapCenter" draggable @dragend="onMarkerDrag"></g-map-marker>
+									<g-map-marker :position="mapCenter" draggable @drag="onMarkerDrag"></g-map-marker>
 								</g-map>
 							</div>
 						</div>
@@ -192,15 +171,11 @@
 				</div>
 
 				<div class="form-group text-right my-3">
-					@if ($mode == 'new' || $mode == 'update')
-						<button type="submit" class="btn btn-primary">{{ $venue->exists ? 'Salva' : 'Aggiungi' }} e continua</button>
-					@elseif ($mode == 'delete')
-						<button type="submit" class="btn btn-danger">Elimina esercizio</button>
-					@endif
+					<button type="submit" class="btn btn-primary">{{ $venue->exists ? 'Salva' : 'Aggiungi' }} e continua</button>
 				</div>
 			</form>
 		@endif
 	</div>
-</pga-maintain-page>
+</pga-venue-form-page>
 
 @endsection

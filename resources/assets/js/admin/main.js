@@ -5,12 +5,12 @@ window.Vue = Vue;
 window.$ = $;
 
 // Pages
-import maintainPage from './maintain.js';
+import venueFormPage from './pages/venueForm.js';
 
 new Vue({
 	el: '#app',
 
 	components: {
-		'pga-maintain-page': maintainPage
+		'pga-venue-form-page': venueFormPage
 	}
 });

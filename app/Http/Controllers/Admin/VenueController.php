@@ -5,18 +5,16 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use File;
 use Carbon\Carbon;
-
 use App\Http\Requests;
 use App\Http\Requests\StoreVenue;
 use App\Http\Controllers\Controller;
-
 use App\Models\Venue;
 use App\Models\Category;
 use DB;
+use JavaScript;
 
 class VenueController extends Controller
 {
-
 	function __construct()
 	{
 		// Find current CSV
@@ -57,7 +55,7 @@ class VenueController extends Controller
 
 		$errors = [];
 		$venue = false;
-		$venue_original_address = '';
+		$venueOriginalAddress = '';
 		$mode = $request->input('mode', 'new');
 
 		// Switch to update mode CSV file missing, leave a notice and continue to Step 2
@@ -100,7 +98,7 @@ class VenueController extends Controller
 						$venue->aams_subject_enrollment_code = trim($line[6]); // 6 = CODICE ISCRIZIONE SOGGETTO
 						$venue->machine_type                 = trim($line[7]); // 7 = TIPOLOGIA APPARECCHIO
 
-						$venue_original_address = trim($line[2]) . ' ' . trim($line[3]);
+						$venueOriginalAddress = trim($line[2]) . ' ' . trim($line[3]);
 					}
 				}
 				break;
@@ -139,13 +137,18 @@ class VenueController extends Controller
 		}
 		
 		// Get values for the various selectboxes
-		$categories = Category::all();
-		$machine_types = Venue::MACHINE_TYPES;
+		$categories = Category::pluck('name', 'id')->all();
+		$machine_types = Venue::machineTypes();
+
+		JavaScript::put([
+			'venue' => $venue,
+			'venueOriginalAddress' => $venueOriginalAddress,
+			'categories' => $categories
+		]);
 
 		return view('admin.venues.maintain', array(
 			'mode' => $mode,
 			'venue' => $venue,
-			'venue_original_address' => $venue_original_address,
 			'categories' => $categories,
 			'machine_types' => $machine_types
 		))->withErrors($errors);

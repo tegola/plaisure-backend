@@ -8,8 +8,44 @@ use DB;
 class Venue extends Model
 {
 	const SURFACE_TO_MACHINE_MULTIPLIER = 0.15;
-	const MACHINE_TYPES = array('A', 'B', 'A/B');
 
+	const MACHINE_TYPE_A  = 0;
+	const MACHINE_TYPE_B  = 1;
+	const MACHINE_TYPE_AB = 2;
+
+	/**
+	 * Default attributes. This is needed to pass the empty object to Vue's
+	 * 'data' object, so it can be reactive. Setting a default on the migration
+	 * does not prefill the model.
+	 * 
+	 * @var array
+	 */
+	protected $attributes = [
+		'aams_census_code' => '',
+		'aams_subject_enrollment_code' => '',
+
+		'name' => '',
+		'surface_size' => 0,
+		'machine_number' => 0,
+		'machine_type' => self::MACHINE_TYPE_A,
+
+		'address_street' => '',
+		'address_number' => '',
+		'address_city' => '',
+		'address_postcode' => '',
+		'address_province' => '',
+		'address_region' => '',
+		'address_country' => '',
+
+		'geo_latitude' => null,
+		'geo_longitude' => null		
+	];
+
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
 	protected $fillable = [
 		'aams_census_code',
 		'aams_subject_enrollment_code',
@@ -37,6 +73,20 @@ class Venue extends Model
 		'long_address',
 		'category_icon_name'
 	];
+
+	/**
+	 * List of machine types.
+	 * 
+	 * @return array
+	 */
+	static function machineTypes()
+	{
+		return [
+			self::MACHINE_TYPE_A => 'A',
+			self::MACHINE_TYPE_B => 'B',
+			self::MACHINE_TYPE_AB => 'A/B'
+		];
+	}
 
 	/**
 	 * Get the estimated number of machines based on surface size
