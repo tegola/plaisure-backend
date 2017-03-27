@@ -11,10 +11,10 @@
 |
 */
 
-// Auth
+// Auth -----------------------------------------------------------------------
 Auth::routes();
 
-// Site
+// Site -----------------------------------------------------------------------
 Route::group(['as' => 'site.', 'namespace' => 'Site'], function(){
 	Route::get('/',                   'HomeController@index')->name('home');
 
@@ -30,18 +30,22 @@ Route::group(['as' => 'site.', 'namespace' => 'Site'], function(){
 	Route::get('/user',               'UserController@index')->name('user');
 });
 
-// Admin
+// Admin ----------------------------------------------------------------------
 Route::group(['prefix' => '/admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function(){
 	Route::get('/',                'AdminController@index')->name('home');
 	Route::any('/venues/upload',   'VenueController@upload')->name('venues.upload');
 	Route::get('/venues/maintain', 'VenueController@maintain')->name('venues.maintain');
 	Route::post('/venues/store',   'VenueController@store')->name('venues.store');
 
-	Route::match(['get', 'post'], '/venues',              'Venue\ListController@index')->name('venues.index');
-	Route::get('/venues/{venue}/edit', 'Venue\FormController@edit') ->name('venues.edit');
+	// Venues
+	Route::match(['get', 'post'], '/venues', 'Venue\ListController@index')->name('venues.index');
+	Route::get('/venues/{venue}/edit',       'Venue\FormController@edit') ->name('venues.edit');
+
+	// Users
+	Route::match(['get', 'post'], '/users', 'User\ListController@index')->name('users.index');
 });
 
-// SEO
+// SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
 Route::get('sitemap', 'SeoController@sitemap') ;
 Route::get('robots.txt', 'SeoController@robots') ;
