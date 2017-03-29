@@ -17,7 +17,7 @@
 		@yield('stylesheets')
 	</head>
 	<body class="page @yield('body_class')">
-		<div class="page-content">
+		<div id="app">
 			@yield('content')
 		</div>
 
@@ -49,8 +49,8 @@
 		@include('scripts')
 		<script src="{{ mix('js/manifest.js') }}"></script>
 		<script src="{{ mix('js/vendor.js') }}"></script>
-		<script src="{{ mix('js/app/base.js') }}"></script>
 		@yield('scripts')
+		<script src="{{ mix('js/app/main.js') }}"></script>
 
 		<script src="https://use.typekit.net/qwv3xzz.js"></script>
 		<script>try{Typekit.load({ async: true });}catch(e){}</script>

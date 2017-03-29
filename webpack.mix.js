@@ -26,7 +26,7 @@ mix.js('resources/assets/js/admin/main.js', 'public/js/admin')
 
 // App
 mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css');
-mix.js('resources/assets/js/app/base.js', 'public/js/app')
+mix.js('resources/assets/js/app/main.js', 'public/js/app')
 	.js('resources/assets/js/app/home.js', 'public/js/app')
 	.js('resources/assets/js/app/explore.js', 'public/js/app')
 	.js('resources/assets/js/app/detail.js', 'public/js/app')

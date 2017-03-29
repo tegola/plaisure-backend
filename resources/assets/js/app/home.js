@@ -1,85 +1,71 @@
+import Vue from 'vue';
 import _ from 'lodash';
 import $ from 'jquery';
-import Vue from 'vue';
-import * as VueGoogleMaps from 'vue2-google-maps';
 import * as geocoder from '../utilities/geocoder';
 import InputTypeahead from './components/input-typeahead.vue';
-import Icon from './components/icon.vue';
 import VenueSuggestionItem from './components/venue-suggestion-item.vue';
-
-window.Vue = Vue;
+import { Map } from 'vue2-google-maps'
 
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
 
-// Register Vue Google Maps
-// FIXME: Pass region per site and language per user locale
-Vue.use(VueGoogleMaps, {
-	load: {
-		key: pg.config.googleMapsApiKey,
-		language: pg.config.locale,
-		region: pg.config.locale,
-		libraries: 'places'
-	}
-});
-
-window.vm = new Vue({
-	el: '.page-content',
-
+Vue.component('pg-home', {
 	components: {
+		'gmap-map': Map,
 		'pg-input-typeahead': $.extend(InputTypeahead, {
 			components: {
 				'pg-venue-suggestion-item': VenueSuggestionItem
 			}
-		}),
-		'pg-icon': Icon,
+		})
 	},
 
-	data: {
-		category: null,
-		venueQuery: '',
-		venueSuggestions: [],
-		locationQuery: '',
-		locationAutocompleteOptions: {
-			types: ['geocode'] // Limit search to cities, addresses, etc.
-		},
-		isSearchingLocation: false,
-		isLocationFound: false,
-		center: {
-			lat: pg.config.defaultMapCenter.lat,
-			lng: pg.config.defaultMapCenter.lng
-		},
-		ne: {
-			lat: null,
-			lng: null
-		},
-		sw: {
-			lat: null,
-			lng: null
-		},
-		mapOptions: {
-			disableDefaultUI: true,
-			scrollwheel: false,
-			draggable: false,
-			disableDoubleClickZoom: true,
-			styles: [
-				{ // Remove color
-					'stylers': [{ 'saturation': -100 }, { 'gamma': 0.5 }]
-				},
-				{ // Remove labels
-					'elementType': 'labels',
-					'stylers': [{ 'visibility': 'off' }]
-				},
-				{ // Less visible highways
-					'featureType': 'road.highway',
-					'stylers': [{ 'lightness': 50 }]
-				},
-				{ // Thinner roads
-					'featureType': 'road',
-					'elementType': 'geometry.stroke',
-					'stylers': [{ 'weight': 0.3 }]
-				}
-			]
-		}
+	data() {
+		return {
+			category: null,
+			venueQuery: '',
+			venueSuggestions: [],
+			locationQuery: '',
+			locationAutocompleteOptions: {
+				types: ['geocode'] // Limit search to cities, addresses, etc.
+			},
+			isSearchingLocation: false,
+			isLocationFound: false,
+			center: {
+				lat: pg.config.defaultMapCenter.lat,
+				lng: pg.config.defaultMapCenter.lng
+			},
+			ne: {
+				lat: null,
+				lng: null
+			},
+			sw: {
+				lat: null,
+				lng: null
+			},
+			mapOptions: {
+				disableDefaultUI: true,
+				scrollwheel: false,
+				draggable: false,
+				disableDoubleClickZoom: true,
+				styles: [
+					{ // Remove color
+						'stylers': [{ 'saturation': -100 }, { 'gamma': 0.5 }]
+					},
+					{ // Remove labels
+						'elementType': 'labels',
+						'stylers': [{ 'visibility': 'off' }]
+					},
+					{ // Less visible highways
+						'featureType': 'road.highway',
+						'stylers': [{ 'lightness': 50 }]
+					},
+					{ // Thinner roads
+						'featureType': 'road',
+						'elementType': 'geometry.stroke',
+						'stylers': [{ 'weight': 0.3 }]
+					}
+				]
+			}
+		};
 	},
 
 	computed: {
@@ -231,8 +217,5 @@ window.vm = new Vue({
 			};
 			this.locationQuery = location.city;
 		});
-
-		// Make sure tooltips are booted
-		$('[data-toggle="tooltip"]').tooltip();
 	}
 });

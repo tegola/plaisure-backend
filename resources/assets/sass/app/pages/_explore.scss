@@ -33,7 +33,7 @@
 	@include media-breakpoint-up(md) {
 		display: flex;
 
-		.page-content {
+		#app, .page-content {
 			flex: 1;
 			display: flex;
 			flex-direction: column;

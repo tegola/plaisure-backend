@@ -1,57 +1,50 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import Vue from 'vue';
-import * as VueGoogleMaps from 'vue2-google-maps';
 // import formatDistance from '../utilities/format-distance';
 import singularOrPlural from '../utilities/singular-or-plural';
+import { Map, Marker, InfoWindow } from 'vue2-google-maps';
 
-// Register Vue Google Maps
-// FIXME: Pass region per site and language per user locale
-Vue.use(VueGoogleMaps, {
-	load: {
-		key: pg.config.googleMapsApiKey,
-		language: pg.config.locale,
-		region: pg.config.locale,
-		libraries: 'places'
-	}
-});
-
-
-window.vm = new Vue({
-	el: '.page-content',
+Vue.component('pg-explore-page', {
+	components: {
+		'gmap-map': Map,
+		'gmap-marker': Marker,
+		'gmap-info-window': InfoWindow
+	},
 
 	filters: {
 		// formatDistance: formatDistance,
 		singularOrPlural: singularOrPlural
 	},
 
-	data: {
-		searchParams: pg.searchParams,
-		pager: null,
-
-		mapNeedsRefresh: false,
-		followMap: true,
-		highlightedVenueId: null,
-		selectedVenueId: null,
-		mapCenter: {
-			lat: pg.searchParams.c_lat,
-			lng: pg.searchParams.c_lng
-		},
-		mapBounds: {
-			north: pg.searchParams.ne_lat,
-			east: pg.searchParams.ne_lng,
-			south: pg.searchParams.sw_lat,
-			west: pg.searchParams.sw_lng
-		},
-		mapOptions: {
-			mapTypeControl: false,
-			streetViewControl: false,
-			styles: [
-				{ // Hide points of interest
-					'featureType': 'poi',
-					'stylers': [{ 'visibility': 'off' }]
-				}
-			]
+	data() {
+		return {
+			searchParams: pg.searchParams,
+			pager: null,
+			mapNeedsRefresh: false,
+			followMap: true,
+			highlightedVenueId: null,
+			selectedVenueId: null,
+			mapCenter: {
+				lat: pg.searchParams.c_lat,
+				lng: pg.searchParams.c_lng
+			},
+			mapBounds: {
+				north: pg.searchParams.ne_lat,
+				east: pg.searchParams.ne_lng,
+				south: pg.searchParams.sw_lat,
+				west: pg.searchParams.sw_lng
+			},
+			mapOptions: {
+				mapTypeControl: false,
+				streetViewControl: false,
+				styles: [
+					{ // Hide points of interest
+						'featureType': 'poi',
+						'stylers': [{ 'visibility': 'off' }]
+					}
+				]
+			}
 		}
 	},
 
@@ -187,4 +180,3 @@ window.vm = new Vue({
 		this.load();
 	}
 });
-
