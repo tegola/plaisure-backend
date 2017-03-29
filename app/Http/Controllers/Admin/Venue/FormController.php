@@ -18,9 +18,9 @@ class FormController extends Controller
 	 */
 	public function create()
 	{
-		$this->venue = new Venue;
+		$venue = new Venue(old());
 
-		return $this->showForm();
+		return $this->showForm($venue);
 	}
 
 	/**
@@ -30,31 +30,32 @@ class FormController extends Controller
 	 */
 	public function edit(Venue $venue)
 	{
-		$this->venue = $venue;
+		$venue = old() ? $venue->fill(old()) : $venue;
 
-		return $this->showForm();
+		return $this->showForm($venue);
 	}
 
 	/**
 	 * Actually shows the form view to add/edit a venue.
 	 * 
+	 * @param  \App\Models\Venue $venue
 	 * @return \Illuminate\Http\Response
 	 */
-	private function showForm()
+	private function showForm($venue)
 	{
 		$machineTypes = Venue::machineTypes();
 		$categories = Category::pluck('name', 'id')->all();
-		$venueCategories = $this->venue->categories()->pluck('id');
+		$venueCategories = $venue->categories()->pluck('id');
 
 		JavaScript::put([
-			'venue' => $this->venue,
+			'venue' => $venue,
 			'venueCategories' => $venueCategories,
 			'machineTypes' => $machineTypes,
 			'categories' => $categories
 		]);
 
 		return view('admin.venues.form', [
-			'venue' => $this->venue
+			'venue' => $venue
 		]);
 	}
 
@@ -69,7 +70,7 @@ class FormController extends Controller
 		$venue = new Venue($request);
 		$venue->save();
 
-		return back();
+		return redirect()->route('admin.venues.index');
 	}
 
 	/**
@@ -81,9 +82,9 @@ class FormController extends Controller
 	 */
 	public function update(StoreVenue $request, Venue $venue)
 	{
-		$venue->fill($request);
+		$venue->fill($request->all());
 		$venue->save();
 
-		return back();
+		return redirect()->route('admin.venues.index');
 	}
 }

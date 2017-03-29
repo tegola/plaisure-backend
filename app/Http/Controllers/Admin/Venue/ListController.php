@@ -29,7 +29,7 @@ class ListController extends Controller
 		}
 
 		// Paginate
-		$venues = $venues->paginate(100);
+		$venues = $venues->paginate(50);
 
 		$venues->appends($request->all());
 

@@ -27,7 +27,7 @@ class StoreVenue extends FormRequest
             'aams_census_code'             => 'required',
             'aams_subject_enrollment_code' => 'required',
             'name'                         => 'required',
-            'category_id'                  => 'required|integer',
+            'category_id'                  => 'required|exists:categories,id',
             'address_street'               => 'required',
             'address_number'               => 'required',
             'address_city'                 => 'required',

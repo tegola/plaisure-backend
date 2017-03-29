@@ -24,10 +24,11 @@
 			<br>
 			<br>
 		@else
-			<form action="{{ route('admin.venues.store') }}" method="post">
+			<form action="{{ $venue->exists ? route('admin.venues.update', $venue) : route('admin.venues.store') }}" method="POST">
 				{{ csrf_field() }}
 				@if ($venue->exists)
-					<input type="hidden" name="id" value="{{ $venue->id }}">
+					{{ method_field('PATCH') }}
+					{{-- <input type="hidden" name="id" value="{{ $venue->id }}"> --}}
 				@endif
 				<input type="hidden" name="aams_census_code" v-model="venue.aams_census_code">
 				<input type="hidden" name="aams_subject_enrollment_code" v-model="venue.aams_subject_enrollment_code">
@@ -171,7 +172,7 @@
 				</div>
 
 				<div class="form-group text-right my-3">
-					<button type="submit" class="btn btn-primary">{{ $venue->exists ? 'Salva' : 'Aggiungi' }} e continua</button>
+					<button type="submit" class="btn btn-primary">{{ $venue->exists ? 'Salva' : 'Aggiungi' }}</button>
 				</div>
 			</form>
 		@endif

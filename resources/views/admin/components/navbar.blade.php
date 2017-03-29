@@ -11,7 +11,7 @@
 					Esercizi
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbar-venues-link">
-					<a class="dropdown-item" href="{{ route('admin.venues.index') }}">Esercizi nel database</a>
+					<a class="dropdown-item" href="{{ route('admin.venues.index') }}">Esercizi attivi</a>
 					<a class="dropdown-item" href="#">Esercizi chiusi</a>
 					<a class="dropdown-item" href="#">Nuovi esercizi</a>
 					<div class="dropdown-divider"></div>
