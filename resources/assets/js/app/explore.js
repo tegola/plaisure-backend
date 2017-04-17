@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import Vue from 'vue';
-// import formatDistance from '../utilities/format-distance';
+import formatDistance from '../utilities/format-distance';
 import singularOrPlural from '../utilities/singular-or-plural';
 import { Map, Marker, InfoWindow } from 'vue2-google-maps';
 
@@ -13,7 +13,7 @@ Vue.component('pg-explore-page', {
 	},
 
 	filters: {
-		// formatDistance: formatDistance,
+		formatDistance: formatDistance,
 		singularOrPlural: singularOrPlural
 	},
 

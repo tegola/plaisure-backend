@@ -1,7 +1,7 @@
 Generale:
  ☐ Ottimizzazione per mobile
- ☐ Aggiungere le autorizzazioni per vedere il link di accesso all'amministrazione
- ☐ Far funzionare laravel mix anche nell'amministrazione
+ ✔ Aggiungere le autorizzazioni per vedere il link di accesso all'amministrazione @done (17-04-10 22:53)
+ ✔ Far funzionare laravel mix anche nell'amministrazione @done (17-04-10 22:53)
  ☐ Supporto ai like/dislike
 
 Admin:
@@ -14,7 +14,8 @@ Home:
 Ricerca:
  ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
  ✔ Ricerca per via, oltre che per città @done (3/15/2017, 10:55:55 PM)
- ☐ Ordinamento dei risultati per distanza
+ ☐ Meno importanza alla mappa: la ricerca deve funzionare anche quando essa non è visibile
+ ✔ Ordinamento dei risultati per distanza @done (17-04-17 19:12)
  ☐ Priorità alle attività paganti
 
 Esplora:

@@ -209,7 +209,7 @@ Vue.component('pg-home', {
 
 		// If no location is set, find a generic one using IP info
 		geocoder.geocodeByIp((error, location) => {
-			if (!location) return;
+			if (!location || !location.latitude || !location.longitude || !location.city) return;
 
 			this.center = {
 				lat: location.latitude,

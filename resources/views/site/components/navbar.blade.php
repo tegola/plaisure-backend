@@ -46,10 +46,7 @@
 					<button class="btn btn-secondary dropdown-toggle" type="button" id="navbar-user-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-user-button">
 						<a class="dropdown-item" href="{{ route('site.user') }}">
-							<strong>
-								{{ Auth::user()->name }}
-								{{ Gate::allows('administer') ? '(amministratore)' : '' }}
-							</strong><br>
+							<strong>{{ Auth::user()->name }}</strong><br>
 							<span class="text-muted">Visualizza il tuo profilo</span>
 						</a>
 						@if(Gate::allows('administer'))

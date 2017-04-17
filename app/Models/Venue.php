@@ -9,9 +9,9 @@ class Venue extends Model
 {
 	const SURFACE_TO_MACHINE_MULTIPLIER = 0.15;
 
-	const MACHINE_TYPE_A  = 0;
-	const MACHINE_TYPE_B  = 1;
-	const MACHINE_TYPE_AB = 2;
+	const MACHINE_TYPE_A  = 1;
+	const MACHINE_TYPE_B  = 2;
+	const MACHINE_TYPE_AB = 3;
 
 	/**
 	 * Default attributes. This is needed to pass the empty object to Vue's
@@ -287,6 +287,23 @@ class Venue extends Model
 						* COS(RADIANS($lng) - RADIANS($lng_column))
 						+ SIN(RADIANS($lat))
 						* SIN(RADIANS($lat_column)))) AS distance")
+			)->orderBy('distance','asc');
+	}
+
+	public function scopeWithDistanceFrom($query, $lat, $lng, $unit = 'km')
+	{
+		$unit = ($unit === "km") ? 6378.10 : 3963.17;
+		$lat = (float) $lat;
+		$lng = (float) $lng;
+		$lat_column = 'geo_latitude';
+		$lng_column = 'geo_longitude';
+
+		return $query->select(DB::raw("*,
+			 ($unit * ACOS(COS(RADIANS($lat))
+					* COS(RADIANS($lat_column))
+					* COS(RADIANS($lng) - RADIANS($lng_column))
+					+ SIN(RADIANS($lat))
+					* SIN(RADIANS($lat_column)))) AS distance")
 			)->orderBy('distance','asc');
 	}
 

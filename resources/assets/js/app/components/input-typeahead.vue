@@ -18,7 +18,7 @@
 			@focus="focus"
 			@blur="blur">
 		<div v-if="open && items.length" class="dropdown-menu w-100">
-			<component v-for="(item, index) in items"
+			<component v-for="(item, index) in items" :key="item.id"
 				:is="itemComponent"
 				:item="item"
 				:class="itemClass(index)"

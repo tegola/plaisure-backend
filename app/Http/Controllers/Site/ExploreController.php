@@ -73,6 +73,11 @@ class ExploreController extends Controller
 			$venues->near($this->c_lat, $this->c_lng, $this->distance);
 		}
 
+		// Calculate distance
+		if ($this->c_lat && $this->c_lng) {
+			$venues->withDistanceFrom($this->c_lat, $this->c_lng);
+		}
+
 		// Filter by category
 		if ($this->category) {
 			$venues->whereHas('categories', function($query) {
