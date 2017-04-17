@@ -64,13 +64,10 @@ class ExploreController extends Controller
 		// Start loading venues
 		$venues = Venue::with('categories');
 
-		// Filter by bounds or by center
+		// Filter by bounds
 		if ($this->ne_lat && $this->ne_lng && $this->sw_lat && $this->sw_lng) {
 			// Find in bounds
 			$venues->inBounds($this->ne_lat, $this->ne_lng, $this->sw_lat, $this->sw_lng);
-		} elseif ($this->c_lat && $this->c_lng) {
-			// Find from center plus distance
-			$venues->near($this->c_lat, $this->c_lng, $this->distance);
 		}
 
 		// Calculate distance
