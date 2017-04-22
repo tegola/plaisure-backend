@@ -60,7 +60,7 @@ class Venue extends Model
 		'address_region',
 		'address_country',
 		'geo_latitude',
-		'geo_longitude',
+		'geo_longitude'
 	];
 
 	/**

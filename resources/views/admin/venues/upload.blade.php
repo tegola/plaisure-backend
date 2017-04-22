@@ -13,6 +13,7 @@
 
 	<br>
 	<form method="post" enctype="multipart/form-data">
+		{{ csrf_field() }}
 		<div class="form-group row">
 			<label class="col-md-2 col-form-label">File corrente</label>
 			<div class="col-md-10">

@@ -67,8 +67,12 @@ class FormController extends Controller
 	 */
 	public function store(StoreVenue $request)
 	{
+		// Save venue
 		$venue = new Venue($request);
 		$venue->save();
+
+		// Save categories
+		$venue->categories()->sync($request->categories);
 
 		return redirect()->route('admin.venues.index');
 	}
@@ -82,8 +86,12 @@ class FormController extends Controller
 	 */
 	public function update(StoreVenue $request, Venue $venue)
 	{
+		// Save venue
 		$venue->fill($request->all());
 		$venue->save();
+
+		// Save categories
+		$venue->categories()->sync($request->categories);
 
 		return redirect()->route('admin.venues.index');
 	}

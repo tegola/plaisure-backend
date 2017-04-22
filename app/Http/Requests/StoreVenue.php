@@ -13,7 +13,14 @@ class StoreVenue extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $venue = $this->route('venue');
+        $owner = $venue->user;
+        $user = $this->user();
+
+        if ($venue->exists && $owner && $owner->is($user)) return true;
+        if ($user->is_admin) return true;
+
+        return false;
     }
 
     /**
@@ -27,7 +34,6 @@ class StoreVenue extends FormRequest
             'aams_census_code'             => 'required',
             'aams_subject_enrollment_code' => 'required',
             'name'                         => 'required',
-            'category_id'                  => 'required|exists:categories,id',
             'address_street'               => 'required',
             'address_number'               => 'required',
             'address_city'                 => 'required',
@@ -36,7 +42,8 @@ class StoreVenue extends FormRequest
             'address_region'               => 'required',
             'address_country'              => 'required',
             'geo_latitude'                 => 'required|numeric|between:-90,90',
-            'geo_longitude'                => 'required|numeric|between:-180,180'
+            'geo_longitude'                => 'required|numeric|between:-180,180',
+            'categories'                   => 'required|exists:categories,id'
         ];
     }
 }

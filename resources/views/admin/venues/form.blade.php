@@ -94,7 +94,7 @@
 				<div class="row form-group">
 					<div class="col-sm-6 col-md-4 col-lg-3" v-for="(name, id) in categories">
 						<label>
-							<input type="checkbox" name="category_id[]" :value="id" v-model.number="venueCategories">
+							<input type="checkbox" name="categories[]" :value="id" v-model.number="venueCategories">
 							@{{ name }}
 						</label>
 					</div>
