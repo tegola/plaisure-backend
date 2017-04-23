@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVenue;
 use App\Models\Venue;
 use App\Models\Category;
-use View;
 use JavaScript;
 
 class FormController extends Controller

@@ -12,11 +12,10 @@
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbar-venues-link">
 					<a class="dropdown-item" href="{{ route('admin.venues.index') }}">Esercizi attivi</a>
-					<a class="dropdown-item" href="#">Esercizi chiusi</a>
-					<a class="dropdown-item" href="#">Nuovi esercizi</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="{{ route('admin.venues.upload') }}">Carica CSV</a>
-					{{-- <a class="dropdown-item" href="{{ route('admin.venues.maintain') }}">Modalit&agrave; di manutenzione</a> --}}
+					<h6 class="dropdown-header">CSV</h6>
+					<a class="dropdown-item" href="{{ route('admin.venues.csv.edit') }}">Carica CSV</a>
+					<a class="dropdown-item" href="{{ route('admin.venues.maintain.index') }}">Manutenzione da CSV</a>
 				</div>
 			</li>
 			<li class="nav-item">

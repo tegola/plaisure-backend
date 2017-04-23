@@ -1,52 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Venue;
 
+use DB;
+use Storage;
+use JavaScript;
 use Illuminate\Http\Request;
-use File;
-use Carbon\Carbon;
-use App\Http\Requests;
 use App\Http\Requests\StoreVenue;
 use App\Http\Controllers\Controller;
 use App\Models\Venue;
 use App\Models\Category;
-use DB;
-use JavaScript;
 
-class VenueController extends Controller
+class MaintainController extends Controller
 {
-	function __construct()
+	public function index()
 	{
-		// Find current CSV
-		$path = storage_path(config('constants.venues_csv_path'));
-		$this->csv = File::exists($path) && File::isFile($path) ? $path : null;
-	}
+		// Find the CSV file
+		$path = config('constants.venues_csv_path.filename');
 
-	// TODO: In futuro questo file sarà scaricato automaticamente e testato per essere sicuri che non sia diverso
-	public function upload(Request $request)
-	{
-		if ($request->isMethod('post') && $request->hasFile('venues')) {
-			$file_new = $request->file('venues');
-			$destination = storage_path('app');
-
-			// Check that the file is valid and that it's a CSV (by checking mime type and extension)
-			if (!$file_new->isValid()) {
-				throw new Exception("Errore nel caricamento del file.");
-			}
-			if ($file_new->getMimeType() !== 'text/plain' || $file_new->getClientOriginalExtension() !== 'csv') {
-				throw new Exception("Errore nel caricamento del file: non è un file CSV.");
-			}
-
-			// Move file
-			$file_new->move($destination, 'esercizi.csv');
-
-			// TODO: Cancella gli ID del file CSV dalla sessione
-			// ...
+		if (!Storage::exists($path)) {
+			throw new Exception('File non trovato');
 		}
-
-		return view('admin.venues.upload', [
-			'file_current' => $this->csv
-		]);
 	}
 
 	public function maintain(Request $request)
