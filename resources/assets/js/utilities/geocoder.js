@@ -77,69 +77,71 @@ function format(result) {
 	};
 
 	for (let i = 0; i < result.address_components.length; i++) {
-		let addressType = result.address_components[i].types[0];
-		switch (addressType) {
-		// Country
-		case 'country':
-			extractedObj.country = result.address_components[i].long_name;
-			extractedObj.countryCode = result.address_components[i].short_name;
-			break;
-		// Administrative Level 1
-		case 'administrative_area_level_1':
-			extractedObj.administrativeLevels.level1long = result.address_components[i].long_name;
-			extractedObj.administrativeLevels.level1short = result.address_components[i].short_name;
-			break;
-		// Administrative Level 2
-		case 'administrative_area_level_2':
-			extractedObj.administrativeLevels.level2long = result.address_components[i].long_name;
-			extractedObj.administrativeLevels.level2short = result.address_components[i].short_name;
-			break;
-		// Administrative Level 3
-		case 'administrative_area_level_3':
-			extractedObj.administrativeLevels.level3long = result.address_components[i].long_name;
-			extractedObj.administrativeLevels.level3short = result.address_components[i].short_name;
-			break;
-		// Administrative Level 4
-		case 'administrative_area_level_4':
-			extractedObj.administrativeLevels.level4long = result.address_components[i].long_name;
-			extractedObj.administrativeLevels.level4short = result.address_components[i].short_name;
-			break;
-		// Administrative Level 5
-		case 'administrative_area_level_5':
-			extractedObj.administrativeLevels.level5long = result.address_components[i].long_name;
-			extractedObj.administrativeLevels.level5short = result.address_components[i].short_name;
-			break;
-		// City
-		case 'locality':
-			extractedObj.city = result.address_components[i].long_name;
-			break;
-		// Address
-		case 'postal_code':
-			extractedObj.zipcode = result.address_components[i].long_name;
-			break;
-		case 'route':
-			extractedObj.streetName = result.address_components[i].long_name;
-			break;
-		case 'street_number':
-			extractedObj.streetNumber = result.address_components[i].long_name;
-			break;
-		case 'premise':
-			extractedObj.extra.premise = result.address_components[i].long_name;
-			break;
-		case 'subpremise':
-			extractedObj.extra.subpremise = result.address_components[i].long_name;
-			break;
-		case 'establishment':
-			extractedObj.extra.establishment = result.address_components[i].long_name;
-			break;
-		case 'sublocality_level_1':
-		case 'political':
-		case 'sublocality':
-		case 'neighborhood':
-			if (!extractedObj.extra.neighborhood) {
-				extractedObj.extra.neighborhood = result.address_components[i].long_name;
-			}
-			break;
+		let components = result.address_components[i];
+		let type = components.types[0];
+
+		switch (type) {
+			// Country
+			case 'country':
+				extractedObj.country = components.long_name;
+				extractedObj.countryCode = components.short_name;
+				break;
+			// Administrative Level 1
+			case 'administrative_area_level_1':
+				extractedObj.administrativeLevels.level1long = components.long_name;
+				extractedObj.administrativeLevels.level1short = components.short_name;
+				break;
+			// Administrative Level 2
+			case 'administrative_area_level_2':
+				extractedObj.administrativeLevels.level2long = components.long_name;
+				extractedObj.administrativeLevels.level2short = components.short_name;
+				break;
+			// Administrative Level 3
+			case 'administrative_area_level_3':
+				extractedObj.administrativeLevels.level3long = components.long_name;
+				extractedObj.administrativeLevels.level3short = components.short_name;
+				break;
+			// Administrative Level 4
+			case 'administrative_area_level_4':
+				extractedObj.administrativeLevels.level4long = components.long_name;
+				extractedObj.administrativeLevels.level4short = components.short_name;
+				break;
+			// Administrative Level 5
+			case 'administrative_area_level_5':
+				extractedObj.administrativeLevels.level5long = components.long_name;
+				extractedObj.administrativeLevels.level5short = components.short_name;
+				break;
+			// City
+			case 'locality':
+				extractedObj.city = components.long_name;
+				break;
+			// Address
+			case 'postal_code':
+				extractedObj.zipcode = components.long_name;
+				break;
+			case 'route':
+				extractedObj.streetName = components.long_name;
+				break;
+			case 'street_number':
+				extractedObj.streetNumber = components.long_name;
+				break;
+			case 'premise':
+				extractedObj.extra.premise = components.long_name;
+				break;
+			case 'subpremise':
+				extractedObj.extra.subpremise = components.long_name;
+				break;
+			case 'establishment':
+				extractedObj.extra.establishment = components.long_name;
+				break;
+			case 'sublocality_level_1':
+			case 'political':
+			case 'sublocality':
+			case 'neighborhood':
+				if (!extractedObj.extra.neighborhood) {
+					extractedObj.extra.neighborhood = components.long_name;
+				}
+				break;
 		}
 	}
 

@@ -15,43 +15,57 @@
 Auth::routes();
 
 // Site -----------------------------------------------------------------------
-Route::group(['as' => 'site.', 'namespace' => 'Site'], function(){
-	Route::get('/',                   'HomeController@index')->name('home');
+Route::group(['namespace' => 'Site'], function(){
+	Route::get('/',                   'HomeController@index')->name('site.home');
 
-	Route::get('/venues/suggestions', 'SearchController@suggestions') ->name('venues.suggestions');
-	Route::get('/venues/explore',     'ExploreController@index')      ->name('venues.explore');
-	Route::get('/venues/search',      'ExploreController@search')     ->name('venues.search');
-	Route::get('/venues/claim',       'ClaimController@index')        ->name('venues.claim');
-	Route::get('/venues/{venue}',     'DetailController@index')       ->name('venues.detail'); // TODO: /v/nome-sala/hash_per_id
+	Route::get('/venues/suggestions', 'SearchController@suggestions')->name('site.venues.suggestions');
+	Route::get('/venues/explore',     'ExploreController@index')     ->name('site.venues.explore');
+	Route::get('/venues/search',      'ExploreController@search')    ->name('site.venues.search');
+	Route::get('/venues/claim',       'ClaimController@index')       ->name('site.venues.claim');
+	Route::get('/venues/{venue}',     'DetailController@index')      ->name('site.venues.detail'); // TODO: /v/nome-sala/hash_per_id
 
-	Route::get('/about/company',      'AboutController@company')      ->name('about.company');
-	Route::get('/about/contact',      'AboutController@contact')      ->name('about.contact');
+	Route::get('/about/company',      'AboutController@company')     ->name('site.about.company');
+	Route::get('/about/contact',      'AboutController@contact')     ->name('site.about.contact');
 
-	Route::get('/user',               'UserController@index')         ->name('user');
+	Route::get('/user',               'UserController@index')        ->name('site.user');
 });
 
 // Admin ----------------------------------------------------------------------
-Route::group(['prefix' => '/admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function(){
-	Route::get('/',                'AdminController@index')   ->name('home');
+Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function(){
+	Route::get('/', 'AdminController@index')->name('admin.home');
 
 	// Venues
-	Route::get('/venues',              'Venue\ListController@index')    ->name('venues.index');
-	Route::get('/venues/create',       'Venue\FormController@create')   ->name('venues.create');
-	Route::post('/venues',             'Venue\FormController@store')    ->name('venues.store');
-	Route::get('/venues/{venue}',      'Venue\DetailController@show')   ->name('venues.show');
-	Route::get('/venues/{venue}/edit', 'Venue\FormController@edit')     ->name('venues.edit');
-	Route::patch('/venues/{venue}',    'Venue\FormController@update')   ->name('venues.update');
-	Route::delete('/venues/{venue}',   'Venue\ListController@delete')   ->name('venues.delete');
+	Route::group(['prefix' => '/venues', 'namespace' => 'Venue'], function(){
+		// Obsolete
+		Route::group(['prefix' => '/obsolete', 'namespace' => 'Obsolete'], function(){
+			Route::get('/', 'ListController@index')->name('admin.venues.obsolete.index');
+		});
 
-	// Maintain
-	Route::get('/venues/maintain',     'Venue\MaintainController@index')->name('venues.maintain.index');
+		// Unmanaged
+		Route::group(['prefix' => '/unmanaged', 'namespace' => 'Unmanaged'], function(){
+			Route::get('/',                        'ListController@index')  ->name('admin.venues.unmanaged.index');
+			Route::get('/{importedVenue}/promote', 'FormController@promote')->name('admin.venues.unmanaged.promote');
+		});
 
-	// CSV
-	Route::get('/venues/csv/upload',   'Venue\UploadController@form')   ->name('venues.csv.edit');
-	Route::post('/venues/csv',         'Venue\UploadController@save')   ->name('venues.csv.update');
+		// Import (upload CSV)
+		Route::group(['namespace' => 'Import'], function(){
+			Route::get('/import', 'FormController@edit')   ->name('admin.venues.import.edit');
+			Route::post('/import', 'FormController@update')->name('admin.venues.import.update');
+		});
+
+		// Normal ones
+		Route::get('/',             'ListController@index')         ->name('admin.venues.index');
+		Route::get('/add',          'FormController@create')        ->name('admin.venues.create');
+		Route::post('/',            'FormController@store')         ->name('admin.venues.store');
+		Route::get('/{venue}',      'DetailController@show')        ->name('admin.venues.show');
+		Route::get('/{venue}/edit', 'FormController@edit')          ->name('admin.venues.edit');
+		Route::patch('/{venue}',    'FormController@update')        ->name('admin.venues.update');
+		Route::delete('/{venue}',   'ListController@delete')        ->name('admin.venues.delete');
+
+	});
 
 	// Users
-	Route::get('/users',               'User\ListController@index')     ->name('users.index');
+	Route::get('/users', 'User\ListController@index')->name('admin.users.index');
 });
 
 // SEO ------------------------------------------------------------------------

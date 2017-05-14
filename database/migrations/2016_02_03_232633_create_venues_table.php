@@ -20,7 +20,7 @@ class CreateVenuesTable extends Migration
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 
 			// AAMS data
-			$table->string('aams_census_code')->unique();
+			$table->string('aams_census_code');
 			$table->string('aams_subject_enrollment_code');
 
 			// Name and features

@@ -7,15 +7,15 @@
 	<div class="collapse navbar-collapse" id="navbar-collapse">
 		<ul class="navbar-nav">
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="http://example.com" id="navbar-venues-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbar-venues-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Esercizi
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbar-venues-link">
 					<a class="dropdown-item" href="{{ route('admin.venues.index') }}">Esercizi attivi</a>
+					<a class="dropdown-item" href="{{ route('admin.venues.obsolete.index') }}">Esercizi obsoleti</a>
+					<a class="dropdown-item" href="{{ route('admin.venues.unmanaged.index') }}">Esercizi da gestire</a>
 					<div class="dropdown-divider"></div>
-					<h6 class="dropdown-header">CSV</h6>
-					<a class="dropdown-item" href="{{ route('admin.venues.csv.edit') }}">Carica CSV</a>
-					<a class="dropdown-item" href="{{ route('admin.venues.maintain.index') }}">Manutenzione da CSV</a>
+					<a class="dropdown-item" href="{{ route('admin.venues.import.edit') }}">Carica file CSV</a>
 				</div>
 			</li>
 			<li class="nav-item">

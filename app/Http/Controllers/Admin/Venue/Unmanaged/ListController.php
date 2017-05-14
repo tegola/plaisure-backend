@@ -1,28 +1,83 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Venue;
+namespace App\Http\Controllers\Admin\Venue\Unmanaged;
 
-use DB;
-use Storage;
-use JavaScript;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreVenue;
 use App\Http\Controllers\Controller;
 use App\Models\Venue;
-use App\Models\Category;
+use App\Models\ImportedVenue;
 
-class MaintainController extends Controller
+class ListController extends Controller
 {
-	public function index()
+	public function __construct()
 	{
-		// Find the CSV file
-		$path = config('constants.venues_csv_path.filename');
-
-		if (!Storage::exists($path)) {
-			throw new Exception('File non trovato');
-		}
+		// Go to upload if no imported venues are found
+		if (!ImportedVenue::count()) return redirect()->route('admin.imported-venues.edit');
 	}
 
+	/**
+	 * Shows the imported venues list.
+	 * 
+	 * @return \Illuminate\Http\Response
+	 */
+	/*
+	public function index(Request $request)
+	{
+		// Load imported venues sorted by name
+		$importedVenues = ImportedVenue::orderBy('name');
+
+		// Search venues
+		if ($request->has('query')) {
+			$query = $request->input('query');
+
+			$importedVenues
+				->where('name', 'like', "%{$query}%")
+				->orWhere('address_1', 'like', "%{$query}%")
+				->orWhere('address_2', 'like', "%{$query}%")
+				->orWhere('aams_census_code', 'like', "%{$query}%");
+		}
+
+		// Paginate
+		$importedVenues = $importedVenues->paginate(50);
+		$importedVenues->appends($request->all());
+
+		// Pass old values
+		$request->flash();
+
+		return view('admin.imported-venues.list', compact('importedVenues'));
+	}
+	*/
+
+	/**
+	 * Find unmanaged venues by scanning imported ones.
+	 * 
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index(Request $request)
+	{
+		// Get current venues' aams census codes
+		$venuesCensusCodes = Venue::pluck('aams_census_code')->all();
+
+		// Find new venues
+		$importedVenues = ImportedVenue::whereNotIn('aams_census_code', $venuesCensusCodes)
+			->orderBy('name');
+
+		// Search
+		if ($request->has('query')) {
+			$importedVenues = $importedVenues->search($request->input('query'));
+		}
+
+		// Paginate
+		$importedVenues = $importedVenues->paginate(50);
+		$importedVenues->appends($request->all());
+
+		// Pass old values
+		$request->flash();
+
+		return view('admin.venues.unmanaged.list', compact('importedVenues'));
+	}
+
+	/*
 	public function maintain(Request $request)
 	{
 		// FIXME: Manca il caso in cui il csv ha i dati aggiornati
@@ -146,36 +201,5 @@ class MaintainController extends Controller
 
 		return back();
 	}
+	*/
 }
-
-
-
-/*
-
-// FIXME: Salvare i codici in sessione per evitare di caricare il file ogni volta
-$csv_file = fopen($this->csv, 'r');
-$line_counter = 0;
-$census_codes = [];
-
-while (($line = fgetcsv($csv_file, 0, ';')) !== false) {
-	$line_counter++;
-
-	// Skip first line
-	if ($line_counter == 1) {
-		continue;
-	}
-
-	// Store census code
-	$code = trim($line[0]);
-	if (strlen($code)) {
-		array_push($census_codes, $code);
-	}
-}
-
-// Get all venues not found in the database
-$venue = DB::table('venues')
-				->whereNotIn('aams_census_code', $census_codes)
-			 	->take(1)
-			 	->get();
-
- */

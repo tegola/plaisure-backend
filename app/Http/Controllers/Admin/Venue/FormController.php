@@ -25,6 +25,7 @@ class FormController extends Controller
 	/**
 	 * Edit an existing venue.
 	 * 
+	 * @param  Venue  $venue
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Venue $venue)
@@ -37,10 +38,10 @@ class FormController extends Controller
 	/**
 	 * Actually shows the form view to add/edit a venue.
 	 * 
-	 * @param  \App\Models\Venue $venue
+	 * @param  Venue $venue
 	 * @return \Illuminate\Http\Response
 	 */
-	private function showForm($venue)
+	private function showForm(Venue $venue)
 	{
 		$machineTypes = Venue::machineTypes();
 		$categories = Category::pluck('name', 'id')->all();

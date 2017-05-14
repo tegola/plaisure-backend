@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Venue;
 
 class StoreVenue extends FormRequest
 {
@@ -14,11 +15,17 @@ class StoreVenue extends FormRequest
     public function authorize()
     {
         $venue = $this->route('venue');
-        $owner = $venue->user;
         $user = $this->user();
 
-        if ($venue->exists && $owner && $owner->is($user)) return true;
-        if ($user->is_admin) return true;
+        // Venue does not exist, it's an add
+        if (!$venue) {
+            return $user->is_admin;
+        } else {
+            $owner = $venue->user;
+
+            if ($owner && $owner->is($user)) return true;
+            if ($user->is_admin) return true;
+        }
 
         return false;
     }

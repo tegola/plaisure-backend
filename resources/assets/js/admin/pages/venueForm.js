@@ -15,8 +15,8 @@ export default {
 	data() {
 		return {
 			venue: pg.venue,
+			importedVenue: pg.importedVenue || null,
 			venueCategories: pg.venueCategories,
-			venueOriginalAddress: pg.venueOriginalAddress,
 			machineTypes: pg.machineTypes,
 			categories: pg.categories,
 			mapCenter: {
@@ -27,9 +27,17 @@ export default {
 		};
 	},
 
+	computed: {
+		importedVenueAddress() {
+			const iv = this.importedVenue;
+
+			return iv ? [iv.address_1, iv.address_2].join(' ') : null;
+		}
+	},
+
 	methods: {
 		geocode() {
-			geocode(this.venueOriginalAddress, (error, results) => {
+			geocode(this.importedVenueAddress, (error, results) => {
 				if (error) {
 					alert("Non è stato possibile utilizzare Google Maps per trovare la posizione dell'attività.");
 					return;
@@ -42,12 +50,19 @@ export default {
 					address_number: result.streetNumber,
 					address_city: result.city,
 					address_postcode: result.zipcode,
-					address_province: result.administrativeLevels.level2short,
-					address_region: result.administrativeLevels.level1Long,
+					address_province: result.administrativeLevels.level2long.replace('Provincia di ', ''),
+					address_region: result.administrativeLevels.level1long,
 					address_country: result.country,
 					geo_latitude: result.latitude,
 					geo_longitude: result.longitude
 				});
+
+				this.mapCenter = {
+					lat: result.latitude,
+					lng: result.longitude
+				};
+
+				this.mapZoom = 15;
 			});
 		},
 
