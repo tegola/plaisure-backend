@@ -1,3 +1,9 @@
+// Base elements
+.gm-style {
+	font: inherit !important;
+}
+
+// Autocomplete
 .pac-container {
 	box-sizing: content-box; // Needed
 	font-family: inherit;

@@ -24,7 +24,7 @@ class DetailController extends Controller
 
 		return view('site.venues.detail', [
 			'venue' => $venue,
-			'venue_category_string' => $venue_category_names->implode(','),
+			'venue_category_string' => $venue_category_names->implode(', '),
 			'nearby_venues' => $nearby_venues
 		]);
 	}
