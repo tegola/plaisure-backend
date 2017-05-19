@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Site;
+namespace App\Http\Controllers\Site\Venue;
 
 use JavaScript;
 use Illuminate\Http\Request;
@@ -27,10 +27,7 @@ class ExploreController extends Controller
 
 	public function index()
 	{
-		// Make sure we have all location data
-		if (!$this->hasLocationData()) {
-			return response()->json([]);
-		}
+		
 
 		$searchParams = [
 			'near' => $this->near,

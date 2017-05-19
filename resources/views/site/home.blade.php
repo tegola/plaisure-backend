@@ -8,7 +8,7 @@
 
 @section('content')
 
-<pg-home inline-template>
+<pg-home-page inline-template>
 	<div>
 		<div class="hero">
 			<gmap-map class="map" :center="center" :zoom="zoom" :options="mapOptions"></gmap-map>
