@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import _ from 'lodash';
 import $ from 'jquery';
+import axios from 'axios';
 import * as geocoder from '../utilities/geocoder';
 import InputTypeahead from './components/input-typeahead.vue';
 import VenueSuggestionItem from './components/venue-suggestion-item.vue';
@@ -8,10 +9,10 @@ import { Map } from 'vue2-google-maps'
 
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
 
-Vue.component('pg-home', {
+Vue.component('pg-home-page', {
 	components: {
 		'gmap-map': Map,
-		'pg-input-typeahead': $.extend(InputTypeahead, {
+		'pg-input-typeahead': _.extend(InputTypeahead, {
 			components: {
 				'pg-venue-suggestion-item': VenueSuggestionItem
 			}
@@ -136,7 +137,7 @@ Vue.component('pg-home', {
 
 		loadVenueSuggestions: _.debounce(function(value) {
 			// Load suggestions and use them
-			$.get('/venues/suggestions', {
+			axios.post('/suggestions', {
 				what: value,
 				c_lat: this.center.lat,
 				c_lng: this.center.lng,
@@ -145,8 +146,8 @@ Vue.component('pg-home', {
 				ne_lat: this.ne.lat,
 				ne_lng: this.ne.lng,
 				near: this.locationQuery
-			}).done((data) => {
-				this.venueSuggestions = data;
+			}).then(response => {
+				this.venueSuggestions = response.data;
 			});
 		}, 300),
 
@@ -190,6 +191,7 @@ Vue.component('pg-home', {
 	mounted() {
 		const $autocompleteInput = $(this.$refs.locationAutocomplete.$refs.input);
 
+		// FIXME: Handle events with vue and remove jquery
 		// Prevent submitting the form when the locations dropdown is open
 		$autocompleteInput.on('keydown', (e) => {
 			if (e.which == 13 && $('.pac-container:visible').length) {

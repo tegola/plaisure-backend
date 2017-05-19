@@ -15,6 +15,7 @@ mix.extract([
 	'jquery',
 	'vue',
 	'vue2-google-maps',
+	'axios',
 	'tether',
 	'bootstrap'
 ], 'public/js/vendor.js');

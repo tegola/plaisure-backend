@@ -16,18 +16,20 @@ Auth::routes();
 
 // Site -----------------------------------------------------------------------
 Route::group(['namespace' => 'Site'], function(){
-	Route::get('/',                   'HomeController@index')->name('site.home');
+	Route::get('/',                  'HomeController@index')      ->name('site.home');
+	Route::post('/suggestions',      'HomeController@suggestions')->name('site.suggestions');
 
-	Route::get('/venues/suggestions', 'SearchController@suggestions')->name('site.venues.suggestions');
-	Route::get('/venues/explore',     'ExploreController@index')     ->name('site.venues.explore');
-	Route::get('/venues/search',      'ExploreController@search')    ->name('site.venues.search');
-	Route::get('/venues/claim',       'ClaimController@index')       ->name('site.venues.claim');
-	Route::get('/venues/{venue}',     'DetailController@index')      ->name('site.venues.detail'); // TODO: /v/nome-sala/hash_per_id
+	Route::group(['prefix' => '/venues', 'namespace' => 'Venue'], function(){
+		Route::get('/explore',       'ExploreController@index')   ->name('site.venues.explore');
+		Route::get('/search',        'ExploreController@search')  ->name('site.venues.search');
+		Route::get('/{venue}',       'DetailController@index')    ->name('site.venues.detail'); // TODO: /v/nome-sala/hash_per_id
+		Route::get('/{venue}/claim', 'ClaimController@index')     ->name('site.venues.claim');
+	});
 
-	Route::get('/about/company',      'AboutController@company')     ->name('site.about.company');
-	Route::get('/about/contact',      'AboutController@contact')     ->name('site.about.contact');
-
-	Route::get('/user',               'UserController@index')        ->name('site.user');
+	Route::get('/about/company',     'AboutController@company')   ->name('site.about.company');
+	Route::get('/about/contact',     'AboutController@contact')   ->name('site.about.contact');
+    
+	Route::get('/user',              'UserController@index')      ->name('site.user');
 });
 
 // Admin ----------------------------------------------------------------------

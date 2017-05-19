@@ -238,7 +238,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Query builder to scope in the specified location bounds.
+	 * Query builder to find venues in the specified location bounds.
 	 *
 	 * @param  Illuminate\Database\Query\Builder  $query   Query builder instance
 	 * @param  float                              $ne_lat  North-East latitude (or just North)
@@ -259,21 +259,22 @@ class Venue extends Model
 	}
 
 	/**
-	 * Query builder scope to list neighboring locations
-	 * within a given distance from a given location
+	 * Query builder scope to find venues with a distance radius from a given
+	 * location.
+	 * 
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
 	 *
-	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
-	 * @param  mixed                              $lat    Lattitude of given location
-	 * @param  mixed                              $lng    Longitude of given location
-	 * @param  integer                            $radius Optional distance
-	 * @param  string                             $unit   Optional unit
+	 * @param  Illuminate\Database\Query\Builder  $query   Query builder instance
+	 * @param  mixed                              $lat     Lattitude of given location
+	 * @param  mixed                              $lng     Longitude of given location
+	 * @param  integer                            $radius  Optional distance
+	 * @param  string                             $units   Optional units
 	 *
-	 * @return Illuminate\Database\Query\Builder          Modified query builder
+	 * @return Illuminate\Database\Query\Builder           Modified query builder
 	 */
-	public function scopeNear($query, $lat, $lng, $radius = 100, $unit = "km")
+	public function scopeNear($query, $lat, $lng, $radius = 100, $units = "km")
 	{
-		$unit = ($unit === "km") ? 6378.10 : 3963.17;
+		$units = ($units === "km") ? 6378.10 : 3963.17;
 		$lat = (float) $lat;
 		$lng = (float) $lng;
 		$radius = (double) $radius;
@@ -282,31 +283,52 @@ class Venue extends Model
 
 		return $query->having('distance', '<=' ,$radius)
 			->select(DB::raw("*,
-				 ($unit * ACOS(COS(RADIANS($lat))
-						* COS(RADIANS($lat_column))
-						* COS(RADIANS($lng) - RADIANS($lng_column))
-						+ SIN(RADIANS($lat))
-						* SIN(RADIANS($lat_column)))) AS distance")
+				 ($units * ACOS(COS(RADIANS($lat))
+						 * COS(RADIANS($lat_column))
+						 * COS(RADIANS($lng) - RADIANS($lng_column))
+						 + SIN(RADIANS($lat))
+						 * SIN(RADIANS($lat_column)))) AS distance")
 			)->orderBy('distance','asc');
 	}
 
-	public function scopeWithDistanceFrom($query, $lat, $lng, $unit = 'km')
+	/**
+	 * Query builder to order venues by distance from a given location.
+	 * 
+	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
+	 * 
+	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
+	 * @param  mixed                              $lat    Lattitude of given location
+	 * @param  mixed                              $lng    Longitude of given location
+	 * @param  string                             $units  Optional units
+	 * 
+	 * @return Illuminate\Database\Query\Builder          Modified query builder
+	 */
+	public function scopeWithDistanceFrom($query, $lat, $lng, $units = 'km')
 	{
-		$unit = ($unit === "km") ? 6378.10 : 3963.17;
+		$units = ($units === "km") ? 6378.10 : 3963.17;
 		$lat = (float) $lat;
 		$lng = (float) $lng;
 		$lat_column = 'geo_latitude';
 		$lng_column = 'geo_longitude';
 
 		return $query->select(DB::raw("*,
-			 ($unit * ACOS(COS(RADIANS($lat))
-					* COS(RADIANS($lat_column))
-					* COS(RADIANS($lng) - RADIANS($lng_column))
-					+ SIN(RADIANS($lat))
-					* SIN(RADIANS($lat_column)))) AS distance")
+			 ($units * ACOS(COS(RADIANS($lat))
+					 * COS(RADIANS($lat_column))
+					 * COS(RADIANS($lng) - RADIANS($lng_column))
+					 + SIN(RADIANS($lat))
+					 * SIN(RADIANS($lat_column)))) AS distance")
 			)->orderBy('distance','asc');
 	}
 
+	/**
+	 * Scope to search for venues with a given name or in a category with that 
+	 * same name.
+	 * 
+	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
+	 * @param  String                             $name
+	 * 
+	 * @return Illuminate\Database\Query\Builder          Modified query builder
+	 */
 	public function scopeWithNameOrCategoryName($query, $name)
 	{
 		return $query
