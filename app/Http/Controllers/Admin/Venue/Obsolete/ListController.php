@@ -15,8 +15,13 @@ class ListController extends Controller
 	 */
 	public function index()
 	{
+		// Go to upload if no imported venues are found
+		if (!ImportedVenue::count()) return redirect()->route('admin.venues.import.edit');
+
 		// Get current venues' aams census codes
 		$importedVenuesCensusCodes = ImportedVenue::pluck('aams_census_code')->all();
+
+		dd($importedVenuesCensusCodes);
 
 		// Find obsolete venues
 		$venues = Venue::whereNotIn('aams_census_code', $importedVenuesCensusCodes);

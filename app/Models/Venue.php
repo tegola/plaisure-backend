@@ -222,7 +222,7 @@ class Venue extends Model
 	 * 
 	 * @return \App\Models\User
 	 */
-	public function user()
+	public function owner()
 	{
 		return $this->belongsTo('App\Models\User');
 	}

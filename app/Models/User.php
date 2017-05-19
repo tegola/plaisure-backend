@@ -49,6 +49,6 @@ class User extends Authenticatable
      */
     public function venues()
     {
-        return $this->hasMany('App\Models\Venue');
+        return $this->hasMany('App\Models\Venue', 'owner_id');
     }
 }

@@ -14,7 +14,14 @@
 		</div>
 	@endforeach
 
-	<p>Qui puoi caricare il file CSV contenenti gli esercizi. Questo file sarà usato per aggiornare il database, ma solo esercizio per esercizio, e manualmente, nella sezione <a href="{{ route('admin.venues.unmanaged.index') }}">Esercizi da gestire</a>.</p>
+	<p>
+		Qui puoi caricare il file CSV contenenti gli esercizi. Questo file sarà usato per aggiornare il database, ma solo esercizio per esercizio, e manualmente, nella sezione
+		@if($lastImport)
+			<a href="{{ route('admin.venues.unmanaged.index') }}">Esercizi da gestire</a>.
+		@else
+			<strong>Esercizi da gestire</strong>.
+		@endif
+	</p>
 	<p>Ricorda che deve esserci la riga di intestazione, e che l'ordine dei campi è il seguente: <code>codice censimento esercizio</code>, <code>denominazione</code>, <code>indirizzo</code>, <code>comune e provincia</code>, <code>tipologia esercizio</code>, <code>superficie del locale in mq</code>, <code>codice iscrizione soggetto</code>, <code>tipologia apparecchio</code>.</p>
 
 	<br>
