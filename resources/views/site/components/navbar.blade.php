@@ -10,7 +10,15 @@
 	<div class="container justify-content-between">
 	@endif
 		<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
-			@include('site.vectors.logo', ['class' => 'navbar-logo'])
+			@include('site.vectors.logo', [
+				'style' => 'dark',
+				'text' => false,
+				'class' => 'navbar-logo navbar-logo--only-symbol d-md-none'
+			])
+			@include('site.vectors.logo', [
+				'style' => 'dark',
+				'class' => 'navbar-logo d-none d-md-block'
+			])
 		</a>
 		@if ($show_search)
 			<form class="navbar-search" action="{{ route('site.venues.explore') }}">
@@ -21,7 +29,7 @@
 				<input type="hidden" name="sw_lat" @if($vue_support) :value="searchParams.sw_lat" @endif>
 				<input type="hidden" name="sw_lng" @if($vue_support) :value="searchParams.sw_lng" @endif>
 
-				<div class="input-group">
+				<div class="input-group navbar-search-input-group">
 					<span class="input-group-addon navbar-search-input-group-addon">
 						<pg-icon icon="search"></pg-icon>
 					</span>

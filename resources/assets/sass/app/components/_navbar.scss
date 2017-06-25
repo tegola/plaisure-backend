@@ -1,3 +1,4 @@
+// Logo
 .navbar-logo {
 	display: block;
 	width: 196px;
@@ -6,6 +7,12 @@
 	.navbar-brand:active & {
 		opacity: .85;
 	}
+}
+.navbar-logo--only-text {
+	width: 155px;
+}
+.navbar-logo--only-symbol {
+	width: 29px;
 }
 
 // Age warning badge
@@ -29,15 +36,21 @@
 	border-left: 1px solid rgba(white, 0.1);
 	flex: 1;
 }
+.navbar-search-input-group {
+	position: relative;
+}
 .navbar-search-input-group-addon {
 	border-color: transparent;
 	background-color: transparent;
 	color: rgba(white, 0.5);
 	padding-left: $input-padding-x-lg;
 	padding-right: $input-padding-x-lg / 2;
+	position: absolute;
+	left: 0;
+	height: 100%;
 }
 .navbar-search-form-control {
-	padding-left: 0;
+	padding-left: ($input-padding-x-lg * 1.5) + $icon-size-base;
 	border-color: transparent !important;
 	background-color: transparent !important;
 	color: rgba(white, 0.5);
@@ -61,6 +74,14 @@
 
 	.navbar-logo {
 		width: 160px;
+		height: 34px;
+	}
+	.navbar-logo--only-text {
+		width: 125px;
+		height: 34px
+	}
+	.navbar-logo--only-symbol {
+		width: 24px;
 		height: 34px;
 	}
 }
