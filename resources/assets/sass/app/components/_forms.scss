@@ -1,4 +1,3 @@
-.form-control {
-	background-clip: padding-box;
-	font-family: inherit;
+.form-control:focus {
+	border-color: $input-border-focus;
 }

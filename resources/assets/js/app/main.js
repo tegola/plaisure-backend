@@ -13,7 +13,7 @@ loadGMaps({
 
 // Register components used sitewide
 Vue.component('pg-icon', Icon);
-Vue.component('gmap-autocomplete', Autocomplete);
+Vue.component('pg-map-autocomplete', Autocomplete);
 
 // Startup VM
 new Vue({

@@ -74,6 +74,18 @@ class Venue extends Model
 		'category_icon_name'
 	];
 
+
+	/**
+	 * By default, load all venue data on new queries.
+	 * https://theokouzelis.com/php/laravel-eloquent-calculated-fields.html
+	 * 
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public function newQuery()
+	{
+		return parent::newQuery()->select('venues.*');
+	}
+
 	/**
 	 * List of machine types.
 	 * 
@@ -238,6 +250,16 @@ class Venue extends Model
 	}
 
 	/**
+	 * Plan this venue is on.
+	 * 
+	 * @return \App\Models\VenuePlan
+	 */
+	public function plan()
+	{
+		return $this->hasOne('App\Models\VenuePlan');
+	}
+
+	/**
 	 * Query builder to find venues in the specified location bounds.
 	 *
 	 * @param  Illuminate\Database\Query\Builder  $query   Query builder instance
@@ -311,13 +333,26 @@ class Venue extends Model
 		$lat_column = 'geo_latitude';
 		$lng_column = 'geo_longitude';
 
-		return $query->select(DB::raw("*,
-			 ($units * ACOS(COS(RADIANS($lat))
-					 * COS(RADIANS($lat_column))
-					 * COS(RADIANS($lng) - RADIANS($lng_column))
-					 + SIN(RADIANS($lat))
-					 * SIN(RADIANS($lat_column)))) AS distance")
-			)->orderBy('distance','asc');
+		// Join with venue_plans to get the distance bonus
+		$query->leftJoin('venue_plans', 'venues.id', 'venue_plans.venue_id');
+
+		// Add distance field
+		$distance_raw = "$units * ACOS(
+							COS(RADIANS($lat)) * COS(RADIANS($lat_column))
+							* COS(RADIANS($lng) - RADIANS($lng_column))
+							+ SIN(RADIANS($lat)) * SIN(RADIANS($lat_column))
+						) AS distance";
+		$query->selectRaw($distance_raw);
+
+		// Add distance_bonused field
+		$distance_bonused_raw = "(SELECT (distance - (distance / 100 * distance_bonus))) as distance_bonused";
+		$query->selectRaw($distance_bonused_raw);
+
+		// Sort by distance
+		$query->orderBy('distance_bonused', 'desc');
+		$query->orderBy('distance', 'desc');
+
+		return $query;
 	}
 
 	/**
@@ -332,7 +367,7 @@ class Venue extends Model
 	public function scopeWithNameOrCategoryName($query, $name)
 	{
 		return $query
-			->where('name', 'like', "%{$name}%") // Venue name
+			->where('venues.name', 'like', "%{$name}%") // Venue name
 			->orWhereHas('categories', function($query) use ($name){ // Category name
 				$query->where('name', 'like', "%{$name}%");
 			});

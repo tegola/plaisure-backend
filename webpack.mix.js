@@ -4,7 +4,7 @@ let mix = require('laravel-mix');
 mix.autoload({
 	'lodash': ['_', 'lodash'],
 	'jquery': ['$', 'jQuery'],
-	'tether': ['Tether'],
+	'popper.js': ['Popper'],
 	'vue': ['Vue'],
 	'vue2-google-maps': ['VueGoogleMaps']
 });
@@ -16,7 +16,7 @@ mix.extract([
 	'vue',
 	'vue2-google-maps',
 	'axios',
-	'tether',
+	'popper.js',
 	'bootstrap'
 ], 'public/js/vendor.js');
 

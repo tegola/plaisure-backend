@@ -62,7 +62,7 @@ class ExploreController extends Controller
 		}
 
 		// Start loading venues
-		$venues = Venue::with('categories');
+		$venues = Venue::with(['categories']);
 
 		// Filter by bounds
 		if ($this->ne_lat && $this->ne_lng && $this->sw_lat && $this->sw_lng) {

@@ -5,7 +5,7 @@
 	if (!isset($vue_support)) $vue_support = false;
 @endphp
 
-<nav class="navbar navbar-toggleable-md {{ $class }}">
+<nav class="navbar navbar-expand-md {{ $class }}">
 	@if (!$fluid)
 	<div class="container justify-content-between">
 	@endif
@@ -25,7 +25,7 @@
 					<span class="input-group-addon navbar-search-input-group-addon">
 						<pg-icon icon="search"></pg-icon>
 					</span>
-					<gmap-autocomplete
+					<pg-map-autocomplete
 						class="form-control form-control-lg navbar-search-form-control"
 						ref="locationAutocomplete"
 						name="near"
@@ -33,7 +33,7 @@
 						@if($vue_support) :value="searchParams.near" @endif
 						:options="{ types: ['geocode'] }"
 						@if($vue_support) @place_changed="onSuggestionSelect" @endif>
-					</gmap-autocomplete>
+					</pg-map-autocomplete>
 				</div>
 			</form>
 		@endif

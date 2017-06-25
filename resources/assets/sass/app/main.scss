@@ -6,7 +6,6 @@
 @import "../../../../node_modules/bootstrap/scss/custom";
 
 // Reset and dependencies
-@import "../../../../node_modules/bootstrap/scss/normalize";
 @import "../../../../node_modules/bootstrap/scss/print";
 
 // Core CSS
@@ -45,8 +44,8 @@
 
 @import "components/buttons";
 @import "components/icons";
-@import "components/footer";
 @import "components/forms";
+@import "components/footer";
 @import "components/google-maps";
 @import "components/logo";
 @import "components/navbar";

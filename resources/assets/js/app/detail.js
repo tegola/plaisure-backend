@@ -3,8 +3,8 @@ import { Map, Marker } from 'vue2-google-maps';
 
 Vue.component('pg-venue-detail-page', {
 	components: {
-		'gmap-map': Map,
-		'gmap-marker': Marker
+		'pg-map': Map,
+		'pg-map-marker': Marker
 	},
 
 	data() {

@@ -1,7 +1,7 @@
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded mb-3">
+<nav class="navbar navbar-expand-md navbar-light bg-faded mb-3">
 	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Mostra menu di navigazione">
 		<span class="navbar-toggler-icon"></span>
-	</button>
+	 </button>
 	<a class="navbar-brand" href="{{ route('admin.home') }}">{{ config('app.name') }} - Amministrazione</a>
 
 	<div class="collapse navbar-collapse" id="navbar-collapse">

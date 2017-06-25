@@ -11,7 +11,7 @@
 <pg-home-page inline-template>
 	<div>
 		<div class="hero">
-			<gmap-map class="map" :center="center" :zoom="zoom" :options="mapOptions"></gmap-map>
+			<pg-map class="map" :center="center" :zoom="zoom" :options="mapOptions"></pg-map>
 			<nav class="navbar navbar-transparent">
 				<div class="container d-flex justify-content-between align-items-center">
 					<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
@@ -93,7 +93,7 @@
 							<div class="form-group dropdown">
 								<label class="initialism"><strong>Vicino a</strong></label><br>
 								<div style="position: relative">
-									<gmap-autocomplete
+									<pg-map-autocomplete
 										class="form-control form-control-lg search-form-control search-near-control"
 										ref="locationAutocomplete"
 										name="near"
@@ -102,7 +102,7 @@
 										:value="locationQuery"
 										:options="locationAutocompleteOptions"
 										@place_changed="selectLocationSuggestion">
-									</gmap-autocomplete>
+									</pg-map-autocomplete>
 									<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="isLocateButtonDisabled" tabindex="-1">
 										<pg-icon :icon="locateButtonIcon" :spinning="isSearchingLocation"></pg-icon>
 									</button>

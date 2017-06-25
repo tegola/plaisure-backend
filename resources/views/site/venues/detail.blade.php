@@ -117,9 +117,9 @@
 				<div class="col-md-5">
 					{{-- Map --}}
 					<div class="embed-responsive embed-responsive-21by9 mb-4">
-						<gmap-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
-							<gmap-marker :position="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }"></gmap-marker>
-						</gmap-map>
+						<pg-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
+							<pg-map-marker :position="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }"></pg-map-marker>
+						</pg-map>
 					</div>
 
 					{{-- Claim --}}

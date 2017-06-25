@@ -1,8 +1,5 @@
-import $ from 'jquery';
 import Vue from 'vue';
-
-window.Vue = Vue;
-window.$ = $;
+import $ from 'jquery';
 
 // Pages
 import venueFormPage from './pages/venueForm.js';

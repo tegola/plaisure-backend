@@ -7,9 +7,9 @@ import { Map, Marker, InfoWindow } from 'vue2-google-maps';
 
 Vue.component('pg-explore-page', {
 	components: {
-		'gmap-map': Map,
-		'gmap-marker': Marker,
-		'gmap-info-window': InfoWindow
+		'pg-map': Map,
+		'pg-map-marker': Marker,
+		'pg-map-info-window': InfoWindow
 	},
 
 	filters: {
@@ -22,7 +22,7 @@ Vue.component('pg-explore-page', {
 			searchParams: pg.searchParams,
 			pager: null,
 			mapNeedsRefresh: false,
-			followMap: true,
+			followMap: false,
 			highlightedVenueId: null,
 			selectedVenueId: null,
 			mapCenter: {
@@ -58,21 +58,6 @@ Vue.component('pg-explore-page', {
 	},
 
 	watch: {
-		// Automatically update url and title
-		searchParams: {
-			deep: true,
-			handler(newValue) {
-				// Update url
-				const baseName = _.last(location.pathname.split('/'));
-				const params = $.param(newValue, _.omit(['page']));
-
-				window.history.replaceState({}, '', `${baseName}?${params}`);
-
-				// Update title
-				document.title = newValue.near ? `${newValue.near} - ${pg.app.name}` : pg.app.name;
-			}
-		},
-
 		// Automatically load when following the map
 		followMap(newValue) {
 			if (newValue) this.load();
@@ -139,12 +124,21 @@ Vue.component('pg-explore-page', {
 
 		load() {
 			// Load venues
-			$.get('/venues/search', this.searchParams, (pager) => {
+			$.get('/venues/search', this.searchParams, pager => {
 				this.pager = pager;
 			});
 
 			// Reset need to refresh the map
 			this.mapNeedsRefresh = false;
+
+			// Update url
+			const baseName = _.last(location.pathname.split('/'));
+			const params = $.param(this.searchParams, _.omit(['page']));
+
+			window.history.replaceState({}, '', `${baseName}?${params}`);
+
+			// Update title
+			document.title = this.searchParams.near ? `${this.searchParams.near} - ${pg.app.name}` : pg.app.name;
 		},
 
 		highlight(venue) {
@@ -158,6 +152,9 @@ Vue.component('pg-explore-page', {
 				return;
 			}
 
+			// Disable map follow to avoid reloading data
+			this.followMap = false;
+
 			// Select/deselect
 			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		},
@@ -169,7 +166,7 @@ Vue.component('pg-explore-page', {
 
 	mounted() {
 		// Prevent submitting the form when the locations dropdown is open
-		// (key events are not handled by gmap-autocomplete)
+		// (key events are not handled by pg-map-autocomplete)
 		$(this.$refs.locationAutocomplete.$refs.input).on('keydown', (e) => {
 			if (e.which == 13 && $('.pac-container:visible').length) {
 				e.preventDefault();

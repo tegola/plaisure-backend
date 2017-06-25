@@ -1,5 +1,5 @@
 <template>
-	<div :class="dropdownClass">
+	<div class="dropdown">
 		<input
 			ref="input"
 			type="text"
@@ -17,7 +17,7 @@
 			@input="input"
 			@focus="focus"
 			@blur="blur">
-		<div v-if="open && items.length" class="dropdown-menu w-100">
+		<div v-if="open && items.length" class="dropdown-menu w-100 show">
 			<component v-for="(item, index) in items" :key="item.id"
 				:is="itemComponent"
 				:item="item"
@@ -68,12 +68,6 @@
 		computed: {
 			items() {
 				return this.suggestions;
-			},
-			dropdownClass() {
-				return {
-					'dropdown': true,
-					'show': this.open && this.items.length
-				};
 			}
 		},
 
@@ -93,10 +87,10 @@
 				this.open = false;
 			},
 
-			up(e) {
+			up(event) {
 				if (this.items.length) {
 					this.open = true;
-					e.preventDefault();
+					event.preventDefault();
 				}
 
 				if (this.current > 0) {
@@ -108,10 +102,10 @@
 				}
 			},
 
-			down(e) {
+			down(event) {
 				if (this.items.length) {
 					this.open = true;
-					e.preventDefault();
+					event.preventDefault();
 				}
 
 				if (this.current < this.items.length - 1) {
@@ -140,11 +134,11 @@
 				this.select();
 			},
 
-			select(e) {
+			select(event) {
 				if (this.current === -1) return;
 
 				// Stop enter key if still open
-				if (this.open) e.preventDefault();
+				if (event && this.open) event.preventDefault();
 
 				this.open = false;
 				this.$emit('select', this.items[this.current]);

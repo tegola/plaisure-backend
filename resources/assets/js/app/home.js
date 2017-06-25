@@ -11,7 +11,7 @@ const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
 
 Vue.component('pg-home-page', {
 	components: {
-		'gmap-map': Map,
+		'pg-map': Map,
 		'pg-input-typeahead': _.extend(InputTypeahead, {
 			components: {
 				'pg-venue-suggestion-item': VenueSuggestionItem

@@ -23,7 +23,7 @@
 	// Filters
 	.filterbar {
 		background-color: $body-bg;
-		z-index: $zindex-navbar; // Stay above venue list
+		z-index: $zindex-fixed; // Stay above venue list
 		display: flex;
 		flex-direction: row; // column on small screens
 		padding: $navbar-padding-y $navbar-padding-x;

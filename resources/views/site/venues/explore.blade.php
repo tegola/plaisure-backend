@@ -33,7 +33,7 @@
 				</div>
 			</div>
 
-			<div>
+			<div class="d-none d-md-block">
 				<label class="custom-control custom-checkbox mb-0">
 					<input type="checkbox" class="custom-control-input" v-model="followMap">
 					<span class="custom-control-indicator"></span>
@@ -81,9 +81,9 @@
 					</template>
 				</div>
 			</div>
-			<gmap-map class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
-				<gmap-marker v-for="venue in venues" :key="venue.id" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue.id == highlightedVenueId ? '*' : null" @click="select(venue)">
-					<gmap-info-window v-cloak :opened="venue.id == selectedVenueId">
+			<pg-map class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
+				<pg-map-marker v-for="venue in venues" :key="venue.id" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue.id == highlightedVenueId ? '*' : null" @click="select(venue)">
+					<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId">
 						<div class="venue-infowindow">
 							<img class="venue-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
 
@@ -96,9 +96,9 @@
 
 							<a class="btn btn-sm btn-outline-primary" :href="'/venues/' + venue.id">Dettagli</a>
 						</div>
-					</gmap-info-window>
-				</gmap-marker>
-			</gmap-map>
+					</pg-map-info-window>
+				</pg-map-marker>
+			</pg-map>
 		</div>
 	</div>
 </pg-explore-page>
