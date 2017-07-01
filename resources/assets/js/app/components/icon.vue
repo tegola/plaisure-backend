@@ -4,6 +4,8 @@
 
 <script>
 	export default {
+		name: 'pg-icon',
+
 		props: {
 			icon: {
 				type: String,

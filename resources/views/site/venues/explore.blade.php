@@ -3,10 +3,6 @@
 @section('body_class', 'page-explore')
 @section('title', $near)
 
-@section('scripts')
-<script src="{{ mix('js/app/explore.js') }}"></script>
-@endsection
-
 @section('content')
 <pg-explore-page inline-template>
 	<div class="page-content">

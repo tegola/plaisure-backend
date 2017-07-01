@@ -344,13 +344,13 @@ class Venue extends Model
 						) AS distance";
 		$query->selectRaw($distance_raw);
 
-		// Add distance_bonused field
-		$distance_bonused_raw = "(SELECT (distance - (distance / 100 * distance_bonus))) as distance_bonused";
-		$query->selectRaw($distance_bonused_raw);
+		// Add distance_with_bonus field by looking at the plans' distance_bonus
+		$distance_with_bonus_raw = "(SELECT (distance - (distance / 100 * distance_bonus))) as distance_with_bonus";
+		$query->selectRaw($distance_with_bonus_raw);
 
 		// Sort by distance
-		$query->orderBy('distance_bonused', 'desc');
-		$query->orderBy('distance', 'desc');
+		$query->orderBy('distance_with_bonus', 'desc');
+		$query->orderBy('distance');
 
 		return $query;
 	}

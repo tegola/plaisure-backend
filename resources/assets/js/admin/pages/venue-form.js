@@ -1,15 +1,13 @@
 import $ from 'jquery';
-import { load, Map, Marker } from 'vue2-google-maps';
+import { Map, Marker } from 'vue2-google-maps';
 import { geocode } from '../../utilities/geocoder';
 
-// Load Google Maps API
-load(pg.config.googleMapsApiKey);
-
-// Prepare page
 export default {
+	name: 'pga-venue-form-page',
+
 	components: {
-		'g-map': Map,
-		'g-map-marker': Marker
+		'pg-map': Map,
+		'pg-map-marker': Marker
 	},
 
 	data() {

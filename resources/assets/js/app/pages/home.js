@@ -1,15 +1,16 @@
-import Vue from 'vue';
-import _ from 'lodash';
 import $ from 'jquery';
+import _ from 'lodash';
 import axios from 'axios';
-import * as geocoder from '../utilities/geocoder';
-import InputTypeahead from './components/input-typeahead.vue';
-import VenueSuggestionItem from './components/venue-suggestion-item.vue';
+import * as geocoder from '../../utilities/geocoder';
+import InputTypeahead from '../components/input-typeahead.vue';
+import VenueSuggestionItem from '../components/venue-suggestion-item.vue';
 import { Map } from 'vue2-google-maps'
 
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
 
-Vue.component('pg-home-page', {
+export default {
+	name: 'pg-home-page',
+
 	components: {
 		'pg-map': Map,
 		'pg-input-typeahead': _.extend(InputTypeahead, {
@@ -220,4 +221,4 @@ Vue.component('pg-home-page', {
 			this.locationQuery = location.city;
 		});
 	}
-});
+};

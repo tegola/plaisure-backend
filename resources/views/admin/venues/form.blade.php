@@ -168,9 +168,9 @@
 					<div class="form-group">
 						<label>Posizione esatta (trascina per riposizionare)</label>
 						<div class="embed-responsive embed-responsive-1by1" style="height: 382px; border-radius: 5px">
-							<g-map class="embed-responsive-item" :center="mapCenter" :zoom="mapZoom">
-								<g-map-marker :position="mapCenter" draggable @drag="onMarkerDrag"></g-map-marker>
-							</g-map>
+							<pg-map class="embed-responsive-item" :center="mapCenter" :zoom="mapZoom">
+								<pg-map-marker :position="mapCenter" draggable @drag="onMarkerDrag"></g-map-marker>
+							</pg-map>
 						</div>
 					</div>
 				</div>

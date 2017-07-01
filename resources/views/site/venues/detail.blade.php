@@ -9,10 +9,6 @@
 	{{ $venue->address_city }}
 @endsection
 
-@section('scripts')
-<script src="{{ mix('js/app/detail.js') }}"></script>
-@endsection
-
 @section('content')
 <pg-venue-detail-page inline-template>
 	<div>

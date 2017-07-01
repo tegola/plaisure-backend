@@ -46,10 +46,8 @@
 		@include('site.icons.defs')
 
 		@include('scripts')
-		<script src="{{ mix('js/manifest.js') }}"></script>
-		<script src="{{ mix('js/vendor.js') }}"></script>
 		@yield('scripts')
-		<script src="{{ mix('js/app/main.js') }}"></script>
+		<script src="{{ mix('js/app.js') }}"></script>
 
 		<script src="https://use.typekit.net/qwv3xzz.js"></script>
 		<script>try{Typekit.load({ async: true });}catch(e){}</script>

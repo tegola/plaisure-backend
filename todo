@@ -15,9 +15,10 @@ Ricerca:
  ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
  ✔ Ricerca per via, oltre che per città @done (3/15/2017, 10:55:55 PM)
  ☐ Plottare _tutti_ i risultati sulla mappa
- ☐ Meno importanza alla mappa: la ricerca deve funzionare anche quando essa non è visibile
+ ✔ Meno importanza alla mappa: la ricerca deve funzionare anche quando essa non è visibile @done (17-06-26 23:57)
  ✔ Ordinamento dei risultati per distanza @done (17-04-17 19:12)
  ☐ Priorità alle attività paganti, con indicatore più visibile
+ ☐ Cercando una città a volte non funziona. Es: Sulmona funziona, Pacentro (che è lì vicino) no
 
 Azienda:
  ☐ Tutto da fare

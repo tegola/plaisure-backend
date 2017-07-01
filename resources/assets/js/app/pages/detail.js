@@ -1,7 +1,8 @@
-import Vue from 'vue';
 import { Map, Marker } from 'vue2-google-maps';
 
-Vue.component('pg-venue-detail-page', {
+export default {
+	name: 'pg-venue-detail-page',
+
 	components: {
 		'pg-map': Map,
 		'pg-map-marker': Marker
@@ -20,4 +21,4 @@ Vue.component('pg-venue-detail-page', {
 			}
 		};
 	}
-});
+};
