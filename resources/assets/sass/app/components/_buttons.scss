@@ -1,6 +1,8 @@
 .btn {
 	text-transform: uppercase;
 	cursor: pointer;
+	padding-left: $input-btn-padding-x-lg;
+	padding-right: $input-btn-padding-x-lg;
 
 	letter-spacing: 0.15em;
 	font-size: $font-size-sm;

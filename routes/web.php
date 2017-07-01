@@ -59,7 +59,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => ['au
 		Route::get('/',             'ListController@index')         ->name('admin.venues.index');
 		Route::get('/add',          'FormController@create')        ->name('admin.venues.create');
 		Route::post('/',            'FormController@store')         ->name('admin.venues.store');
-		Route::get('/{venue}',      'DetailController@show')        ->name('admin.venues.show');
+		// Route::get('/{venue}',      'DetailController@show')        ->name('admin.venues.show');
 		Route::get('/{venue}/edit', 'FormController@edit')          ->name('admin.venues.edit');
 		Route::patch('/{venue}',    'FormController@update')        ->name('admin.venues.update');
 		Route::delete('/{venue}',   'ListController@delete')        ->name('admin.venues.delete');
