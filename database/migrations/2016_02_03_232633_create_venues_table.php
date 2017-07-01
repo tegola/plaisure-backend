@@ -26,7 +26,7 @@ class CreateVenuesTable extends Migration
 			// Name and features
 			$table->string('name');
 			$table->float('surface_size')->unsigned();
-			$table->integer('machine_number')->unsigned();
+			$table->integer('machine_count')->unsigned();
 			$table->integer('machine_type')->unsigned();
 
 			// Address

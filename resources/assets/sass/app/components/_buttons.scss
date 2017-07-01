@@ -1,8 +1,6 @@
 .btn {
 	text-transform: uppercase;
 	cursor: pointer;
-	padding-left: $input-btn-padding-x-lg;
-	padding-right: $input-btn-padding-x-lg;
 
 	letter-spacing: 0.15em;
 	font-size: $font-size-sm;
@@ -12,6 +10,10 @@
 		width: $icon-size-base;
 		height: $icon-size-base;
 	}
+}
+.btn:not(.btn-sm):not(.btn-lg) {
+	padding-left: $input-btn-padding-x-lg;
+	padding-right: $input-btn-padding-x-lg;
 }
 .btn-lg {
 	letter-spacing: 0.08em;

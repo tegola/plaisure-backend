@@ -54,10 +54,17 @@
 									Dimensioni:
 									<strong>{{ $venue->surface_size }} mq.</strong>
 								</li>
-								<li>
-									Numero di macchine {{ $venue->hasFakeMachineNumber() ? '(stimato)' : '' }}:
-									<strong>{{ $venue->estimated_machine_number }}</strong>
-								</li>
+								@if($venue->machine_count)
+									<li>
+										Numero di macchine:
+										<strong>{{ $venue->machine_count }}</strong>
+									</li>
+								@elseif($venue->estimated_machine_count)
+									<li>
+										Numero di macchine (stimato):
+										<strong>{{ $venue->estimated_machine_count }}</strong>
+									</li>
+								@endif
 								<li class="text-muted">
 									Numero di VLT:
 									Non disponibile

@@ -26,7 +26,7 @@ class Venue extends Model
 
 		'name' => '',
 		'surface_size' => 0,
-		'machine_number' => 0,
+		'machine_count' => 0,
 		'machine_type' => self::MACHINE_TYPE_A,
 
 		'address_street' => '',
@@ -105,23 +105,9 @@ class Venue extends Model
 	 *
 	 * @return integer  The estimated number
 	 */
-	public function getEstimatedMachineNumberAttribute()
+	public function getEstimatedMachineCountAttribute()
 	{
-		if (!$this->machine_number && $this->surface_size) {
-			return round($this->surface_size * self::SURFACE_TO_MACHINE_MULTIPLIER);
-		} else {
-			return 0;
-		}
-	}
-
-	/**
-	 * Returns whether the machine number has been faked.
-	 *
-	 * @return boolean
-	 */
-	public function hasFakeMachineNumber()
-	{
-		return $this->machine_number === 0;
+		return $this->surface_size ? round($this->surface_size * self::SURFACE_TO_MACHINE_MULTIPLIER) : 0;
 	}
 
 	/**
