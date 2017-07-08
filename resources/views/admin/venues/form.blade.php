@@ -176,6 +176,38 @@
 				</div>
 			</div>
 
+			<h5 class="mt-3">Dettagli piano</h5>
+			<hr>
+
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label>Scegli un piano</label>
+					<select class="form-control" placeholder="Scegli un piano&hellip" v-model="selectedPlan">
+						<option v-for="plan in plans" :value="plan.short_name">@{{ plan.name }}</option>
+						<option disabled>─────</option>
+						<option value="custom">Personalizza</option>
+					</select>
+				</div>
+				<div class="form-group col-md-6" v-if="venue.plan">
+					<label class="d-none d-md-block">&nbsp;</label>
+					<button type="button" class="btn btn-danger btn-block" @click="removePlan">Rimuovi piano</button>
+				</div>
+			</div>
+
+			<div v-if="venue.plan" class="row">
+				<input type="hidden" name="plan[name]" :value="venue.plan.name">
+				<input type="hidden" name="plan[short_name]" :value="venue.plan.short_name">
+				<div class="form-group col-md-6">
+					<label>Bonus distanza</label>
+					<input type="range" class="form-control" name="plan[distance_bonus]" v-model="venue.plan.distance_bonus" :readonly="planFieldDisabled">
+					@{{ venue.plan.distance_bonus }}%
+				</div>
+				<div class="form-group col-md-6">
+					<label>Limite foto</label>
+					<input type="number" class="form-control" name="plan[photo_limit]" v-model="venue.plan.photo_limit" :readonly="planFieldDisabled">
+				</div>
+			</div>
+
 			<div class="form-group text-right my-3">
 				<button type="submit" class="btn btn-primary">{{ $venue->exists ? 'Salva' : 'Aggiungi' }}</button>
 			</div>

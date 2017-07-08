@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Venue;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVenue;
 use App\Models\Venue;
+use App\Models\VenuePlan;
 use App\Models\Category;
 use JavaScript;
 
@@ -31,6 +32,7 @@ class FormController extends Controller
 	public function edit(Venue $venue)
 	{
 		$venue = old() ? $venue->fill(old()) : $venue;
+		$venue->load('plan');
 
 		return $this->showForm($venue);
 	}
@@ -92,6 +94,15 @@ class FormController extends Controller
 
 		// Save categories
 		$venue->categories()->sync($request->categories);
+
+		// Save plan
+		if ($request->plan) {
+			$plan = $venue->plan ?: new VenuePlan;
+			$plan->fill($request->plan);
+			$venue->plan()->save($plan);
+		} else {
+			if ($venue->plan) $venue->plan->delete();
+		}
 
 		return redirect()->route('admin.venues.index');
 	}

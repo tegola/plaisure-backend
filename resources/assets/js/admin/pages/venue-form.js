@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import $ from 'jquery';
 import { Map, Marker } from 'vue2-google-maps';
 import { geocode } from '../../utilities/geocoder';
@@ -21,8 +22,14 @@ export default {
 				lat: pg.venue.geo_latitude || pg.config.defaultMapCenter.lat,
 				lng: pg.venue.geo_longitude || pg.config.defaultMapCenter.lng
 			},
-			mapZoom: pg.venue.geo_latitude && pg.venue.geo_longitude ? 15 : 5
+			mapZoom: pg.venue.geo_latitude && pg.venue.geo_longitude ? 15 : 5,
+			plans: pg.config.plans,
+			selectedPlan: pg.venue.plan ? pg.venue.plan.short_name : null
 		};
+	},
+
+	watch: {
+		selectedPlan: 'onPlanSelection'
 	},
 
 	computed: {
@@ -30,6 +37,10 @@ export default {
 			const iv = this.importedVenue;
 
 			return iv ? [iv.address_1, iv.address_2].join(' ') : null;
+		},
+
+		planFieldDisabled() {
+			return this.selectedPlan != 'custom';
 		}
 	},
 
@@ -69,6 +80,31 @@ export default {
 
 			this.venue.geo_latitude = latLng.lat().toFixed(6);
 			this.venue.geo_longitude = latLng.lng().toFixed(6);
+		},
+
+		onPlanSelection(planName) {
+			if (!planName) return;
+
+			// If it's a custom plan, keep the current values but replace the
+			// short name. 
+			if (planName == 'custom') {
+				this.venue.plan.name = 'Personalizzato';
+				this.venue.plan.short_name = planName;
+				return;
+			}
+
+			// Otherwise, copy over the plan settings
+			const selectedPlan = this.plans.find(plan => {
+				return plan.short_name == planName;
+			});
+
+			if (!this.venue.plan) this.venue.plan = {};
+			_.assign(this.venue.plan, selectedPlan);
+		},
+
+		removePlan() {
+			this.venue.plan = null;
+			this.selectedPlan = null;
 		}
 	}
 };
