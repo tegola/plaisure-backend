@@ -9,7 +9,7 @@
 	</div>
 
 	<div class="row">
-		<div class="offset-md-2 col-md-8 offset-xl-3 col-xl-6">
+		<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 			<form role="form" method="post" action="{{ url('/register') }}">
 				{{ csrf_field() }}
 

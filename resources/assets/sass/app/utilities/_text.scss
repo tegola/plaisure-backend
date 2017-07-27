@@ -9,4 +9,4 @@
 	}
 }
 
-@include text-emphasis-variant('.text-accent', $brand-accent);
+@include text-emphasis-variant('.text-accent', theme-color(accent));

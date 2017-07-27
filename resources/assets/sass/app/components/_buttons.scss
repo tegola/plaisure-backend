@@ -23,30 +23,30 @@
 
 // Normal buttons
 .btn-accent {
-	@include button-variant(white, $brand-accent, $brand-accent);
+	@include button-variant(theme-color(accent), theme-color(accent));
 }
 .btn-neutral {
-	@include button-variant(white, $gray, $gray);
+	@include button-variant($gray-700, $gray-700);
 }
 
 // Inverse buttons
 .btn-inverse-primary {
-  @include button-variant($btn-primary-bg, $btn-primary-color, $btn-primary-color);
+	@include button-variant(theme-color(primary), theme-color(primary));
 }
 .btn-inverse-secondary {
-  @include button-variant($btn-secondary-bg, $btn-secondary-color, $btn-secondary-color);
+	@include button-variant(theme-color(secondary), theme-color(secondary));
 }
 .btn-inverse-accent {
-	@include button-variant($brand-accent, white, white);
+	@include button-variant(theme-color(accent), theme-color(accent));
 }
 .btn-inverse-neutral {
-	@include button-variant($gray, white, white);
+	@include button-variant($white, $white);
 }
 
 // Outline buttons
 .btn-outline-accent {
-	@include button-outline-variant($brand-accent);
+	@include button-outline-variant(theme-color(accent));
 }
 .btn-outline-neutral {
-	@include button-outline-variant(rgba($gray, .66));
+	@include button-outline-variant(rgba($gray-700, .66));
 }

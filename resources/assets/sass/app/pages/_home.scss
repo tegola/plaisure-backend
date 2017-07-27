@@ -36,7 +36,7 @@
 			line-height: $line-height-lg;
 		}
 		p {
-			font-size: $font-size-h4;
+			font-size: $h4-font-size;
 			line-height: $headings-line-height;
 			color: white;
 			margin-bottom: $spacer * 3;
@@ -56,18 +56,19 @@
 
 	// Search
 	.search-form-control:focus {
-		box-shadow: 0 8px 30px rgba(black, 0.1);
+		border-color: theme-color(accent);
+		box-shadow: inset 0 0 0 1px theme-color(accent), 0 10px 30px rgba(theme-color(accent), 0.1);
 	}
 	.search-submit-btn {
-		box-shadow: 0 10px 30px rgba($brand-accent, 0.25);
+		box-shadow: 0 10px 30px rgba(theme-color(accent), 0.25);
 
 		&:hover,
 		&:focus {
-			box-shadow: 0 10px 30px rgba($brand-accent, 0.5);
+			box-shadow: 0 10px 30px rgba(theme-color(accent), 0.5);
 		}
 		&:active {
 			transition: 0.1s;
-			box-shadow: 0 3px 5px rgba($brand-accent, 0.4)
+			box-shadow: 0 3px 5px rgba(theme-color(accent), 0.4)
 		}
 	}
 	.search-near-control {
@@ -77,11 +78,11 @@
 		position: absolute;
 		top: 0;
 		right: 0;
-		color: $gray-light;
+		color: $gray-600;
 
 		&:hover,
 		&:focus {
-			color: $brand-accent;
+			color: theme-color(accent);
 		}
 
 		.no-geolocation & {

@@ -91,6 +91,6 @@ class FormController extends Controller
 		// FIXME: search for duplicates via aams_census_code
 
 		// Return to form
-		return redirect()->route('admin.imported-venues.index');
+		return redirect()->route('admin.venues.unmanaged.index');
 	}
 }

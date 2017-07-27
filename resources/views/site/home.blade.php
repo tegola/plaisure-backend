@@ -53,7 +53,7 @@
 				<div class="text-center">
 					@include('site.vectors.logo', ['text' => false, 'class' => 'logo', 'style' => 'dark'])
 					<div class="row">
-						<div class="col-xs-12 offset-lg-2 col-lg-8">
+						<div class="col-lg-8 ml-lg-auto mr-lg-auto">
 							<h1>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h1>
 							<p>Più di 5000 sale tra cui&nbsp;scegliere!</p>
 						</div>
@@ -69,7 +69,7 @@
 					<input type="hidden" name="sw_lat" v-model="sw.lat">
 					<input type="hidden" name="sw_lng" v-model="sw.lng">
 					<div class="row">
-						<div class="col-xs-12 offset-md-1 col-md-5 col-lg-4">
+						<div class="ml-md-auto col-md-5 col-lg-4">
 							<div class="form-group">
 								<label class="initialism"><strong>Trova</strong></label><br>
 								<pg-input-typeahead
@@ -85,7 +85,7 @@
 								</pg-input-typeahead>
 							</div>
 						</div>
-						<div class="col-xs-12 col-md-5 col-lg-4">
+						<div class="col-md-5 col-lg-4 mr-md-auto mr-lg-0">
 							<div class="form-group dropdown">
 								<label class="initialism"><strong>Vicino a</strong></label><br>
 								<div style="position: relative">
@@ -105,7 +105,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xs-12 offset-md-1 col-md-10 offset-lg-0 col-lg-2">
+						<div class="col-md-10 ml-md-auto mr-md-auto col-lg-2 ml-lg-0 mr-lg-auto">
 							<div class="form-group">
 								<label class="initialism hidden-md-down">&nbsp;</label>
 								<button type="submit" class="btn btn-lg btn-block btn-accent search-submit-btn" :disabled="isSubmitButtonDisabled">

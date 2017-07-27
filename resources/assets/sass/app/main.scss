@@ -1,6 +1,6 @@
 // Variables and bootstrap
-@import "variables";
 @import "../../../../node_modules/bootstrap/scss/functions";
+@import "variables";
 @import "../../../../node_modules/bootstrap/scss/variables";
 @import "../../../../node_modules/bootstrap/scss/mixins";
 @import "../../../../node_modules/bootstrap/scss/print";
@@ -43,7 +43,6 @@
 // Components
 @import "components/buttons";
 @import "components/icons";
-@import "components/forms";
 @import "components/footer";
 @import "components/google-maps";
 @import "components/logo";

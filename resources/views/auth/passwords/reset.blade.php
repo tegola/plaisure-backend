@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="row">
-		<div class="offset-md-3 col-md-6 offset-xl-4 col-xl-4">
+		<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 			<form class="form-horizontal" role="form" method="post" action="{{ url('/password/reset') }}">
 				{{ csrf_field() }}
 
