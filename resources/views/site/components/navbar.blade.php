@@ -7,7 +7,7 @@
 
 <nav class="navbar navbar-expand-md {{ $class }}">
 	@if (!$fluid)
-	<div class="container justify-content-between">
+	<div class="container">
 	@endif
 		<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
 			@include('site.vectors.logo', [
@@ -45,7 +45,7 @@
 				</div>
 			</form>
 		@endif
-		<div>
+		<div class="ml-auto">
 			@if (Auth::guest())
 				<a class="btn btn-outline-neutral" href="{{ url('/login') }}">Accedi</a>
 				<a class="btn btn-secondary" href="{{ url('/register') }}">Iscriviti</a>

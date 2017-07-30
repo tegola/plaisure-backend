@@ -2,6 +2,9 @@
 .gm-style {
 	font: inherit !important;
 }
+.gm-style-iw {
+	font-weight: inherit;
+}
 
 // Autocomplete
 .pac-container {
@@ -26,7 +29,8 @@
 	padding-right: $dropdown-item-padding-x;
 	border: none;
 
-	@include hover-focus {
+	&:hover:not(.pac-item-selected),
+	&:focus:not(.pac-item-selected) {
 		color: $dropdown-link-hover-color;
 		background-color: $dropdown-link-hover-bg;
 
@@ -37,7 +41,7 @@
 }
 .pac-item-selected {
 	color: $dropdown-link-active-color;
-	background-color: $dropdown-link-active-bg;
+	background-color: $dropdown-link-active-bg !important;
 
 	.pac-item-query {
 		color: inherit;

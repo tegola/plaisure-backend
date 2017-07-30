@@ -43,14 +43,14 @@
 	border-color: transparent;
 	background-color: transparent;
 	color: rgba(white, 0.5);
-	padding-left: $input-padding-x-lg;
-	padding-right: $input-padding-x-lg / 2;
+	padding-left: $input-btn-padding-x-lg;
+	padding-right: $input-btn-padding-x-lg / 2;
 	position: absolute;
 	left: 0;
 	height: 100%;
 }
 .navbar-search-form-control {
-	padding-left: ($input-padding-x-lg * 1.5) + $icon-size-base;
+	padding-left: ($input-btn-padding-x-lg * 1.5) + $icon-size-base;
 	border-color: transparent !important;
 	background-color: transparent !important;
 	color: rgba(white, 0.5);
@@ -59,6 +59,7 @@
 		color: rgba(white, 0.5);
 	}
 	&:focus {
+		box-shadow: none;
 		color: white;
 
 		&::placeholder {

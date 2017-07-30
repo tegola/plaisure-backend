@@ -2,14 +2,21 @@ Generale:
  ☐ Ottimizzazione per mobile
  ✔ Aggiungere le autorizzazioni per vedere il link di accesso all'amministrazione @done (17-04-10 22:53)
  ✔ Far funzionare laravel mix anche nell'amministrazione @done (17-04-10 22:53)
- ☐ Supporto ai like/dislike
+ ☐ Supporto ai like/dislike @low
+ ☐ Sale premium: aggiungere il supporto per mostrare le pagine social (Twitter, facebook, Tripadvisor, ecc.)
+ ☐ Sale premium: Perk per nascondere le sale vicine
+ ☐ Aggiungere il supporto agli orari di apertura
+ ☐ Pagina dettaglio: aggiungere segnaposti "aggiungi questi dati" per qualsiasi cosa
+ ☐ Pagina dettaglio: Link a ricerca automatica di hotel e ristoranti nelle vicinanze con programma affiliazione TripAdvisor o Booking.com
+ ☐ Copiare la barra in alto da lottomatica.it (frase e link verso sito aams) + due bannerini a destra
+ ☐ Esplora: fare in modo che se non ci sono dati da cui partire, appaia "inserisci la tua città qui"
 
 Admin:
- ✔ Modalità di manutenzione (esercizi nuovi, chiusi e con poche informazioni) @done (17-07-04 22:49)
+ ✔ Modalità di manutenzione (esercizi nuovi e chiusi) @done (17-07-04 22:49)
+ ☐ Modalità di manutenzione per esercizi con poche informazioni
 
 Home:
  ✔ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google @done (3/15/2017, 10:55:45 PM)
- ☐ Ottimizzazione per mobile
 
 Ricerca:
  ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
@@ -18,7 +25,7 @@ Ricerca:
  ✔ Meno importanza alla mappa: la ricerca deve funzionare anche quando essa non è visibile @done (17-06-26 23:57)
  ✔ Ordinamento dei risultati per distanza @done (17-04-17 19:12)
  ☐ Priorità alle attività paganti, con indicatore più visibile
- ☐ Cercando una città a volte non funziona. Es: Sulmona funziona, Pacentro (che è lì vicino) no
+ ☐ Se una sala con un bonus di distanza esce dalla mappa sparisce completamente, mentre dovrebbe comunque rimanere (ha un bonus!)
 
 Azienda:
  ☐ Tutto da fare
@@ -30,6 +37,9 @@ Rivendica attività:
 Contatti:
  ☐ Form di contatto
  ☐ Dati di contatto
+
+Gioca responsabilmente:
+ ☐ Ricerca ASL (http://www.dati.salute.gov.it/imgs/C_17_dataset_2_download_itemDownload_0_upFile.csv)
 
 Futuro:
  ☐ Supporto per dare un indirizzo email agli utenti

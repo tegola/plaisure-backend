@@ -24,7 +24,7 @@
 		"quotes": [
 			"error",
 			"single",
-			"avoidEscape"
+			{ "avoidEscape": true }
 		],
         "semi": [
             "error",

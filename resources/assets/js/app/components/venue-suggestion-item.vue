@@ -1,5 +1,5 @@
 <template>
-	<a class="dropdown-item">
+	<a class="dropdown-item" href="#">
 		<div class="text-truncate">{{ item.name }}</div>
 		<div v-if="metadata" class="text-truncate" :title="metadata">{{ metadata }}</div>
 	</a>

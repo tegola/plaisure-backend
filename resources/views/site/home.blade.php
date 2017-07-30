@@ -8,13 +8,13 @@
 	<div>
 		<div class="hero">
 			<pg-map class="map" :center="center" :zoom="zoom" :options="mapOptions"></pg-map>
-			<nav class="navbar navbar-transparent">
-				<div class="container d-flex justify-content-between align-items-center">
+			<nav class="navbar navbar-transparent navbar-expand-md">
+				<div class="container">
 					<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
 						@include('site.vectors.logo', ['style' => 'dark', 'class' => 'navbar-logo'])
 					</a>
 					<div>
-						<span class="navbar-age-warning">
+						<span class="mr-3">
 							<span class="badge navbar-age-warning-badge" aria-hidden="true">18+</span>
 							<span class="navbar-age-warning-text">Il gioco &egrave; vietato<br>ai minori di 18 anni</span>
 						</span>
@@ -117,9 +117,38 @@
 					</div>
 				</form>
 			</div>
-			<br>
-			<br>
-			<br>
+		</div>
+
+		<div class="container text-center my-md-5 py-5">
+			<div class="row justify-content-stretch">
+				<div class="mb-3 mb-md-0 col-md">
+					<a class="card h-100" href="{{ route('site.venues.explore') }}">
+						<div class="card-body">
+							<div><img src="{{ asset('img/home/map.svg') }}"></div>
+							<p class="card-text">Ti senti avventuroso?</p>
+							<h4 class="card-title">Esplora la tua zona</h4>
+						</div>
+					</a>
+				</div>
+				<div class="mb-3 mb-md-0 col-md">
+					<a class="card h-100" href="#">
+						<div class="card-body">
+							<div><img src="{{ asset('img/home/venue.svg') }}"></div>
+							<p class="card-text">Sei nel campo?</p>
+							<h4 class="card-title">Rivendica la tua attivit&agrave;</h4>
+						</div>
+					</a>
+				</div>
+				<div class="mb-3 mb-md-0 col-md">
+					<a class="card h-100" href="{{ route('site.play-responsibly.index') }}">
+						<div class="card-body">
+							<div><img src="{{ asset('img/home/machine.svg') }}"></div>
+							<p class="card-text">Non esagerare</p>
+							<h4 class="card-title">Gioca responsabilmente</h4>
+						</div>
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </pg-home>

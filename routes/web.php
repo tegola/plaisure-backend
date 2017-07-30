@@ -16,20 +16,28 @@ Auth::routes();
 
 // Site -----------------------------------------------------------------------
 Route::group(['namespace' => 'Site'], function(){
-	Route::get('/',                  'HomeController@index')      ->name('site.home');
-	Route::post('/suggestions',      'HomeController@suggestions')->name('site.suggestions');
+	Route::get('/',             'HomeController@index')      ->name('site.home');
+	Route::post('/suggestions', 'HomeController@suggestions')->name('site.suggestions');
 
+	// Venues
 	Route::group(['prefix' => '/venues', 'namespace' => 'Venue'], function(){
-		Route::get('/explore',       'ExploreController@index')   ->name('site.venues.explore');
-		Route::get('/search',        'ExploreController@search')  ->name('site.venues.search');
-		Route::get('/{venue}',       'DetailController@index')    ->name('site.venues.detail'); // TODO: /v/nome-sala/hash_per_id
-		Route::get('/{venue}/claim', 'ClaimController@index')     ->name('site.venues.claim');
+		Route::get('/explore',       'ExploreController@index') ->name('site.venues.explore');
+		Route::get('/search',        'ExploreController@search')->name('site.venues.search');
+		Route::get('/{venue}',       'DetailController@index')  ->name('site.venues.detail'); // TODO: /v/nome-sala/hash_per_id
+		Route::get('/{venue}/claim', 'ClaimController@index')   ->name('site.venues.claim');
 	});
 
-	Route::get('/about/company',     'AboutController@company')   ->name('site.about.company');
-	Route::get('/about/contact',     'AboutController@contact')   ->name('site.about.contact');
+	// About
+	Route::get('/about/company', 'AboutController@company')->name('site.about.company');
+	Route::get('/about/contact', 'AboutController@contact')->name('site.about.contact');
+
+	// Claim
+	
+	// Play responsibly
+	Route::get('/play-responsibly', 'PlayResponsiblyController@index')->name('site.play-responsibly.index');
     
-	Route::get('/user',              'UserController@index')      ->name('site.user');
+    // User
+	Route::get('/user', 'UserController@index')->name('site.user');
 });
 
 // Admin ----------------------------------------------------------------------

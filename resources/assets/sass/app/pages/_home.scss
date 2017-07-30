@@ -1,16 +1,19 @@
 .page-home {
 	.hero {
-		min-height: 85vh;
+		min-height: 70vh;
 		position: relative;
 		background-color: rgba(mix($palette-green-500, black, 90%), 0.5);
 		display: flex;
 		flex-direction: column;
+		box-shadow: 0 5px 50px rgba($palette-green-500, 0.35);
 	}
 	.hero-content {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		margin-top: map-get($spacers, 5);
+		margin-bottom: map-get($spacers, 5);
 
 		.pg-logo-text,
 		.pg-logo-symbol,
@@ -87,6 +90,40 @@
 
 		.no-geolocation & {
 			display: none;
+		}
+	}
+
+	// Cards
+	.card {
+		transition: $transition-base;
+		text-decoration: none;
+
+		img {
+			pointer-events: none;
+		}
+
+		.card-text {
+			transition: $transition-base;
+			margin-top: map-get($spacers, 4);
+			margin-bottom: 0;
+			color: mix(theme-color(neutral), theme-color(primary), 80%);
+		}
+		.card-title {
+			transition: $transition-base;
+			margin-top: 0;
+			margin-bottom: 0;
+			color: $body-color;
+		}
+
+		&:hover {
+			box-shadow: inset 0 0 0 1px theme-color(primary);
+			border-color: theme-color(primary);
+			color: theme-color(primary);
+
+			.card-text,
+			.card-title {
+				color: inherit;
+			}
 		}
 	}
 }

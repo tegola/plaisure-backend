@@ -3,22 +3,24 @@
 	cursor: pointer;
 
 	letter-spacing: 0.15em;
-	font-size: $font-size-sm;
-	line-height: 1.2rem; // Align to ex-button height
+	// font-size: $font-size-sm;
+	// line-height: 1.2rem; // Align to ex-button height
 
 	.icon {
 		width: $icon-size-base;
 		height: $icon-size-base;
+		vertical-align: -0.25rem;
 	}
 }
-.btn:not(.btn-sm):not(.btn-lg) {
+.btn:not(.btn-sm),
+.btn:not(.btn-lg) {
 	padding-left: $input-btn-padding-x-lg;
 	padding-right: $input-btn-padding-x-lg;
 }
 .btn-lg {
 	letter-spacing: 0.08em;
-	font-size: $font-size-base;
-	line-height: $line-height-base;
+	// font-size: $font-size-base;
+	// line-height: $line-height-base;
 }
 
 // Normal buttons

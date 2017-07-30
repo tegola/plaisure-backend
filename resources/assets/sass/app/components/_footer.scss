@@ -1,3 +1,21 @@
 .footer {
-	padding-top: $spacer;
+	margin-top: map-get($spacers, 4);
+	margin-bottom: map-get($spacers, 4);
+	color: $text-muted;
+	font-size: $font-size-sm;
+
+	a {
+		color: inherit;
+	}
+}
+.footer-logo {
+	height: 32px;
+	display: inline-block;
+
+	.pg-logo-symbol {
+		fill: lighten($text-muted, 20%);
+	}
+	.pg-logo-shadow {
+		display: none;
+	}
 }
