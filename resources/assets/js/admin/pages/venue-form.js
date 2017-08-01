@@ -85,21 +85,21 @@ export default {
 		onPlanSelection(planName) {
 			if (!planName) return;
 
+			let newPlan;
+
 			// If it's a custom plan, keep the current values but replace the
-			// short name. 
+			// name. Otherwise, copy all plan settings.
 			if (planName == 'custom') {
-				this.venue.plan.name = 'Personalizzato';
-				this.venue.plan.short_name = planName;
-				return;
+				newPlan = _.clone(this.venue.plan);
+				newPlan.name = 'Personalizzato',
+				newPlan.short_name = 'custom';
+			} else {
+				const selectedPlan = this.plans.find(plan => plan.short_name == planName);
+				newPlan = _.clone(selectedPlan);
 			}
 
-			// Otherwise, copy over the plan settings
-			const selectedPlan = this.plans.find(plan => {
-				return plan.short_name == planName;
-			});
-
-			if (!this.venue.plan) this.venue.plan = {};
-			_.assign(this.venue.plan, selectedPlan);
+			// Update venue with plan
+			this.venue = _.assign({}, this.venue, { plan: newPlan });
 		},
 
 		removePlan() {

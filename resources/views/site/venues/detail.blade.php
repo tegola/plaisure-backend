@@ -139,7 +139,7 @@
 			</div>
 		</div>
 
-		@if ($nearby_venues->count())
+		@if ($nearby_venues && $nearby_venues->count())
 			<div class="bg-faded pt-4 pb-0 my-5">
 				<div class="container">
 					<h4 class="mb-3">Attivit&agrave; nei dintorni</h4>
@@ -147,7 +147,7 @@
 						@foreach ($nearby_venues as $nearby_venue)
 							<div class="col-md card-group mb-4">
 								<div class="card">
-									<div class="card-block">
+									<div class="card-body">
 										<h5 class="font-weight-bold"><a href="{{ route('site.venues.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a></h5>
 										<p class="card-text">{{ $nearby_venue->categories()->first()->name }}, {{ $nearby_venue->address_city }}</p>	
 									</div>

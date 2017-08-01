@@ -11,21 +11,23 @@ use App\Http\Controllers\Controller;
 class DetailController extends Controller
 {
 	public function index(Venue $venue) {
-		// Get nearby venues
-		$nearby_venues = Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
-			->where('id', '!=', $venue->id)
-			->take(3)
-			->get();
+		// Get nearby venues (if the plan allows it)
+		if (!$venue->plan || !$venue->plan->hide_nearby_venues) {
+			$nearby_venues = Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
+				->where('id', '!=', $venue->id)
+				->take(3)
+				->get();
+		} else {
+			$nearby_venues = null;
+		}
 
 		// Prepare categories string
-		$venue_category_names = $venue->categories->map(function($cat){
-			return $cat->name;
-		});
+		$venue_category_string = $venue->categories->pluck('name')->implode(', ');
 
-		return view('site.venues.detail', [
-			'venue' => $venue,
-			'venue_category_string' => $venue_category_names->implode(', '),
-			'nearby_venues' => $nearby_venues
-		]);
+		return view('site.venues.detail', compact(
+			'venue',
+			'venue_category_string',
+			'nearby_venues'
+		));
 	}
 }

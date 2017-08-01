@@ -27,6 +27,7 @@ class CreateVenuePlansTable extends Migration
 			// Bonuses and limits
 			$table->integer('distance_bonus')->unsigned();
 			$table->integer('photo_limit')->unsigned();
+			$table->boolean('hide_nearby_venues');
 
 			$table->timestamps();
 		});

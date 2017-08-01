@@ -182,7 +182,7 @@
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label>Scegli un piano</label>
-					<select class="form-control" placeholder="Scegli un piano&hellip" v-model="selectedPlan">
+					<select class="form-control" placeholder="Scegli un piano&hellip;" v-model="selectedPlan">
 						<option v-for="plan in plans" :value="plan.short_name">@{{ plan.name }}</option>
 						<option disabled>─────</option>
 						<option value="custom">Personalizza</option>
@@ -194,17 +194,30 @@
 				</div>
 			</div>
 
+			Selected: @{{ selectedPlan }}<br>
+			Plan: @{{ venue.plan }}
+
 			<div v-if="venue.plan" class="row">
 				<input type="hidden" name="plan[name]" :value="venue.plan.name">
 				<input type="hidden" name="plan[short_name]" :value="venue.plan.short_name">
 				<div class="form-group col-md-6">
 					<label>Bonus distanza</label>
-					<input type="range" class="form-control" name="plan[distance_bonus]" v-model="venue.plan.distance_bonus" :readonly="planFieldDisabled">
+					<input type="hidden" name="plan[distance_bonus]" :value="venue.plan.distance_bonus" v-if="planFieldDisabled">
+					<input type="range" class="form-control" name="plan[distance_bonus]" v-model="venue.plan.distance_bonus" :disabled="planFieldDisabled">
 					@{{ venue.plan.distance_bonus }}%
 				</div>
 				<div class="form-group col-md-6">
 					<label>Limite foto</label>
 					<input type="number" class="form-control" name="plan[photo_limit]" v-model="venue.plan.photo_limit" :readonly="planFieldDisabled">
+				</div>
+				<div class="form-group col-md-6">
+					<div class="form-check">
+					<label class="form-check-label">
+						<input type="hidden" name="plan[hide_nearby_venues]" value="0" v-if="!venue.plan.hide_nearby_venues">
+						<input class="form-check-input" type="checkbox" name="plan[hide_nearby_venues]" value="1" v-model="venue.plan.hide_nearby_venues" :disabled="planFieldDisabled">
+						Nascondi attività vicine
+					</label>
+				</div>
 				</div>
 			</div>
 
