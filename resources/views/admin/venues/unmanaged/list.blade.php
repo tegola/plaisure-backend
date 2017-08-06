@@ -66,7 +66,7 @@
 
 	@else
 		
-		<h4 class="text-center text-muted my-5 py-5">Nessun esercizio trovato.</h4>
+		<h4 class="text-center text-muted my-5 py-5">Nessun esercizio trovato</h4>
 
 	@endif
 

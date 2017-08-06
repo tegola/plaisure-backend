@@ -116,6 +116,43 @@
 							</ul>
 						</div>
 					</div>
+
+					{{-- General info --}}
+					<h4>Contatti</h4>
+					<div class="row">
+						<div class="col-md">
+							<ul class="list-unstyled">
+								<li class="text-muted">
+									Telefono:
+									Non disponibile
+								</li>
+								<li class="text-muted">
+									Email:
+									Non disponibile
+								</li>
+								<li class="text-muted">
+									Facebook:
+									Non disponibile
+								</li>
+							</ul>
+						</div>
+						<div class="col-md">
+							<ul class="list-unstyled">
+								<li class="text-muted">
+									Sito web:
+									Non disponibile
+								</li>
+								<li class="text-muted">
+									Pagina Facebook:
+									Non disponibile
+								</li>
+								<li class="text-muted">
+									TripAdvisor:
+									Non disponibile
+								</li>
+							</ul>
+						</div>
+					</div>
 				</div>
 				<div class="col-md-5">
 					{{-- Map --}}

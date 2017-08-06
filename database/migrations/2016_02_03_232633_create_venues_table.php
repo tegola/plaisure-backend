@@ -41,6 +41,16 @@ class CreateVenuesTable extends Migration
 			$table->float('geo_latitude', 10, 6)->nullable();
 			$table->float('geo_longitude', 10, 6)->nullable();
 
+			// Contact
+			$table->string('contact_phone');
+			$table->string('contact_email');
+			$table->string('contact_facebook');
+
+			// URLs
+			$table->text('url_site');
+			$table->text('url_facebook');
+			$table->text('url_tripadvisor');
+
 			$table->timestamps();
 		});
 	}

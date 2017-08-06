@@ -21,8 +21,6 @@ class ListController extends Controller
 		// Get current venues' aams census codes
 		$importedVenuesCensusCodes = ImportedVenue::pluck('aams_census_code')->all();
 
-		dd($importedVenuesCensusCodes);
-
 		// Find obsolete venues
 		$venues = Venue::whereNotIn('aams_census_code', $importedVenuesCensusCodes);
 

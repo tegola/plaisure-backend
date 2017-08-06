@@ -72,7 +72,7 @@
 			</div>
 			<div id="guidelines" class="collapse">
 				<div class="card mb-3">
-					<div class="card-block">
+					<div class="card-body">
 						<ul class="mb-0">
 							<li>Niente sigle societarie: "srl", "s.r.l.", "SRL", "società a responsabilità...", snc" ecc.</li>
 							<li>Niente nomi di persone: "Sala slot di Rossi Mario" &rarr; "Sala slot"</li>
@@ -176,6 +176,54 @@
 				</div>
 			</div>
 
+			<h5 class="mt-3">Contatti</h5>
+			<hr>
+
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Telefono</label>
+						<input type="tel" class="form-control" name="contact_phone" v-model="venue.contact_phone">
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>E-mail</label>
+						<input type="email" class="form-control" name="contact_email" v-model="venue.contact_email">
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Facebook Messenger</label>
+						<input type="text" class="form-control" name="contact_facebook" v-model="venue.contact_facebook">
+					</div>
+				</div>
+			</div>
+
+			<h5 class="mt-3">Indirizzi web</h5>
+			<hr>
+
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Sito web</label>
+						<input type="url" class="form-control" name="url_site" v-model="venue.url_site">
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Pagina Facebook</label>
+						<input type="url" class="form-control" name="url_facebook" v-model="venue.url_facebook">
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Pagina TripAdvisor</label>
+						<input type="url" class="form-control" name="url_tripadvisor" v-model="venue.url_tripadvisor">
+					</div>
+				</div>
+			</div>
+
 			<h5 class="mt-3">Dettagli piano</h5>
 			<hr>
 
@@ -193,9 +241,6 @@
 					<button type="button" class="btn btn-danger btn-block" @click="removePlan">Rimuovi piano</button>
 				</div>
 			</div>
-
-			Selected: @{{ selectedPlan }}<br>
-			Plan: @{{ venue.plan }}
 
 			<div v-if="venue.plan" class="row">
 				<input type="hidden" name="plan[name]" :value="venue.plan.name">

@@ -31,7 +31,7 @@ class FormController extends Controller
 	 */
 	public function edit(Venue $venue)
 	{
-		$venue = old() ? $venue->fill(old()) : $venue;
+		if (old()) $venue->fill(old());
 		$venue->load('plan');
 
 		return $this->showForm($venue);

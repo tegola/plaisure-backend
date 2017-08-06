@@ -38,11 +38,19 @@ class Venue extends Model
 		'address_country' => '',
 
 		'geo_latitude' => null,
-		'geo_longitude' => null		
+		'geo_longitude' => null,
+
+		'contact_phone' => '',
+		'contact_email' => '',
+		'contact_facebook' => '',
+
+		'url_site' => '',
+		'url_facebook' => '',
+		'url_tripadvisor' => ''
 	];
 
 	/**
-	 * The attributes that are mass assignable.
+	 * The attributes that aren't mass assignable.
 	 *
 	 * @var array
 	 */
@@ -60,7 +68,13 @@ class Venue extends Model
 		'address_region',
 		'address_country',
 		'geo_latitude',
-		'geo_longitude'
+		'geo_longitude',
+		'contact_phone',
+		'contact_email',
+		'contact_facebook',
+		'url_site',
+		'url_facebook',
+		'url_tripadvisor'
 	];
 
 	/**
