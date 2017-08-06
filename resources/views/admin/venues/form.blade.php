@@ -198,6 +198,15 @@
 						<input type="text" class="form-control" name="contact_facebook" v-model="venue.contact_facebook">
 					</div>
 				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Twitter</label>
+						<div class="input-group">
+							<span class="input-group-addon">@</span>
+							<input type="text" class="form-control" name="contact_twitter" v-model="venue.contact_twitter">
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<h5 class="mt-3">Indirizzi web</h5>

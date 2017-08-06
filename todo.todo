@@ -3,7 +3,7 @@ Generale:
  ✔ Aggiungere le autorizzazioni per vedere il link di accesso all'amministrazione @done (17-04-10 22:53)
  ✔ Far funzionare laravel mix anche nell'amministrazione @done (17-04-10 22:53)
  ☐ Esplora: fare in modo che se non ci sono dati da cui partire, appaia "inserisci la tua città qui"
- ☐ Sale premium: aggiungere il supporto per mostrare le pagine social (Twitter, facebook, Tripadvisor, ecc.)
+ ✔ Sale premium: aggiungere il supporto per mostrare le pagine social (Twitter, facebook, Tripadvisor, ecc.) @done (8/6/2017, 10:22:39 PM)
  ✔ Sale premium: Perk per nascondere le sale vicine @done (8/1/2017, 11:39:43 PM)
  ☐ Aggiungere il supporto agli orari di apertura
  ☐ Pagina dettaglio: aggiungere segnaposti "aggiungi questi dati" per qualsiasi cosa

@@ -45,6 +45,7 @@ class CreateVenuesTable extends Migration
 			$table->string('contact_phone');
 			$table->string('contact_email');
 			$table->string('contact_facebook');
+			$table->string('contact_twitter');
 
 			// URLs
 			$table->text('url_site');

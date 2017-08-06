@@ -57,6 +57,7 @@ class StoreVenue extends FormRequest
 			'contact_phone'                => 'nullable|numeric|min:0',
 			'contact_email'                => 'nullable|email',
 			// 'contact_facebook'             => '',
+			// 'contact_twitter'              => '',
 			'url_site'                     => 'nullable|url',
 			'url_facebook'                 => 'nullable|url',
 			'url_tripadvisor'              => 'nullable|url'

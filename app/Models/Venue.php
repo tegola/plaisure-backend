@@ -43,6 +43,7 @@ class Venue extends Model
 		'contact_phone' => '',
 		'contact_email' => '',
 		'contact_facebook' => '',
+		'contact_twitter' => '',
 
 		'url_site' => '',
 		'url_facebook' => '',
@@ -72,6 +73,7 @@ class Venue extends Model
 		'contact_phone',
 		'contact_email',
 		'contact_facebook',
+		'contact_twitter',
 		'url_site',
 		'url_facebook',
 		'url_tripadvisor'
