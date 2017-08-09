@@ -7,13 +7,13 @@ Generale:
  ☐ Aggiungere il supporto agli orari di apertura
  ✔ Copiare la barra in alto da lottomatica.it (frase e link verso sito aams) + due bannerini a destra @done (17-08-09 15:20)
  ✔ Footer più arzigogolato con mappa del sito e link a "gioca responsabilmente" e barra lottomatica (v. task sopra) @done (17-08-09 15:20)
- ☐ Rimuovere l'accesso utente per il momento
+ ✔ Rimuovere l'accesso utente per il momento @done (17-08-09 18:46)
  ☐ Supporto ai like/dislike
 
 Pagina dettaglio:
  ☐ Aggiungere segnaposti "aggiungi questi dati" per qualsiasi cosa
- ☐ Link a ricerca automatica di hotel e ristoranti nelle vicinanze con programma affiliazione TripAdvisor o Booking.com
- ☐ Link a "ottieni indicazioni" con l'indirizzo invece che con coordinate
+ ☐ Link a ricerca automatica di hotel e ristoranti nelle vicinanze con programma affiliazione TripAdvisor o Booking.com @started(17-08-09 17:20)
+ ✔ Link a "ottieni indicazioni" con l'indirizzo invece che con coordinate @done (17-08-09 19:48)
 
 Admin:
  ✔ Modalità di manutenzione (esercizi nuovi e chiusi) @done (17-07-04 22:49)

@@ -30,7 +30,7 @@
 				<div class="col-md-3">
 					<div class="row">
 						<div class="col">
-							<a class="btn btn-outline-neutral btn-block mb-2 mb-lg-0" href="{{ $venue->google_maps_url }}" target="_blank">Ottieni indicazioni</a>
+							<a class="btn btn-outline-neutral btn-block mb-2 mb-lg-0" href="{{ $venue->googleMapsUrl() }}" target="_blank">Ottieni indicazioni</a>
 						</div>
 						{{-- <div class="col">
 							<a class="btn btn-primary btn-block mb-2 mb-md-0" href="#">Salva</a>

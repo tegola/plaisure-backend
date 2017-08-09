@@ -209,24 +209,19 @@ class Venue extends Model
 	 * 
 	 * @return string
 	 */
-	public function getGoogleMapsUrlAttribute() {
-		$base_url = 'http://maps.google.com/?q=';
-
-		if ($this->geo_latitude && $this->geo_longitude) {
-			$final_url = "{$base_url}{$this->geo_latitude},{$this->geo_longitude}";
-		} else {
-			$address = join(', ', [
-				$this->address_street,
-				$this->address_number,
-				$this->address_city,
-				$this->address_postcode,
-				$this->address_province,
-				$this->address_region,
-				$this->address_country
-			]);
-			$address_encoded = urlencode($address);
-			$final_url = "{$base_url}{$address_encoded}";
-		}
+	public function googleMapsUrl() {
+		$base_url = 'https://www.google.com/maps/dir/?api=1&map_action=map&destination=';
+		$address = join(', ', [
+			$this->address_street,
+			$this->address_number,
+			$this->address_city,
+			$this->address_postcode,
+			$this->address_province,
+			$this->address_region,
+			$this->address_country
+		]);
+		$address_encoded = urlencode($address);
+		$final_url = "{$base_url}{$address_encoded}";
 
 		return $final_url;
 	}
