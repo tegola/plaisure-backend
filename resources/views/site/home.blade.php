@@ -14,10 +14,6 @@
 						@include('site.vectors.logo', ['style' => 'dark', 'class' => 'navbar-logo'])
 					</a>
 					<div>
-						<span class="mr-3">
-							<span class="badge navbar-age-warning-badge" aria-hidden="true">18+</span>
-							<span class="navbar-age-warning-text">Il gioco &egrave; vietato<br>ai minori di 18 anni</span>
-						</span>
 						@if (Auth::guest())
 							<a class="btn btn-inverse-neutral" href="{{ url('/login') }}">Accedi</a>
 							<a class="btn btn-primary" href="{{ url('/register') }}">Iscriviti</a>

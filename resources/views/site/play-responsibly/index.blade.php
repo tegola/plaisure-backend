@@ -13,28 +13,28 @@
 		<div class="row">
 			<div class="col-md-10 ml-md-auto mr-md-auto">
 				<div class="text-center">
-					<h1><strong>Gioca senza esagerare</strong></h1>
+					<h1 id="toofar"><strong>Gioca senza esagerare</strong></h1>
 					<h3 class="mb-4">Evita gli eccessi: fai in modo che il gioco resti un piacere.</h3>
 				</div>
-				<p>Il gioco &egrave;  un'esperienza piacevole e positiva che non rappresenta alcun rischio per la  maggior parte delle persone.<br>
+				<p>Il gioco &egrave; un'esperienza piacevole e positiva che non rappresenta alcun rischio per la maggior parte delle persone.<br>
 				<br>
-				Ma tra milioni di giocatori, ci sono anche persone per le quali giocare non &egrave;  pi&ugrave; solo un divertimento, ma &egrave; diventato o pu&ograve; diventare un problema.<br>
-				Il gioco, quando non &egrave; considerato un divertimento, pu&ograve; provocare <strong>conseguenze  negative</strong> nella vita di una persona e dei suoi familiari.<br>
+				Ma tra milioni di giocatori, ci sono anche persone per le quali giocare non &egrave; pi&ugrave; solo un divertimento, ma &egrave; diventato o pu&ograve; diventare un problema.<br>
+				Il gioco, quando non &egrave; considerato un divertimento, pu&ograve; provocare <strong>conseguenze negative</strong> nella vita di una persona e dei suoi familiari.<br>
 				<br>
-				Abitudini di gioco non corrette possono causare problemi lavorativi, familiari  e finanziari.<br>
+				Abitudini di gioco non corrette possono causare problemi lavorativi, familiari e finanziari.<br>
 				<br>
-				<strong>{{ config('app.name') }}</strong>, consapevole che il gioco pu&ograve; rappresentare un problema per  una piccola parte di giocatori in termini di gioco eccessivo e dipendenza dal  gioco, <strong>promuove insieme all'<a href="https://www.agenziadoganemonopoli.gov.it/portale/">Agenzia delle Dogane e dei Monopoli</a></strong> il <strong><a href="/it/chi-siamo/comunita/gioco-responsabile">Gioco Responsabile</a></strong> con l'obiettivo di  offrirti divertimento e intrattenimento.<br>
+				<strong>{{ config('app.name') }}</strong>, consapevole che il gioco pu&ograve; rappresentare un problema per una piccola parte di giocatori in termini di gioco eccessivo e dipendenza dal gioco, <strong>promuove insieme all'<a href="https://www.agenziadoganemonopoli.gov.it/portale/">Agenzia delle Dogane e dei Monopoli</a></strong> il <strong>Gioco Responsabile</strong> con l'obiettivo di offrirti divertimento e intrattenimento.<br>
 				<br>
-				Questo sito contiene i consigli ed i suggerimenti necessari perch&eacute; il gioco  resti sempre un piacere senza rischi e fornisce le informazioni utili nel caso  sia diventato un problema.<br>
+				Questo sito contiene i consigli ed i suggerimenti necessari perch&eacute; il gioco resti sempre un piacere senza rischi e fornisce le informazioni utili nel caso sia diventato un problema.<br>
 				<br>
-				I siti di prodotto sono certificati per il gioco  responsabile dalla <strong><a href="http://www.gx4.com/">Global  Gambling Guidance Group (G4)</a></strong>. La Global Gambling  Guidance Group &egrave; un'organizzazione istituita da un gruppo internazionale di  esperti che affronta le tematiche legate al gioco responsabile con regole e  protocolli all'avanguardia in Europa. <br>
+				I siti di prodotto sono certificati per il gioco responsabile dalla <strong><a href="http://www.gx4.com/">Global Gambling Guidance Group (G4)</a></strong>. La Global Gambling Guidance Group &egrave; un'organizzazione istituita da un gruppo internazionale di esperti che affronta le tematiche legate al gioco responsabile con regole e protocolli all'avanguardia in Europa. <br>
 				<br>
-				Con questo riconoscimento {{ config('app.name') }} conferma ancora di pi&ugrave; il proprio impegno  nella tutela dell'esperienza di gioco dei propri utenti.</p>
+				Con questo riconoscimento {{ config('app.name') }} conferma ancora di pi&ugrave; il proprio impegno nella tutela dell'esperienza di gioco dei propri utenti.</p>
 
 				<hr class="my-5">
 
 				<div class="text-center">
-					<h1><strong>Le regole</strong></h1>
+					<h1 id="rules"><strong>Le regole</strong></h1>
 					<h3 class="mb-4">Gioca e divertiti, ma ricorda queste regole.</h3>
 				</div>
 				<p>Per fare in modo che il gioco resti sempre un piacere, segui alcune regole elementari:</p>
@@ -68,7 +68,7 @@
 				<hr class="my-5">
 
 				<div class="text-center">
-					<h1><strong>Miti e credenze</strong></h1>
+					<h1 id="myths"><strong>Miti e credenze</strong></h1>
 				</div>
 				<p>
 					<strong>MITO</strong>: &ldquo;se continuo a giocare la fortuna girer&agrave; e riguadagner&ograve; i soldi che ho perso finora: devo solo andare avanti a giocare&rdquo;<br>
@@ -95,7 +95,7 @@
 				<hr class="my-5">
 
 				<div class="text-center">
-					<h1><strong>Dove chiedere aiuto</strong></h1>
+					<h1 id="help"><strong>Dove chiedere aiuto</strong></h1>
 					<h3>A chi rivolgersi</h3>
 				</div>
 
