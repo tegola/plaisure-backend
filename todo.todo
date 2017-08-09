@@ -23,12 +23,14 @@ Home:
  ✔ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google @done (3/15/2017, 10:55:45 PM)
 
 Ricerca:
- ☐ Esplora: fare in modo che se non ci sono dati da cui partire, appaia "inserisci la tua città qui"
  ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
  ✔ Ricerca per via, oltre che per città @done (3/15/2017, 10:55:55 PM)
- ☐ Plottare _tutti_ i risultati sulla mappa
  ✔ Meno importanza alla mappa: la ricerca deve funzionare anche quando essa non è visibile @done (17-06-26 23:57)
  ✔ Ordinamento dei risultati per distanza @done (17-04-17 19:12)
+ ☐ Fare in modo che se non ci sono dati da cui partire, appaia "inserisci la tua città qui"
+ ☐ Quando non c'è nessun risultato, mostrare il "nessun risultato" più carino e con la possibilità di impostare il tipo a "tutto"
+ ☐ Filtri in modalità AND (quindi tag invece che select)
+ ☐ Plottare **tutti** i risultati sulla mappa
  ☐ Priorità alle attività paganti, con indicatore più visibile
  ☐ Se una sala con un bonus di distanza esce dalla mappa sparisce completamente, mentre dovrebbe comunque rimanere (ha un bonus!)
 

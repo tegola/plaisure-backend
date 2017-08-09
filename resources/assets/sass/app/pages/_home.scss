@@ -1,6 +1,6 @@
 .page-home {
 	.hero {
-		min-height: 70vh;
+		min-height: 80vh;
 		position: relative;
 		background-color: rgba(mix($palette-green-500, black, 90%), 0.5);
 		display: flex;
@@ -26,9 +26,10 @@
 
 			@include media-breakpoint-up(md) {
 				display: inline-block;
-				width: 100px;
-				height: 145px;
-				margin-top: $spacer
+				width: 320px;
+				height: 72px;
+				margin-top: $spacer;
+				margin-bottom: map-get($spacers, 5);
 			}
 		}
 

@@ -65,11 +65,11 @@
 									<li class="list-inline-item mr-3">
 										<a class="font-weight-bold" href="javascript:void(0)" @click="select(venue)">Mostra sulla mappa</a>
 									</li>
-									<li class="list-inline-item">
+									{{-- <li class="list-inline-item">
 										<a class="text-accent font-weight-bold" href="javascript:void(0)" @click="toggleFavorite(venue)">
 											@include('site.icons.icon', ['name' => 'heart-outline', 'class' => 'mr-2'])Aggiungi ai preferiti
 										</a>
-									</li>
+									</li> --}}
 								</ul>
 								<hr class="mb-0">
 							</div>

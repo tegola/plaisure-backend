@@ -8,11 +8,12 @@
 	<div>
 		<div class="hero">
 			<pg-map class="map" :center="center" :zoom="zoom" :options="mapOptions"></pg-map>
-			<nav class="navbar navbar-transparent navbar-expand-md">
-				<div class="container">
+			<nav class="navbar navbar-transparent navbar-expand-md d-md-none">
+				<div class="container justify-content-center">
 					<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
 						@include('site.vectors.logo', ['style' => 'dark', 'class' => 'navbar-logo'])
 					</a>
+					{{--
 					<div>
 						@if (Auth::guest())
 							<a class="btn btn-inverse-neutral" href="{{ url('/login') }}">Accedi</a>
@@ -42,12 +43,13 @@
 							</span>
 						@endif
 					</div>
+					--}}
 				</div>
 			</nav>
 
 			<div class="container hero-content">
 				<div class="text-center">
-					@include('site.vectors.logo', ['text' => false, 'class' => 'logo', 'style' => 'dark'])
+					@include('site.vectors.logo', ['class' => 'logo', 'style' => 'dark'])
 					<div class="row">
 						<div class="col-lg-8 ml-lg-auto mr-lg-auto">
 							<h1>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h1>

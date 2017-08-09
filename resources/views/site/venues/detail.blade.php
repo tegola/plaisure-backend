@@ -27,14 +27,14 @@
 						{{ $venue->address_city }}
 					</p>
 				</div>
-				<div class="col-md-5">
+				<div class="col-md-3">
 					<div class="row">
 						<div class="col">
 							<a class="btn btn-outline-neutral btn-block mb-2 mb-lg-0" href="{{ $venue->google_maps_url }}" target="_blank">Ottieni indicazioni</a>
 						</div>
-						<div class="col">
+						{{-- <div class="col">
 							<a class="btn btn-primary btn-block mb-2 mb-md-0" href="#">Salva</a>
-						</div>
+						</div> --}}
 					</div>
 				</div>
 			</div>

@@ -45,6 +45,7 @@
 				</div>
 			</form>
 		@endif
+		{{--
 		<div class="ml-auto">
 			@if (Auth::guest())
 				<a class="btn btn-outline-neutral" href="{{ url('/login') }}">Accedi</a>
@@ -71,6 +72,7 @@
 				</span>
 			@endif
 		</div>
+		--}}
 	@if (!$fluid)
 	</div>
 	@endif
