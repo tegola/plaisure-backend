@@ -2,17 +2,17 @@
 $ = window.jQuery = window.$ = require('jquery'); // Make it work with bootstrap
 window.Popper = require('popper.js'); // Make it work with bootstrap
 
-require('bootstrap/js/src/util');
-// require('bootstrap/js/src/alert');
-require('bootstrap/js/src/button');
-// require('bootstrap/js/src/carousel');
-require('bootstrap/js/src/collapse');
-require('bootstrap/js/src/dropdown');
-// require('bootstrap/js/src/modal');
-// require('bootstrap/js/src/popover');
-// require('bootstrap/js/src/scrollspy');
-require('bootstrap/js/src/tab');
-require('bootstrap/js/src/tooltip');
+require('bootstrap/js/dist/util');
+// require('bootstrap/js/dist/alert');
+require('bootstrap/js/dist/button');
+// require('bootstrap/js/dist/carousel');
+require('bootstrap/js/dist/collapse');
+require('bootstrap/js/dist/dropdown');
+// require('bootstrap/js/dist/modal');
+// require('bootstrap/js/dist/popover');
+// require('bootstrap/js/dist/scrollspy');
+require('bootstrap/js/dist/tab');
+require('bootstrap/js/dist/tooltip');
 
 import Vue from 'vue';
 import { load as loadGMaps } from 'vue2-google-maps';

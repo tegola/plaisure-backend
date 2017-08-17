@@ -1,8 +1,8 @@
 let mix = require('laravel-mix');
 
 mix.autoload({
-   jquery: ['jQuery'], // Bootstrap
-   'popper.js/dist/umd/popper.js': ['Popper'] // Bootstrap
+	jquery: ['jQuery'], // Bootstrap
+	'popper.js/dist/umd/popper.js': ['Popper'] // Bootstrap
 });
 
 // Admin
@@ -14,3 +14,4 @@ mix.sass('resources/assets/sass/admin/main.scss', 'public/css/admin.css')
 mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
 	.js('resources/assets/js/app/main.js', 'public/js/app.js')
 	.version();
+
