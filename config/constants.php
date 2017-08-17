@@ -6,6 +6,8 @@ return [
 	'company' => 'PRG s.r.l.',
 	'partita_iva' => '02554710695',
 
+	'report_email' => 'report@prontogioco.it',
+
 	'venues_csv_path' => [
 		'dirname' => 'app',
 		'filename' => 'esercizi.csv'

@@ -8,7 +8,7 @@
 					@foreach(config('constants.footer_explore_cities') as $name => $params)
 						<li><a href="{{ route('site.venues.explore', $params) }}">Esercizi a {{ $name }}</a></li>
 					@endforeach
-					<li><a href="#">Rivendica la tua attivit&agrave;</a></li>
+					<li><a href="{{ route('site.promote') }}">Promuovi la tua attivit&agrave;</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-4 col-lg-2">

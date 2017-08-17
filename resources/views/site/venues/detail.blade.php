@@ -154,7 +154,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-5">
+				<div class="col-md-3">
 					{{-- Map --}}
 					<div class="embed-responsive embed-responsive-21by9 mb-4">
 						<pg-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
@@ -163,15 +163,15 @@
 					</div>
 
 					{{-- Claim --}}
-					<h5>&Egrave; la tua attivit&agrave;?</h5>
-					<p>Se sei proprietaro o gestore di questa attivit&agrave;, puoi rivendicarla gratuitamente e tenerla aggiornata costantemente, aggiungere foto, jackpot e tanto altro.</p>
-					<p><a class="btn ì btn-outline-accent btn-block" href="#">Rivendica attivit&agrave;</a></p>
+					<h4>È la tua attività?</h4>
+					<p>Se sei proprietaro o gestore di questa attività, puoi rivendicarla gratuitamente e tenerla aggiornata costantemente, aggiungere foto, jackpot e tanto altro. <a href="{{ route('site.promote') }}">Ulteriori informazioni&hellip;</a></p>
+					<p><a class="btn btn-sm btn-primary btn-block" href="mailto:{{ config('constants.email') }}?subject={{ rawurlencode("Rivendicazione attività: {$venue->name} (identificativo: {$venue->id})") }}">Rivendica attività</a></p>
 
 					<hr>
 
 					{{-- Error --}}
-					<h5>Hai trovato un errore?</h5>
-					<p class="mb-0">Se l'indirizzo &egrave; errato, l'attivit&agrave; non esiste, o se ci sono foto offensive, puoi <a href="#">segnalare questa attivit&agrave;</a>.</p>
+					<h4>Hai trovato un errore?</h4>
+					<p class="mb-0">Se l'indirizzo è errato, l'attività non esiste più, o se ci sono foto offensive, puoi <a href="mailto:{{ config('constants.report_email') }}?subject={{ rawurlencode("Segnalazione errore: {$venue->name} (identificativo: {$venue->id})") }}">segnalare questa attività</a>.</p>
 				</div>
 			</div>
 		</div>
@@ -179,7 +179,7 @@
 		@if ($nearby_venues && $nearby_venues->count())
 			<div class="bg-faded pt-4 pb-0 my-5">
 				<div class="container">
-					<h4 class="mb-3">Attivit&agrave; nei dintorni</h4>
+					<h4 class="mb-3">Attività nei dintorni</h4>
 					<div class="row">
 						@foreach ($nearby_venues as $nearby_venue)
 							<div class="col-md card-group mb-4">

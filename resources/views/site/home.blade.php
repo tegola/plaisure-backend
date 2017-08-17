@@ -129,11 +129,11 @@
 					</a>
 				</div>
 				<div class="mb-3 mb-md-0 col-md">
-					<a class="card h-100" href="#">
+					<a class="card h-100" href="{{ route('site.promote') }}">
 						<div class="card-body">
 							<div><img src="{{ asset('img/home/venue.svg') }}"></div>
 							<p class="card-text">Sei nel campo?</p>
-							<h4 class="card-title">Rivendica la tua attivit&agrave;</h4>
+							<h4 class="card-title">Promuovi la tua attivit&agrave;</h4>
 						</div>
 					</a>
 				</div>

@@ -31,7 +31,8 @@ Route::group(['namespace' => 'Site'], function(){
 	Route::get('/about/company', 'AboutController@company')->name('site.about.company');
 	Route::get('/about/contact', 'AboutController@contact')->name('site.about.contact');
 
-	// Claim
+	// Promote
+	Route::get('/promote', 'PromoteController@index')->name('site.promote');
 	
 	// Play responsibly
 	Route::get('/play-responsibly', 'PlayResponsiblyController@index')->name('site.play-responsibly.index');
