@@ -15,7 +15,7 @@ class ExploreController extends Controller
 {
 	public function __construct(Request $request) {
 		$this->near = $request->near;
-		$this->categories = $request->has('categories') ? $request->categories : [];
+		$this->categories = $request->has('categories') ? $request->categories : Category::pluck('id')->all();
 		// $this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
 		$this->c_lat = $request->has('c_lat') ? floatval($request->c_lat) : null;
 		$this->c_lng = $request->has('c_lng') ? floatval($request->c_lng) : null;

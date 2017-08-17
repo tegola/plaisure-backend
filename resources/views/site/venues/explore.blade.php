@@ -16,9 +16,9 @@
 			<div class="venue-list">
 				<div class="container-fluid">
 					@foreach($categories as $category)
-						<label class="filterbar-tag">
-							<input type="checkbox" class="filterbar-tag-input" name="categories[]" value="{{ $category->id }}" v-model="categories">
-							<span class="filterbar-tag-token">{{ $category->name }}</span>
+						<label class="filter-tag">
+							<input type="checkbox" class="filter-tag-input" name="categories[]" value="{{ $category->id }}" v-model="categories">
+							<span class="filter-tag-token">{{ $category->name }}</span>
 						</label>
 					@endforeach
 					<span v-if="venues.length > 0" class="ml-2 text-muted" v-cloak>

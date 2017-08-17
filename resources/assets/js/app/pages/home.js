@@ -122,16 +122,16 @@ export default {
 		},
 
 		onWhatInput(value) {
+			// Always reset the category (it will be set back when selecting
+			// a suggestion)
+			this.categories = [];
+
 			// Reset if empty
 			if (!value) {
 				this.venueQuery = null;
 				this.venueSuggestions = [];
 				return;
 			}
-
-			// Always reset the category (it will be set back when selecting
-			// a suggestion)
-			this.categories = [];
 
 			this.loadVenueSuggestions(value);
 		},
@@ -158,6 +158,7 @@ export default {
 			if (item.type == 'venue') {
 				location.href = item.url;
 			} else if (item.type == 'category') {
+				console.log('ho una categoria', item.name);
 				this.categories = [item.id];
 				this.venueQuery = item.name;
 			}

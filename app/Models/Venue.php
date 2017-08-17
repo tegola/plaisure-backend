@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use DB;
+use Auth;
 
 class Venue extends Model
 {
@@ -90,6 +92,25 @@ class Venue extends Model
 		'category_icon_name'
 	];
 
+	/**
+	 * The "booting" method of the model.
+	 *
+	 * @return void
+	 */
+	protected static function boot()
+	{
+		$user = Auth::user();
+
+		parent::boot();
+
+		// Don't show venues without geo data to normal users
+		if (!$user || !$user->isAdmin()) {
+			static::addGlobalScope('noGeoData', function (Builder $builder) {
+				$builder->whereNotNull('geo_latitude')
+						->whereNotNull('geo_longitude');
+			});
+		}
+	}
 
 	/**
 	 * By default, load all venue data on new queries.

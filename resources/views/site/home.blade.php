@@ -59,7 +59,7 @@
 				</div>
 
 				<form class="form-search" action="{{ route('site.venues.explore') }}" method="get" @submit="onSubmit">
-					<input type="hidden" name="categories[]" v-model="categories">
+					<input type="hidden" name="categories[]" v-model="categories" v-if="categories.length">
 					<input type="hidden" name="c_lat" v-model="center.lat">
 					<input type="hidden" name="c_lng" v-model="center.lng">
 					<input type="hidden" name="ne_lat" v-model="ne.lat">
@@ -75,7 +75,7 @@
 									name="what"
 									placeholder="VLT, Bingo, Ricevitoria"
 									autofocus
-									:value="venueQuery"
+									v-model="venueQuery"
 									:suggestions="venueSuggestions"
 									item-component="pg-venue-suggestion-item"
 									@input="onWhatInput"

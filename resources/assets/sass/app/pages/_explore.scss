@@ -1,6 +1,35 @@
 .page-explore {
 	overflow-x: hidden; // Fix scrollbar issues
-	
+
+	// Filters
+	.filter-tag {
+		margin: map-get($spacers, 2) 0;
+	}
+	.filter-tag-input {
+		display: none;
+	}
+	.filter-tag-token {
+		padding: map-get($spacers, 1) map-get($spacers, 3);
+		border-radius: 2rem;
+		border: $border-width solid transparent;
+		background-color: grayscale(100);
+		color: $text-muted;
+		cursor: pointer;
+
+		&:hover {
+			border-color: grayscale(300);
+		}
+	}
+	.filter-tag-input:checked + .filter-tag-token {
+		background-color: theme-color(secondary);
+		color: #fff;
+
+		&:hover {
+			border-color: transparent;
+		}
+	}
+
+	// Venues
 	.venue {
 		display: flex;
 		align-items: flex-start;
@@ -16,36 +45,10 @@
 		flex: 1;
 		padding-top: $spacer;
 	}
+
+	// Map
 	.map-container {
 		display: none;
-	}
-
-	// Filters
-	.filterbar-tag {
-		margin: map-get($spacers, 2) 0;
-	}
-	.filterbar-tag-input {
-		display: none;
-	}
-	.filterbar-tag-token {
-		padding: map-get($spacers, 1) map-get($spacers, 3);
-		border-radius: 2rem;
-		border: $border-width solid transparent;
-		background-color: grayscale(100);
-		color: $text-muted;
-		cursor: pointer;
-
-		&:hover {
-			border-color: grayscale(300);
-		}
-	}
-	.filterbar-tag-input:checked + .filterbar-tag-token {
-		background-color: theme-color(secondary);
-		color: #fff;
-
-		&:hover {
-			border-color: transparent;
-		}
 	}
 
 	@include media-breakpoint-up(md) {
