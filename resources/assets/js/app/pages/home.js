@@ -22,7 +22,7 @@ export default {
 
 	data() {
 		return {
-			category: null,
+			categories: [],
 			venueQuery: '',
 			venueSuggestions: [],
 			locationQuery: '',
@@ -131,7 +131,7 @@ export default {
 
 			// Always reset the category (it will be set back when selecting
 			// a suggestion)
-			this.category = null;
+			this.categories = [];
 
 			this.loadVenueSuggestions(value);
 		},
@@ -158,7 +158,7 @@ export default {
 			if (item.type == 'venue') {
 				location.href = item.url;
 			} else if (item.type == 'category') {
-				this.category = item.id;
+				this.categories = [item.id];
 				this.venueQuery = item.name;
 			}
 		},

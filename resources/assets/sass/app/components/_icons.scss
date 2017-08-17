@@ -6,7 +6,17 @@
 	vertical-align: -0.4rem;
 }
 
-/* Spinning icon */
+// Sizes
+.icon-2x {
+	width: $icon-size-base * 2;
+	height: $icon-size-base * 2;
+}
+.icon-3x {
+	width: $icon-size-base * 3;
+	height: $icon-size-base * 3;
+}
+
+// Spinning icon
 .icon-spinning {
 	animation: icon-spin 1s infinite linear;
 }

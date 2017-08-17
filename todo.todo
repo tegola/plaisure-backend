@@ -1,5 +1,6 @@
 Generale:
  ☐ Ottimizzazione per mobile
+ ☐ Fare in modo che le attività senza geolocalizzazione non vengano caricate per gli utenti normali
  ✔ Aggiungere le autorizzazioni per vedere il link di accesso all'amministrazione @done (17-04-10 22:53)
  ✔ Far funzionare laravel mix anche nell'amministrazione @done (17-04-10 22:53)
  ✔ Sale premium: aggiungere il supporto per mostrare le pagine social (Twitter, facebook, Tripadvisor, ecc.) @done (8/6/2017, 10:22:39 PM)

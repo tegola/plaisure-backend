@@ -16,18 +16,36 @@
 		flex: 1;
 		padding-top: $spacer;
 	}
-	.map {
+	.map-container {
 		display: none;
 	}
 
 	// Filters
-	.filterbar {
-		background-color: $body-bg;
-		z-index: $zindex-fixed; // Stay above venue list
-		display: flex;
-		flex-direction: row; // column on small screens
-		padding: $navbar-padding-y $navbar-padding-x;
-		box-shadow: 0 1px 0 rgba(black, .08);
+	.filterbar-tag {
+		margin: map-get($spacers, 2) 0;
+	}
+	.filterbar-tag-input {
+		display: none;
+	}
+	.filterbar-tag-token {
+		padding: map-get($spacers, 1) map-get($spacers, 3);
+		border-radius: 2rem;
+		border: $border-width solid transparent;
+		background-color: grayscale(100);
+		color: $text-muted;
+		cursor: pointer;
+
+		&:hover {
+			border-color: grayscale(300);
+		}
+	}
+	.filterbar-tag-input:checked + .filterbar-tag-token {
+		background-color: theme-color(secondary);
+		color: #fff;
+
+		&:hover {
+			border-color: transparent;
+		}
 	}
 
 	@include media-breakpoint-up(md) {
@@ -53,9 +71,30 @@
 
 			@include make-col(5);
 		}
-		.map {
+		.map-container {
 			display: block;
 			flex: 1;
+			position: relative;
+		}
+		.map {
+			height: 100%;
+		}
+		.map-controls {
+			position: absolute;
+			top: 0;
+			right: 0;
+			margin: 10px;
+			background-color: $body-bg;
+			border-radius: $border-radius-sm;
+			box-shadow: 0 1px 4px -1px rgba(#000, 0.3);
+			display: flex;
+		}
+		.map-follow-checkbox {
+			margin: $input-btn-padding-y map-get($spacers, 3);
+		}
+		.map-refresh-button {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 		.footer {
 			display: none;
@@ -64,7 +103,7 @@
 
 	@include media-breakpoint-up(lg) {
 		.venue-list {
-			@include make-col(4);
+			@include make-col(5);
 		}
 	}
 }

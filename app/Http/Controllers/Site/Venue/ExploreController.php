@@ -15,8 +15,8 @@ class ExploreController extends Controller
 {
 	public function __construct(Request $request) {
 		$this->near = $request->near;
-		$this->category = $request->has('category') ? intval($request->category) : null;
-		$this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
+		$this->categories = $request->has('categories') ? $request->categories : [];
+		// $this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
 		$this->c_lat = $request->has('c_lat') ? floatval($request->c_lat) : null;
 		$this->c_lng = $request->has('c_lng') ? floatval($request->c_lng) : null;
 		$this->ne_lat = $request->has('ne_lat') ? floatval($request->ne_lat) : null;
@@ -28,13 +28,13 @@ class ExploreController extends Controller
 	public function index()
 	{
 		// Make sure we have all location data
-		if (!$this->hasLocationData()) {
-			return back();
-		}
+		// if (!$this->hasLocationData()) {
+		// 	return back();
+		// }
 
 		$searchParams = [
 			'near' => $this->near,
-			'category' => $this->category,
+			'categories' => $this->categories,
 			'c_lat' => $this->c_lat,
 			'c_lng' => $this->c_lng,
 			'ne_lat' => $this->ne_lat,
@@ -76,9 +76,9 @@ class ExploreController extends Controller
 		}
 
 		// Filter by category
-		if ($this->category) {
+		if ($this->categories) {
 			$venues->whereHas('categories', function($query) {
-				$query->where('id', $this->category);
+				$query->whereIn('id', $this->categories);
 			});
 		}
 

@@ -21,6 +21,7 @@ export default {
 	data() {
 		return {
 			searchParams: pg.searchParams,
+			categories: pg.searchParams.categories,
 			pager: null,
 			mapNeedsRefresh: false,
 			followMap: false,
@@ -37,8 +38,12 @@ export default {
 				west: pg.searchParams.sw_lng
 			},
 			mapOptions: {
+				fullscreenControl: false,
 				mapTypeControl: false,
 				streetViewControl: false,
+				zoomControlOptions: {
+					position: 1 // google.maps.ControlPosition.TOP_LEFT
+				},
 				styles: [
 					{ // Hide points of interest
 						'featureType': 'poi',
@@ -46,7 +51,7 @@ export default {
 					}
 				]
 			}
-		}
+		};
 	},
 
 	computed: {
@@ -62,6 +67,14 @@ export default {
 		// Automatically load when following the map
 		followMap(newValue) {
 			if (newValue) this.load();
+		},
+
+		// Automatically load when changing categories
+		categories() {
+			_.extend(this.searchParams, {
+				categories: this.categories
+			});
+			this.load();
 		}
 	},
 
@@ -79,9 +92,8 @@ export default {
 			this.load();
 		},
 
-		onCategoryChange(e) {
-			this.searchParams.category = e.target.value;
-			this.load();
+		resetCategories() {
+			this.categories = [];
 		},
 
 		onMapBoundsChange: _.debounce(function(bounds) { // Fat arrow functions do not work with debounce
@@ -134,7 +146,7 @@ export default {
 
 			// Update url
 			const baseName = _.last(location.pathname.split('/'));
-			const params = $.param(this.searchParams, _.omit(['page']));
+			const params = $.param(this.searchParams);
 
 			window.history.replaceState({}, '', `${baseName}?${params}`);
 

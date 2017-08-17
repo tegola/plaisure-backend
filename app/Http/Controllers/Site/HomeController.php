@@ -41,11 +41,15 @@ class HomeController extends Controller
 		// Find venues and categories
 		if ($what) {
 			if ($c_lat && $c_lng) {
-				$venues = Venue::with('categories')->withNameOrCategoryName($what);
-				$venues = $venues->withDistanceFrom($c_lat, $c_lng);
-				$venues = $venues->take(5)->get();
+				$venues = Venue::with('categories')
+					->withNameOrCategoryName($what)
+					->withDistanceFrom($c_lat, $c_lng)
+					->take(5)
+					->get();
 			}
-			$categories = Category::where('name', 'like', "%{$what}%")->take(5)->get();
+			$categories = Category::where('name', 'like', "%{$what}%")
+				->take(5)
+				->get();
 		} else {
 			$categories = Category::take(5)->get();
 		}
