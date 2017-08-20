@@ -1,5 +1,6 @@
 Generale:
  ☐ Ottimizzazione per mobile
+ ☐ Salvare uno short name per le categorie e usarlo per decidere l'icona da visualizzare
  ✔ Fare in modo che le attività senza geolocalizzazione non vengano caricate per gli utenti normali @done (17-08-17 16:39)
  ✔ Aggiungere le autorizzazioni per vedere il link di accesso all'amministrazione @done (17-04-10 22:53)
  ✔ Far funzionare laravel mix anche nell'amministrazione @done (17-04-10 22:53)
@@ -24,6 +25,7 @@ Home:
  ✔ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google @done (3/15/2017, 10:55:45 PM)
 
 Ricerca:
+ ☐ La ricerca si rompe su mobile
  ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
  ✔ Ricerca per via, oltre che per città @done (3/15/2017, 10:55:55 PM)
  ✔ Meno importanza alla mappa: la ricerca deve funzionare anche quando essa non è visibile @done (17-06-26 23:57)
@@ -32,6 +34,7 @@ Ricerca:
  ☐ Quando non c'è nessun risultato, mostrare il "nessun risultato" più carino e con la possibilità di impostare il tipo a "tutto"
  ✔ Filtri in modalità AND (quindi tag invece che select) @done (17-08-17 17:09)
  ☐ Priorità alle attività paganti, con indicatore più visibile
+ ☐ Pulsante per usare la posizione dell'utente
  ☐ Se una sala con un bonus di distanza esce dalla mappa sparisce completamente, mentre dovrebbe comunque rimanere (ha un bonus!)
  ☐ Pulsante per condividere il link della ricerca
 

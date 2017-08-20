@@ -24,7 +24,6 @@ export default {
 			categories: pg.searchParams.categories,
 			pager: null,
 			mapNeedsRefresh: false,
-			followMap: false,
 			highlightedVenueId: null,
 			selectedVenueId: null,
 			mapCenter: {
@@ -64,11 +63,6 @@ export default {
 	},
 
 	watch: {
-		// Automatically load when following the map
-		followMap(newValue) {
-			if (newValue) this.load();
-		},
-
 		// Automatically load when changing categories
 		categories() {
 			_.extend(this.searchParams, {
@@ -99,13 +93,7 @@ export default {
 		onMapBoundsChange: _.debounce(function(bounds) { // Fat arrow functions do not work with debounce
 			// Store bounds
 			this.storeBounds(bounds);
-
-			// Load or mark as needed
-			if (this.followMap) {
-				this.load();
-			} else {
-				this.mapNeedsRefresh = true;
-			}
+			this.mapNeedsRefresh = true;
 		}, 200),
 
 		storeBounds(bounds) {
@@ -165,15 +153,32 @@ export default {
 				return;
 			}
 
-			// Disable map follow to avoid reloading data
-			this.followMap = false;
-
 			// Select/deselect
 			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		},
 
-		toggleFavorite(venue) {
-			console.log('aggiungo ai preferiti', venue);
+		mapMarkerIcon(venue) {
+			// FIXME: Use the short name
+			let name;
+
+			//if (venue.id == this.selectedVenueId || venue.id == this.highlightedVenueId) {
+			switch (venue.categories[0].name) {
+				case 'Agenzia scommesse': name = 'token'; break;
+				case 'Ricevitoria': name = 'receipt'; break;
+				case 'Sala Bingo': name = 'bingo'; break;
+				case 'Sala VLT': name = 'diamond'; break;
+			}
+			//}
+
+			return `/img/map/pin-${name}.svg`;
+		},
+
+		// Marker utils
+		mapMarkerPosition(venue) {
+			return {
+				lat: venue.geo_latitude,
+				lng: venue.geo_longitude
+			};
 		}
 	},
 

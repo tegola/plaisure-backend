@@ -4,7 +4,7 @@ import axios from 'axios';
 import * as geocoder from '../../utilities/geocoder';
 import InputTypeahead from '../components/input-typeahead.vue';
 import VenueSuggestionItem from '../components/venue-suggestion-item.vue';
-import { Map } from 'vue2-google-maps'
+import { Map } from 'vue2-google-maps';
 
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
 

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="35" viewBox="0 0 24 35" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path id="a" d="M12.76 32.65C19.6 24.6 23 17.65 23 11.85 23 6 18.08 1 12 1S1 5.94 1 11.85c0 5.8 3.4 12.74 10.24 20.8.35.42.98.48 1.4.12.05-.04.1-.08.12-.12z" />
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <ellipse cx="12" cy="34" fill="#000" fill-opacity=".1" rx="4" ry="1" />
+        <g stroke-linejoin="round">
+            <use fill="#EB305A" xlink:href="#a" />
+            <path stroke="#FFF" d="M13.14 32.97c-.05.07-.1.13-.17.18-.63.54-1.58.46-2.1-.18C3.96 24.83.5 17.8.5 11.85.5 5.65 5.68.5 12 .5c6.3 0 11.5 5.18 11.5 11.35 0 5.95-3.46 12.98-10.36 21.12z" />
+        </g>
+        <circle cx="12" cy="12" r="9" fill="#FFF" />
+        <path fill="#EB305A" d="M12 18l-6-8 2-3h8l2 3-6 8zM9.06 8L7 10l4 5-1.94-5V8z" />
+    </g>
+</svg>

@@ -13,7 +13,7 @@
 		])
 
 		<div class="wrapper">
-			<div class="venue-list">
+			<div class="venue-list py-2">
 				<div class="container-fluid">
 					@foreach($categories as $category)
 						<label class="filter-tag">
@@ -28,7 +28,7 @@
 				</div>
 
 				<div v-if="hasMorePages" class="alert alert-info border-0 rounded-0">
-					Il numero di risultati &egrave; stato limitato automaticamente. Fai zoom sulla zona interessata per visualizzare pi&ugrave; dettagli.
+					Il numero di risultati è stato limitato automaticamente. Fai zoom sulla zona di tuo interesse per visualizzare più dettagli.
 				</div>
 
 				<div class="container-fluid">
@@ -45,7 +45,6 @@
 					<template v-else>
 						<div v-for="venue in venues" class="venue" @mouseover="highlight(venue)" @mouseout="highlight()">
 							<img class="venue-icon" :src="'/img/avatars/' + venue.category_icon_name">
-
 							<div class="venue-body">
 								<h5 class="mb-1 font-weight-bold">
 									<a class="text-inherit" :href="'/venues/' + venue.id">@{{ venue.name }}</a>
@@ -55,15 +54,10 @@
 									@{{ venue.short_address }}
 									<template v-if="venue.distance"> - @{{ venue.distance | formatDistance }}</template>
 								</p>
-								<ul class="list-inline mb-0">
+								<ul class="list-inline mb-0 d-none d-md-inline-block">
 									<li class="list-inline-item mr-3">
 										<a class="font-weight-bold" href="javascript:void(0)" @click="select(venue)">Mostra sulla mappa</a>
 									</li>
-									{{-- <li class="list-inline-item">
-										<a class="text-accent font-weight-bold" href="javascript:void(0)" @click="toggleFavorite(venue)">
-											@include('site.icons.icon', ['name' => 'heart-outline', 'class' => 'mr-2'])Aggiungi ai preferiti
-										</a>
-									</li> --}}
 								</ul>
 								<hr class="mb-0">
 							</div>
@@ -73,33 +67,29 @@
 			</div>
 			<div class="map-container">
 				<pg-map class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
-					<pg-map-marker v-for="venue in venues" :key="venue.id" :position="{ lat: venue.geo_latitude, lng: venue.geo_longitude }" :label="venue.id == highlightedVenueId ? '*' : null" @click="select(venue)">
-						<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId">
-							<div class="venue-infowindow">
-								<img class="venue-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
-
-								<h5 class="mt-2 mb-1 font-weight-bold">
-									<a class="text-inherit" :href="'/venues/' + venue.id">@{{ venue.name }}</a>
-								</h5>
-								<p v-if="venue.categories.length" class="my-0 small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
-
-								<p class="my-2">@{{ venue.short_address }}</p>
-
-								<a class="btn btn-sm btn-outline-primary" :href="'/venues/' + venue.id">Dettagli</a>
+					<pg-map-marker v-for="venue in venues" :key="venue.id" :position="mapMarkerPosition(venue)" :icon="mapMarkerIcon(venue)" @click="select(venue)">
+						<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">
+							<div class="map-infowindow">
+								<img class="map-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
+								<div>
+									<h5 class="mb-0 font-weight-bold">
+										<a :href="'/venues/' + venue.id">@{{ venue.name }}</a>
+									</h5>
+									<p v-if="venue.categories.length" class="my-0 small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
+									<p class="mb-0">@{{ venue.short_address }}</p>
+								</div>
 							</div>
 						</pg-map-info-window>
 					</pg-map-marker>
 				</pg-map>
-				<div class="map-controls">
-					<button v-show="mapNeedsRefresh" class="btn btn-primary map-refresh-button" @click="load" data-toggle="tooltip" title="Cerca in questa zona" aria-label="Cerca in questa zona">
-						<pg-icon icon="refresh"></pg-icon>
-					</button>
-					<label class="custom-control custom-checkbox map-follow-checkbox">
-						<input type="checkbox" class="custom-control-input" v-model="followMap">
-						<span class="custom-control-indicator"></span>
-						<span class="custom-control-description text-muted">Aggiorna automaticamente</span>
-					</label>
-				</div>
+				<button v-show="mapNeedsRefresh" class="btn map-btn map-refresh-btn" @click="load" title="Cerca in questa zona" aria-label="Cerca in questa zona" data-toggle="tooltip" data-placement="right">
+					<pg-icon icon="refresh"></pg-icon>
+				</button>
+				{{--
+				<button class="btn btn-sm map-btn map-location-btn" @click="load" title="Usa la tua posizione" aria-label="Usa la tua posizione" data-toggle="tooltip" data-placement="right">
+					<pg-icon icon="location-outline"></pg-icon>
+				</button>
+				--}}
 			</div>
 		</div>
 	</div>

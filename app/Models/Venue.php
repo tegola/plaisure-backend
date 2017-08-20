@@ -201,6 +201,7 @@ class Venue extends Model
 	 * @return string
 	 */
 	// FIXME: Move to a Helper / Refactor
+	// FIXME: Use the short name
 	public function getCategoryIconNameAttribute()
 	{
 		$file_name = '';

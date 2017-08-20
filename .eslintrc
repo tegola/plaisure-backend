@@ -12,23 +12,14 @@
 		"sourceType": "module"
 	},
 	"rules": {
-		"indent": [
-			"error",
-			"tab"
-		],
-		"linebreak-style": [
-			"error",
-			"unix"
-		],
+		"indent": ["error", "tab", {
+			"SwitchCase": 1
+		}],
+		"linebreak-style": ["error", "unix"],
 		"no-console": "off",
-		"quotes": [
-			"error",
-			"single",
-			{ "avoidEscape": true }
-		],
-        "semi": [
-            "error",
-            "always"
-        ]
+		"quotes": ["error", "single", {
+			"avoidEscape": true
+			}],
+        "semi": ["error", "always"]
 	}
 }

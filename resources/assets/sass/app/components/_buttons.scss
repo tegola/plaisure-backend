@@ -9,7 +9,6 @@
 	.icon {
 		width: $icon-size-base;
 		height: $icon-size-base;
-		vertical-align: -0.25rem;
 	}
 }
 .btn:not(.btn-sm),
@@ -17,10 +16,20 @@
 	padding-left: $input-btn-padding-x-lg;
 	padding-right: $input-btn-padding-x-lg;
 }
+.btn-sm {
+	.icon {
+		width: $icon-size-sm;
+		height: $icon-size-sm;
+	}
+}
 .btn-lg {
 	letter-spacing: 0.08em;
 	// font-size: $font-size-base;
 	// line-height: $line-height-base;
+
+	.icon {
+		vertical-align: -0.25rem;
+	}
 }
 
 // Normal buttons
