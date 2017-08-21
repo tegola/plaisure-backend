@@ -84,11 +84,10 @@
 		right: 0;
 		color: $gray-600;
 
-		&:hover,
-		&:focus {
+		&:not([disabled]):hover,
+		&:not([disabled]):focus {
 			color: theme-color(accent);
 		}
-
 		.no-geolocation & {
 			display: none;
 		}

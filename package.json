@@ -22,6 +22,7 @@
     "marker-clusterer-plus": "^2.1.4",
     "popper.js": "^1.11.0",
     "vue": "^2.4.2",
+    "vue-match-media": "^1.0.2",
     "vue2-google-maps": "^0.7.10"
   }
 }

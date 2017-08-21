@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import $ from 'jquery';
+import _ from 'lodash';
 import formatDistance from '../../utilities/format-distance';
 import singularOrPlural from '../../utilities/singular-or-plural';
 import { Map, Marker, InfoWindow } from 'vue2-google-maps';
@@ -69,6 +69,15 @@ export default {
 				categories: this.categories
 			});
 			this.load();
+		},
+
+		// Show reload tooltip when map changes
+		mapNeedsRefresh(newValue) {
+			if (newValue === true && this.$mq.comfortable) {
+				this.$nextTick(() => {
+					$(this.$refs.refreshBtn).tooltip('show');	
+				});
+			}
 		}
 	},
 
@@ -93,7 +102,13 @@ export default {
 		onMapBoundsChange: _.debounce(function(bounds) { // Fat arrow functions do not work with debounce
 			// Store bounds
 			this.storeBounds(bounds);
-			this.mapNeedsRefresh = true;
+
+			// Load venues if no ones are present, otherwise mark for map refresh
+			if (!this.venues.length) {
+				this.load();
+			} else {
+				this.mapNeedsRefresh = true;
+			}
 		}, 200),
 
 		storeBounds(bounds) {
@@ -143,10 +158,16 @@ export default {
 		},
 
 		highlight(venue) {
+			// Disabled on small screens
+			if (this.$mq.constrained) return;
+
 			this.highlightedVenueId = venue ? venue.id : null;
 		},
 
 		select(venue) {
+			// Disabled on small screens
+			if (this.$mq.constrained) return;
+
 			// Always hide if no venue is passed
 			if (!venue) {
 				this.selectedVenueId = null;
@@ -157,20 +178,31 @@ export default {
 			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		},
 
-		mapMarkerIcon(venue) {
-			// FIXME: Use the short name
-			let name;
+		mapMarkerIcon(venue, index) {
+			let variant;
+			let glyph;
 
-			//if (venue.id == this.selectedVenueId || venue.id == this.highlightedVenueId) {
-			switch (venue.categories[0].name) {
-				case 'Agenzia scommesse': name = 'token'; break;
-				case 'Ricevitoria': name = 'receipt'; break;
-				case 'Sala Bingo': name = 'bingo'; break;
-				case 'Sala VLT': name = 'diamond'; break;
+			// Determine variant
+			if (venue.id == this.selectedVenueId || venue.id == this.highlightedVenueId) {
+				variant = 'inverse';
+			} else {
+				variant = 'normal';
 			}
-			//}
 
-			return `/img/map/pin-${name}.svg`;
+			// Determine glyph
+			if (index < 25) {
+				switch (venue.categories[0].name) {
+					// FIXME: Use the short name
+					case 'Agenzia scommesse': glyph = 'token'; break;
+					case 'Ricevitoria': glyph = 'receipt'; break;
+					case 'Sala Bingo': glyph = 'bingo'; break;
+					case 'Sala VLT': glyph = 'slot'; break;
+				}
+			} else {
+				glyph = 'collapsed';
+			}
+
+			return `/img/map/pin-${variant}-${glyph}.svg`;
 		},
 
 		// Marker utils

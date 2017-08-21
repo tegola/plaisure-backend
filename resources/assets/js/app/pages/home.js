@@ -158,14 +158,12 @@ export default {
 			if (item.type == 'venue') {
 				location.href = item.url;
 			} else if (item.type == 'category') {
-				console.log('ho una categoria', item.name);
 				this.categories = [item.id];
 				this.venueQuery = item.name;
 			}
 		},
 
 		selectLocationSuggestion(suggestion) {
-			console.log(suggestion);
 			const viewport = suggestion.geometry.viewport;
 
 			this.center = this._extractCoords(viewport.getCenter());
@@ -201,10 +199,8 @@ export default {
 			}
 		});
 
-		// Reset location data when the input is empty
+		// Reset location data when editing the location input
 		$autocompleteInput.on('keyup', (e) => {
-			if (e.target.value) return;
-
 			this.isLocationFound = false;
 			this.center = { lat: null, lng: null };
 			this.ne = { lat: null, lng: null };

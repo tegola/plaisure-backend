@@ -13,61 +13,71 @@
 		])
 
 		<div class="wrapper">
-			<div class="venue-list py-2">
-				<div class="container-fluid">
-					@foreach($categories as $category)
-						<label class="filter-tag">
-							<input type="checkbox" class="filter-tag-input" name="categories[]" value="{{ $category->id }}" v-model="categories">
-							<span class="filter-tag-token">{{ $category->name }}</span>
-						</label>
-					@endforeach
-					<span v-if="venues.length > 0" class="ml-2 text-muted" v-cloak>
+			<div class="venue-list px-0 col col-md-6 col-lg-5 col-xl-4">
+				{{-- Mobile title --}}
+				<div class="container-fluid d-sm-none my-3">
+					<h3>
 						@{{ venues.length }}<template v-if="hasMorePages">+</template>
 						@{{ venues.length | singularOrPlural('risultato', 'risultati') }}
-					</span>
+						vicino a @{{ searchParams.near }}
+					</h3>
 				</div>
 
-				<div v-if="hasMorePages" class="alert alert-info border-0 rounded-0">
-					Il numero di risultati è stato limitato automaticamente. Fai zoom sulla zona di tuo interesse per visualizzare più dettagli.
-				</div>
-
-				<div class="container-fluid">
-					<div v-if="!venues.length" class="text-center" v-cloak>
-						<h4>Nessun esercizio trovato</h4>
-						<p class="text-muted">
-							Prova a cercare in un'altra zona
-							<template v-if="categories.length">
-								<br>
-								oppure <a href="javascript:void(0)" @click="resetCategories">mostra tutti i tipi di esercizi</a>
-							</template>
-						</p>
+				{{-- Desktop filters --}}
+				<div class="list-group-item venue-list-filters">
+					<div>
+						@foreach($categories as $category)
+							<label class="filter-tag">
+								<input type="checkbox" class="filter-tag-input" name="categories[]" value="{{ $category->id }}" v-model="categories">
+								<span class="filter-tag-token">{{ $category->name }}</span>
+							</label>
+						@endforeach
 					</div>
-					<template v-else>
-						<div v-for="venue in venues" class="venue" @mouseover="highlight(venue)" @mouseout="highlight()">
-							<img class="venue-icon" :src="'/img/avatars/' + venue.category_icon_name">
-							<div class="venue-body">
-								<h5 class="mb-1 font-weight-bold">
-									<a class="text-inherit" :href="'/venues/' + venue.id">@{{ venue.name }}</a>
-								</h5>
+					<div v-if="venues.length > 0" class="ml-2 text-muted" v-cloak>
+						@{{ venues.length }}<template v-if="hasMorePages">+</template>
+						@{{ venues.length | singularOrPlural('risultato', 'risultati') }}
+					</div>
+				</div>
+
+				{{-- Limited results --}}
+				<p v-if="hasMorePages" class="alert alert-info border-0 rounded-0">
+					Il numero di risultati è stato limitato automaticamente. Ingrandisci la zona di tuo interesse per visualizzare più dettagli.
+				</p>
+
+				{{-- Venue list --}}
+				<template v-if="venues.length">
+					<div v-for="venue in venues" class="list-group-item venue-list-item" :class="{ 'active': selectedVenueId == venue.id }" @mouseover="highlight(venue)" @mouseout="highlight()" @click="select(venue)">
+						<div class="d-flex w-100 align-items-start">
+							<img class="venue-list-item-icon" :src="'/img/avatars/' + venue.category_icon_name">
+							<div class="w-100">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1 font-weight-bold">
+										<a class="text-primary" :href="'/venues/' + venue.id">@{{ venue.name }}</a>
+									</h5>
+									<div class="text-muted ml-3" v-if="venue.distance">@{{ venue.distance | formatDistance }}</div>
+								</div>
 								<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">@{{ venue.categories[0].name }}</p>
-								<p>
-									@{{ venue.short_address }}
-									<template v-if="venue.distance"> - @{{ venue.distance | formatDistance }}</template>
-								</p>
-								<ul class="list-inline mb-0 d-none d-md-inline-block">
-									<li class="list-inline-item mr-3">
-										<a class="font-weight-bold" href="javascript:void(0)" @click="select(venue)">Mostra sulla mappa</a>
-									</li>
-								</ul>
-								<hr class="mb-0">
+								<p class="mb-0">@{{ venue.short_address }}</p>
 							</div>
 						</div>
-					</template>
+					</div>
+				</template>
+
+				{{-- Empty list --}}
+				<div v-else class="list-group-item venue-list-empty-item" v-cloak>
+					<h4>Nessun esercizio trovato</h4>
+					<p class="text-muted">
+						Prova a cercare in un'altra zona
+						<template v-if="categories.length">
+							<br>
+							oppure <a href="javascript:void(0)" @click="resetCategories">mostra tutti i tipi di esercizi</a>
+						</template>
+					</p>
 				</div>
 			</div>
 			<div class="map-container">
 				<pg-map class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
-					<pg-map-marker v-for="venue in venues" :key="venue.id" :position="mapMarkerPosition(venue)" :icon="mapMarkerIcon(venue)" @click="select(venue)">
+					<pg-map-marker v-for="(venue, index) in venues" :key="venue.id" :position="mapMarkerPosition(venue)" :icon="mapMarkerIcon(venue, index)" @click="select(venue)">
 						<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">
 							<div class="map-infowindow">
 								<img class="map-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
@@ -75,14 +85,22 @@
 									<h5 class="mb-0 font-weight-bold">
 										<a :href="'/venues/' + venue.id">@{{ venue.name }}</a>
 									</h5>
-									<p v-if="venue.categories.length" class="my-0 small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
-									<p class="mb-0">@{{ venue.short_address }}</p>
+									<p v-if="venue.categories.length" class="mt-1 mb-0 small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
+									<p class="mt-1 mb-0">@{{ venue.short_address }}</p>
 								</div>
 							</div>
 						</pg-map-info-window>
 					</pg-map-marker>
 				</pg-map>
-				<button v-show="mapNeedsRefresh" class="btn map-btn map-refresh-btn" @click="load" title="Cerca in questa zona" aria-label="Cerca in questa zona" data-toggle="tooltip" data-placement="right">
+				<button
+					ref="refreshBtn"
+					v-show="mapNeedsRefresh"
+					class="btn map-btn map-refresh-btn"
+					title="Cerca in questa zona"
+					aria-label="Cerca in questa zona"
+					data-toggle="tooltip"
+					data-placement="right"
+					@click="load">
 					<pg-icon icon="refresh"></pg-icon>
 				</button>
 				{{--

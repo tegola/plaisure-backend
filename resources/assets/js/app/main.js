@@ -14,6 +14,7 @@ import 'bootstrap/js/src/dropdown';
 // import 'bootstrap/js/src/tab';
 import 'bootstrap/js/src/tooltip';
 import Vue from 'vue';
+import VueMatchMedia from 'vue-match-media/src';
 import { load as loadGMaps, Autocomplete } from 'vue2-google-maps';
 import PgIcon from './components/icon';
 import PgHomePage from './pages/home';
@@ -28,6 +29,9 @@ loadGMaps({
 	libraries: 'places'
 });
 
+// Register Vue plugins
+Vue.use(VueMatchMedia);
+
 // Register global components
 Vue.component('pg-map-autocomplete', Autocomplete);
 Vue.component('pg-icon', PgIcon);
@@ -40,6 +44,18 @@ new Vue({
 		PgHomePage,
 		PgExplorePage,
 		PgVenueDetailPage
+	},
+
+	mq: {
+		/*
+		xs: '(max-width: 575px)',
+		sm: '(min-width: 576px) and (max-width: 767px)',
+		md: '(min-width: 768px) and (max-width: 991px)',
+		lg: '(min-width: 992px) and (max-width: 1199px)',
+		xl: '(min-width: 1200px)',
+		*/
+		constrained: '(max-width: 767px)',
+		comfortable: '(min-width: 768px)'
 	},
 
 	mounted() {

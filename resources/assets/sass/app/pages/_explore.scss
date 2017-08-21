@@ -9,8 +9,8 @@
 		display: none;
 	}
 	.filter-tag-token {
-		padding: map-get($spacers, 1) map-get($spacers, 3);
-		border-radius: 2rem;
+		padding: map-get($spacers, 1) map-get($spacers, 2);
+		border-radius: $border-radius-sm;
 		border: $border-width solid transparent;
 		background-color: grayscale(100);
 		color: $text-muted;
@@ -29,26 +29,41 @@
 		}
 	}
 
-	// Venues
-	.venue {
-		display: flex;
-		align-items: flex-start;
+	// Venue list
+	.venue-list {
+		overflow: auto;
 	}
-	.venue-icon {
+	.venue-list-filters {
+		border-top: 0;
+		border-left: 0;
+		border-right: 0;
+		border-color: grayscale(200);
+		margin-bottom: 0;
+		display: none;
+	}
+	.venue-list-empty-item {
+		text-align: center;
+		border: 0;
+		flex: auto;
+		justify-content: center;
+	}
+	.venue-list-item {
+		border: 0;
+		padding-top: map-get($spacers, 4);
+		padding-bottom: map-get($spacers, 4);
+	}
+	.venue-list-item-icon {
 		width: 60px;
 		padding: 5px;
 		background-color: #76b1a2;
 		border-radius: 50%;
 		margin-right: $grid-gutter-width / 2;
 	}
-	.venue-body {
-		flex: 1;
-		padding-top: $spacer;
-	}
 
 	// Map
 	.map-container {
 		display: none;
+		position: relative;
 	}
 	.map-infowindow {
 		width: 250px;
@@ -97,26 +112,31 @@
 			flex: 1;
 			display: flex;
 		}
-		.venue-list {
-			overflow: auto;
-			@include make-col(6);
+		.venue-list-filters {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+		.venue-list-item {
+			&:hover {
+				background-color: lighten($palette-blue-100, 6%);
+			}
+			&.active,
+			&.active:hover {
+				background-color: $palette-blue-100;
+				color: inherit;
+			}
 		}
 		.map-container {
 			display: block;
-			flex: 1;
-			position: relative;
+			flex: auto;
 		}
 		.map {
 			height: 100%;
 		}
 		.footer {
 			display: none;
-		}
-	}
-
-	@include media-breakpoint-up(lg) {
-		.venue-list {
-			@include make-col(5);
 		}
 	}
 }
