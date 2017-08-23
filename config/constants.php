@@ -9,7 +9,7 @@ return [
 	'report_email' => 'report@prontogioco.it',
 
 	'venues_csv_path' => [
-		'dirname' => 'app',
+		'dirname' => 'csv',
 		'filename' => 'esercizi.csv'
 	],
 

@@ -1,18 +1,19 @@
 // Globals
-$ = window.jQuery = window.$ = require('jquery'); // Make it work with bootstrap
-window.Popper = require('popper.js'); // Make it work with bootstrap
+import $ from 'jquery';
+import Popper from 'popper.js/dist/umd/popper.js'; // Autoload wasn't working
+window.Popper = Popper; // Autoload wasn't working
 
-require('bootstrap/js/src/util');
-// require('bootstrap/js/src/alert');
-require('bootstrap/js/src/button');
-// require('bootstrap/js/src/carousel');
-require('bootstrap/js/src/collapse');
-require('bootstrap/js/src/dropdown');
-// require('bootstrap/js/src/modal');
-// require('bootstrap/js/src/popover');
-// require('bootstrap/js/src/scrollspy');
-require('bootstrap/js/src/tab');
-require('bootstrap/js/src/tooltip');
+import 'bootstrap/js/src/util';
+// import 'bootstrap/js/src/alert';
+// import 'bootstrap/js/src/button';
+// import 'bootstrap/js/src/carousel';
+import 'bootstrap/js/src/collapse';
+import 'bootstrap/js/src/dropdown';
+// import 'bootstrap/js/src/modal';
+// import 'bootstrap/js/src/popover';
+// import 'bootstrap/js/src/scrollspy';
+// import 'bootstrap/js/src/tab';
+import 'bootstrap/js/src/tooltip';
 
 import Vue from 'vue';
 import { load as loadGMaps } from 'vue2-google-maps';

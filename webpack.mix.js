@@ -14,4 +14,3 @@ mix.sass('resources/assets/sass/admin/main.scss', 'public/css/admin.css')
 mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
 	.js('resources/assets/js/app/main.js', 'public/js/app.js')
 	.version();
-

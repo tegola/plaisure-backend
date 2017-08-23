@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Venue\Import;
 
-use Storage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ImportedVenue;
@@ -39,20 +38,19 @@ class FormController extends Controller
 		]);
 
 		// Get the file
-		$file = $request->file('file');
+		$uploadedFile = $request->file('file');
 
 		// Stop if there was some file error
-		abort_if(!$file->isValid(), 500, "C'è stato un errore con il file caricato.");
+		abort_if(!$uploadedFile->isValid(), 500, "C'è stato un errore con il file caricato.");
 
 		// Store the file
-		$file->storeAs(config('constants.venues_csv_path.dirname'), config('constants.venues_csv_path.filename'));
+		$storedFile = $uploadedFile->storeAs(config('constants.venues_csv_path.dirname'), config('constants.venues_csv_path.filename'));
 
 		// Clear the Imported venues list
 		ImportedVenue::truncate();
 
 		// Load the CSV file
-		$csvPath = config('constants.venues_csv_path');
-		$csvFile = fopen(storage_path(implode('/', $csvPath)), 'r');
+		$csvFile = fopen(storage_path("app/{$storedFile}"), 'r');
 		$lineCounter = 0;
 
 		// Scroll through CSV lines and store all of them as Imported venues
