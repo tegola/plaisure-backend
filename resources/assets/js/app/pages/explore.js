@@ -190,14 +190,8 @@ export default {
 			}
 
 			// Determine glyph
-			if (index < 25) {
-				switch (venue.categories[0].name) {
-					// FIXME: Use the short name
-					case 'Agenzia scommesse': glyph = 'token'; break;
-					case 'Ricevitoria': glyph = 'receipt'; break;
-					case 'Sala Bingo': glyph = 'bingo'; break;
-					case 'Sala VLT': glyph = 'slot'; break;
-				}
+			if (index < 25 && venue.first_category_short_name) {
+				glyph = venue.first_category_short_name;
 			} else {
 				glyph = 'collapsed';
 			}

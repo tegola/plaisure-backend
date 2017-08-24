@@ -4,7 +4,6 @@
  * @param {number} count
  * @param {string} singular
  * @param {string} plural
- * 
  * @returns {string}
  */
 export default function singularOrPlural(count, singular, plural) {

@@ -6,7 +6,6 @@
  * - Less than 1km -> '150m'
  * 
  * @param {number} distance
- * 
  * @returns {string}
  */
 export default function formatDistance(distance) {

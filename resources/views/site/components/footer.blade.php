@@ -30,17 +30,17 @@
 			<div class="ml-lg-auto col-lg-5">
 				<p>Informati sulle probabilit&agrave; di vincita e sul regolamento di gioco sul sito <a href="https://www.agenziadoganemonopoli.gov.it">agenziadoganemonopoli.gov.it</a>.</p>
 				<ul class="list-inline footer-aams-logo-list">
-					<li class="list-inline-item">
+					<li class="list-inline-item mb-3">
 						<a href="https://www.agenziadoganemonopoli.gov.it/">
 							<img src="{{ asset('img/footer-aams-1.svg') }}">
 						</a>
 					</li>
-					<li class="list-inline-item">
+					<li class="list-inline-item mb-3">
 						<a href="https://www.agenziadoganemonopoli.gov.it/portale/monopoli">
 							<img src="{{ asset('img/footer-aams-2.svg') }}">
 						</a>
 					</li>
-					<li class="list-inline-item">
+					<li class="list-inline-item mb-3">
 						<span class="badge footer-age-badge" aria-hidden="true">18+</span>
 						<span class="footer-age-text">Il gioco &egrave; vietato<br>ai minori di 18 anni</span>
 					</li>

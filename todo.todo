@@ -1,6 +1,6 @@
 Generale:
  ☐ Ottimizzazione per mobile
- ☐ Salvare uno short name per le categorie e usarlo per decidere l'icona da visualizzare
+ ✔ Salvare uno short name per le categorie e usarlo per decidere l'icona da visualizzare @done (17-08-24 16:02)
  ✔ Fare in modo che le attività senza geolocalizzazione non vengano caricate per gli utenti normali @done (17-08-17 16:39)
  ✔ Aggiungere le autorizzazioni per vedere il link di accesso all'amministrazione @done (17-04-10 22:53)
  ✔ Far funzionare laravel mix anche nell'amministrazione @done (17-04-10 22:53)
@@ -15,9 +15,10 @@ Generale:
  ☐ Supporto per i jackpot
 
 Pagina dettaglio:
- ☐ Aggiungere segnaposti "aggiungi questi dati" per qualsiasi cosa
- ☐ Link a ricerca automatica di hotel e ristoranti nelle vicinanze con programma affiliazione TripAdvisor o Booking.com @started(17-08-09 17:20)
+ ☐ Ottimizzazione per mobile
+ ✔ Aggiungere segnaposti "aggiungi questi dati" per qualsiasi cosa @done (17-08-24 16:02)
  ✔ Link a "ottieni indicazioni" con l'indirizzo invece che con coordinate @done (17-08-09 19:48)
+ ☐ Link a ricerca automatica di hotel e ristoranti nelle vicinanze con programma affiliazione TripAdvisor o Booking.com @started(17-08-09 17:20)
 
 Admin:
  ✔ Modalità di manutenzione (esercizi nuovi e chiusi) @done (17-07-04 22:49)

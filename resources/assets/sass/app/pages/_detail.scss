@@ -1,8 +1,154 @@
 .page-detail {
-	.header-icon {
-		width: 90px;
-		padding: 10px;
-		background-color: $palette-green-500;
-		border-radius: 50%;
+	// Header
+	.header {
+		background-color: $palette-green-100;
+		padding-top: map-get($spacers, 3);
+		padding-bottom: map-get($spacers, 3);
+		text-align: center;
+
+		@include media-breakpoint-up(lg) {
+			text-align: left;
+		}
+	}
+	.header-gallery {
+		display: flex;
+		overflow: auto;
+		position: relative;
+		margin-bottom: $spacer * 2;
+
+		@include media-breakpoint-up(md) {
+			margin-top: $spacer * 2;
+			margin-bottom: $spacer * 4.5;
+		}
+	}
+	.header-gallery-bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		overflow: hidden;
+		z-index: 0;
+		display: flex;
+	}
+	.header-photo {
+		display: block;
+		width: 120px;
+		height: 120px;
+		background-color: $body-bg;
+		border: $border-width solid $palette-green-200;
+		border-radius: $border-radius;
+		flex-shrink: 0;
+
+		@include media-breakpoint-up(md) {
+			width: 200px;
+			height: 200px;
+		}
+	}
+	.header-photo + .header-photo {
+		margin-left: map-get($spacers, 2);
+	}
+	.header-photo-add {
+		position: relative; // To make it stay above the background boxes
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		color: grayscale(500);
+		transition: $transition-base, width 0, height 0;
+
+		&:hover,
+		&:focus {
+			color: theme-color(secondary);
+			border-color: theme-color(secondary);
+			box-shadow: inset 0 0 0 1px theme-color(secondary);
+		}
+	}
+	.header-photo-add-text {
+		@include media-breakpoint-up(md) {
+			font-size: $font-size-md;
+		}
+	}
+	.header-title {
+		font-weight: $font-weight-bold;
+		font-size: $h4-font-size;
+
+		@include media-breakpoint-up(md) {
+			font-size: $h3-font-size;
+		}
+	}
+	.header-subtitle {
+		color: $palette-dark-green-300; // FIXME: Prepare and use text-* classes
+		margin-bottom: 0;
+
+		@include media-breakpoint-up(md) {
+			font-size: $font-size-lg;
+		}
+	}
+	.header-subtitle2 {
+		color: $palette-dark-green-400; // FIXME: Prepare and use text-* classes
+	}
+
+	// Contact card
+	.contact-card {
+		border: 0;
+
+		@include media-breakpoint-up(lg) {
+			margin-top: -($spacer * 7.5);
+
+			&:after {
+				display: block;
+				position: absolute;
+				content: '';
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				border: $card-border-width solid $card-border-color;
+				border-radius: $card-border-radius;
+				pointer-events: none;
+			}
+		}
+	}
+	.contact-card-list-item {
+		margin-left: $grid-gutter-width * 1.5;
+		padding: 1rem 1.25rem 1rem 0;
+		position: relative;
+
+		&:first-child {
+			border-top: 0;
+		}
+	}
+	.contact-card-list-item-icon {
+		position: absolute;
+		left: -($grid-gutter-width);
+	}
+
+	// Jackpots
+	.jackpot {
+		display: flex;
+		align-items: flex-start;
+	}
+	.jackpot-name {
+		text-transform: uppercase;
+		font-size: $font-size-sm;
+		letter-spacing: 0.1em;
+	}
+	.jackpot-icon {
+		margin-right: map-get($spacers, 2);
+		margin-top: -4px;
+	}
+	.jackpot-value {
+		font-size: $font-size-xl;
+		line-height: 1.25;
+		font-weight: $font-weight-bold;
+		margin-top: map-get($spacers, 1);
+	}
+
+	// Services
+	.service-list-item {
+		margin-top: map-get($spacers, 2);
+		margin-bottom: map-get($spacers, 2);
 	}
 }

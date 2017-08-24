@@ -74,18 +74,38 @@ $enable-shadows:  true;
 $enable-gradients: true;
 
 
+// Spacing
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: ($spacer * .25),
+  2: ($spacer * .5),
+  3: $spacer,
+  4: ($spacer * 1.5),
+  5: ($spacer * 3)
+);
+
+
 // Typography
 //
 // Font, line-height, and color for body text, headings, and more.
 
 $font-family-sans-serif: "museo-sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 $font-size-root:         14px;
-$font-size-xs:           .7rem;
+$font-size-xs:           .7rem; // ~ 10px
+// $font-size-sm
+$font-size-md:           1.15rem; // ~16px
+// $font-size-lg
+$font-size-xl:           1.7rem; // ~24px
 
 $font-weight-bold:       500;
 
 $headings-font-weight:   300;
 $headings-color:         $palette-dark-green-500;
+
+$hr-border-color: rgba($black, .08);
+
+$list-inline-padding: $spacer;
 
 // Components
 $border-radius:    .2rem;
@@ -115,7 +135,11 @@ $icon-size-base: 1.425rem; // ~20px
 $icon-size-sm: 1.15rem; // ~15px
 
 // Navbar
-$navbar-slim-padding-y: .25rem; // FIXME: Replace with spacer
+$navbar-slim-padding-y: map-get($spacers, 1);
 
 // Cards
+$card-border-color: rgba($black, .08);
 $card-border-radius: $border-radius-lg;
+
+// List group
+$list-group-border-color: rgba($black, .08);

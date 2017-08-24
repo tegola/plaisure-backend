@@ -14,17 +14,17 @@ class CategoriesTableSeeder extends Seeder
 	public function run()
 	{
 		$categories = [
-			'Agenzia scommesse', // 1
-			'Ricevitoria',       // 2
-			'Sala Bingo',        // 3
-			'Sala VLT'           // 4
+			'betting_agency' => 'Agenzia scommesse', // 1
+			'betting_office' => 'Ricevitoria',       // 2
+			'bingo' => 'Sala Bingo',                 // 3
+			'vlt' => 'Sala VLT'                      // 4
 		];
 
-		foreach ($categories as $name) {
-			$category = new Category;
-
-			$category->name = $name;
-			$category->save();
+		foreach ($categories as $short_name => $name) {
+			Category::create([
+				'short_name' => $short_name,
+				'name' => $name
+			]);
 		}
 	}
 }

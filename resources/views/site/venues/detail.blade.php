@@ -15,186 +15,221 @@
 		@include('site.components.navbar')
 
 		{{-- Header --}}
-		<div class="container mt-4 mb-3">
-			<div class="row text-center text-md-left align-items-center">
-				<div class="col-md col-md-auto">
-					<img class="header-icon mb-2 md-md-0" src="{{ asset("img/avatars/{$venue->category_icon_name}") }}">
+		<div class="header">
+			<div class="container">
+				{{-- Gallery --}}
+				<div class="header-gallery">
+					<div class="header-gallery-bg">
+						<div class="header-photo"></div>
+						<div class="header-photo"></div>
+						<div class="header-photo"></div>
+						<div class="header-photo"></div>
+						<div class="header-photo"></div>
+						<div class="header-photo"></div>
+					</div>
+					<a href="{{ route('site.promote') }}" class="header-photo header-photo-add">
+						<pg-icon icon="plus"></pg-icon>
+						<span class="header-photo-add-text">Aggiungi foto</span>
+					</a>
 				</div>
-				<div class="col-md pl-md-0">
-					<h1 class="font-weight-bold">{{ $venue->name }}</h1>
-					<p class="text-muted mb-4 mb-md-0">
+
+				{{-- Title --}}
+				<h2 class="header-title">{{ $venue->name }}</h2>
+				<ul class="list-inline header-subtitle">
+					<li class="list-inline-item">
 						{{ $venue->categories->count() ? "{$venue_category_string} a" : '' }}
 						{{ $venue->address_city }}
-					</p>
-				</div>
-				<div class="col-md-3">
-					<div class="row">
-						<div class="col">
-							<a class="btn btn-outline-neutral btn-block mb-2 mb-lg-0" href="{{ $venue->googleMapsUrl() }}" target="_blank">Ottieni indicazioni</a>
-						</div>
-						{{-- <div class="col">
-							<a class="btn btn-primary btn-block mb-2 mb-md-0" href="#">Salva</a>
-						</div> --}}
-					</div>
-				</div>
+					</li>
+					{{-- <li class="list-inline-item header-subtitle2">
+						<strong>Probabilmente aperto</strong>
+					</li> --}}
+				</ul>
 			</div>
 		</div>
-		<hr>
 
-		{{-- Content --}}
+		{{-- Contact card for small screens --}}
+		@include('site.venues.contact-card', [
+			'venue' => $venue,
+			'class' => 'mt-3 d-lg-none'
+		])
+
 		<div class="container">
+			<hr class="d-lg-none">
+
 			<div class="row">
-				<div class="col-md-7">
-					{{-- General info --}}
-					<h4>Servizi</h4>
-					<div class="row">
-						<div class="col-md">
-							<ul class="list-unstyled">
-								<li>
-									Dimensioni:
-									<strong>{{ $venue->surface_size }} mq.</strong>
-								</li>
-								@if($venue->machine_count)
-									<li>
-										Numero di macchine:
-										<strong>{{ $venue->machine_count }}</strong>
-									</li>
-								@elseif($venue->estimated_machine_count)
-									<li>
-										Numero di macchine (stimato):
-										<strong>{{ $venue->estimated_machine_count }}</strong>
-									</li>
-								@endif
-								<li class="text-muted">
-									Numero di VLT:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Numero di AWP:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Piattaforme disponibili:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Posti auto:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Parcheggio privato:
-									Non disponibile
-								</li>
-							</ul>
+				<div class="col-lg-8">
+					
+					{{-- Jackpots --}}
+					<div class="row my-5 pt-2">
+						<div class="col-md-4">
+							<div class="jackpot mb-3 mb-md-0">
+								<img class="jackpot-icon" src="{{ asset('img/detail/jackpot-1.svg') }}">
+								<div>
+									<div class="jackpot-name">Jackpot 1</div>
+									<div class="jackpot-value">€ 0,00</div>
+									<div><a href="{{ route('site.promote') }}">modifica</a></div>
+								</div>
+							</div>
 						</div>
-						<div class="col-md">
-							<ul class="list-unstyled">
-								<li class="text-muted">
-									Bar:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Ristorante:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									POS:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Bancomat:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Pay Per View:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Wi-Fi:
-									Non disponibile
-								</li>
-							</ul>
+						<div class="col-md-4">
+							<div class="jackpot mb-3 mb-md-0">
+								<img class="jackpot-icon" src="{{ asset('img/detail/jackpot-2.svg') }}">
+								<div>
+									<div class="jackpot-name">Jackpot 2</div>
+									<div class="jackpot-value">€ 0,00</div>
+									<div><a href="{{ route('site.promote') }}">modifica</a></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="jackpot">
+								<img class="jackpot-icon" src="{{ asset('img/detail/jackpot-3.svg') }}">
+								<div>
+									<div class="jackpot-name">Jackpot 3</div>
+									<div class="jackpot-value">€ 0,00</div>
+									<div><a href="{{ route('site.promote') }}">modifica</a></div>
+								</div>
+							</div>
 						</div>
 					</div>
-
-					{{-- General info --}}
-					<h4>Contatti</h4>
-					<div class="row">
-						<div class="col-md">
-							<ul class="list-unstyled">
-								<li class="text-muted">
-									Telefono:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Email:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Facebook:
-									Non disponibile
-								</li>
-							</ul>
-						</div>
-						<div class="col-md">
-							<ul class="list-unstyled">
-								<li class="text-muted">
-									Sito web:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									Pagina Facebook:
-									Non disponibile
-								</li>
-								<li class="text-muted">
-									TripAdvisor:
-									Non disponibile
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					{{-- Map --}}
-					<div class="embed-responsive embed-responsive-21by9 mb-4">
-						<pg-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
-							<pg-map-marker :position="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }"></pg-map-marker>
-						</pg-map>
-					</div>
-
-					{{-- Claim --}}
-					<h4>È la tua attività?</h4>
-					<p>Se sei proprietaro o gestore di questa attività, puoi rivendicarla gratuitamente e tenerla aggiornata costantemente, aggiungere foto, jackpot e tanto altro. <a href="{{ route('site.promote') }}">Ulteriori informazioni&hellip;</a></p>
-					<p><a class="btn btn-sm btn-primary btn-block" href="mailto:{{ config('constants.email') }}?subject={{ rawurlencode("Rivendicazione attività: {$venue->name} (identificativo: {$venue->id})") }}">Rivendica attività</a></p>
 
 					<hr>
 
-					{{-- Error --}}
-					<h4>Hai trovato un errore?</h4>
-					<p class="mb-0">Se l'indirizzo è errato, l'attività non esiste più, o se ci sono foto offensive, puoi <a href="mailto:{{ config('constants.report_email') }}?subject={{ rawurlencode("Segnalazione errore: {$venue->name} (identificativo: {$venue->id})") }}">segnalare questa attività</a>.</p>
-				</div>
-			</div>
-		</div>
-
-		@if ($nearby_venues && $nearby_venues->count())
-			<div class="bg-faded pt-4 pb-0 my-5">
-				<div class="container">
-					<h4 class="mb-3">Attività nei dintorni</h4>
-					<div class="row">
-						@foreach ($nearby_venues as $nearby_venue)
-							<div class="col-md-4 card-group mb-4">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="font-weight-bold"><a href="{{ route('site.venues.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a></h5>
-										<p class="card-text">{{ $nearby_venue->categories()->first()->name }}, {{ $nearby_venue->address_city }}</p>	
-									</div>
-								</div>
+					{{-- Services --}}
+					<div class="my-5">
+						<h4>Servizi</h4>
+						<div class="row">
+							<div class="col-lg">
+								<ul class="list-unstyled mb-0 mb-lg-3">
+									<li class="service-list-item">
+										Dimensioni:
+										<strong>{{ $venue->surface_size }} mq.</strong>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									@if($venue->machine_count)
+										<li class="service-list-item">
+											Numero di macchine:
+											<strong>{{ $venue->machine_count }}</strong>
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										</li>
+									@elseif($venue->estimated_machine_count)
+										<li class="service-list-item">
+											Numero di macchine (stimato):
+											<strong>{{ $venue->estimated_machine_count }}</strong>
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										</li>
+									@endif
+									<li class="service-list-item">
+										Numero di VLT:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										Numero di AWP:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										Piattaforme disponibili:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										Posti auto:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										Parcheggio privato:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+								</ul>
 							</div>
-						@endforeach
+							<div class="col-lg">
+								<ul class="list-unstyled">
+									<li class="service-list-item">
+										Bar:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										Ristorante:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										POS:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										Bancomat:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										Pay Per View:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									<li class="service-list-item">
+										Wi-Fi:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					{{-- Promote --}}
+					<div class="card bg-light my-4 text-center">
+						<div class="card-body">
+							<h4 class="card-title">È la tua attività?</h4>
+							<p class="card-text">Se sei proprietaro o gestore di questa attività, puoi rivendicarla gratuitamente e tenerla aggiornata, aggiungere foto, jackpot e tanto altro. <a href="{{ route('site.promote') }}">Ulteriori informazioni&hellip;</a></p>
+							<p class="card-text"><a class="btn btn-primary" href="mailto:{{ config('constants.email') }}?subject={{ rawurlencode("Rivendicazione attività: {$venue->name} (identificativo: {$venue->id})") }}">Rivendica attività</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					
+					{{-- Contact card for big screens --}}
+					@include('site.venues.contact-card', [
+						'venue' => $venue,
+						'class' => 'd-none d-lg-block'
+					])
+
+					{{-- Nearby venues --}}
+					@if ($nearby_venues && $nearby_venues->count())
+						<div class="my-5">
+							<h5 class="mb-3">Attività nei dintorni</h5>
+							<ul class="list-unstyled">
+								@foreach ($nearby_venues as $nearby_venue)
+									@php
+										$img = $nearby_venue->first_category_short_name ?: 'collapsed';
+									@endphp
+									<li class="d-flex align-items-start">
+										<img class="mr-3" src="{{ asset("img/map/pin-normal-{$img}.svg")}}">
+										<p>
+											<strong><a href="{{ route('site.venues.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a></strong><br>
+											<span class="initialism text-muted">{{ $nearby_venue->categories()->first()->name }}</span><br>
+											{{ $nearby_venue->short_address }}
+										</p>
+									</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
+
+					{{-- Report --}}
+					<div class="my-4">
+						<h5>Hai trovato un errore?</h5>
+						<p>Se l'indirizzo o i dati sono errati, l'attività non esiste più, o se ci sono foto offensive, puoi <a href="mailto:{{ config('constants.report_email') }}?subject={{ rawurlencode("Segnalazione errore: {$venue->name} (identificativo: {$venue->id})") }}">segnalare questa attività</a>.</p>
 					</div>
 				</div>
 			</div>
-		@endif
+		</div>
 	</div>
 </pg-venue-detail-page>
 @endsection

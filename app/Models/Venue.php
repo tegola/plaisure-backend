@@ -89,7 +89,7 @@ class Venue extends Model
 	protected $appends = [
 		'short_address',
 		'long_address',
-		'category_icon_name'
+		'first_category_short_name'
 	];
 
 	/**
@@ -138,6 +138,20 @@ class Venue extends Model
 	}
 
 	/**
+	 * Build an address array, useful for dividing it in multiple lines.
+	 * 
+	 * @return array
+	 */
+	public function addressComponents()
+	{
+		return [
+			$this->address_street . ' ' . $this->address_number,
+			$this->address_city,
+			$this->address_postcode . ' ' . $this->address_province
+		];
+	}
+
+	/**
 	 * Get the estimated number of machines based on surface size.
 	 *
 	 * @return integer  The estimated number
@@ -179,51 +193,22 @@ class Venue extends Model
 	// FIXME: Move to a Helper
 	public function getFormattedDistanceAttribute()
 	{
-		if (!$this->distance) {
-			return;
-		}
-
-		if ($this->distance > 10) {
-			return round($this->distance) . ' km';
-		}
-		if ($this->distance > 1) {
-			return round($this->distance, 1) . ' km';
-		}
-		if ($this->distance < 1) {
-			return round($this->distance * 100) . ' m';
-		}
+		if (!$this->distance) return;
+		if ($this->distance > 10) return round($this->distance) . ' km';
+		if ($this->distance > 1) return round($this->distance, 1) . ' km';
+		if ($this->distance < 1) return round($this->distance * 100) . ' m';
 	}
-
 
 	/**
 	 * Get the file icon name for the first venue category.
 	 * 
 	 * @return string
 	 */
-	// FIXME: Move to a Helper / Refactor
-	// FIXME: Use the short name
-	public function getCategoryIconNameAttribute()
+	public function getFirstCategoryShortNameAttribute()
 	{
-		$file_name = '';
+		$categories = $this->categories();
 
-		if ($this->categories()->count()) {
-			switch ($this->categories()->first()->name) {
-				case 'Agenzia scommesse':
-					$file_name = 'token.svg';
-					break;
-				case 'Ricevitoria':
-					$file_name = 'receipt.svg';
-					break;
-				case 'Sala Bingo':
-					$file_name = 'bingo.svg';
-					break;
-				case 'Sala VLT':
-					$file_name = 'slot-machine.svg';
-					break;
-			}
-		}
-
-		return $file_name;
+		return $categories->count() ? $categories->first()->short_name : '';
 	}
 
 	/**

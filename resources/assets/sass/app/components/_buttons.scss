@@ -33,6 +33,9 @@
 }
 
 // Normal buttons
+.btn-secondary {
+	color: $white !important;
+}
 .btn-accent {
 	@include button-variant(theme-color(accent), theme-color(accent));
 }
