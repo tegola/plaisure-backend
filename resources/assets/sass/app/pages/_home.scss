@@ -22,14 +22,14 @@
 		}
 
 		.logo {
-			display: none;
+			width: 240px;
+			height: auto;
+			margin-top: $spacer;
+			margin-bottom: map-get($spacers, 3);
 
 			@include media-breakpoint-up(md) {
-				display: inline-block;
-				width: 320px;
-				height: 72px;
-				margin-top: $spacer;
-				margin-bottom: map-get($spacers, 5);
+				width: 280px;
+				margin-bottom: map-get($spacers, 4);
 			}
 		}
 
