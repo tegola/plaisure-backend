@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'name' => 'ProntoGioco',
+	'name' => 'ProntoGioco', // FIXME: Remove?
 	'email' => 'info@prontogioco.it',
 	'company' => 'PRG s.r.l.',
 	'partita_iva' => '02554710695',

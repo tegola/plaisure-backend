@@ -1,7 +1,6 @@
 <?php
 	if (!isset($text)) $text = true;
 	if (!isset($symbol)) $symbol = true;
-	if (!isset($style)) $style = 'default';
 
 	if ($text && $symbol) $view_box = '0 0 196 42';
 	elseif (!$text) $view_box = '0 0 29 42';

@@ -80,7 +80,7 @@
 					<pg-map-marker v-for="(venue, index) in venues" :key="venue.id" :position="mapMarkerPosition(venue)" :icon="mapMarkerIcon(venue, index)" @click="select(venue)">
 						<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">
 							<div class="map-infowindow">
-								<img class="map-infowindow-icon" :src="'/img/avatars/' + venue.category_icon_name">
+								<img class="map-infowindow-icon" :src="'/img/avatars/' + venue.first_category_short_name + '.svg'">
 								<div>
 									<h5 class="mb-0 font-weight-bold">
 										<a :href="'/venues/' + venue.id">@{{ venue.name }}</a>

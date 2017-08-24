@@ -47,17 +47,15 @@
 			</div>
 		</div>
 
-		{{-- Contact card for small screens --}}
-		@include('site.venues.contact-card', [
-			'venue' => $venue,
-			'class' => 'mt-3 d-lg-none'
-		])
-
 		<div class="container">
-			<hr class="d-lg-none">
 
 			<div class="row">
 				<div class="col-lg-8">
+					{{-- Contact card for small screens --}}
+					@include('site.venues.contact-card', [
+						'venue' => $venue,
+						'class' => 'd-lg-none'
+					])
 					
 					{{-- Jackpots --}}
 					<div class="row my-5 pt-2">
@@ -99,8 +97,8 @@
 					<div class="my-5">
 						<h4>Servizi</h4>
 						<div class="row">
-							<div class="col-lg">
-								<ul class="list-unstyled mb-0 mb-lg-3">
+							<div class="col-md">
+								<ul class="list-unstyled mb-0 mb-md-3">
 									<li class="service-list-item">
 										Dimensioni:
 										<strong>{{ $venue->surface_size }} mq.</strong>
@@ -146,7 +144,7 @@
 									</li>
 								</ul>
 							</div>
-							<div class="col-lg">
+							<div class="col-md">
 								<ul class="list-unstyled">
 									<li class="service-list-item">
 										Bar:

@@ -11,13 +11,11 @@
 	@endif
 		<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
 			@include('site.vectors.logo', [
-				'style' => 'dark',
 				'text' => false,
-				'class' => 'navbar-logo navbar-logo--only-symbol d-md-none'
+				'class' => 'navbar-logo navbar-logo--no-text'
 			])
 			@include('site.vectors.logo', [
-				'style' => 'dark',
-				'class' => 'navbar-logo d-none d-md-block'
+				'class' => 'navbar-logo'
 			])
 		</a>
 		@if ($show_search)

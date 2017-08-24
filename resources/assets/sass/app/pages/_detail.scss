@@ -2,11 +2,12 @@
 	// Header
 	.header {
 		background-color: $palette-green-100;
-		padding-top: map-get($spacers, 3);
-		padding-bottom: map-get($spacers, 3);
+		padding-top: $spacer;
+		padding-bottom: $spacer * 6; // Space for the contact card
 		text-align: center;
 
 		@include media-breakpoint-up(lg) {
+			padding-bottom: $spacer;
 			text-align: left;
 		}
 	}
@@ -93,22 +94,23 @@
 	// Contact card
 	.contact-card {
 		border: 0;
+		margin-top: -($spacer * 5);
+
+		&:after {
+			display: block;
+			position: absolute;
+			content: '';
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			border: $card-border-width solid $card-border-color;
+			border-radius: $card-border-radius;
+			pointer-events: none;
+		}
 
 		@include media-breakpoint-up(lg) {
 			margin-top: -($spacer * 7.5);
-
-			&:after {
-				display: block;
-				position: absolute;
-				content: '';
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				border: $card-border-width solid $card-border-color;
-				border-radius: $card-border-radius;
-				pointer-events: none;
-			}
 		}
 	}
 	.contact-card-list-item {

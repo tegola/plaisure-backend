@@ -1,4 +1,4 @@
-<div class="card contact-card {{ isset($class) ? $class : '' }}">
+<div class="card contact-card {{ isset($class) ? $class : null }}">
 	<div class="embed-responsive embed-responsive-16by9 card-img-top">
 		<pg-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
 			@php
@@ -30,7 +30,7 @@
 			<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
 			<pg-icon icon="phone" class="contact-card-list-item-icon text-muted"></pg-icon>
 			<p class="mb-0 text-muted">
-				Nessun contatto
+				Nessuna informazione di contatto
 			</p>
 		</div>
 		<div class="list-group-item contact-card-list-item">
