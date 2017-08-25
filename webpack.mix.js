@@ -1,4 +1,8 @@
-let mix = require('laravel-mix');
+const { mix } = require('laravel-mix');
+const BabiliPlugin = require('babili-webpack-plugin');
+const webpackConfig = {
+	plugins: []
+};
 
 mix.autoload({
 	jquery: ['jQuery'], // Bootstrap
@@ -14,3 +18,15 @@ mix.sass('resources/assets/sass/admin/main.scss', 'public/css/admin.css')
 mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
 	.js('resources/assets/js/app/main.js', 'public/js/app.js')
 	.version();
+
+
+if (mix.inProduction()) {
+	// Use Babili instead of UglifyJS
+	mix.options({
+		uglify: false
+	});
+	webpackConfig.plugins.push(new BabiliPlugin());
+	mix.webpackConfig(webpackConfig);
+} else {
+	mix.sourceMaps();
+}
