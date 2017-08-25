@@ -15,9 +15,9 @@ class CategoriesTableSeeder extends Seeder
 	{
 		$categories = [
 			'betting_agency' => 'Agenzia scommesse', // 1
-			'betting_office' => 'Ricevitoria',       // 2
-			'bingo' => 'Sala Bingo',                 // 3
-			'vlt' => 'Sala VLT'                      // 4
+			'bingo' => 'Sala Bingo',                 // 2
+			'vlt' => 'Sala VLT'                      // 3
+			// 'betting_office' => 'Ricevitoria',       // 4
 		];
 
 		foreach ($categories as $short_name => $name) {

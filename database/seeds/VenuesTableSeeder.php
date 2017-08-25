@@ -96,13 +96,13 @@ class VenuesTableSeeder extends Seeder
 						break;
 
 					case 'SALA BINGO':
-						$venue->categories()->attach(3);
+						$venue->categories()->attach(2);
 						break;
 
 					case 'NEGOZIO DI GIOCO':
 					case 'SALA GIOCHI':
 					case 'ESERCIZIO DEDICATO VLT/SLOT':
-						$venue->categories()->attach(4);
+						$venue->categories()->attach(3);
 						break;
 				}
 			}
