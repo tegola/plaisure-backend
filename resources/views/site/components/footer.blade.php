@@ -14,8 +14,8 @@
 			<div class="col-sm-4 col-lg-2">
 				<h3 class="footer-heading">Azienda</h3>
 				<ul class="list-unstyled">
-					<li><a href="{{ route('site.about.company') }}">Chi siamo</a></li>
-					<li><a href="{{ route('site.about.contact') }}">Contatti</a></li>
+					<li><a href="{{ route('site.about') }}">Chi siamo</a></li>
+					<li><a href="{{ route('site.about') }}#contact">Contatti</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-4 col-lg-2">

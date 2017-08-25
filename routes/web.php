@@ -28,8 +28,7 @@ Route::group(['namespace' => 'Site'], function(){
 	});
 
 	// About
-	Route::get('/about/company', 'AboutController@company')->name('site.about.company');
-	Route::get('/about/contact', 'AboutController@contact')->name('site.about.contact');
+	Route::get('/about', 'AboutController@index')->name('site.about');
 
 	// Promote
 	Route::get('/promote', 'PromoteController@index')->name('site.promote');

@@ -91,7 +91,7 @@
 // Light style
 .navbar-light {
 	background-color: $white;
-	border-bottom: $border-width solid rgba($black, 0.08);
+	box-shadow: 0 $border-width 0 rgba($black, 0.08);
 
 	.navbar-search {
 		border-left: $border-width solid rgba($black, 0.05);

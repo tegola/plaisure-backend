@@ -31,5 +31,9 @@
 		@include('scripts')
 		@yield('scripts')
 		<script src="{{ mix('js/app.js') }}"></script>
+
+		@if(env('GOOGLE_ANALYTICS_CODE'))
+			@include('site.components.google-analytics', ['code' => env('GOOGLE_ANALYTICS_CODE')])
+		@endif
 	</body>
 </html>

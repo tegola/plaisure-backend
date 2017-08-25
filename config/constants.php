@@ -2,11 +2,13 @@
 
 return [
 	'name' => 'ProntoGioco', // FIXME: Remove?
-	'email' => 'info@prontogioco.it',
 	'company' => 'PRG s.r.l.',
 	'partita_iva' => '02554710695',
-
-	'report_email' => 'report@prontogioco.it',
+	'email' => [
+		'generic' => 'info@prontogioco.it',
+		'venues' => 'venues@prontogioco.it',
+		'report' => 'report@prontogioco.it',
+	],
 
 	'venues_csv_path' => [
 		'dirname' => 'csv',

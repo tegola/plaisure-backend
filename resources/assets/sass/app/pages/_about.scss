@@ -1,0 +1,7 @@
+.page-about {
+	@include media-breakpoint-up(md) {
+		.section p {
+			font-size: $font-size-lg;
+		}
+	}
+}
