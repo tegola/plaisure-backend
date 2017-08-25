@@ -20,10 +20,6 @@ Pagina dettaglio:
  ✔ Link a "ottieni indicazioni" con l'indirizzo invece che con coordinate @done (17-08-09 19:48)
  ☐ Link a ricerca automatica di hotel e ristoranti nelle vicinanze con programma affiliazione TripAdvisor o Booking.com @started(17-08-09 17:20)
 
-Admin:
- ✔ Modalità di manutenzione (esercizi nuovi e chiusi) @done (17-07-04 22:49)
- ☐ Modalità di manutenzione per esercizi con poche informazioni
-
 Home:
  ✔ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google @done (3/15/2017, 10:55:45 PM)
 
@@ -42,18 +38,20 @@ Ricerca:
  ☐ Pulsante per condividere il link della ricerca
 
 Azienda:
- ☐ Tutto da fare
+ ☐ Abbellire
+ ☐ Aggiungere form di contatto
 
 Rivendica attività:
  ☐ Tutto da fare
  ☐ Mostrare le altre attività dopo aver inserito il codice aams del soggetto
 
-Contatti:
- ☐ Form di contatto
- ☐ Dati di contatto
-
 Gioca responsabilmente:
- ☐ Ricerca ASL (http://www.dati.salute.gov.it/imgs/C_17_dataset_2_download_itemDownload_0_upFile.csv)
+ ☐ Aggiustare graficamente
+ ☐ Aggiungere ricerca ASL (http://www.dati.salute.gov.it/imgs/C_17_dataset_2_download_itemDownload_0_upFile.csv)
+
+Admin:
+ ✔ Modalità di manutenzione (esercizi nuovi e chiusi) @done (17-07-04 22:49)
+ ☐ Modalità di manutenzione per esercizi con poche informazioni
 
 Futuro:
  ☐ Supporto per dare un indirizzo email agli utenti

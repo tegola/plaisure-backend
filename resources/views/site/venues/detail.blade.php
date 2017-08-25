@@ -93,51 +93,51 @@
 
 					<hr>
 
-					{{-- Services --}}
+					{{-- Details --}}
 					<div class="my-5">
-						<h4>Servizi</h4>
+						<h4>Dettagli</h4>
 						<div class="row">
 							<div class="col-md">
 								<ul class="list-unstyled mb-0 mb-md-3">
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Dimensioni:
 										<strong>{{ $venue->surface_size }} mq.</strong>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
 									@if($venue->machine_count)
-										<li class="service-list-item">
+										<li class="detail-list-item">
 											Numero di macchine:
 											<strong>{{ $venue->machine_count }}</strong>
 											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										</li>
 									@elseif($venue->estimated_machine_count)
-										<li class="service-list-item">
+										<li class="detail-list-item">
 											Numero di macchine (stimato):
 											<strong>{{ $venue->estimated_machine_count }}</strong>
 											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										</li>
 									@endif
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Numero di VLT:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Numero di AWP:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Piattaforme disponibili:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Posti auto:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Parcheggio privato:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
@@ -146,32 +146,32 @@
 							</div>
 							<div class="col-md">
 								<ul class="list-unstyled">
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Bar:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Ristorante:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										POS:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Bancomat:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Pay Per View:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
-									<li class="service-list-item">
+									<li class="detail-list-item">
 										Wi-Fi:
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>

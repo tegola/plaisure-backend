@@ -105,7 +105,7 @@
 						</div>
 						<div class="col-md-10 ml-md-auto mr-md-auto col-lg-2 ml-lg-0 mr-lg-auto">
 							<div class="form-group">
-								<label class="initialism hidden-md-down">&nbsp;</label>
+								<label class="initialism d-none d-lg-inline-block">&nbsp;</label>
 								<button type="submit" class="btn btn-lg btn-block btn-accent search-submit-btn" :disabled="isSubmitButtonDisabled">
 									<pg-icon icon="search"></pg-icon>
 									Cerca
