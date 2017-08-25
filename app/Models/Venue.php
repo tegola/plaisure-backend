@@ -107,7 +107,9 @@ class Venue extends Model
 		if (!$user || !$user->isAdmin()) {
 			static::addGlobalScope('noGeoData', function (Builder $builder) {
 				$builder->whereNotNull('geo_latitude')
-						->whereNotNull('geo_longitude');
+						->whereNotNull('geo_longitude')
+						->where('address_street', '!=', '')
+						->where('address_city', '!=', '');
 			});
 		}
 	}
