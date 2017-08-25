@@ -28,6 +28,15 @@ class SeoController extends Controller
 			foreach ($venues as $venue) {
 				$sitemap->add(route('site.venues.detail', ['venue' => $venue]), $venue->updated_at, 0.9, 'daily');
 			}
+
+			// About
+			$sitemap->add(route('site.about'), null, '0.9', 'monthly');
+
+			// Promote
+			$sitemap->add(route('site.promote'), null, '0.9', 'weekly');
+			
+			// Play responsibly
+			$sitemap->add(route('site.about'), null, '0.9', 'weekly');
 		}
 
 		// Generate XML
