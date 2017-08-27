@@ -77,12 +77,11 @@ export default {
 		locateButtonIcon() {
 			return this.isSearchingLocation ? 'circle-outline-notch' : this.isLocationFound ? 'location' : 'location-outline';
 		},
-		isLocateButtonDisabled() {
+		locateButtonDisabled() {
 			return this.isSearchingLocation || this.isLocationFound;
 		},
-		isSubmitButtonDisabled() {
-			// FIXME: Same as onSubmit down below?
-			return !this.center.lat || !this.center.lng;
+		canSubmit() {
+			return this.center && this.center.lat && this.center.lng;
 		}
 	},
 
@@ -163,21 +162,22 @@ export default {
 			}
 		},
 
-		selectLocationSuggestion(suggestion) {
+		onSuggestionSelect(suggestion) {
 			const viewport = suggestion.geometry.viewport;
 
 			this.center = this._extractCoords(viewport.getCenter());
 			this.ne = this._extractCoords(viewport.getNorthEast());
 			this.sw = this._extractCoords(viewport.getSouthWest());
 
-			// Get the input value as a shortcut for the formatted address
-			this.locationQuery = this.$refs.locationAutocomplete.value;
+			if (suggestion.vicinity && suggestion.name != suggestion.vicinity) {
+				this.locationQuery = `${suggestion.name}, ${suggestion.vicinity}`;
+			} else {
+				this.locationQuery = suggestion.name;
+			}
 		},
 
 		onSubmit(e) {
-			if (!this.locationQuery || !this.center) {
-				e.preventDefault();
-			}
+			if (!this.canSubmit) e.preventDefault();
 		},
 
 		_extractCoords(input) {
@@ -200,7 +200,7 @@ export default {
 		});
 
 		// Reset location data when editing the location input
-		$autocompleteInput.on('keyup', (e) => {
+		$autocompleteInput.on('keyup', () => {
 			this.isLocationFound = false;
 			this.center = { lat: null, lng: null };
 			this.ne = { lat: null, lng: null };
@@ -211,11 +211,11 @@ export default {
 		geocoder.geocodeByIp((error, location) => {
 			if (!location || !location.latitude || !location.longitude || !location.city) return;
 
+			this.locationQuery = location.city;
 			this.center = {
 				lat: location.latitude,
 				lng: location.longitude
 			};
-			this.locationQuery = location.city;
 		});
 	}
 };

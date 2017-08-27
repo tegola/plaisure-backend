@@ -93,11 +93,12 @@
 										name="near"
 										placeholder="Città"
 										autofocus
-										:value="locationQuery"
+										v-model="locationQuery"
+										:select-first-on-enter="true"
 										:options="locationAutocompleteOptions"
-										@place_changed="selectLocationSuggestion">
+										@place_changed="onSuggestionSelect">
 									</pg-map-autocomplete>
-									<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="isLocateButtonDisabled" tabindex="-1">
+									<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="locateButtonDisabled" tabindex="-1">
 										<pg-icon :icon="locateButtonIcon" :spinning="isSearchingLocation"></pg-icon>
 									</button>
 								</div>
@@ -106,7 +107,7 @@
 						<div class="col-md-10 ml-md-auto mr-md-auto col-lg-2 ml-lg-0 mr-lg-auto">
 							<div class="form-group">
 								<label class="initialism d-none d-lg-inline-block">&nbsp;</label>
-								<button type="submit" class="btn btn-lg btn-block btn-accent search-submit-btn" :disabled="isSubmitButtonDisabled">
+								<button type="submit" class="btn btn-lg btn-block btn-accent search-submit-btn" :disabled="!canSubmit">
 									<pg-icon icon="search"></pg-icon>
 									Cerca
 								</button>

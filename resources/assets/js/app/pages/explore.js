@@ -82,14 +82,17 @@ export default {
 	},
 
 	methods: {
-		onSuggestionSelect(item) {
-			if (item.geometry && item.geometry.viewport) {
-				this.storeBounds(item.geometry.viewport);
+		onSuggestionSelect(suggestion) {
+			if (suggestion.geometry && suggestion.geometry.viewport) {
+				this.storeBounds(suggestion.geometry.viewport);
 				this.fitBounds();
 			}
 
-			// Get the input value as a shortcut for the formatted address
-			this.searchParams.near = this.$refs.locationAutocomplete.value;
+			if (suggestion.vicinity && suggestion.name != suggestion.vicinity) {
+				this.searchParams.near = `${suggestion.name}, ${suggestion.vicinity}`;
+			} else {
+				this.searchParams.near = suggestion.name;
+			}
 
 			// Reload
 			this.load();

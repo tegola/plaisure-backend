@@ -20,12 +20,9 @@
 		</a>
 		@if ($show_search)
 			<form class="navbar-search" action="{{ route('site.venues.explore') }}">
-				<input type="hidden" name="c_lat" @if($vue_support) :value="searchParams.c_lat" @endif>
-				<input type="hidden" name="c_lng" @if($vue_support) :value="searchParams.c_lng" @endif>
-				<input type="hidden" name="ne_lat" @if($vue_support) :value="searchParams.ne_lat" @endif>
-				<input type="hidden" name="ne_lng" @if($vue_support) :value="searchParams.ne_lng" @endif>
-				<input type="hidden" name="sw_lat" @if($vue_support) :value="searchParams.sw_lat" @endif>
-				<input type="hidden" name="sw_lng" @if($vue_support) :value="searchParams.sw_lng" @endif>
+				@foreach(['c_lat', 'c_lng', 'ne_lat', 'ne_lng', 'sw_lat', 'sw_lng'] as $param)
+					<input type="hidden" name="{{ $param }}" @if($vue_support) :value="searchParams.{{ $param }}" @endif>
+				@endforeach
 
 				<div class="input-group navbar-search-input-group">
 					<span class="input-group-addon navbar-search-input-group-addon">
@@ -36,6 +33,7 @@
 						ref="locationAutocomplete"
 						name="near"
 						placeholder="Cerca vicino a..."
+						:select-first-on-enter="true"
 						@if($vue_support) :value="searchParams.near" @endif
 						:options="{ types: ['geocode'] }"
 						@if($vue_support) @place_changed="onSuggestionSelect" @endif>
