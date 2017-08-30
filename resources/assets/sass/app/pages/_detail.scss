@@ -5,22 +5,12 @@
 		padding-top: $spacer;
 		padding-bottom: $spacer * 6; // Space for the contact card
 		text-align: center;
-
-		@include media-breakpoint-up(lg) {
-			padding-bottom: $spacer;
-			text-align: left;
-		}
 	}
 	.header-gallery {
 		display: flex;
 		overflow: auto;
 		position: relative;
 		margin-bottom: $spacer * 2;
-
-		@include media-breakpoint-up(md) {
-			margin-top: $spacer * 2;
-			margin-bottom: $spacer * 4.5;
-		}
 	}
 	.header-gallery-bg {
 		position: absolute;
@@ -40,11 +30,6 @@
 		border: $border-width solid $palette-green-200;
 		border-radius: $border-radius;
 		flex-shrink: 0;
-
-		@include media-breakpoint-up(md) {
-			width: 200px;
-			height: 200px;
-		}
 	}
 	.header-photo + .header-photo {
 		margin-left: map-get($spacers, 2);
@@ -66,26 +51,13 @@
 			box-shadow: inset 0 0 0 1px theme-color(secondary);
 		}
 	}
-	.header-photo-add-text {
-		@include media-breakpoint-up(md) {
-			font-size: $font-size-md;
-		}
-	}
 	.header-title {
 		font-weight: $font-weight-bold;
 		font-size: $h4-font-size;
-
-		@include media-breakpoint-up(md) {
-			font-size: $h3-font-size;
-		}
 	}
 	.header-subtitle {
 		color: $palette-dark-green-300; // FIXME: Prepare and use text-* classes
 		margin-bottom: 0;
-
-		@include media-breakpoint-up(md) {
-			font-size: $font-size-lg;
-		}
 	}
 	.header-subtitle2 {
 		color: $palette-dark-green-400; // FIXME: Prepare and use text-* classes
@@ -95,6 +67,11 @@
 	.contact-card {
 		border: 0;
 		margin-top: -($spacer * 5);
+	}
+	.contact-card-map {
+		.vue-map {
+			border-radius: $card-border-radius;
+		}
 
 		&:after {
 			display: block;
@@ -108,14 +85,10 @@
 			border-radius: $card-border-radius;
 			pointer-events: none;
 		}
-
-		@include media-breakpoint-up(lg) {
-			margin-top: -($spacer * 7.5);
-		}
 	}
 	.contact-card-list-item {
-		margin-left: $grid-gutter-width * 1.5;
-		padding: 1rem 1.25rem 1rem 0;
+		margin-left: $grid-gutter-width;
+		padding: 1rem 0;
 		position: relative;
 
 		&:first-child {
@@ -151,6 +124,55 @@
 	// Details
 	.detail-list-item {
 		margin-top: map-get($spacers, 2);
-		margin-bottom: map-get($spacers, 2);
+	}
+
+	@include media-breakpoint-up(md) {
+		.header-gallery {
+			margin-top: $spacer * 2;
+			margin-bottom: $spacer * 4.5;
+		}
+		.header-photo {
+			width: 200px;
+			height: 200px;
+		}
+		.header-photo-add-text {
+			font-size: $font-size-md;
+		}
+		.header-title {
+			font-size: $h3-font-size;
+		}
+		.header-subtitle {
+			font-size: $font-size-lg;
+		}
+	}
+
+	@include media-breakpoint-up(lg) {
+		.header {
+			padding-bottom: $spacer;
+			text-align: left;
+		}
+		.contact-card {
+			margin-top: -($spacer * 7.5);
+
+			&:after {
+				display: block;
+				position: absolute;
+				content: '';
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				border: $card-border-width solid $card-border-color;
+				border-radius: $card-border-radius;
+				pointer-events: none;
+			}
+		}
+		.contact-card-map:after {
+			display: none;
+		}
+		.contact-card-list-item {
+			margin-left: $grid-gutter-width * 1.5;
+			padding-right: 1.25rem;
+		}
 	}
 }

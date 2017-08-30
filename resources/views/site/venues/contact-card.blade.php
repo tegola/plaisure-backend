@@ -1,5 +1,5 @@
 <div class="card contact-card {{ isset($class) ? $class : null }}">
-	<div class="embed-responsive embed-responsive-16by9 card-img-top">
+	<div class="embed-responsive embed-responsive-16by9 contact-card-map">
 		<pg-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
 			@php
 				$img = $venue->first_category_short_name ?: 'collapsed';
