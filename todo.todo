@@ -24,7 +24,10 @@ Home:
  ✔ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google @done (3/15/2017, 10:55:45 PM)
 
 Ricerca:
- ☐ La ricerca si rompe su mobile
+ ☐ Aggiungere indicatore "sto cercando"
+ ☐ Mobile: La mappa rallenta la ricerca: non farla disegnare
+ ☐ Mobile: la ricerca deve partire da sola quando si sceglie la città da dropdown
+ ☐ Mobile: non essendoci la mappa non c'è zoom, quindi il messaggio "ingrandisci la zona desiderata" non ha senso
  ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
  ✔ Ricerca per via, oltre che per città @done (3/15/2017, 10:55:55 PM)
  ✔ Meno importanza alla mappa: la ricerca deve funzionare anche quando essa non è visibile @done (17-06-26 23:57)

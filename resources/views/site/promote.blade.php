@@ -48,15 +48,15 @@
 			<div class="section mb-5">
 				<h2 class="section-title text-center">Quanto costa?</h2>
 				<p>Assolutamente nulla! {{ config('app.name') }} offre diversi livelli di personalizzazione; <strong>aggiungere un'attività o rivendicarla per inserire le informazioni essenziali è assolutamente gratuito</strong>; non spenderai niente, a parte pochi minuti del tuo tempo.</p>
-				<p>Se invece desideri evidenziare la tua attività e farla trovare più facilmente di quelle dei tuoi concorrenti, scrivici per provare uno dei nostri piani premium a prezzi di lancio molto vantaggiosi.</p>
+				<p>Se invece desideri evidenziare la tua attività e farla trovare più facilmente di quelle dei tuoi concorrenti, <a href="mailto:{{ config('constants.email.venues') }}"><strong>scrivici</strong></a> per provare uno dei nostri piani premium a prezzi di lancio molto vantaggiosi.</p>
 			</div>
 
 			<div class="section my-5">
 				<h2 class="section-title text-center">Che aspetti? Inizia subito!</h2>
 				<p>Se sei ancora indeciso, non dovresti esserlo. Aggiungere o rivendicare la tua attività porterà soltanto benefici. Il nostro staff si occuperà di tutto il necessario per aggiornare i dati, e in futuro potrai anche modificarli in autonomia!</p>
-				<p>Se hai già trovato la tua attività su {{ config('app.name') }}, fai click su “<strong>Rivendica attività</strong>” nella pagina con i dettagli per contattarci. Altrimenti scrivi all'indirizzo <a href="{{ $contactHref }}"><strong>{{ config('constants.email.venues') }}</strong></a> ricordandoti di specificare il nome dell'attività e l'indirizzo. <strong>In entrambi i casi sarai ricontattato prima possibile dal nostro staff.</strong></p>
+				<p>Se hai già trovato la tua attività su {{ config('app.name') }}, fai click su “<strong>Rivendica attività</strong>” nella pagina con i dettagli per contattarci. Altrimenti scrivi all'indirizzo <a href="mailto:{{ config('constants.email.venues') }}"><strong>{{ config('constants.email.venues') }}</strong></a> ricordandoti di specificare il nome dell'attività e l'indirizzo. <strong>In entrambi i casi sarai ricontattato prima possibile dal nostro staff.</strong></p>
 				<p class="text-center my-5">
-					<a href="{{ $contactHref }}" class="btn btn-lg btn-primary">Contattaci</a>
+					<a href="mailto:{{ config('constants.email.venues') }}" class="btn btn-lg btn-primary">Contattaci</a>
 				</p>
 			</div>
 		</div>
