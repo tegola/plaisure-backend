@@ -7,7 +7,7 @@
 <pg-home-page inline-template>
 	<div>
 		<div class="hero">
-			<pg-map class="map" :center="center" :zoom="zoom" :options="mapOptions"></pg-map>
+			<pg-map class="map" v-bind="mapProps"></pg-map>
 			{{--
 			<nav class="navbar navbar-transparent navbar-expand-md">
 				<div class="container justify-content-center">
@@ -60,12 +60,8 @@
 
 				<form class="form-search" action="{{ route('site.venues.explore') }}" method="get" @submit="onSubmit">
 					<input type="hidden" name="categories[]" v-model="categories" v-if="categories.length">
-					<input type="hidden" name="c_lat" v-model="center.lat">
-					<input type="hidden" name="c_lng" v-model="center.lng">
-					<input type="hidden" name="ne_lat" v-model="ne.lat">
-					<input type="hidden" name="ne_lng" v-model="ne.lng">
-					<input type="hidden" name="sw_lat" v-model="sw.lat">
-					<input type="hidden" name="sw_lng" v-model="sw.lng">
+					<input type="hidden" name="c_lat" v-model="searchCenter.lat">
+					<input type="hidden" name="c_lng" v-model="searchCenter.lng">
 					<div class="row">
 						<div class="ml-md-auto col-md-5 col-lg-4">
 							<div class="form-group">
@@ -75,11 +71,11 @@
 									name="what"
 									placeholder="VLT, Bingo, Ricevitoria"
 									autofocus
-									v-model="venueQuery"
-									:suggestions="venueSuggestions"
+									v-model="searchQuery"
+									:suggestions="searchSuggestions"
 									item-component="pg-venue-suggestion-item"
-									@input="onWhatInput"
-									@select="selectVenueSuggestion">
+									@input="onSearchInput"
+									@select="onSearchSuggestionSelect">
 								</pg-input-typeahead>
 							</div>
 						</div>
@@ -89,16 +85,17 @@
 								<div style="position: relative">
 									<pg-map-autocomplete
 										class="form-control form-control-lg search-form-control search-near-control"
-										ref="locationAutocomplete"
+										ref="placeAutocomplete"
 										name="near"
 										placeholder="Città"
 										autofocus
-										v-model="locationQuery"
+										v-model="placeQuery"
+										:disabled="isSearchingLocation"
 										:select-first-on-enter="true"
-										:options="locationAutocompleteOptions"
-										@place_changed="onSuggestionSelect">
+										:options="placeAutocompleteOptions"
+										@place_changed="onPlaceSelect">
 									</pg-map-autocomplete>
-									<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="locateButtonDisabled" tabindex="-1">
+									<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="isSearchingLocation" tabindex="-1">
 										<pg-icon :icon="locateButtonIcon" :spinning="isSearchingLocation"></pg-icon>
 									</button>
 								</div>

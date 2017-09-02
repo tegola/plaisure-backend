@@ -54,7 +54,7 @@
 									<h5 class="mb-1 font-weight-bold">
 										<a class="text-primary" :href="'/venues/' + venue.id">@{{ venue.name }}</a>
 									</h5>
-									<div class="text-muted ml-3" v-if="venue.distance">@{{ venue.distance | formatDistance }}</div>
+									<div class="text-muted ml-3 text-nowrap" v-if="venue.distance">@{{ venue.distance | formatDistance }}</div>
 								</div>
 								<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">@{{ venue.categories[0].name }}</p>
 								<p class="mb-0">@{{ venue.short_address }}</p>
@@ -75,7 +75,7 @@
 					</p>
 				</div>
 			</div>
-			<div class="map-container">
+			<div class="map-container" v-if="$mq.comfortable">
 				<pg-map class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
 					<pg-map-marker v-for="(venue, index) in venues" :key="venue.id" :position="mapMarkerPosition(venue)" :icon="mapMarkerIcon(venue, index)" @click="select(venue)">
 						<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">

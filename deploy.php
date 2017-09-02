@@ -33,6 +33,7 @@ add('rsync', [
         '.env',
         '*.log*',
         '._*',
+        '*.todo',
         '.DS_Store',
         'deploy.php',
         'resources/assets',

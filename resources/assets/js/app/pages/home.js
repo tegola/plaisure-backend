@@ -7,6 +7,33 @@ import VenueSuggestionItem from '../components/venue-suggestion-item.vue';
 import { Map } from 'vue2-google-maps';
 
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
+const placeAutocompleteOptions = {
+	types: ['geocode'] // Limit search to cities, addresses, etc.
+};
+const mapOptions = {
+	disableDefaultUI: true,
+	scrollwheel: false,
+	draggable: false,
+	disableDoubleClickZoom: true,
+	styles: [
+		{ // Remove color
+			'stylers': [{ 'saturation': -100 }, { 'gamma': 0.5 }]
+		},
+		{ // Remove labels
+			'elementType': 'labels',
+			'stylers': [{ 'visibility': 'off' }]
+		},
+		{ // Less visible highways
+			'featureType': 'road.highway',
+			'stylers': [{ 'lightness': 50 }]
+		},
+		{ // Thinner roads
+			'featureType': 'road',
+			'elementType': 'geometry.stroke',
+			'stylers': [{ 'weight': 0.3 }]
+		}
+	]
+};
 
 export default {
 	name: 'pg-home-page',
@@ -23,65 +50,33 @@ export default {
 	data() {
 		return {
 			categories: [],
-			venueQuery: '',
-			venueSuggestions: [],
-			locationQuery: '',
-			locationAutocompleteOptions: {
-				types: ['geocode'] // Limit search to cities, addresses, etc.
-			},
+			searchQuery: '',
+			searchSuggestions: [],
+			placeQuery: '',
+			placeAutocompleteOptions: placeAutocompleteOptions,
 			isSearchingLocation: false,
 			isLocationFound: false,
-			center: {
-				lat: pg.config.defaultMapCenter.lat,
-				lng: pg.config.defaultMapCenter.lng
-			},
-			ne: {
+			mapOptions: mapOptions,
+			searchCenter: {
 				lat: null,
 				lng: null
-			},
-			sw: {
-				lat: null,
-				lng: null
-			},
-			mapOptions: {
-				disableDefaultUI: true,
-				scrollwheel: false,
-				draggable: false,
-				disableDoubleClickZoom: true,
-				styles: [
-					{ // Remove color
-						'stylers': [{ 'saturation': -100 }, { 'gamma': 0.5 }]
-					},
-					{ // Remove labels
-						'elementType': 'labels',
-						'stylers': [{ 'visibility': 'off' }]
-					},
-					{ // Less visible highways
-						'featureType': 'road.highway',
-						'stylers': [{ 'lightness': 50 }]
-					},
-					{ // Thinner roads
-						'featureType': 'road',
-						'elementType': 'geometry.stroke',
-						'stylers': [{ 'weight': 0.3 }]
-					}
-				]
 			}
 		};
 	},
 
 	computed: {
-		zoom() {
-			return this.center.lat && this.center.lng ? 15 : 5;
+		mapProps() {
+			return {
+				center: this.searchCenter.lat && this.searchCenter.lng ? this.searchCenter : pg.config.defaultMapCenter,
+				zoom: this.searchCenter.lat && this.searchCenter.lng ? 15 : 5,
+				options: mapOptions
+			};
 		},
 		locateButtonIcon() {
 			return this.isSearchingLocation ? 'circle-outline-notch' : this.isLocationFound ? 'location' : 'location-outline';
 		},
-		locateButtonDisabled() {
-			return this.isSearchingLocation || this.isLocationFound;
-		},
 		canSubmit() {
-			return this.center && this.center.lat && this.center.lng;
+			return this.searchCenter.lat && this.searchCenter.lng;
 		}
 	},
 
@@ -91,20 +86,20 @@ export default {
 
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
-					this.center = {
+					this.searchCenter = {
 						lat: position.coords.latitude,
 						lng: position.coords.longitude
 					};
 
 					// Find city name and use it to fill the City field
-					geocoder.reverse(this.center.lat, this.center.lng, (error, location) => {
+					geocoder.reverse(this.searchCenter.lat, this.searchCenter.lng, (error, location) => {
 						this.isLocationFound = location ? true : false;
 						this.isSearchingLocation = false;
 
 						if (error) {
 							alert(locationNotFoundMsg);
 						} else {
-							this.locationQuery = location.administrativeLevels.level3long; // FIXME: Use street and city
+							this.placeQuery = location.administrativeLevels.level3long; // FIXME: Use street and city
 						}
 					});
 				},
@@ -120,76 +115,68 @@ export default {
 			);
 		},
 
-		onWhatInput(value) {
+		onSearchInput(value) {
 			// Always reset the category (it will be set back when selecting
 			// a suggestion)
 			this.categories = [];
 
 			// Reset if empty
 			if (!value) {
-				this.venueQuery = null;
-				this.venueSuggestions = [];
+				this.searchQuery = null;
+				this.searchSuggestions = [];
 				return;
 			}
 
-			this.loadVenueSuggestions(value);
+			// Load suggestions
+			this.loadSearchSuggestions(value);
 		},
 
-		loadVenueSuggestions: _.debounce(function(value) {
+		loadSearchSuggestions: _.debounce(function(value) {
 			// Load suggestions and use them
 			axios.post('/suggestions', {
 				what: value,
-				c_lat: this.center.lat,
-				c_lng: this.center.lng,
-				sw_lat: this.sw.lat,
-				sw_lng: this.sw.lng,
-				ne_lat: this.ne.lat,
-				ne_lng: this.ne.lng,
-				near: this.locationQuery
+				c_lat: this.searchCenter.lat,
+				c_lng: this.searchCenter.lng,
+				near: this.placeQuery
 			}).then(response => {
-				this.venueSuggestions = response.data;
+				this.searchSuggestions = response.data;
 			});
 		}, 300),
 
-		selectVenueSuggestion(item) {
+		onSearchSuggestionSelect(item) {
 			// If it's a venue, go to detail page,
 			// otherwise store the category name and value
 			if (item.type == 'venue') {
 				location.href = item.url;
 			} else if (item.type == 'category') {
 				this.categories = [item.id];
-				this.venueQuery = item.name;
+				this.searchQuery = item.name;
 			}
 		},
 
-		onSuggestionSelect(suggestion) {
-			const viewport = suggestion.geometry.viewport;
+		onPlaceSelect(place) {
+			const viewport = place.geometry.viewport;
+			const center = viewport.getCenter();
 
-			this.center = this._extractCoords(viewport.getCenter());
-			this.ne = this._extractCoords(viewport.getNorthEast());
-			this.sw = this._extractCoords(viewport.getSouthWest());
+			this.searchCenter = {
+				lat: center.lat(),
+				lng: center.lng()
+			};
 
-			if (suggestion.vicinity && suggestion.name != suggestion.vicinity) {
-				this.locationQuery = `${suggestion.name}, ${suggestion.vicinity}`;
+			if (place.vicinity && place.name != place.vicinity) {
+				this.placeQuery = `${place.name}, ${place.vicinity}`;
 			} else {
-				this.locationQuery = suggestion.name;
+				this.placeQuery = place.name;
 			}
 		},
 
 		onSubmit(e) {
 			if (!this.canSubmit) e.preventDefault();
-		},
-
-		_extractCoords(input) {
-			return {
-				lat: input.lat(),
-				lng: input.lng()
-			};
 		}
 	},
 
 	mounted() {
-		const $autocompleteInput = $(this.$refs.locationAutocomplete.$refs.input);
+		const $autocompleteInput = $(this.$refs.placeAutocomplete.$refs.input);
 
 		// FIXME: Handle events with vue and remove jquery
 		// Prevent submitting the form when the locations dropdown is open
@@ -202,17 +189,18 @@ export default {
 		// Reset location data when editing the location input
 		$autocompleteInput.on('keyup', () => {
 			this.isLocationFound = false;
-			this.center = { lat: null, lng: null };
-			this.ne = { lat: null, lng: null };
-			this.sw = { lat: null, lng: null };
+			this.searchCenter = {
+				lat: null,
+				lng: null
+			};
 		});
 
 		// If no location is set, find a generic one using IP info
 		geocoder.geocodeByIp((error, location) => {
 			if (!location || !location.latitude || !location.longitude || !location.city) return;
 
-			this.locationQuery = location.city;
-			this.center = {
+			this.placeQuery = location.city;
+			this.searchCenter = {
 				lat: location.latitude,
 				lng: location.longitude
 			};

@@ -1,7 +1,7 @@
 <template>
 	<a class="dropdown-item" href="#">
-		<div class="text-truncate">{{ item.name }}</div>
-		<div v-if="metadata" class="text-truncate" :title="metadata">{{ metadata }}</div>
+		<div class="text-truncate" :title="item.name">{{ item.name }}</div>
+		<div v-if="metadata" class="text-truncate text-muted" :title="metadata">{{ metadata }}</div>
 	</a>
 </template>
 
