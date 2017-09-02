@@ -6,6 +6,6 @@
  * @param {string} plural
  * @returns {string}
  */
-export default function singularOrPlural(count, singular, plural) {
+export default function(count, singular, plural) {
 	return parseInt(count) == 1 ? singular : plural;
 }

@@ -4,6 +4,21 @@ import formatDistance from '../../utilities/format-distance';
 import singularOrPlural from '../../utilities/singular-or-plural';
 import { Map, Marker, InfoWindow } from 'vue2-google-maps';
 
+const mapOptions = {
+	fullscreenControl: false,
+	mapTypeControl: false,
+	streetViewControl: false,
+	zoomControlOptions: {
+		position: 1 // google.maps.ControlPosition.TOP_LEFT
+	},
+	styles: [
+		{ // Hide points of interest
+			'featureType': 'poi',
+			'stylers': [{ 'visibility': 'off' }]
+		}
+	]
+};
+
 export default {
 	name: 'pg-explore-page',
 
@@ -36,20 +51,7 @@ export default {
 				south: pg.searchParams.sw_lat,
 				west: pg.searchParams.sw_lng
 			},
-			mapOptions: {
-				fullscreenControl: false,
-				mapTypeControl: false,
-				streetViewControl: false,
-				zoomControlOptions: {
-					position: 1 // google.maps.ControlPosition.TOP_LEFT
-				},
-				styles: [
-					{ // Hide points of interest
-						'featureType': 'poi',
-						'stylers': [{ 'visibility': 'off' }]
-					}
-				]
-			}
+			mapOptions: mapOptions
 		};
 	},
 

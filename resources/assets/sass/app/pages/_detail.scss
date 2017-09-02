@@ -71,6 +71,7 @@
 	.contact-card-map {
 		.vue-map {
 			border-radius: $card-border-radius;
+			z-index: 0; // Activates border radius
 		}
 
 		&:after {
@@ -167,8 +168,13 @@
 				pointer-events: none;
 			}
 		}
-		.contact-card-map:after {
-			display: none;
+		.contact-card-map {
+			&:after {
+				display: none;
+			}
+			.vue-map {
+				@include border-bottom-radius(0);
+			}
 		}
 		.contact-card-list-item {
 			margin-left: $grid-gutter-width * 1.5;

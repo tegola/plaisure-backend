@@ -15,7 +15,7 @@
 		<div class="wrapper">
 			<div class="venue-list px-0 col col-md-6 col-lg-5 col-xl-4">
 				{{-- Mobile title --}}
-				<div class="container-fluid d-md-none mt-4">
+				<div v-if="venues.length" class="container-fluid d-md-none mt-4">
 					<h4>
 						@{{ venues.length }}<template v-if="hasMorePages">+</template>
 						@{{ venues.length | singularOrPlural('risultato', 'risultati') }}

@@ -8,7 +8,7 @@
  * @param {number} distance
  * @returns {string}
  */
-export default function formatDistance(distance) {
+export default function(distance) {
 	if (!distance) return null;
 
 	if (distance > 10) return Math.round(distance) + ' km';

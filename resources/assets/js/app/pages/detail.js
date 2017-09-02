@@ -10,10 +10,6 @@ export default {
 
 	data() {
 		return {
-			lat: pg.lat,
-			lng: pg.lng,
-			what: pg.what,
-			near: pg.near,
 			mapOptions: {
 				disableDefaultUI: true,
 				draggable: false,
