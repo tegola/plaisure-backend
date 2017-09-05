@@ -13,7 +13,14 @@ export default {
 			mapOptions: {
 				disableDefaultUI: true,
 				draggable: false,
-				scrollwheel: false
+				scrollwheel: false,
+				styles: [
+					{ // No labels on POI
+						'featureType': 'poi',
+						'elementType': 'labels.text',
+						'stylers': [{ 'visibility': 'off' }]
+					}
+				]
 			}
 		};
 	}
