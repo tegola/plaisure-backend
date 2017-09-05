@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use DB;
 use Auth;
+use App\Models\File;
 
 class Venue extends Model
 {
@@ -263,6 +264,15 @@ class Venue extends Model
 	public function plan()
 	{
 		return $this->hasOne('App\Models\VenuePlan');
+	}
+
+	/**
+	 * Photos for this venue.
+	 */
+	public function photos()
+	{
+		return $this->morphMany('App\File', 'filable')
+				->where('type', File::TYPE_VENUE_PHOTO);
 	}
 
 	/**
