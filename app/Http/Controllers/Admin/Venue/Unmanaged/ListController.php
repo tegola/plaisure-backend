@@ -27,7 +27,7 @@ class ListController extends Controller
 			->orderBy('name');
 
 		// Search
-		if ($request->has('query')) {
+		if ($request->filled('query')) {
 			$importedVenues = $importedVenues->search($request->input('query'));
 		}
 

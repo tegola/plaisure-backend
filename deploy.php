@@ -119,7 +119,7 @@ task('deploy', [
     'artisan:view:clear',      // Optimize on server
     'artisan:cache:clear',     // Optimize on server
     'artisan:config:cache',    // Optimize on server
-    'artisan:optimize',        // Optimize on server
+    // 'artisan:optimize',        // Optimize on server // Removed as per Laravel 5.5 upgrade guide
     'artisan:migrate',         // Migrate DB on production server
     'artisan:migrate:refresh', // Refresh DB on test server
     'deploy:symlink',          // Symlink /current on server

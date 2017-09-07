@@ -1,4 +1,4 @@
-const { mix } = require('laravel-mix');
+const mix = require('laravel-mix');
 const BabiliPlugin = require('babili-webpack-plugin');
 const webpackConfig = {
 	plugins: []

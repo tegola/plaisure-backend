@@ -15,14 +15,14 @@ class ExploreController extends Controller
 {
 	public function __construct(Request $request) {
 		$this->near = $request->near;
-		$this->categories = $request->has('categories') ? $request->categories : Category::pluck('id')->all();
+		$this->categories = $request->filled('categories') ? $request->categories : Category::pluck('id')->all();
 		// $this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
-		$this->c_lat = $request->has('c_lat') ? floatval($request->c_lat) : null;
-		$this->c_lng = $request->has('c_lng') ? floatval($request->c_lng) : null;
-		$this->ne_lat = $request->has('ne_lat') ? floatval($request->ne_lat) : null;
-		$this->ne_lng = $request->has('ne_lng') ? floatval($request->ne_lng) : null;
-		$this->sw_lat = $request->has('sw_lat') ? floatval($request->sw_lat) : null;
-		$this->sw_lng = $request->has('sw_lng') ? floatval($request->sw_lng) : null;
+		$this->c_lat = $request->filled('c_lat') ? floatval($request->c_lat) : null;
+		$this->c_lng = $request->filled('c_lng') ? floatval($request->c_lng) : null;
+		$this->ne_lat = $request->filled('ne_lat') ? floatval($request->ne_lat) : null;
+		$this->ne_lng = $request->filled('ne_lng') ? floatval($request->ne_lng) : null;
+		$this->sw_lat = $request->filled('sw_lat') ? floatval($request->sw_lat) : null;
+		$this->sw_lng = $request->filled('sw_lng') ? floatval($request->sw_lng) : null;
 	}
 
 	public function index()

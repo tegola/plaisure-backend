@@ -19,7 +19,7 @@ class ListController extends Controller
 		$users = User::latest();
 
 		// Search
-		if ($request->has('query')) {
+		if ($request->filled('query')) {
 			$query = $request->input('query');
 
 			$users->where('name', 'like', "%{$query}%")

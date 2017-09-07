@@ -20,7 +20,7 @@ class ListController extends Controller
 		$venues = Venue::oldest('updated_at');
 
 		// Search
-		if ($request->has('query')) {
+		if ($request->filled('query')) {
 			$query = $request->input('query');
 
 			$venues

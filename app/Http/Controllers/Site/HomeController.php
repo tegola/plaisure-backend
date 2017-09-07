@@ -31,8 +31,8 @@ class HomeController extends Controller
 	public function suggestions(Request $request)
 	{
 		$what = trim($request->what);
-		$c_lat = $request->has('c_lat') ? floatval($request->c_lat) : null;
-		$c_lng = $request->has('c_lng') ? floatval($request->c_lng) : null;
+		$c_lat = $request->filled('c_lat') ? floatval($request->c_lat) : null;
+		$c_lng = $request->filled('c_lng') ? floatval($request->c_lng) : null;
 		$near = $request->near;
 		$venues = [];
 		$categories = [];
