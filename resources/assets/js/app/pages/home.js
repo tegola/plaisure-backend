@@ -99,7 +99,7 @@ export default {
 						if (error) {
 							alert(locationNotFoundMsg);
 						} else {
-							this.placeQuery = location.administrativeLevels.level3long; // FIXME: Use street and city
+							this.placeQuery = location.administrativeLevels.level3long;
 						}
 					});
 				},

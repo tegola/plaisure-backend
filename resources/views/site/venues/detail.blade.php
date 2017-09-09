@@ -101,9 +101,16 @@
 								<ul class="list-unstyled mb-0 mb-md-3">
 									<li class="detail-list-item">
 										Dimensioni:
-										<strong>{{ $venue->surface_size }} mq.</strong>
+										{{-- <strong>{{ $venue->surface_size }} mq.</strong> --}}
+										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
+									<li class="detail-list-item">
+										Numero di macchine:
+										<span class="text-muted">sconosciuto</span>
+										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+									</li>
+									{{--
 									@if($venue->machine_count)
 										<li class="detail-list-item">
 											Numero di macchine:
@@ -117,6 +124,7 @@
 											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										</li>
 									@endif
+									--}}
 									<li class="detail-list-item">
 										Numero di VLT:
 										<span class="text-muted">sconosciuto</span>
