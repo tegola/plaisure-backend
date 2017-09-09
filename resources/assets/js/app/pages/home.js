@@ -1,5 +1,6 @@
 import $ from 'jquery';
-import _ from 'lodash';
+import _extend from 'lodash/extend';
+import _debounce from 'lodash/debounce';
 import axios from 'axios';
 import * as geocoder from '../../utilities/geocoder';
 import InputTypeahead from '../components/input-typeahead.vue';
@@ -40,7 +41,7 @@ export default {
 
 	components: {
 		'pg-map': Map,
-		'pg-input-typeahead': _.extend(InputTypeahead, {
+		'pg-input-typeahead': _extend(InputTypeahead, {
 			components: {
 				'pg-venue-suggestion-item': VenueSuggestionItem
 			}
@@ -131,7 +132,7 @@ export default {
 			this.loadSearchSuggestions(value);
 		},
 
-		loadSearchSuggestions: _.debounce(function(value) {
+		loadSearchSuggestions: _debounce(function(value) {
 			// Load suggestions and use them
 			axios.post('/suggestions', {
 				what: value,

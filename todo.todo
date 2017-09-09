@@ -1,4 +1,6 @@
 Generale:
+ ☐ Aggiungere "beta" al logo
+ ☐ Aggiungere via o quartiere quando si usa la geolocalizzazione
  ☐ Ottimizzazione per mobile
  ✔ Salvare uno short name per le categorie e usarlo per decidere l'icona da visualizzare @done (17-08-24 16:02)
  ✔ Fare in modo che le attività senza geolocalizzazione non vengano caricate per gli utenti normali @done (17-08-17 16:39)

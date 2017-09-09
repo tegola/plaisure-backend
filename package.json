@@ -25,6 +25,6 @@
         "vue": "^2.4.2",
         "vue-match-media": "^1.0.2",
         "vue-template-compiler": "^2.4.2",
-        "vue2-google-maps": "^0.7.10"
+        "vue2-google-maps": "^0.8.1"
     }
 }

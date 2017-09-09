@@ -1,5 +1,6 @@
-import _ from 'lodash';
 import $ from 'jquery';
+import _clone from 'lodash/clone';
+import _assign from 'lodash/assign';
 import { Map, Marker } from 'vue2-google-maps';
 import { geocode } from '../../utilities/geocoder';
 
@@ -90,16 +91,16 @@ export default {
 			// If it's a custom plan, keep the current values but replace the
 			// name. Otherwise, copy all plan settings.
 			if (planName == 'custom') {
-				newPlan = _.clone(this.venue.plan);
+				newPlan = _clone(this.venue.plan);
 				newPlan.name = 'Personalizzato',
 				newPlan.short_name = 'custom';
 			} else {
 				const selectedPlan = this.plans.find(plan => plan.short_name == planName);
-				newPlan = _.clone(selectedPlan);
+				newPlan = _clone(selectedPlan);
 			}
 
 			// Update venue with plan
-			this.venue = _.assign({}, this.venue, { plan: newPlan });
+			this.venue = _assign({}, this.venue, { plan: newPlan });
 		},
 
 		removePlan() {

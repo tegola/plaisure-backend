@@ -1,5 +1,7 @@
 import $ from 'jquery';
-import _ from 'lodash';
+import _extend from 'lodash/extend';
+import _debounce from 'lodash/debounce';
+import _last from 'lodash/last';
 import formatDistance from '../../utilities/format-distance';
 import singularOrPlural from '../../utilities/singular-or-plural';
 import { Map, Marker, InfoWindow } from 'vue2-google-maps';
@@ -67,7 +69,7 @@ export default {
 	watch: {
 		// Automatically load when changing categories
 		categories() {
-			_.extend(this.searchParams, {
+			_extend(this.searchParams, {
 				categories: this.categories
 			});
 			this.load();
@@ -75,11 +77,11 @@ export default {
 
 		// Show reload tooltip when map changes
 		mapNeedsRefresh(newValue) {
-			if (newValue === true && this.$mq.comfortable) {
-				this.$nextTick(() => {
-					$(this.$refs.refreshBtn).tooltip('show');	
-				});
-			}
+			if (!this.$mq.comfortable) return;
+
+			this.$nextTick(() => {
+				$(this.$refs.refreshBtn).tooltip(newValue ? 'show' : 'hide');	
+			});
 		}
 	},
 
@@ -104,7 +106,7 @@ export default {
 			this.categories = [];
 		},
 
-		onMapBoundsChange: _.debounce(function(bounds) { // Fat arrow functions do not work with debounce
+		onMapBoundsChange: _debounce(function(bounds) { // Fat arrow functions do not work with debounce
 			// Store bounds
 			this.storeBounds(bounds);
 
@@ -123,7 +125,7 @@ export default {
 
 			// Store position in search params in a single swoop, to avoid
 			// stressing the watcher
-			_.extend(this.searchParams, {
+			_extend(this.searchParams, {
 				c_lat: c.lat(),
 				c_lng: c.lng(),
 				ne_lat: ne.lat(),
@@ -153,7 +155,7 @@ export default {
 			this.mapNeedsRefresh = false;
 
 			// Update url
-			const baseName = _.last(location.pathname.split('/'));
+			const baseName = _last(location.pathname.split('/'));
 			const params = $.param(this.searchParams);
 
 			window.history.replaceState({}, '', `${baseName}?${params}`);
