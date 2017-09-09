@@ -77,13 +77,15 @@
 	.search-submit-btn {
 		box-shadow: 0 10px 30px rgba(theme-color(accent), 0.25);
 
-		&:hover,
-		&:focus {
-			box-shadow: 0 10px 30px rgba(theme-color(accent), 0.5);
-		}
-		&:active {
-			transition: 0.1s;
-			box-shadow: 0 3px 5px rgba(theme-color(accent), 0.4)
+		&:not(:disabled) {
+			&:hover,
+			&:focus {
+				box-shadow: 0 10px 30px rgba(theme-color(accent), 0.5);
+			}
+			&:active {
+				transition: 0.1s;
+				box-shadow: 0 3px 5px rgba(theme-color(accent), 0.4)
+			}
 		}
 	}
 	.search-near-control {
