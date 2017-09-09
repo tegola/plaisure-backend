@@ -319,14 +319,15 @@ class Venue extends Model
 		$lat_column = 'geo_latitude';
 		$lng_column = 'geo_longitude';
 
-		return $query->having('distance', '<=' ,$radius)
-			->select(DB::raw("*,
-				 ($units * ACOS(COS(RADIANS($lat))
-						 * COS(RADIANS($lat_column))
-						 * COS(RADIANS($lng) - RADIANS($lng_column))
-						 + SIN(RADIANS($lat))
-						 * SIN(RADIANS($lat_column)))) AS distance")
-			)->orderBy('distance','asc');
+		return $query
+			->addSelect(DB::raw("($units * ACOS(COS(RADIANS($lat))
+							  * COS(RADIANS($lat_column))
+							  * COS(RADIANS($lng) - RADIANS($lng_column))
+							  + SIN(RADIANS($lat))
+							  * SIN(RADIANS($lat_column)))) AS distance")
+			)
+			->having('distance', '<=' ,$radius)
+			->orderBy('distance','asc');
 	}
 
 	/**
