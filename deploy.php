@@ -10,7 +10,9 @@ require 'vendor/deployer/recipes/npm.php';
 date_default_timezone_set('Europe/Rome');
 
 // Configuration
-
+set('bin/php', function() {
+    return run('which php-7.0')->toString();
+});
 set('ssh_type', 'native');
 set('ssh_multiplexing', true);
 set('writable_mode', 'chmod');
@@ -98,9 +100,13 @@ task('npm:local:build', function() {
 
 task('artisan:migrate')->desc('Run migrations')->onlyOn('production');
 
-task('artisan:migrate:refresh', function () {
+task('artisan:migrate:refresh', function() {
     run('{{bin/php}} {{release_path}}/artisan migrate:refresh --seed --force');
 })->desc('Reset database')->onlyOn('test');
+
+task('testphp', function() {
+    run('{{bin/php}} --version');
+});
 
 task('deploy', [
     'local:prepare',           // Create dirs locally
