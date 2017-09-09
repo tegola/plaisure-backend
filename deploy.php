@@ -121,7 +121,7 @@ task('deploy', [
     'artisan:config:cache',    // Optimize on server
     // 'artisan:optimize',        // Optimize on server // Removed as per Laravel 5.5 upgrade guide
     'artisan:migrate',         // Migrate DB on production server
-    'artisan:migrate:refresh', // Refresh DB on test server
+    // 'artisan:migrate:refresh', // Refresh DB on test server
     'deploy:symlink',          // Symlink /current on server
     'deploy:unlock',           // Unlock deploys on server
     'cleanup',                 // Cleanup old releases on server
