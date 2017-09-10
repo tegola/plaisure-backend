@@ -100,7 +100,14 @@ export default {
 						if (error) {
 							alert(locationNotFoundMsg);
 						} else {
-							this.placeQuery = location.administrativeLevels.level3long;
+							let address = [];
+
+							if (location.streetName) address.push(location.streetName);
+							address.push(location.administrativeLevels.level3long);
+
+							this.$nextTick(() => {
+								this.placeQuery = address.join(', ');
+							});
 						}
 					});
 				},
