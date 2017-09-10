@@ -84,7 +84,7 @@
 	.pg-logo-text,
 	.pg-logo-symbol,
 	.pg-logo-shadow {
-		fill: $palette-dark-green-500;
+		fill: red;
 	}
 }
 
@@ -120,12 +120,14 @@
 	background-color: $palette-dark-green-500;
 	color: $white;
 
-	.pg-logo-shadow {
-		display: none;
+	.pg-logo-background {
+		display: none
 	}
-	.pg-logo-text,
-	.pg-logo-symbol {
+	.pg-logo-foreground {
 		fill: $white;
+	}
+	.pg-logo-badge {
+		fill: $palette-dark-green-200;
 	}
 
 	.navbar-search {

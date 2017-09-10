@@ -54,10 +54,10 @@
 	height: 32px;
 	display: inline-block;
 
-	.pg-logo-symbol {
-		fill: grayscale(500);
-	}
-	.pg-logo-shadow {
+	.pg-logo-background {
 		display: none;
+	}
+	.pg-logo-foreground {
+		fill: grayscale(500);
 	}
 }

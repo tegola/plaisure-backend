@@ -1,5 +1,5 @@
 .pg-logo-text {
-	fill: #1A4240;
+	fill: $palette-dark-green-500;
 }
 .pg-logo-symbol {
 	fill: url('#pg-logo-symbol-gradient');
@@ -7,4 +7,7 @@
 .pg-logo-shadow {
 	fill: url('#pg-logo-shadow-gradient');
 	fill-opacity: .1;
+}
+.pg-logo-badge {
+	fill: $palette-dark-green-400;
 }
