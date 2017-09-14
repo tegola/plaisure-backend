@@ -22,7 +22,7 @@ class CreateVenuePlansTable extends Migration
 
 			// Name
 			$table->string('name');
-			$table->string('short_name');
+			$table->string('machine_name');
 
 			// Bonuses and limits
 			$table->integer('distance_bonus')->unsigned();

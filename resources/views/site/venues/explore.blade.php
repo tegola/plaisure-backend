@@ -48,7 +48,7 @@
 				<template v-if="venues.length">
 					<div v-for="venue in venues" class="list-group-item venue-list-item" :class="{ 'active': selectedVenueId == venue.id }" @mouseover="highlight(venue)" @mouseout="highlight()" @click="select(venue)">
 						<div class="d-flex w-100 align-items-start">
-							<img class="venue-list-item-icon" :src="'/img/avatars/' + venue.first_category_short_name + '.svg'">
+							<img class="venue-list-item-icon" :src="'/img/avatars/' + venue.first_category_machine_name + '.svg'">
 							<div class="w-100">
 								<div class="d-flex w-100 justify-content-between">
 									<h5 class="mb-1 font-weight-bold">
@@ -80,7 +80,7 @@
 					<pg-map-marker v-for="(venue, index) in venues" :key="venue.id" :position="mapMarkerPosition(venue)" :icon="mapMarkerIcon(venue, index)" @click="select(venue)">
 						<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">
 							<div class="map-infowindow">
-								<img class="map-infowindow-icon" :src="'/img/avatars/' + venue.first_category_short_name + '.svg'">
+								<img class="map-infowindow-icon" :src="'/img/avatars/' + venue.first_category_machine_name + '.svg'">
 								<div>
 									<h5 class="mb-0 font-weight-bold">
 										<a :href="'/venues/' + venue.id">@{{ venue.name }}</a>

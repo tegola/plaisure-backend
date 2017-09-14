@@ -195,9 +195,7 @@ export default {
 		});
 
 		// Reset location data when editing the location input
-		$autocompleteInput.on('keyup', e => {
-			if (e.which == 13) return; // Avoid with enter
-
+		$autocompleteInput.on('input', () => {
 			this.isLocationFound = false;
 			this.searchCenter = {
 				lat: null,

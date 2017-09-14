@@ -197,8 +197,8 @@ export default {
 			}
 
 			// Determine glyph
-			if (index < 25 && venue.first_category_short_name) {
-				glyph = venue.first_category_short_name;
+			if (index < 25 && venue.first_category_machine_name) {
+				glyph = venue.first_category_machine_name;
 			} else {
 				glyph = 'collapsed';
 			}

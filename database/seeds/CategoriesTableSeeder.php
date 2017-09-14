@@ -20,9 +20,9 @@ class CategoriesTableSeeder extends Seeder
 			// 'betting_office' => 'Ricevitoria',       // 4
 		];
 
-		foreach ($categories as $short_name => $name) {
+		foreach ($categories as $machine_name => $name) {
 			Category::create([
-				'short_name' => $short_name,
+				'machine_name' => $machine_name,
 				'name' => $name
 			]);
 		}

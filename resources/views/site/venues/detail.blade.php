@@ -213,7 +213,7 @@
 							<ul class="list-unstyled">
 								@foreach ($nearby_venues as $nearby_venue)
 									@php
-										$img = $nearby_venue->first_category_short_name ?: 'collapsed';
+										$img = $nearby_venue->first_category_machine_name ?: 'collapsed';
 									@endphp
 									<li class="d-flex align-items-start">
 										<img class="mr-3" src="{{ asset("img/map/pin-normal-{$img}.svg")}}">

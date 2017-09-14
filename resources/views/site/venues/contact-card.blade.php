@@ -2,7 +2,7 @@
 	<div class="embed-responsive embed-responsive-16by9 contact-card-map">
 		<pg-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
 			@php
-				$img = $venue->first_category_short_name ?: 'collapsed';
+				$img = $venue->first_category_machine_name ?: 'collapsed';
 			@endphp
 			<pg-map-marker :position="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" icon="{{ asset("img/map/pin-normal-{$img}.svg") }}"></pg-map-marker>
 		</pg-map>

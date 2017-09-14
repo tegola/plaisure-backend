@@ -240,7 +240,7 @@
 				<div class="form-group col-md-6">
 					<label>Scegli un piano</label>
 					<select class="form-control" placeholder="Scegli un piano&hellip;" v-model="selectedPlan">
-						<option v-for="plan in plans" :value="plan.short_name">@{{ plan.name }}</option>
+						<option v-for="plan in plans" :value="plan.machine_name">@{{ plan.name }}</option>
 						<option disabled>─────</option>
 						<option value="custom">Personalizza</option>
 					</select>
@@ -253,7 +253,7 @@
 
 			<div v-if="venue.plan" class="row">
 				<input type="hidden" name="plan[name]" :value="venue.plan.name">
-				<input type="hidden" name="plan[short_name]" :value="venue.plan.short_name">
+				<input type="hidden" name="plan[machine_name]" :value="venue.plan.machine_name">
 				<div class="form-group col-md-6">
 					<label>Bonus distanza</label>
 					<input type="hidden" name="plan[distance_bonus]" :value="venue.plan.distance_bonus" v-if="planFieldDisabled">

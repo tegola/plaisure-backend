@@ -25,7 +25,7 @@ export default {
 			},
 			mapZoom: pg.venue.geo_latitude && pg.venue.geo_longitude ? 15 : 5,
 			plans: pg.config.plans,
-			selectedPlan: pg.venue.plan ? pg.venue.plan.short_name : null
+			selectedPlan: pg.venue.plan ? pg.venue.plan.machine_name : null
 		};
 	},
 
@@ -93,9 +93,9 @@ export default {
 			if (planName == 'custom') {
 				newPlan = _clone(this.venue.plan);
 				newPlan.name = 'Personalizzato',
-				newPlan.short_name = 'custom';
+				newPlan.machine_name = 'custom';
 			} else {
-				const selectedPlan = this.plans.find(plan => plan.short_name == planName);
+				const selectedPlan = this.plans.find(plan => plan.machine_name == planName);
 				newPlan = _clone(selectedPlan);
 			}
 

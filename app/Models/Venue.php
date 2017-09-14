@@ -90,7 +90,7 @@ class Venue extends Model
 	protected $appends = [
 		'short_address',
 		'long_address',
-		'first_category_short_name'
+		'first_category_machine_name'
 	];
 
 	/**
@@ -203,15 +203,15 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the file icon name for the first venue category.
+	 * Get the machine name for the first venue category.
 	 * 
 	 * @return string
 	 */
-	public function getFirstCategoryShortNameAttribute()
+	public function getFirstCategoryMachineNameAttribute()
 	{
 		$categories = $this->categories();
 
-		return $categories->count() ? $categories->first()->short_name : '';
+		return $categories->count() ? $categories->first()->machine_name : '';
 	}
 
 	/**
