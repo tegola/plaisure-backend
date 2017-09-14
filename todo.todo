@@ -1,20 +1,22 @@
 Generale:
- ✔ Aggiungere "beta" al logo @done (17-09-10 15:16)
- ☐ Aggiungere via o quartiere quando si usa la geolocalizzazione (o almeno far apparire la città!)
  ☐ Ottimizzazione per mobile
+ ✔ Aggiungere "beta" al logo @done (17-09-10 15:16)
+ ✔ Aggiungere via o quartiere quando si usa la geolocalizzazione (o almeno far apparire la città!) @done (17-09-10 15:51)
  ✔ Salvare uno short name per le categorie e usarlo per decidere l'icona da visualizzare @done (17-08-24 16:02)
  ✔ Fare in modo che le attività senza geolocalizzazione non vengano caricate per gli utenti normali @done (17-08-17 16:39)
  ✔ Aggiungere le autorizzazioni per vedere il link di accesso all'amministrazione @done (17-04-10 22:53)
  ✔ Far funzionare laravel mix anche nell'amministrazione @done (17-04-10 22:53)
  ✔ Sale premium: aggiungere il supporto per mostrare le pagine social (Twitter, facebook, Tripadvisor, ecc.) @done (8/6/2017, 10:22:39 PM)
  ✔ Sale premium: Perk per nascondere le sale vicine @done (8/1/2017, 11:39:43 PM)
- ☐ Aggiungere il supporto agli orari di apertura
  ✔ Copiare la barra in alto da lottomatica.it (frase e link verso sito aams) + due bannerini a destra @done (17-08-09 15:20)
  ✔ Footer più arzigogolato con mappa del sito e link a "gioca responsabilmente" e barra lottomatica (v. task sopra) @done (17-08-09 15:20)
  ✔ Rimuovere l'accesso utente per il momento @done (17-08-09 18:46)
- ☐ Supporto ai like/dislike
  ✔ Aggiungere favicon @done (17-08-25 17:33)
+ ☐ Autocomplete: fare un wrapper per aggiungere gli eventi 1. place_change(vuoto), 2. select all on click, 3. non chiudere menu se premo invio
+ ☐ Aggiungere il supporto agli orari di apertura
+ ☐ Supporto ai like/dislike
  ☐ Supporto per i jackpot
+ ☐ Aggiungere i link ai social network
 
 Pagina dettaglio:
  ☐ Ottimizzazione per mobile
@@ -45,6 +47,9 @@ Ricerca:
 Azienda:
  ☐ Abbellire
  ☐ Aggiungere form di contatto
+
+Promuovi attività:
+ ☐ Menzionare che è gratutito il prima possibile
 
 Rivendica attività:
  ☐ Tutto da fare

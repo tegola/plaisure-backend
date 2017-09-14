@@ -41,7 +41,7 @@
 
 				{{-- Limited results --}}
 				<p v-if="hasMorePages" class="alert alert-info border-0 rounded-0">
-					Il numero di risultati è stato limitato automaticamente. Ingrandisci la zona di tuo interesse per visualizzare più dettagli.
+					Il numero di risultati è stato limitato automaticamente. <span v-if="$mq.comfortable">Ingrandisci la zona di tuo interesse per visualizzare più dettagli.</span>
 				</p>
 
 				{{-- Venue list --}}

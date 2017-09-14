@@ -89,7 +89,7 @@ export default {
 		onSuggestionSelect(suggestion) {
 			if (suggestion.geometry && suggestion.geometry.viewport) {
 				this.storeBounds(suggestion.geometry.viewport);
-				this.fitBounds();
+				if (this.$mq.comfortable) this.fitBounds();
 			}
 
 			if (suggestion.vicinity && suggestion.name != suggestion.vicinity) {
@@ -219,6 +219,7 @@ export default {
 		// Prevent submitting the form when the locations dropdown is open
 		// (key events are not handled by pg-map-autocomplete)
 		$(this.$refs.locationAutocomplete.$refs.input).on('keydown', (e) => {
+			console.log('keydown');
 			if (e.which == 13 && $('.pac-container:visible').length) {
 				e.preventDefault();
 			}

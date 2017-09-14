@@ -77,7 +77,7 @@ export default {
 			return this.isSearchingLocation ? 'circle-outline-notch' : this.isLocationFound ? 'location' : 'location-outline';
 		},
 		canSubmit() {
-			return this.searchCenter.lat && this.searchCenter.lng;
+			return this.searchCenter.lat && this.searchCenter.lng ? true : false;
 		}
 	},
 
@@ -195,7 +195,9 @@ export default {
 		});
 
 		// Reset location data when editing the location input
-		$autocompleteInput.on('keyup', () => {
+		$autocompleteInput.on('keyup', e => {
+			if (e.which == 13) return; // Avoid with enter
+
 			this.isLocationFound = false;
 			this.searchCenter = {
 				lat: null,

@@ -1,7 +1,7 @@
 @extends('site.layout')
 
 @section('body_class', 'page-promote')
-@section('title', "Promuovi la tua attività")
+@section('title', "Promuovi la tua attività, è gratis!")
 
 @section('content')
 @include('site.components.navbar', ['class' => 'navbar-light'])
@@ -10,7 +10,7 @@
 	<div class="container text-center">
 		<div class="row">
 			<div class="col-10 col-lg-9 mx-auto">
-				<h1 class="jumbotron-title">Promuovi la tua attività</h1>
+				<h1 class="jumbotron-title">Promuovi la tua attività, è gratis!</h1>
 				<p class="jumbotron-text">Sei il proprietario di un'attività inerente al mondo del gioco e vuoi promuoverla? La tua attività è già presente su {{ config('app.name') }} e vorresti ampliare le informazioni fornite ai visitatori? In entrambi i casi, <strong>sei nel <span class="text-nowrap">posto giusto!</span></strong></p>	
 			</div>
 		</div>
