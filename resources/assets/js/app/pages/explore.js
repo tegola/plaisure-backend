@@ -219,7 +219,6 @@ export default {
 		// Prevent submitting the form when the locations dropdown is open
 		// (key events are not handled by pg-map-autocomplete)
 		$(this.$refs.locationAutocomplete.$refs.input).on('keydown', (e) => {
-			console.log('keydown');
 			if (e.which == 13 && $('.pac-container:visible').length) {
 				e.preventDefault();
 			}
