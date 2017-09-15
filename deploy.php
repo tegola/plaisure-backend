@@ -104,9 +104,9 @@ task('artisan:migrate:refresh', function() {
     run('{{bin/php}} {{release_path}}/artisan migrate:refresh --seed --force');
 })->desc('Reset database')->onlyOn('test');
 
-task('testphp', function() {
-    run('{{bin/php}} --version');
-});
+task('artisan:config:clear', function () {
+    run('{{bin/php}} {{release_path}}/artisan config:cache');
+})->desc('Execute artisan config:clear');
 
 task('deploy', [
     'local:prepare',           // Create dirs locally
@@ -125,6 +125,7 @@ task('deploy', [
     'artisan:view:clear',      // Optimize on server
     'artisan:cache:clear',     // Optimize on server
     'artisan:config:cache',    // Optimize on server
+    'artisan:config:clear',    // Optimize on server
     // 'artisan:optimize',        // Optimize on server // Removed as per Laravel 5.5 upgrade guide
     'artisan:migrate',         // Migrate DB on production server
     // 'artisan:migrate:refresh', // Refresh DB on test server
