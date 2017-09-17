@@ -86,16 +86,18 @@ export default {
 	},
 
 	methods: {
-		onSuggestionSelect(suggestion) {
-			if (suggestion.geometry && suggestion.geometry.viewport) {
-				this.storeBounds(suggestion.geometry.viewport);
+		onPlaceChanged(place) {
+			if (!place) return;
+
+			if (place.geometry && place.geometry.viewport) {
+				this.storeBounds(place.geometry.viewport);
 				if (this.$mq.comfortable) this.fitBounds();
 			}
 
-			if (suggestion.vicinity && suggestion.name != suggestion.vicinity) {
-				this.searchParams.near = `${suggestion.name}, ${suggestion.vicinity}`;
+			if (place.vicinity && place.name != place.vicinity) {
+				this.searchParams.near = `${place.name}, ${place.vicinity}`;
 			} else {
-				this.searchParams.near = suggestion.name;
+				this.searchParams.near = place.name;
 			}
 
 			// Reload
@@ -216,14 +218,6 @@ export default {
 	},
 
 	mounted() {
-		// Prevent submitting the form when the locations dropdown is open
-		// (key events are not handled by pg-map-autocomplete)
-		$(this.$refs.locationAutocomplete.$refs.input).on('keydown', (e) => {
-			if (e.which == 13 && $('.pac-container:visible').length) {
-				e.preventDefault();
-			}
-		});
-
 		// Load
 		this.load();
 	}

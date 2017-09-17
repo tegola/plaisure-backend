@@ -1,5 +1,6 @@
 Generale:
- ☐ Ottimizzazione per mobile
+ ☐ Cambiare category in VenueCategory e aggiornare le tabelle di conseguenza
+ ☐ Iniziare iter per rivendicazione attività
  ✔ Aggiungere "beta" al logo @done (17-09-10 15:16)
  ✔ Aggiungere via o quartiere quando si usa la geolocalizzazione (o almeno far apparire la città!) @done (17-09-10 15:51)
  ✔ Salvare uno short name per le categorie e usarlo per decidere l'icona da visualizzare @done (17-08-24 16:02)
@@ -12,7 +13,7 @@ Generale:
  ✔ Footer più arzigogolato con mappa del sito e link a "gioca responsabilmente" e barra lottomatica (v. task sopra) @done (17-08-09 15:20)
  ✔ Rimuovere l'accesso utente per il momento @done (17-08-09 18:46)
  ✔ Aggiungere favicon @done (17-08-25 17:33)
- ☐ Autocomplete: fare un wrapper per aggiungere gli eventi 1. place_change(vuoto), 2. select all on click, 3. non chiudere menu se premo invio
+ ☐ Autocomplete: fare un wrapper per aggiungere gli eventi 1. place_change(vuoto), 2. select all on click, 3. non chiudere menu se premo invio, 4. blur alla chiusura
  ☐ Aggiungere il supporto agli orari di apertura
  ☐ Supporto ai like/dislike
  ☐ Supporto per i jackpot
@@ -25,13 +26,14 @@ Pagina dettaglio:
  ☐ Link a ricerca automatica di hotel e ristoranti nelle vicinanze con programma affiliazione TripAdvisor o Booking.com @started(17-08-09 17:20)
 
 Home:
+ ☐ Il pulsante di localizzazione deve funzionare con un solo tap
  ✔ Cambiare il geolocalizzatore di ip-api.com (che non supporta https se non a pagamento) con quello di google @done (3/15/2017, 10:55:45 PM)
 
 Ricerca:
  ☐ Aggiungere indicatore "sto cercando"
- ☐ Mobile: La mappa rallenta la ricerca: non farla disegnare
+ ✔ Mobile: La mappa rallenta la ricerca: non farla disegnare @done (17-09-14 22:03)
  ☐ Mobile: la ricerca deve partire da sola quando si sceglie la città da dropdown
- ☐ Mobile: non essendoci la mappa non c'è zoom, quindi il messaggio "ingrandisci la zona desiderata" non ha senso
+ ✔ Mobile: non essendoci la mappa non c'è zoom, quindi il messaggio "ingrandisci la zona desiderata" non ha senso @done (17-09-14 22:03)
  ✔ Fare in modo che scrivendo il nome della città, se non sono impostate le coordinate, queste vengano cercate @done (3/15/2017, 10:56:01 PM)
  ✔ Ricerca per via, oltre che per città @done (3/15/2017, 10:55:55 PM)
  ✔ Meno importanza alla mappa: la ricerca deve funzionare anche quando essa non è visibile @done (17-06-26 23:57)
@@ -49,7 +51,7 @@ Azienda:
  ☐ Aggiungere form di contatto
 
 Promuovi attività:
- ☐ Menzionare che è gratutito il prima possibile
+ ✔ Menzionare che è gratutito il prima possibile @done (17-09-14 22:04)
 
 Rivendica attività:
  ☐ Tutto da fare

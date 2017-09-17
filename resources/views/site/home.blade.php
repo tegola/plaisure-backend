@@ -83,19 +83,19 @@
 							<div class="form-group dropdown">
 								<label class="initialism"><strong>Vicino a</strong></label><br>
 								<div style="position: relative">
-									<pg-map-autocomplete
+									<pg-place-textbox
 										class="form-control form-control-lg search-form-control search-near-control"
-										ref="placeAutocomplete"
+										ref="placeTextbox"
 										name="near"
 										placeholder="Città"
 										autofocus
-										v-model="placeQuery"
+										:place="placeQuery"
+										:value="placeQuery"
 										:disabled="isSearchingLocation"
-										:select-first-on-enter="true"
-										:options="placeAutocompleteOptions"
-										@place_changed="onPlaceSelect">
-									</pg-map-autocomplete>
-									<button type="button" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="isSearchingLocation" tabindex="-1">
+										:options="placeTextboxOptions"
+										@place_changed="onPlaceChanged">
+									</pg-place-textbox>
+									<button type="button" ref="locateButton" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="isSearchingLocation" tabindex="-1">
 										<pg-icon :icon="locateButtonIcon" :spinning="isSearchingLocation"></pg-icon>
 									</button>
 								</div>

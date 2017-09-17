@@ -3,12 +3,13 @@ import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import axios from 'axios';
 import * as geocoder from '../../utilities/geocoder';
-import InputTypeahead from '../components/input-typeahead.vue';
-import VenueSuggestionItem from '../components/venue-suggestion-item.vue';
+import PgPlaceTextbox from '../components/place-textbox';
+import InputTypeahead from '../components/input-typeahead';
+import VenueSuggestionItem from '../components/venue-suggestion-item';
 import { Map } from 'vue2-google-maps';
 
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
-const placeAutocompleteOptions = {
+const placeTextboxOptions = {
 	types: ['geocode'] // Limit search to cities, addresses, etc.
 };
 const mapOptions = {
@@ -40,12 +41,13 @@ export default {
 	name: 'pg-home-page',
 
 	components: {
+		PgPlaceTextbox,
 		'pg-map': Map,
 		'pg-input-typeahead': _extend(InputTypeahead, {
 			components: {
 				'pg-venue-suggestion-item': VenueSuggestionItem
 			}
-		})
+		}),
 	},
 
 	data() {
@@ -53,8 +55,8 @@ export default {
 			categories: [],
 			searchQuery: '',
 			searchSuggestions: [],
-			placeQuery: '',
-			placeAutocompleteOptions: placeAutocompleteOptions,
+			placeQuery: null,
+			placeTextboxOptions: placeTextboxOptions,
 			isSearchingLocation: false,
 			isLocationFound: false,
 			mapOptions: mapOptions,
@@ -105,9 +107,8 @@ export default {
 							if (location.streetName) address.push(location.streetName);
 							address.push(location.administrativeLevels.level3long);
 
-							this.$nextTick(() => {
-								this.placeQuery = address.join(', ');
-							});
+							this.placeQuery = address.join(', ');
+							this.$refs.placeTextbox.$refs.input.$refs.input.value = this.placeQuery; // Needed, the previous line wasn't always working
 						}
 					});
 				},
@@ -162,7 +163,20 @@ export default {
 			}
 		},
 
-		onPlaceSelect(place) {
+		onPlaceChanged(place) {
+			// Reset user location indicator
+			this.isLocationFound = false;
+
+			// Reset center if no place is set
+			if (!place) {
+				this.placeQuery = null;
+				this.searchCenter = {
+					lat: null,
+					lng: null
+				};
+				return;
+			}
+
 			const viewport = place.geometry.viewport;
 			const center = viewport.getCenter();
 
@@ -184,25 +198,6 @@ export default {
 	},
 
 	mounted() {
-		const $autocompleteInput = $(this.$refs.placeAutocomplete.$refs.input);
-
-		// FIXME: Handle events with vue and remove jquery
-		// Prevent submitting the form when the locations dropdown is open
-		$autocompleteInput.on('keydown', (e) => {
-			if (e.which == 13 && $('.pac-container:visible').length) {
-				e.preventDefault();
-			}
-		});
-
-		// Reset location data when editing the location input
-		$autocompleteInput.on('input', () => {
-			this.isLocationFound = false;
-			this.searchCenter = {
-				lat: null,
-				lng: null
-			};
-		});
-
 		// If no location is set, find a generic one using IP info
 		geocoder.geocodeByIp((error, location) => {
 			if (!location || !location.latitude || !location.longitude || !location.city) return;

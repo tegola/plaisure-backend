@@ -19,27 +19,16 @@
 			])
 		</a>
 		@if ($show_search)
-			<form class="navbar-search" action="{{ route('site.venues.explore') }}">
-				@foreach(['c_lat', 'c_lng', 'ne_lat', 'ne_lng', 'sw_lat', 'sw_lng'] as $param)
-					<input type="hidden" name="{{ $param }}" @if($vue_support) :value="searchParams.{{ $param }}" @endif>
-				@endforeach
-
-				<div class="input-group navbar-search-input-group">
-					<span class="input-group-addon navbar-search-input-group-addon">
-						<pg-icon icon="search"></pg-icon>
-					</span>
-					<pg-map-autocomplete
-						class="form-control form-control-lg navbar-search-form-control"
-						ref="locationAutocomplete"
-						name="near"
-						placeholder="Cerca vicino a..."
-						:select-first-on-enter="true"
-						@if($vue_support) :value="searchParams.near" @endif
-						:options="{ types: ['geocode'] }"
-						@if($vue_support) @place_changed="onSuggestionSelect" @endif>
-					</pg-map-autocomplete>
-				</div>
-			</form>
+			<pg-navbar-search-form
+				action="{{ route('site.venues.explore') }}"
+				@if ($vue_support)
+					:query="searchParams.near"
+					:center="{ lat: searchParams.c_lat, lng: searchParams.c_lng }"
+					:auto-submit="false"
+					@place-changed="onPlaceChanged"
+				@endif
+				>
+			</pg-navbar-search-form>
 		@endif
 		{{--
 		<div class="ml-auto">
