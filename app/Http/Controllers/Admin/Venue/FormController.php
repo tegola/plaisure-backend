@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Venue;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVenue;
 use App\Models\Venue;
+use App\Models\ImportedVenue;
 use App\Models\VenuePlan;
 use App\Models\Category;
 use JavaScript;
@@ -34,7 +35,14 @@ class FormController extends Controller
 		if (old()) $venue->fill(old());
 		$venue->load('plan');
 
-		return $this->showForm($venue);
+		// If the venus has no geo or address, data, get the original Imported venue
+		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venued->address_street) && $venue->aams_census_code) {
+			$importedVenue = ImportedVenue::where('aams_census_code', $venue->aams_census_code)->first();
+		} else {
+			$importedVenue = null;
+		}
+
+		return $this->showForm($venue, $importedVenue);
 	}
 
 	/**
@@ -43,7 +51,7 @@ class FormController extends Controller
 	 * @param  Venue $venue
 	 * @return \Illuminate\Http\Response
 	 */
-	private function showForm(Venue $venue)
+	private function showForm(Venue $venue, ImportedVenue $importedVenue = null)
 	{
 		$machineTypes = Venue::machineTypes();
 		$categories = Category::pluck('name', 'id')->all();
@@ -51,6 +59,7 @@ class FormController extends Controller
 
 		JavaScript::put([
 			'venue' => $venue,
+			'importedVenue' => $importedVenue,
 			'venueCategories' => $venueCategories,
 			'machineTypes' => $machineTypes,
 			'categories' => $categories

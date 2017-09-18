@@ -23,11 +23,25 @@ class ListController extends Controller
 		if ($request->filled('query')) {
 			$query = $request->input('query');
 
-			$venues
-				->where('name', 'like', "%{$query}%")
-				->orWhere('address_city', 'like', "%{$query}%")
-				->orWhere('address_province', 'like', "%{$query}%")
-				->orWhere('aams_census_code', 'like', "%{$query}%");
+			$venues->where(function($builder) use ($query) {
+				$builder
+					->where('name', 'like', "%{$query}%")
+					->orWhere('address_city', 'like', "%{$query}%")
+					->orWhere('address_province', 'like', "%{$query}%")
+					->orWhere('aams_census_code', 'like', "%{$query}%");
+			});
+				
+		}
+
+		// Without geo data
+		if ($request->filled('without_geo_data')) {
+			$venues->where(function($builder) {
+				$builder
+					->whereNull('geo_latitude')
+					->orWhereNull('geo_latitude')
+					->orWhere('address_city', '')
+					->orWhere('address_street', '');
+			});
 		}
 
 		// Paginate

@@ -15,12 +15,15 @@
 			@endif
 		</div>
 
-		<div class="col-md-8 col-lg-6">
-			<form class="d-flex">
+		<div class="col-md-8">
+			<form class="d-flex align-items-center">
 				<div class="mr-auto w-100">
 					<label class="sr-only">Nome</label>
 					<input type="text" class="form-control" name="query" value="{{ old('query') }}" placeholder="Cerca nome, città, provincia o codice AAMS&hellip;">
 				</div>
+				<label class="form-check-label mb-0 ml-2">
+					<input class="form-check-input" type="checkbox" name="without_geo_data" value="1" @if(old('without_geo_data')) checked @endif> <span class="text-nowrap">Senza dati geografici</span>
+				</label>
 				<button type="submit" class="btn btn-primary ml-2">Cerca</button>
 				<a class="btn btn-secondary ml-2 {{ old('query') ? '' : 'disabled' }}" href="{{ route('admin.venues.index') }}" title="Reimposta ricerca" data-toggle="tooltip">
 					<i class="fa fa-undo"></i>
@@ -31,14 +34,13 @@
 
 	@if($venues->total())
 
-		<table class="table">
+		<table class="table table-responsive">
 			<thead>
 				<tr>
 					<th>Nome</th>
 					<th>Citt&agrave;</th>
 					<th>Codice AAMS</th>
-					<th class="text-right">Aggiunto</th>
-					<th class="text-right">Aggiornato <i class="fa fa-caret-down"></i></th>
+					<th class="text-right text-nowrap">Aggiornato <i class="fa fa-caret-down"></i></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -54,10 +56,7 @@
 						<td>
 							{{ $venue->aams_census_code }}
 						</td>
-						<td class="text-right">
-							{{ $venue->created_at->format('j F Y') }}
-						</td>
-						<td class="text-right">
+						<td class="text-right text-nowrap">
 							{{ $venue->updated_at->format('j F Y') }}
 						</td>
 					</tr>
