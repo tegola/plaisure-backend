@@ -105,7 +105,7 @@ task('artisan:migrate:refresh', function() {
 })->desc('Reset database')->onlyOn('test');
 
 task('artisan:config:clear', function () {
-    run('{{bin/php}} {{release_path}}/artisan config:cache');
+    run('{{bin/php}} {{release_path}}/artisan config:clear');
 })->desc('Execute artisan config:clear');
 
 task('deploy', [

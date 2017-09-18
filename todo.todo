@@ -1,4 +1,5 @@
 Generale:
+ ☐ Aggiungere campo "descrizione generale" per ogni esercizio
  ☐ Cambiare category in VenueCategory e aggiornare le tabelle di conseguenza
  ☐ Iniziare iter per rivendicazione attività
  ✔ Aggiungere "beta" al logo @done (17-09-10 15:16)
@@ -18,6 +19,11 @@ Generale:
  ☐ Supporto ai like/dislike
  ☐ Supporto per i jackpot
  ☐ Aggiungere i link ai social network
+
+SEO:
+ ☐ Tag OpenGraph
+ ☐ Structured data
+ ☐ Meta description con i dati dell'esercizio
 
 Pagina dettaglio:
  ☐ Ottimizzazione per mobile
