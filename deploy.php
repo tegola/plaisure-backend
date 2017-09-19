@@ -98,7 +98,7 @@ task('npm:local:build', function() {
     runLocally("cd {{local_release_path}} && {{local/bin/npm}} run production");
 })->desc('Build CSS and JS locally');
 
-task('artisan:migrate')->desc('Run migrations')->onlyOn('production');
+task('artisan:migrate')->desc('Run migrations');
 
 task('artisan:migrate:refresh', function() {
     run('{{bin/php}} {{release_path}}/artisan migrate:refresh --seed --force');
