@@ -25,7 +25,7 @@
 					<input class="form-check-input" type="checkbox" name="without_geo_data" value="1" @if(old('without_geo_data')) checked @endif> <span class="text-nowrap">Senza dati geografici</span>
 				</label>
 				<button type="submit" class="btn btn-primary ml-2">Cerca</button>
-				<a class="btn btn-secondary ml-2 {{ old('query') ? '' : 'disabled' }}" href="{{ route('admin.venues.index') }}" title="Reimposta ricerca" data-toggle="tooltip">
+				<a class="btn btn-secondary ml-2 {{ old('query') || old('without_geo_data') ? '' : 'disabled' }}" href="{{ route('admin.venues.index') }}" title="Reimposta ricerca" data-toggle="tooltip">
 					<i class="fa fa-undo"></i>
 				</a>
 			</form>

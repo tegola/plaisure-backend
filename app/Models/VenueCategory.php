@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class VenueCategory extends Model
 {
 	/**
 	 * The attributes that aren't mass assignable.

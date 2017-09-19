@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Site;
 use Illuminate\Http\Request;
 
 use App\Models\Venue;
-use App\Models\Category;
+use App\Models\VenueCategory;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -47,11 +47,11 @@ class HomeController extends Controller
 					->take(5)
 					->get();
 			}
-			$categories = Category::where('name', 'like', "%{$what}%")
+			$categories = VenueCategory::where('name', 'like', "%{$what}%")
 				->take(5)
 				->get();
 		} else {
-			$categories = Category::take(5)->get();
+			$categories = VenueCategory::take(5)->get();
 		}
 
 		// Prepare suggestions (categories first)

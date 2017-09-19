@@ -7,7 +7,7 @@ use App\Http\Requests\StoreVenue;
 use App\Models\Venue;
 use App\Models\ImportedVenue;
 use App\Models\VenuePlan;
-use App\Models\Category;
+use App\Models\VenueCategory;
 use JavaScript;
 
 class FormController extends Controller
@@ -54,7 +54,7 @@ class FormController extends Controller
 	private function showForm(Venue $venue, ImportedVenue $importedVenue = null)
 	{
 		$machineTypes = Venue::machineTypes();
-		$categories = Category::pluck('name', 'id')->all();
+		$categories = VenueCategory::pluck('name', 'id')->all();
 		$venueCategories = $venue->categories()->pluck('id');
 
 		JavaScript::put([
@@ -106,7 +106,7 @@ class FormController extends Controller
 
 		// Save plan
 		if ($request->plan) {
-			$plan = $venue->plan ?: new VenuePlan;
+			$plan = $venue->plan ?: new VenuePlan();
 			$plan->fill($request->plan);
 			$venue->plan()->save($plan);
 		} else {

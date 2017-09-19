@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVenue;
 use App\Models\Venue;
 use App\Models\ImportedVenue;
-use App\Models\Category;
+use App\Models\VenueCategory;
 use JavaScript;
 
 class FormController extends Controller
@@ -39,7 +39,7 @@ class FormController extends Controller
 		}
 
 		$machineTypes = Venue::machineTypes();
-		$categories = Category::pluck('name', 'id')->all();
+		$categories = VenueCategory::pluck('name', 'id')->all();
 		$venueCategories = $venue->categories()->pluck('id');
 
 		JavaScript::put([

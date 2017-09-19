@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Category;
+use App\Models\VenueCategory;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -21,7 +21,7 @@ class CategoriesTableSeeder extends Seeder
 		];
 
 		foreach ($categories as $machine_name => $name) {
-			Category::create([
+			VenueCategory::create([
 				'machine_name' => $machine_name,
 				'name' => $name
 			]);

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App;
 use App\Models\Venue;
-use App\Models\Category;
+use App\Models\VenueCategory;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -15,7 +15,7 @@ class ExploreController extends Controller
 {
 	public function __construct(Request $request) {
 		$this->near = $request->near;
-		$this->categories = $request->filled('categories') ? $request->categories : Category::pluck('id')->all();
+		$this->categories = $request->filled('categories') ? $request->categories : VenueCategory::pluck('id')->all();
 		// $this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
 		$this->c_lat = $request->filled('c_lat') ? floatval($request->c_lat) : null;
 		$this->c_lng = $request->filled('c_lng') ? floatval($request->c_lng) : null;
@@ -43,7 +43,7 @@ class ExploreController extends Controller
 			'sw_lng' => $this->sw_lng,
 		];
 
-		$categories = Category::all();
+		$categories = VenueCategory::all();
 
 		// Pass initial data to view
 		Javascript::put(compact('searchParams'));

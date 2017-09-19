@@ -55,16 +55,29 @@ export default {
 
 				const result = results[0];
 
+				if (!result.streetName ||
+					!result.streetNumber ||
+					!result.city ||
+					!result.zipcode ||
+					!result.administrativeLevels.level2long ||
+					!result.administrativeLevels.level1long ||
+					!result.country ||
+					!result.latitude ||
+					!result.longitude) {
+					alert('Google Maps non ha restituito tutti i dati. Cercali manualmente e inseriscili prima di salvare.');
+				}
+
+
 				$.extend(this.venue, {
-					address_street: result.streetName,
-					address_number: result.streetNumber,
-					address_city: result.city,
-					address_postcode: result.zipcode,
-					address_province: result.administrativeLevels.level2long.replace('Provincia di ', ''),
-					address_region: result.administrativeLevels.level1long,
-					address_country: result.country,
-					geo_latitude: result.latitude,
-					geo_longitude: result.longitude
+					address_street: result.streetName || '',
+					address_number: result.streetNumber || '',
+					address_city: result.city || '',
+					address_postcode: result.zipcode || '',
+					address_province: result.administrativeLevels.level2long ? result.administrativeLevels.level2long.replace('Provincia di ', '') : '',
+					address_region: result.administrativeLevels.level1long || '',
+					address_country: result.country || '',
+					geo_latitude: result.latitude || '',
+					geo_longitude: result.longitude || ''
 				});
 
 				this.mapCenter = {

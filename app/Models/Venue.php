@@ -249,11 +249,11 @@ class Venue extends Model
 	/**
 	 * Categories the venue is in.
 	 *
-	 * @return \App\Models\Category
+	 * @return \App\Models\VenueCategory
 	 */
 	public function categories()
 	{
-		return $this->belongsToMany('App\Models\Category');
+		return $this->belongsToMany('App\Models\VenueCategory');
 	}
 
 	/**
@@ -385,7 +385,7 @@ class Venue extends Model
 	{
 		return $query
 			->where('venues.name', 'like', "%{$name}%") // Venue name
-			->orWhereHas('categories', function($query) use ($name){ // Category name
+			->orWhereHas('categories', function($query) use ($name) { // Category name
 				$query->where('name', 'like', "%{$name}%");
 			});
 	}
