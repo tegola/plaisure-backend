@@ -17,13 +17,16 @@ class SeoController extends Controller
 	{
 		$sitemap = App::make("sitemap");
 
+		// Set cache duration in minutes
+		$sitemap->setCache('laravel.sitemap', 60);
+
 		// Build if not cached
 		if (!$sitemap->isCached()) {
 			// Home page
 			$sitemap->add(route('site.home'), null, '1.0', 'weekly');
 
 			// Venues
-			$venues = Venue::latest()->get();
+			$venues = Venue::all();
 
 			foreach ($venues as $venue) {
 				$sitemap->add(route('site.venues.detail', ['venue' => $venue]), $venue->updated_at, 0.9, 'daily');
