@@ -28,6 +28,7 @@ class Venue extends Model
 		'aams_subject_enrollment_code' => '',
 
 		'name' => '',
+		'description' => '',
 		'surface_size' => 0,
 		'machine_count' => 0,
 		'machine_type' => self::MACHINE_TYPE_A,
@@ -62,6 +63,7 @@ class Venue extends Model
 		'aams_census_code',
 		'aams_subject_enrollment_code',
 		'name',
+		'description',
 		'surface_size',
 		'machine_type',
 		'address_street',

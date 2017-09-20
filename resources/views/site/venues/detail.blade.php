@@ -91,6 +91,16 @@
 						</div>
 					</div>
 
+					{{-- Description --}}
+					@if ($venue->description)
+						<hr>
+
+						<div class="my-5">
+							<h4>Descrizione attività</h4>
+							<p>{{ $venue->description }}</p>
+						</div>
+					@endif
+
 					<hr>
 
 					{{-- Details --}}

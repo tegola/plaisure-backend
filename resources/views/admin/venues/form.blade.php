@@ -81,6 +81,10 @@
 					</div>
 				</div>
 			</div>
+			<div class="form-group">
+				<label>Descrizione</label>
+				<textarea class="form-control" name="description" v-model="venue.description" rows="4"></textarea>
+			</div>
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label>Tipo apparecchi</label>
