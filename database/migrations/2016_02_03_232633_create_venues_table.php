@@ -37,7 +37,9 @@ class CreateVenuesTable extends Migration
 			$table->string('address_province');
 			$table->string('address_region');
 			$table->string('address_country');
-			// Best practice for geo data: https://developers.google.com/maps/articles/phpsqlsearch_v3?csw=1
+
+			// Geo data
+			// Best practice: https://developers.google.com/maps/articles/phpsqlsearch_v3?csw=1
 			$table->float('geo_latitude', 10, 6)->nullable();
 			$table->float('geo_longitude', 10, 6)->nullable();
 

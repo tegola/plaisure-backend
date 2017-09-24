@@ -121,7 +121,7 @@
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
 									{{--
-									@if($venue->machine_count)
+									@if ($venue->machine_count)
 										<li class="detail-list-item">
 											Numero di macchine:
 											<strong>{{ $venue->machine_count }}</strong>
@@ -140,6 +140,10 @@
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
+								</ul>
+							</div>
+							<div class="col-md">
+								<ul class="list-unstyled">
 									<li class="detail-list-item">
 										Numero di AWP:
 										<span class="text-muted">sconosciuto</span>
@@ -155,44 +159,121 @@
 										<span class="text-muted">sconosciuto</span>
 										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<hr>
+
+					{{-- Amenities --}}
+					<div class="my-5">
+						<h4>Servizi</h4>
+						<div class="row">
+							<div class="col-md">
+								<ul class="list-unstyled mb-0 mb-md-3">
+									<li class="detail-list-item">
+										Totem Bancomat:
+										@if ($venue->amenity_atm)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
+									</li>
+									<li class="detail-list-item">
+										Bar:
+										@if ($venue->amenity_bar)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
+									</li>
+									<li class="detail-list-item">
+										Pay per view:
+										@if ($venue->amenity_pay_per_view)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
+									</li>
+									<li class="detail-list-item">
+										POS:
+										@if ($venue->amenity_pos)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
+									</li>
 									<li class="detail-list-item">
 										Parcheggio privato:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@if ($venue->amenity_private_parking)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
 									</li>
 								</ul>
 							</div>
 							<div class="col-md">
 								<ul class="list-unstyled">
 									<li class="detail-list-item">
-										Bar:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-									</li>
-									<li class="detail-list-item">
 										Ristorante:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@if ($venue->amenity_restaurant)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
 									</li>
 									<li class="detail-list-item">
-										POS:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										Servizio di sicurezza:
+										@if ($venue->amenity_security)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
 									</li>
 									<li class="detail-list-item">
-										Bancomat:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-									</li>
-									<li class="detail-list-item">
-										Pay Per View:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										Area fumatori:
+										@if ($venue->amenity_smoking_area)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
 									</li>
 									<li class="detail-list-item">
 										Wi-Fi:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@if ($venue->amenity_wifi)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										@endif
 									</li>
 								</ul>
 							</div>

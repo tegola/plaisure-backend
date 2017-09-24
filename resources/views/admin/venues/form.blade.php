@@ -24,7 +24,7 @@
 			<input type="hidden" name="aams_census_code" v-model="venue.aams_census_code">
 			<input type="hidden" name="aams_subject_enrollment_code" v-model="venue.aams_subject_enrollment_code">
 
-			<h5 class="mt-3">Informazioni</h5>
+			<h5 class="mt-4">Informazioni</h5>
 			<hr>
 			<div class="row">
 				<div class="form-group col-6 col-lg-3">
@@ -59,7 +59,7 @@
 				@endif
 			</div>
 
-			<h5 class="mt-3">Generale</h5>
+			<h5 class="mt-4">Generale</h5>
 			<hr>
 			<div class="form-group">
 				<label>Nome</label>
@@ -99,7 +99,7 @@
 				</div>
 			</div>
 
-			<h5 class="mt-3">Categorie</h5>
+			<h5 class="mt-4">Categorie</h5>
 			<hr>
 
 			<div class="row form-group">
@@ -111,7 +111,67 @@
 				</div>
 			</div>
 
-			<h5 class="mt-3">Indirizzo</h5>
+			<h5 class="mt-4">Comodità</h5>
+			<hr>
+
+			<div class="row form-group">
+				<div class="col-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_atm" value="1" v-model.number="venue.amenity_atm">
+						Totem Bancomat
+					</label>
+				</div>
+				<div class="col-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_bar" value="1" v-model.number="venue.amenity_bar">
+						Bar
+					</label>
+				</div>
+				<div class="col-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_pay_per_view" value="1" v-model.number="venue.amenity_pay_per_view">
+						Pay per view
+					</label>
+				</div>
+				<div class="col-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_pos" value="1" v-model.number="venue.amenity_pos">
+						POS
+					</label>
+				</div>
+				<div class="col-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_private_parking" value="1" v-model.number="venue.amenity_private_parking">
+						Parcheggio privato
+					</label>
+				</div>
+				<div class="col-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_restaurant" value="1" v-model.number="venue.amenity_restaurant">
+						Ristorante
+					</label>
+				</div>
+				<div class="col-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_security" value="1" v-model.number="venue.amenity_security">
+						Security
+					</label>
+				</div>
+				<div class="col-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_smoking_area" value="1" v-model.number="venue.amenity_smoking_area">
+						Area fumatori
+					</label>
+				</div>
+				<div class="col-sm-6 col-md-4 col-lg-3">
+					<label>
+						<input type="checkbox" name="amenity_wifi" value="1" v-model.number="venue.amenity_wifi">
+						Wi-Fi
+					</label>
+				</div>
+			</div>
+
+			<h5 class="mt-4">Indirizzo</h5>
 			<hr>
 
 			<div class="form-group" v-if="importedVenueAddress">
@@ -180,7 +240,7 @@
 				</div>
 			</div>
 
-			<h5 class="mt-3">Contatti</h5>
+			<h5 class="mt-4">Contatti</h5>
 			<hr>
 
 			<div class="row">
@@ -213,7 +273,7 @@
 				</div>
 			</div>
 
-			<h5 class="mt-3">Indirizzi web</h5>
+			<h5 class="mt-4">Indirizzi web</h5>
 			<hr>
 
 			<div class="row">
@@ -237,7 +297,7 @@
 				</div>
 			</div>
 
-			<h5 class="mt-3">Dettagli piano</h5>
+			<h5 class="mt-4">Dettagli piano</h5>
 			<hr>
 
 			<div class="row">

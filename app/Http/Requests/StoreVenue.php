@@ -61,7 +61,16 @@ class StoreVenue extends FormRequest
 			// 'contact_twitter'              => '',
 			'url_site'                     => 'nullable|url',
 			'url_facebook'                 => 'nullable|url',
-			'url_tripadvisor'              => 'nullable|url'
+			'url_tripadvisor'              => 'nullable|url',
+			'amenity_atm'                  => 'boolean',
+			'amenity_bar'                  => 'boolean',
+			'amenity_pay_per_view'         => 'boolean',
+			'amenity_pos'                  => 'boolean',
+			'amenity_private_parking'      => 'boolean',
+			'amenity_restaurant'           => 'boolean',
+			'amenity_security'             => 'boolean',
+			'amenity_smoking_area'         => 'boolean',
+			'amenity_wifi'                 => 'boolean'
 		];
 	}
 }

@@ -51,7 +51,17 @@ class Venue extends Model
 
 		'url_site' => '',
 		'url_facebook' => '',
-		'url_tripadvisor' => ''
+		'url_tripadvisor' => '',
+
+		'amenity_atm',
+		'amenity_bar',
+		'amenity_pay_per_view',
+		'amenity_pos',
+		'amenity_private_parking',
+		'amenity_restaurant',
+		'amenity_security',
+		'amenity_smoking_area',
+		'amenity_wifi'
 	];
 
 	/**
@@ -81,7 +91,16 @@ class Venue extends Model
 		'contact_twitter',
 		'url_site',
 		'url_facebook',
-		'url_tripadvisor'
+		'url_tripadvisor',
+		'amenity_atm',
+		'amenity_bar',
+		'amenity_pay_per_view',
+		'amenity_pos',
+		'amenity_private_parking',
+		'amenity_restaurant',
+		'amenity_security',
+		'amenity_smoking_area',
+		'amenity_wifi'
 	];
 
 	/**
@@ -140,6 +159,16 @@ class Venue extends Model
 			self::MACHINE_TYPE_B => 'B',
 			self::MACHINE_TYPE_AB => 'A/B'
 		];
+	}
+
+	/**
+	 * Get the managed status.
+	 * 
+	 * @return boolean
+	 */
+	public function isManaged()
+	{
+	    return $this->owner_id ? true : false;
 	}
 
 	/**

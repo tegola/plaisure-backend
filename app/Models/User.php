@@ -33,7 +33,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the admin status
+     * Get the admin status.
      * 
      * @return boolean
      */
