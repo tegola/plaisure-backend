@@ -8,47 +8,47 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+	use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [
+		'name', 'email', 'password',
+	];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+	/**
+	 * The attributes excluded from the model's JSON form.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [
+		'password', 'remember_token',
+	];
 
-    protected $casts = [
-        'is_admin' => 'boolean'
-    ];
+	protected $casts = [
+		'is_admin' => 'boolean'
+	];
 
-    /**
-     * Get the admin status.
-     * 
-     * @return boolean
-     */
-    public function isAdmin()
-    {
-        return $this->is_admin;
-    }
+	/**
+	 * Get the admin status.
+	 * 
+	 * @return boolean
+	 */
+	public function isAdmin()
+	{
+		return $this->is_admin;
+	}
 
-    /**
-     * Venues claimed by this user.
-     * 
-     * @return [\App\Models\Venue]
-     */
-    public function venues()
-    {
-        return $this->hasMany('App\Models\Venue', 'owner_id');
-    }
+	/**
+	 * Venues claimed by this user.
+	 * 
+	 * @return [\App\Models\Venue]
+	 */
+	public function venues()
+	{
+		return $this->hasMany('App\Models\Venue', 'owner_id');
+	}
 }

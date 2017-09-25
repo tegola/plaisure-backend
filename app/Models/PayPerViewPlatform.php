@@ -4,20 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VenueCategory extends Model
+class PayPerViewPlatform extends Model
 {
 	/**
 	 * The attributes that aren't mass assignable.
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'machine_name',
-		'name'
-	];
+	protected $guarded = [];
 
 	/**
-	 * Venues belonging to this category.
+	 * Venues belonging to this platform.
 	 *
 	 * @return [App\Models\Venue]
 	 */

@@ -15,10 +15,15 @@ export default {
 	data() {
 		return {
 			venue: pg.venue,
-			importedVenue: pg.importedVenue || null,
 			venueCategories: pg.venueCategories,
+			venueVltPlatforms: pg.venueVltPlatforms,
+			venuePayPerViewPlatforms: pg.venuePayPerViewPlatforms,
+			importedVenue: pg.importedVenue || null,
 			machineTypes: pg.machineTypes,
 			categories: pg.categories,
+			concessionaires: pg.concessionaires,
+			vltPlatforms: pg.vltPlatforms,
+			payPerViewPlatforms: pg.payPerViewPlatforms,
 			mapCenter: {
 				lat: pg.venue.geo_latitude || pg.config.defaultMapCenter.lat,
 				lng: pg.venue.geo_longitude || pg.config.defaultMapCenter.lng

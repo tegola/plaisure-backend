@@ -37,7 +37,21 @@ class StoreVenue extends FormRequest
 	 */
 	public function rules()
 	{
+		// Set default values for the checkboxes
+		$this->merge([
+			'amenity_atm' => $this->input('amenity_atm', 0),
+			'amenity_bar' => $this->input('amenity_bar', 0),
+			'amenity_pay_per_view' => $this->input('amenity_pay_per_view', 0),
+			'amenity_pos' => $this->input('amenity_pos', 0),
+			'amenity_private_parking' => $this->input('amenity_private_parking', 0),
+			'amenity_restaurant' => $this->input('amenity_restaurant', 0),
+			'amenity_security' => $this->input('amenity_security', 0),
+			'amenity_smoking_area' => $this->input('amenity_smoking_area', 0),
+			'amenity_wifi' => $this->input('amenity_wifi', 0)
+		]);
+
 		return [
+			'concessionaire_id'            => 'nullable|exists:concessionaires,id',
 			'aams_census_code'             => 'required|string',
 			'aams_subject_enrollment_code' => 'required|string',
 			'name'                         => 'required|string',
@@ -54,7 +68,6 @@ class StoreVenue extends FormRequest
 			'address_country'              => 'required|string',
 			'geo_latitude'                 => 'required|numeric|between:-90,90',
 			'geo_longitude'                => 'required|numeric|between:-180,180',
-			'categories'                   => 'required|exists:venue_categories,id',
 			'contact_phone'                => 'nullable|numeric|min:0',
 			'contact_email'                => 'nullable|email',
 			// 'contact_facebook'             => '',
@@ -70,7 +83,10 @@ class StoreVenue extends FormRequest
 			'amenity_restaurant'           => 'boolean',
 			'amenity_security'             => 'boolean',
 			'amenity_smoking_area'         => 'boolean',
-			'amenity_wifi'                 => 'boolean'
+			'amenity_wifi'                 => 'boolean',
+			'categories'                   => 'required|exists:venue_categories,id',
+			'vlt_platforms'                => 'nullable|exists:vlt_platforms,id',
+			'pay_per_view_platforms'       => 'nullable|exists:pay_per_view_platforms,id'
 		];
 	}
 }

@@ -8,6 +8,9 @@ use App\Models\Venue;
 use App\Models\ImportedVenue;
 use App\Models\VenuePlan;
 use App\Models\VenueCategory;
+use App\Models\Concessionaire;
+use App\Models\VltPlatform;
+use App\Models\PayPerViewPlatform;
 use JavaScript;
 
 class FormController extends Controller
@@ -35,6 +38,7 @@ class FormController extends Controller
 		if (old()) $venue->fill(old());
 		$venue->load('plan');
 
+
 		// If the venus has no geo or address, data, get the original Imported venue
 		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venued->address_street) && $venue->aams_census_code) {
 			$importedVenue = ImportedVenue::where('aams_census_code', $venue->aams_census_code)->first();
@@ -53,21 +57,30 @@ class FormController extends Controller
 	 */
 	private function showForm(Venue $venue, ImportedVenue $importedVenue = null)
 	{
+		$venueCategories = $venue->categories()->pluck('id');
+		$venueVltPlatforms = $venue->vltPlatforms()->pluck('id');
+		$venuePayPerViewPlatforms = $venue->payPerViewPlatforms()->pluck('id');
+		
 		$machineTypes = Venue::machineTypes();
 		$categories = VenueCategory::pluck('name', 'id')->all();
-		$venueCategories = $venue->categories()->pluck('id');
+		$concessionaires = Concessionaire::pluck('name', 'id')->all();
+		$vltPlatforms = VltPlatform::pluck('name', 'id')->all();
+		$payPerViewPlatforms = PayPerViewPlatform::pluck('name', 'id')->all();
 
-		JavaScript::put([
-			'venue' => $venue,
-			'importedVenue' => $importedVenue,
-			'venueCategories' => $venueCategories,
-			'machineTypes' => $machineTypes,
-			'categories' => $categories
-		]);
+		JavaScript::put(compact(
+			'venue',
+			'venueCategories',
+			'venueVltPlatforms',
+			'venuePayPerViewPlatforms',
+			'importedVenue',
+			'machineTypes',
+			'categories',
+			'concessionaires',
+			'vltPlatforms',
+			'payPerViewPlatforms'
+		));
 
-		return view('admin.venues.form', [
-			'venue' => $venue
-		]);
+		return view('admin.venues.form', compact('venue'));
 	}
 
 	/**
@@ -84,6 +97,12 @@ class FormController extends Controller
 
 		// Save categories
 		$venue->categories()->sync($request->categories);
+
+		// Save VLT platforms
+		$venue->vltPlatforms()->sync($request->vlt_platforms);
+
+		// Save pay per view Platforms
+		$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
 
 		return redirect()->route('admin.venues.index');
 	}
@@ -103,6 +122,12 @@ class FormController extends Controller
 
 		// Save categories
 		$venue->categories()->sync($request->categories);
+
+		// Save VLT platforms
+		$venue->vltPlatforms()->sync($request->vlt_platforms);
+
+		// Save pay per view Platforms
+		$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
 
 		// Save plan
 		if ($request->plan) {

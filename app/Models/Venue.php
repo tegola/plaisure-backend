@@ -24,6 +24,7 @@ class Venue extends Model
 	 * @var array
 	 */
 	protected $attributes = [
+		'concessionaire_id',
 		'aams_census_code' => '',
 		'aams_subject_enrollment_code' => '',
 
@@ -53,15 +54,15 @@ class Venue extends Model
 		'url_facebook' => '',
 		'url_tripadvisor' => '',
 
-		'amenity_atm',
-		'amenity_bar',
-		'amenity_pay_per_view',
-		'amenity_pos',
-		'amenity_private_parking',
-		'amenity_restaurant',
-		'amenity_security',
-		'amenity_smoking_area',
-		'amenity_wifi'
+		'amenity_atm' => false,
+		'amenity_bar' => false,
+		'amenity_pay_per_view' => false,
+		'amenity_pos' => false,
+		'amenity_private_parking' => false,
+		'amenity_restaurant' => false,
+		'amenity_security' => false,
+		'amenity_smoking_area' => false,
+		'amenity_wifi' => false
 	];
 
 	/**
@@ -70,6 +71,7 @@ class Venue extends Model
 	 * @var array
 	 */
 	protected $fillable = [
+		'concessionaire_id',
 		'aams_census_code',
 		'aams_subject_enrollment_code',
 		'name',
@@ -278,13 +280,43 @@ class Venue extends Model
 	}
 
 	/**
+	 * Concessionaire this venue is affiliate to.
+	 * 
+	 * @return \App\Models\Concessionaire
+	 */
+	public function concessionaire()
+	{
+		return $this->belongsTo('App\Models\Concessionaire');
+	}
+
+	/**
 	 * Categories the venue is in.
 	 *
-	 * @return \App\Models\VenueCategory
+	 * @return [\App\Models\VenueCategory]
 	 */
 	public function categories()
 	{
 		return $this->belongsToMany('App\Models\VenueCategory');
+	}
+
+	/**
+	 * VLT platoform this venue belongs to.
+	 * 
+	 * @return [\App\Models\VltPlatform]
+	 */
+	public function vltPlatforms()
+	{
+		return $this->belongsToMany('App\Models\VltPlatform');
+	}
+
+	/**
+	 * Pay per view platforms available in this venue.
+	 * 
+	 * @return [\App\Models\PayPerViewPlatform]
+	 */
+	public function payPerViewPlatforms()
+	{
+		return $this->belongsToMany('App\Models\PayPerViewPlatform');
 	}
 
 	/**

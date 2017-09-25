@@ -86,94 +86,69 @@
 				<textarea class="form-control" name="description" v-model="venue.description" rows="4"></textarea>
 			</div>
 			<div class="row">
-				<div class="form-group col-md-6">
+				<div class="form-group col-md-4">
+					<label>Concessionario</label>
+					<select class="form-control" name="concessionaire_id" v-model.number="venue.concessionaire_id">
+						<option :value="null">Nessuno</option>
+						<option v-for="(name, id) in concessionaires" :value="id">@{{ name }}</option>
+					</select>
+				</div>
+				<div class="form-group col-md-4">
 					<label>Tipo apparecchi</label>
 					<select class="form-control" name="machine_type" v-model="venue.machine_type">
 						<option value="">Scegli&hellip;</option>
 						<option v-for="(name, id) in machineTypes" :value="id">@{{ name }}</option>
 					</select>
 				</div>
-				<div class="form-group col-md-6">
+				<div class="form-group col-md-4">
 					<label>Superficie (mq.)</label>
 					<input type="text" class="form-control" name="surface_size" v-model="venue.surface_size">
 				</div>
 			</div>
-
-			<h5 class="mt-4">Categorie</h5>
-			<hr>
-
-			<div class="row form-group">
-				<div class="col-sm-6 col-md-4 col-lg-3" v-for="(name, id) in categories">
-					<label>
-						<input type="checkbox" name="categories[]" :value="id" v-model.number="venueCategories">
-						@{{ name }}
-					</label>
+			<div class="row">
+				<div class="form-group col-md-4">
+					<label>Comodità</label>
+					@foreach([
+						'amenity_atm' => 'Totem Bancomat',
+						'amenity_bar' => 'Bar',
+						'amenity_pay_per_view' => 'Pay per view',
+						'amenity_pos' => 'POS',
+						'amenity_private_parking' => 'Parcheggio privato',
+						'amenity_restaurant' => 'Ristorante',
+						'amenity_security' => 'Security',
+						'amenity_smoking_area' => 'Area fumatori',
+						'amenity_wifi' => 'Wi-Fi',
+					] as $field => $label)
+						<div class="form-check">
+							<label class="form-check-label">
+								<input class="form-check-input" type="checkbox" name="{{ $field }}" value="1" v-model="venue.{{ $field }}">
+								{{ $label }}
+							</label>
+						</div>
+					@endforeach
 				</div>
-			</div>
-
-			<h5 class="mt-4">Comodità</h5>
-			<hr>
-
-			<div class="row form-group">
-				<div class="col-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_atm" value="1" v-model.number="venue.amenity_atm">
-						Totem Bancomat
-					</label>
+				<div class="form-group col-md-4">
+					<label>Piattaforme VLT</label>
+					<div class="form-check" v-for="(name, id) in vltPlatforms">
+						<label class="form-check-label">
+							<input class="form-check-input" type="checkbox" name="vlt_platforms[]" :value="id" v-model.number="venueVltPlatforms">
+							@{{ name }}
+						</label>
+					</div>
 				</div>
-				<div class="col-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_bar" value="1" v-model.number="venue.amenity_bar">
-						Bar
-					</label>
-				</div>
-				<div class="col-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_pay_per_view" value="1" v-model.number="venue.amenity_pay_per_view">
-						Pay per view
-					</label>
-				</div>
-				<div class="col-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_pos" value="1" v-model.number="venue.amenity_pos">
-						POS
-					</label>
-				</div>
-				<div class="col-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_private_parking" value="1" v-model.number="venue.amenity_private_parking">
-						Parcheggio privato
-					</label>
-				</div>
-				<div class="col-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_restaurant" value="1" v-model.number="venue.amenity_restaurant">
-						Ristorante
-					</label>
-				</div>
-				<div class="col-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_security" value="1" v-model.number="venue.amenity_security">
-						Security
-					</label>
-				</div>
-				<div class="col-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_smoking_area" value="1" v-model.number="venue.amenity_smoking_area">
-						Area fumatori
-					</label>
-				</div>
-				<div class="col-sm-6 col-md-4 col-lg-3">
-					<label>
-						<input type="checkbox" name="amenity_wifi" value="1" v-model.number="venue.amenity_wifi">
-						Wi-Fi
-					</label>
+				<div class="form-group col-md-4">
+					<label>Piattaforme Pay per view</label>
+					<div class="form-check" v-for="(name, id) in payPerViewPlatforms">
+						<label class="form-check-label">
+							<input class="form-check-input" type="checkbox" name="pay_per_view_platforms[]" :value="id" v-model.number="venuePayPerViewPlatforms">
+							@{{ name }}
+						</label>
+					</div>
 				</div>
 			</div>
 
 			<h5 class="mt-4">Indirizzo</h5>
 			<hr>
-
 			<div class="form-group" v-if="importedVenueAddress">
 				<label>Indirizzo originale</label>
 				<div class="input-group">
@@ -242,7 +217,6 @@
 
 			<h5 class="mt-4">Contatti</h5>
 			<hr>
-
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
@@ -275,7 +249,6 @@
 
 			<h5 class="mt-4">Indirizzi web</h5>
 			<hr>
-
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
@@ -297,9 +270,19 @@
 				</div>
 			</div>
 
+			<h5 class="mt-4">Categorie</h5>
+			<hr>
+			<div class="row form-group">
+				<div class="col-sm-6 col-md-4 col-lg-3" v-for="(name, id) in categories">
+					<label>
+						<input type="checkbox" name="categories[]" :value="id" v-model.number="venueCategories">
+						@{{ name }}
+					</label>
+				</div>
+			</div>
+
 			<h5 class="mt-4">Dettagli piano</h5>
 			<hr>
-
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label>Scegli un piano</label>

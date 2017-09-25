@@ -113,51 +113,82 @@
 										Dimensioni:
 										{{-- <strong>{{ $venue->surface_size }} mq.</strong> --}}
 										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
 									</li>
 									<li class="detail-list-item">
 										Numero di macchine:
 										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
 									</li>
 									{{--
 									@if ($venue->machine_count)
 										<li class="detail-list-item">
 											Numero di macchine:
 											<strong>{{ $venue->machine_count }}</strong>
-											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
 										</li>
 									@elseif($venue->estimated_machine_count)
 										<li class="detail-list-item">
 											Numero di macchine (stimato):
 											<strong>{{ $venue->estimated_machine_count }}</strong>
-											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
 										</li>
 									@endif
 									--}}
 									<li class="detail-list-item">
 										Numero di VLT:
 										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
+									</li>
+									<li class="detail-list-item">
+										Numero di AWP:
+										<span class="text-muted">sconosciuto</span>
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
 									</li>
 								</ul>
 							</div>
 							<div class="col-md">
 								<ul class="list-unstyled">
 									<li class="detail-list-item">
-										Numero di AWP:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										Piattaforme VLT disponibili:
+										@if ($venue->vltPlatforms->count())
+											{{ $venue->vltPlatforms->pluck('name')->implode(', ') }}
+										@else
+											<span class="text-muted">sconosciuto</span>
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
 									</li>
 									<li class="detail-list-item">
-										Piattaforme disponibili:
-										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										Pay per view disponibili:
+										@if ($venue->payPerViewPlatforms->count())
+											{{ $venue->payPerViewPlatforms->pluck('name')->implode(', ') }}
+										@else
+											<span class="text-muted">sconosciuto</span>
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
 									</li>
 									<li class="detail-list-item">
 										Posti auto:
 										<span class="text-muted">sconosciuto</span>
-										<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
 									</li>
 								</ul>
 							</div>
@@ -178,9 +209,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 									<li class="detail-list-item">
@@ -189,9 +220,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 									<li class="detail-list-item">
@@ -200,9 +231,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 									<li class="detail-list-item">
@@ -211,9 +242,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 									<li class="detail-list-item">
@@ -222,9 +253,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 								</ul>
@@ -237,9 +268,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 									<li class="detail-list-item">
@@ -248,9 +279,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 									<li class="detail-list-item">
@@ -259,9 +290,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 									<li class="detail-list-item">
@@ -270,9 +301,9 @@
 											<strong class="text-success">Sì</strong>
 										@else
 											<span class="text-muted">No</span>
-											@if (!$venue->isManaged())
-												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-											@endif
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 								</ul>
