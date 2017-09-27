@@ -1,4 +1,5 @@
 <div class="card contact-card {{ isset($class) ? $class : null }}">
+	{{-- Map --}}
 	<div class="embed-responsive embed-responsive-16by9 contact-card-map">
 		<pg-map class="embed-responsive-item" :center="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" :zoom="15" :options="mapOptions">
 			@php
@@ -7,9 +8,13 @@
 			<pg-map-marker :position="{ lat: {{ $venue->geo_latitude }}, lng: {{ $venue->geo_longitude }} }" icon="{{ asset("img/map/pin-normal-{$img}.svg") }}"></pg-map-marker>
 		</pg-map>
 	</div>
+
 	<div class="list-group list-group-flush">
+		{{-- Address --}}
 		<div class="list-group-item contact-card-list-item">
-			<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
+			@if (!$venue->isManaged())
+				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
+			@endif
 			<pg-icon icon="directions" class="contact-card-list-item-icon"></pg-icon>
 			<p class="mb-2">
 				<strong>{{ $venue->name }}</strong><br>
@@ -17,28 +22,71 @@
 					{{ $line }}<br>
 				@endforeach
 			</p>
-			<p class="mb-0"><a href="{{ $venue->googleMapsUrl() }}" target="_blank">Ottieni indicazioni</a></p>
+			<p class="mb-0"><a href="{{ $venue->googleMapsUrl() }}" target="_blank">Come arrivare</a></p>
 		</div>
+
+		{{-- Business hours --}}
 		<div class="list-group-item contact-card-list-item">
-			<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
+			@if (!$venue->isManaged())
+				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
+			@endif
 			<pg-icon icon="clock-outline" class="contact-card-list-item-icon text-muted"></pg-icon>
 			<p class="mb-0 text-muted">
 				Nessun orario
 			</p>
 		</div>
+
+		{{-- Contacts --}}
 		<div class="list-group-item contact-card-list-item">
-			<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
+			@if (!$venue->isManaged())
+				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
+			@endif
 			<pg-icon icon="phone" class="contact-card-list-item-icon text-muted"></pg-icon>
-			<p class="mb-0 text-muted">
-				Nessuna informazione di contatto
-			</p>
+			@if ($venue->contact_phone || $venue->contact_email || $venue->contact_facebook || $venue->contact_twitter)
+				<ul class="list-unstyled mb-0">
+					@if ($venue->contact_phone)
+						<li><a href="tel://{{ $venue->contact_phone }}">{{ $venue->contact_phone }}</a></li>
+					@endif
+					@if ($venue->contact_email)
+						<li><a href="mailto:{{ $venue->contact_email }}">{{ $venue->contact_email }}</a></li>
+					@endif
+					@if ($venue->contact_facebook)
+						<li><a href="{{ $venue->facebookMessengerUrl() }}" target="_blank">{{ $venue->contact_facebook }}</a> <span class="text-muted">(Facebook Messenger)</span></li>
+					@endif
+					@if ($venue->contact_twitter)
+						<li><a href="{{ $venue->twitterUrl() }}" target="_blank">{{ '@' . $venue->contact_twitter }}</a> <span class="text-muted">(Twitter)</span></li>
+					@endif
+				</ul>
+			@else
+				<p class="mb-0 text-muted">
+					Nessuna informazione di contatto
+				</p>
+			@endif
 		</div>
+
+		{{-- URLs --}}
 		<div class="list-group-item contact-card-list-item">
-			<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
+			@if (!$venue->isManaged())
+				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
+			@endif
 			<pg-icon icon="globe" class="contact-card-list-item-icon text-muted"></pg-icon>
-			<p class="mb-0 text-muted">
-				Nessun sito o pagina social
-			</p>
+			@if ($venue->url_site || $venue->url_facebook || $venue->url_tripadvisor)
+				<ul class="list-unstyled mb-0">
+					@if ($venue->url_site)
+						<li><a href="{{ $venue->url_site }}" target="_blank">{{ $venue->readableSiteUrl() }}</a></li>
+					@endif
+					@if ($venue->url_facebook)
+						<li><a href="{{ $venue->url_facebook }}" target="_blank">Pagina Facebook</a></li>
+					@endif
+					@if ($venue->url_tripadvisor)
+						<li><a href="{{ $venue->url_facebook }}" target="_blank">Pagina TripAdvisor</a></li>
+					@endif
+				</ul>
+			@else
+				<p class="mb-0 text-muted">
+					Nessun sito o pagina social
+				</p>
+			@endif
 		</div>
 	</div>
 </div>

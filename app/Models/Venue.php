@@ -270,6 +270,42 @@ class Venue extends Model
 	}
 
 	/**
+	 * Get the readable (domain only) site URL.
+	 * 
+	 * @return string|null
+	 */
+	public function readableSiteUrl() {
+		if (!$this->url_site) return null;
+
+		$parsed = parse_url($this->url_site);
+		$domain = str_replace('www.', '', $parsed['host']);
+
+		return $domain ?: null;
+	}
+
+	/**
+	 * Get the generated Facebook Messenger URL.
+	 * 
+	 * @return string|null
+	 */
+	public function facebookMessengerUrl() {
+		if (!$this->contact_facebook) return null;
+
+		return implode('', ['https://www.messenger.com/t/', $this->contact_facebook]);
+	}
+
+	/**
+	 * Get the generated Twitter URL.
+	 * 
+	 * @return string|null
+	 */
+	public function twitterUrl() {
+		if (!$this->contact_twitter) return null;
+
+		return implode('', ['https://www.twitter.com/', $this->contact_twitter]);
+	}
+
+	/**
 	 * User that claimed this venue.
 	 * 
 	 * @return \App\Models\User

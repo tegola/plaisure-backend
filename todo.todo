@@ -1,6 +1,8 @@
 Generale:
  ✔ Aggiungere campo "descrizione generale" per ogni esercizio @done (17-09-21 00:11)
  ☐ Aggiungere tabelle di attributi
+ ☐ Aggiungere orari e farli renderizzare
+ ✔ Far renderizzare informazioni di contatto e url @done (17-09-27 22:55)
  ☐ Aggiungere caricamento foto
  ✔ Cambiare category in VenueCategory e aggiornare le tabelle di conseguenza @done (17-09-20 01:07)
  ☐ Iniziare iter per rivendicazione attività
