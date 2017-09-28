@@ -6,6 +6,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 
+		{{-- Verifications --}}
+		<meta name="google-site-verification" content="KOtwsto-b3doO3NsrSsETD-ci_02n8wKCO0dzZfL_bk">
+		<meta name="msvalidate.01" content="0F83EB755446F01A87E89E5439AB1573">
+
 		{{-- Title --}}
 		<title>
 			@hasSection('title')
