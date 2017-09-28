@@ -39,15 +39,19 @@ class StoreVenue extends FormRequest
 	{
 		// Set default values for the checkboxes
 		$this->merge([
-			'amenity_atm' => $this->input('amenity_atm', 0),
-			'amenity_bar' => $this->input('amenity_bar', 0),
-			'amenity_pay_per_view' => $this->input('amenity_pay_per_view', 0),
-			'amenity_pos' => $this->input('amenity_pos', 0),
+			'sports_betting'          => $this->input('sports_betting', 0),
+			'virtual_betting'         => $this->input('virtual_betting', 0),
+			'horse_betting'           => $this->input('horse_betting', 0),
+			'arcade_roulette'         => $this->input('arcade_roulette', 0),
+			'amenity_atm'             => $this->input('amenity_atm', 0),
+			'amenity_bar'             => $this->input('amenity_bar', 0),
+			'amenity_pay_per_view'    => $this->input('amenity_pay_per_view', 0),
+			'amenity_pos'             => $this->input('amenity_pos', 0),
 			'amenity_private_parking' => $this->input('amenity_private_parking', 0),
-			'amenity_restaurant' => $this->input('amenity_restaurant', 0),
-			'amenity_security' => $this->input('amenity_security', 0),
-			'amenity_smoking_area' => $this->input('amenity_smoking_area', 0),
-			'amenity_wifi' => $this->input('amenity_wifi', 0)
+			'amenity_restaurant'      => $this->input('amenity_restaurant', 0),
+			'amenity_security'        => $this->input('amenity_security', 0),
+			'amenity_smoking_area'    => $this->input('amenity_smoking_area', 0),
+			'amenity_wifi'            => $this->input('amenity_wifi', 0)
 		]);
 
 		return [
@@ -57,7 +61,14 @@ class StoreVenue extends FormRequest
 			'name'                         => 'required|string',
 			'description'                  => 'nullable|string',
 			'surface_size'                 => 'nullable|numeric|min:0',
-			'machine_count'                => 'nullable|numeric|min:0',
+			'vlt_machine_count'            => 'nullable|numeric|min:0',
+			'awp_machine_count'            => 'nullable|numeric|min:0',
+			'seating_capacity'             => 'nullable|numeric|min:0',
+			'parking_capacity'             => 'nullable|numeric|min:0',
+			'sports_betting'               => 'boolean',
+			'virtual_betting'              => 'boolean',
+			'horse_betting'                => 'boolean',
+			'arcade_roulette'              => 'boolean',
 			// 'machine_type'                 => ''
 			'address_street'               => 'required|string',
 			'address_number'               => 'required|string',
@@ -73,6 +84,7 @@ class StoreVenue extends FormRequest
 			// 'contact_facebook'             => '',
 			// 'contact_twitter'              => '',
 			'url_site'                     => 'nullable|url',
+			'url_online_casino'            => 'nullable|url',
 			'url_facebook'                 => 'nullable|url',
 			'url_tripadvisor'              => 'nullable|url',
 			'amenity_atm'                  => 'boolean',

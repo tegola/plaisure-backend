@@ -109,50 +109,70 @@
 						<div class="row">
 							<div class="col-md">
 								<ul class="list-unstyled mb-0 mb-md-3">
-									<li class="detail-list-item">
-										Dimensioni:
-										{{-- <strong>{{ $venue->surface_size }} mq.</strong> --}}
-										<span class="text-muted">sconosciuto</span>
-										@if (!$venue->isManaged())
-											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-										@endif
-									</li>
-									<li class="detail-list-item">
-										Numero di macchine:
-										<span class="text-muted">sconosciuto</span>
-										@if (!$venue->isManaged())
-											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-										@endif
-									</li>
-									{{--
-									@if ($venue->machine_count)
+									@if ($venue->isInCategory('betting_agency'))
 										<li class="detail-list-item">
-											Numero di macchine:
-											<strong>{{ $venue->machine_count }}</strong>
+											Concessionario:
+											@if ($venue->concessionaire)
+												<strong>{{ $venue->concessionaire->name }}</strong>
+											@else
+												<span class="text-muted">sconosciuto</span>
+											@endif
 											@if (!$venue->isManaged())
 												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 											@endif
 										</li>
-									@elseif($venue->estimated_machine_count)
 										<li class="detail-list-item">
-											Numero di macchine (stimato):
-											<strong>{{ $venue->estimated_machine_count }}</strong>
+											Scommesse sportive:
+											@if ($venue->sports_betting)
+												<strong class="text-success">Sì</strong>
+											@else
+												<span class="text-muted">No</span>
+											@endif
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										</li>
+										<li class="detail-list-item">
+											Scommesse virtuali:
+											@if ($venue->virtual_betting)
+												<strong class="text-success">Sì</strong>
+											@else
+												<span class="text-muted">No</span>
+											@endif
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										</li>
+										<li class="detail-list-item">
+											Scommesse ippiche:
+											@if ($venue->horse_betting)
+												<strong class="text-success">Sì</strong>
+											@else
+												<span class="text-muted">No</span>
+											@endif
 											@if (!$venue->isManaged())
 												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 											@endif
 										</li>
 									@endif
-									--}}
 									<li class="detail-list-item">
-										Numero di VLT:
-										<span class="text-muted">sconosciuto</span>
+										Roulette arcade:
+										@if ($venue->arcade_roulette)
+											<strong class="text-success">Sì</strong>
+										@else
+											<span class="text-muted">No</span>
+										@endif
 										@if (!$venue->isManaged())
 											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
 									</li>
 									<li class="detail-list-item">
-										Numero di AWP:
-										<span class="text-muted">sconosciuto</span>
+										Casinò online:
+										@if ($venue->url_online_casino)
+											<a href="{{ $venue->url_online_casino}}" target="_blank">{{ $venue->url_online_casino}}</a>
+										@else
+											<span class="text-muted">sconosciuto</span>
+										@endif
 										@if (!$venue->isManaged())
 											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif
@@ -162,9 +182,66 @@
 							<div class="col-md">
 								<ul class="list-unstyled">
 									<li class="detail-list-item">
+										Dimensioni:
+										@if ($venue->isManaged())
+											<strong>{{ $venue->surface_size }} mq.</strong> {{-- Avoid showing it for unmanaged venues --}}
+										@else
+											<span class="text-muted">sconosciuto</span>
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
+									</li>
+									<li class="detail-list-item">
+										Numero di VLT:
+										@if ($venue->vlt_machine_count)
+											<strong>{{ $venue->vlt_machine_count}}</strong>
+										@else
+											<span class="text-muted">sconosciuto</span>
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
+									</li>
+									<li class="detail-list-item">
+										Numero di AWP:
+										@if ($venue->awp_machine_count)
+											<strong>{{ $venue->awp_machine_count}}</strong>
+										@else
+											<span class="text-muted">sconosciuto</span>
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
+									</li>
+									<li class="detail-list-item">
 										Piattaforme VLT disponibili:
 										@if ($venue->vltPlatforms->count())
 											{{ $venue->vltPlatforms->pluck('name')->implode(', ') }}
+										@else
+											<span class="text-muted">sconosciuto</span>
+										@endif
+										@if (!$venue->isManaged())
+											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+										@endif
+									</li>
+									@if ($venue->isInCategory('betting_agency'))
+										<li class="detail-list-item">
+											Posti a sedere:
+											@if ($venue->seating_capacity)
+												<strong>{{ $venue->seating_capacity}}</strong>
+											@else
+												<span class="text-muted">sconosciuto</span>
+											@endif
+											@if (!$venue->isManaged())
+												<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
+											@endif
+										</li>
+									@endif
+									<li class="detail-list-item">
+										Posti auto:
+										@if ($venue->parking_capacity)
+											<strong>{{ $venue->parking_capacity}}</strong>
 										@else
 											<span class="text-muted">sconosciuto</span>
 										@endif
@@ -179,13 +256,6 @@
 										@else
 											<span class="text-muted">sconosciuto</span>
 										@endif
-										@if (!$venue->isManaged())
-											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
-										@endif
-									</li>
-									<li class="detail-list-item">
-										Posti auto:
-										<span class="text-muted">sconosciuto</span>
 										@if (!$venue->isManaged())
 											<a href="{{ route('site.promote') }}" class="ml-2">modifica</a>
 										@endif

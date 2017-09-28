@@ -67,6 +67,8 @@ class FormController extends Controller
 		$vltPlatforms = VltPlatform::pluck('name', 'id')->all();
 		$payPerViewPlatforms = PayPerViewPlatform::pluck('name', 'id')->all();
 
+		$plans = config('plans');
+
 		JavaScript::put(compact(
 			'venue',
 			'venueCategories',
@@ -77,7 +79,8 @@ class FormController extends Controller
 			'categories',
 			'concessionaires',
 			'vltPlatforms',
-			'payPerViewPlatforms'
+			'payPerViewPlatforms',
+			'plans'
 		));
 
 		return view('admin.venues.form', compact('venue'));

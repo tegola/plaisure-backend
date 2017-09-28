@@ -93,20 +93,46 @@
 						<option v-for="(name, id) in concessionaires" :value="id">@{{ name }}</option>
 					</select>
 				</div>
-				<div class="form-group col-md-4">
+				<div class="form-group col-6 col-md-4">
 					<label>Tipo apparecchi</label>
 					<select class="form-control" name="machine_type" v-model="venue.machine_type">
 						<option value="">Scegli&hellip;</option>
 						<option v-for="(name, id) in machineTypes" :value="id">@{{ name }}</option>
 					</select>
 				</div>
-				<div class="form-group col-md-4">
+				<div class="form-group col-6 col-md-4">
 					<label>Superficie (mq.)</label>
-					<input type="text" class="form-control" name="surface_size" v-model="venue.surface_size">
+					<input type="text" class="form-control" name="surface_size" v-model.number="venue.surface_size">
+				</div>
+				<div class="form-group col-6 col-md-3">
+					<label>N. macchine VLT</label>
+					<input type="text" class="form-control" name="vlt_machine_count" v-model.number="venue.vlt_machine_count">
+				</div>
+				<div class="form-group col-6 col-md-3">
+					<label>N. macchine AWP</label>
+					<input type="text" class="form-control" name="awp_machine_count" v-model.number="venue.awp_machine_count">
+				</div>
+				<div class="form-group col-6 col-md-3">
+					<label>Posti a sedere</label>
+					<input type="text" class="form-control" name="seating_capacity" v-model.number="venue.seating_capacity">
+				</div>
+				<div class="form-group col-6 col-md-3">
+					<label>Posti auto</label>
+					<input type="text" class="form-control" name="parking_capacity" v-model.number="venue.parking_capacity">
 				</div>
 			</div>
+			<hr>
 			<div class="row">
-				<div class="form-group col-md-4">
+				<div class="form-group col-sm-6 col-md-3">
+					<label>Piattaforme VLT</label>
+					<div class="form-check" v-for="(name, id) in vltPlatforms">
+						<label class="form-check-label">
+							<input class="form-check-input" type="checkbox" name="vlt_platforms[]" :value="id" v-model.number="venueVltPlatforms">
+							@{{ name }}
+						</label>
+					</div>
+				</div>
+				<div class="form-group col-sm-6 col-md-3">
 					<label>Comodità</label>
 					@foreach([
 						'amenity_atm' => 'Totem Bancomat',
@@ -127,16 +153,7 @@
 						</div>
 					@endforeach
 				</div>
-				<div class="form-group col-md-4">
-					<label>Piattaforme VLT</label>
-					<div class="form-check" v-for="(name, id) in vltPlatforms">
-						<label class="form-check-label">
-							<input class="form-check-input" type="checkbox" name="vlt_platforms[]" :value="id" v-model.number="venueVltPlatforms">
-							@{{ name }}
-						</label>
-					</div>
-				</div>
-				<div class="form-group col-md-4">
+				<div class="form-group col-sm-6 col-md-3">
 					<label>Piattaforme Pay per view</label>
 					<div class="form-check" v-for="(name, id) in payPerViewPlatforms">
 						<label class="form-check-label">
@@ -144,6 +161,22 @@
 							@{{ name }}
 						</label>
 					</div>
+				</div>
+				<div class="form-group col-sm-6 col-md-3">
+					<label>Servizi</label>
+					@foreach([
+						'sports_betting' => 'Scommesse sportive',
+						'virtual_betting' => 'Scommesse virtuali',
+						'horse_betting' => 'Scommesse ippiche',
+						'arcade_roulette' => 'Roulette arcade'
+					] as $field => $label)
+						<div class="form-check">
+							<label class="form-check-label">
+								<input class="form-check-input" type="checkbox" name="{{ $field }}" value="1" v-model="venue.{{ $field }}">
+								{{ $label }}
+							</label>
+						</div>
+					@endforeach
 				</div>
 			</div>
 
@@ -250,19 +283,25 @@
 			<h5 class="mt-4">Indirizzi web</h5>
 			<hr>
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="form-group">
 						<label>Sito web</label>
 						<input type="url" class="form-control" name="url_site" v-model="venue.url_site">
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Casinò online</label>
+						<input type="url" class="form-control" name="url_online_casino" v-model="venue.url_online_casino">
+					</div>
+				</div>
+				<div class="col-md-6">
 					<div class="form-group">
 						<label>Pagina Facebook</label>
 						<input type="url" class="form-control" name="url_facebook" v-model="venue.url_facebook">
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="form-group">
 						<label>Pagina TripAdvisor</label>
 						<input type="url" class="form-control" name="url_tripadvisor" v-model="venue.url_tripadvisor">

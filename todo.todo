@@ -1,11 +1,12 @@
 Generale:
- ✔ Aggiungere campo "descrizione generale" per ogni esercizio @done (17-09-21 00:11)
- ☐ Aggiungere tabelle di attributi
  ☐ Aggiungere orari e farli renderizzare
- ✔ Far renderizzare informazioni di contatto e url @done (17-09-27 22:55)
  ☐ Aggiungere caricamento foto
- ✔ Cambiare category in VenueCategory e aggiornare le tabelle di conseguenza @done (17-09-20 01:07)
  ☐ Iniziare iter per rivendicazione attività
+ ☐ Supporto per i jackpot (inserimento, filtro nella lista)
+ ✔ Mostrare determinati dettagli solo per Negozio di gioco e Bingo (es. posti a sedere per quest'ultimo) @done (17-09-28 00:23)
+ ✔ Aggiungere campo "descrizione generale" per ogni esercizio @done (17-09-21 00:11)
+ ✔ Far renderizzare informazioni di contatto e url @done (17-09-27 22:55)
+ ✔ Cambiare category in VenueCategory e aggiornare le tabelle di conseguenza @done (17-09-20 01:07)
  ✔ Aggiungere "beta" al logo @done (17-09-10 15:16)
  ✔ Aggiungere via o quartiere quando si usa la geolocalizzazione (o almeno far apparire la città!) @done (17-09-10 15:51)
  ✔ Salvare uno short name per le categorie e usarlo per decidere l'icona da visualizzare @done (17-08-24 16:02)
@@ -21,15 +22,15 @@ Generale:
  ✔ Autocomplete: fare un wrapper per aggiungere gli eventi 1. place_change(vuoto), 2. select all on click, 3. non chiudere menu se premo invio, 4. blur alla chiusura @done (17-09-18 23:28)
  ☐ Aggiungere pagina di errore
  ☐ Aggiungere pagina di downtime
- ☐ Aggiungere il supporto agli orari di apertura
  ☐ Supporto ai like/dislike
- ☐ Supporto per i jackpot
- ☐ Aggiungere i link ai social network
+ ☐ Aggiungere i link di Prontogioco ai social network
 
-SEO:
+SEO e analytics:
  ☐ Tag OpenGraph
  ☐ Structured data
  ☐ Meta description con i dati dell'esercizio
+ ☐ Registrare le ricerche sul sito su Google Analytics
+ ☐ Indicizzamento sugli altri motori di ricerca (Google e Bing fatti)
 
 Pagina dettaglio:
  ☐ Ottimizzazione per mobile

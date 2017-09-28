@@ -35,8 +35,7 @@ class AppServiceProvider extends ServiceProvider
                     // Italy
                     'lat' => 41.909,
                     'lng' => 12.255
-                ],
-                'plans' => config('plans') // FIXME: Show only on the admin section
+                ]
             ]
         ]);
     }

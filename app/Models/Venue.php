@@ -24,14 +24,22 @@ class Venue extends Model
 	 * @var array
 	 */
 	protected $attributes = [
-		'concessionaire_id',
+		'owner_id' => null,
+		'concessionaire_id' => null,
 		'aams_census_code' => '',
 		'aams_subject_enrollment_code' => '',
 
 		'name' => '',
 		'description' => '',
 		'surface_size' => 0,
-		'machine_count' => 0,
+		'vlt_machine_count' => 0,
+		'awp_machine_count' => 0,
+		'seating_capacity' => 0,
+		'parking_capacity' => 0,
+		'sports_betting' => false,
+		'virtual_betting' => false,
+		'horse_betting' => false,
+		'arcade_roulette' => false,
 		'machine_type' => self::MACHINE_TYPE_A,
 
 		'address_street' => '',
@@ -51,6 +59,7 @@ class Venue extends Model
 		'contact_twitter' => '',
 
 		'url_site' => '',
+		'url_online_casino' => '',
 		'url_facebook' => '',
 		'url_tripadvisor' => '',
 
@@ -77,6 +86,14 @@ class Venue extends Model
 		'name',
 		'description',
 		'surface_size',
+		'vlt_machine_count',
+		'awp_machine_count',
+		'seating_capacity',
+		'parking_capacity',
+		'sports_betting',
+		'virtual_betting',
+		'horse_betting',
+		'arcade_roulette',
 		'machine_type',
 		'address_street',
 		'address_number',
@@ -92,6 +109,7 @@ class Venue extends Model
 		'contact_facebook',
 		'contact_twitter',
 		'url_site',
+		'url_online_casino',
 		'url_facebook',
 		'url_tripadvisor',
 		'amenity_atm',
@@ -303,6 +321,17 @@ class Venue extends Model
 		if (!$this->contact_twitter) return null;
 
 		return implode('', ['https://www.twitter.com/', $this->contact_twitter]);
+	}
+
+	/**
+	 * Checks if this venue has is in the specified category.
+	 * 
+	 * @param  string  $machine_name
+	 * @return boolean
+	 */
+	public function isInCategory($machine_name)
+	{
+		return $this->categories()->where('machine_name', $machine_name)->count() ? true : false;
 	}
 
 	/**

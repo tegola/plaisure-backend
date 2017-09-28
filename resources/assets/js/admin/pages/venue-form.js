@@ -29,7 +29,7 @@ export default {
 				lng: pg.venue.geo_longitude || pg.config.defaultMapCenter.lng
 			},
 			mapZoom: pg.venue.geo_latitude && pg.venue.geo_longitude ? 15 : 5,
-			plans: pg.config.plans,
+			plans: pg.plans,
 			selectedPlan: pg.venue.plan ? pg.venue.plan.machine_name : null
 		};
 	},
