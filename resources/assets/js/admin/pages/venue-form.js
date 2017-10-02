@@ -19,6 +19,7 @@ export default {
 			venueVltPlatforms: pg.venueVltPlatforms,
 			venuePayPerViewPlatforms: pg.venuePayPerViewPlatforms,
 			importedVenue: pg.importedVenue || null,
+			importedVenueAddress: null,
 			machineTypes: pg.machineTypes,
 			categories: pg.categories,
 			concessionaires: pg.concessionaires,
@@ -39,12 +40,6 @@ export default {
 	},
 
 	computed: {
-		importedVenueAddress() {
-			const iv = this.importedVenue;
-
-			return iv ? [iv.address_1, iv.address_2].join(' ') : null;
-		},
-
 		planFieldDisabled() {
 			return this.selectedPlan != 'custom';
 		}
@@ -59,18 +54,6 @@ export default {
 				}
 
 				const result = results[0];
-
-				if (!result.streetName ||
-					!result.streetNumber ||
-					!result.city ||
-					!result.zipcode ||
-					!result.administrativeLevels.level2long ||
-					!result.administrativeLevels.level1long ||
-					!result.country ||
-					!result.latitude ||
-					!result.longitude) {
-					alert('Google Maps non ha restituito tutti i dati. Cercali manualmente e inseriscili prima di salvare.');
-				}
 
 				const provinceReplace = /(Provincia di )|(Città Metropolitana di )/gi;
 				$.extend(this.venue, {
@@ -91,6 +74,18 @@ export default {
 				};
 
 				this.mapZoom = 15;
+
+				if (!result.streetName ||
+					!result.streetNumber ||
+					!result.city ||
+					!result.zipcode ||
+					!result.administrativeLevels.level2long ||
+					!result.administrativeLevels.level1long ||
+					!result.country ||
+					!result.latitude ||
+					!result.longitude) {
+					alert('Google Maps non ha restituito tutti i dati. Cercali manualmente e inseriscili prima di salvare.');
+				}
 			});
 		},
 
@@ -125,5 +120,10 @@ export default {
 			this.venue.plan = null;
 			this.selectedPlan = null;
 		}
+	},
+
+	mounted() {
+		const iv = this.importedVenue;
+		this.importedVenueAddress = iv ? [iv.address_1, iv.address_2].join(' ') : null;
 	}
 };

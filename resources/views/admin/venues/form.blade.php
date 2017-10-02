@@ -185,7 +185,7 @@
 			<div class="form-group" v-if="importedVenueAddress">
 				<label>Indirizzo originale</label>
 				<div class="input-group">
-					<input type="text" class="form-control" :value="importedVenueAddress" readonly>
+					<input type="text" class="form-control" v-model="importedVenueAddress">
 					<span class="input-group-btn">
 						<button type="button" class="btn btn-secondary btn-block" @click="geocode">Cerca indirizzo</a>
 					</span>

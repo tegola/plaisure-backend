@@ -71,7 +71,7 @@ class StoreVenue extends FormRequest
 			'arcade_roulette'              => 'boolean',
 			// 'machine_type'                 => ''
 			'address_street'               => 'required|string',
-			'address_number'               => 'required|string',
+			'address_number'               => 'nullable|string',
 			'address_city'                 => 'required|string',
 			'address_postcode'             => 'required|string',
 			'address_province'             => 'required|string',
@@ -79,7 +79,7 @@ class StoreVenue extends FormRequest
 			'address_country'              => 'required|string',
 			'geo_latitude'                 => 'required|numeric|between:-90,90',
 			'geo_longitude'                => 'required|numeric|between:-180,180',
-			'contact_phone'                => 'nullable|numeric|min:0',
+			'contact_phone'                => 'nullable|string',
 			'contact_email'                => 'nullable|email',
 			// 'contact_facebook'             => '',
 			// 'contact_twitter'              => '',
