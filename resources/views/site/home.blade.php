@@ -93,7 +93,7 @@
 										:value="placeQuery"
 										:disabled="isSearchingLocation"
 										:options="placeTextboxOptions"
-										@place_changed="onPlaceChanged">
+										@place-changed="onPlaceChanged">
 									</pg-place-textbox>
 									<button type="button" ref="locateButton" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="isSearchingLocation" tabindex="-1">
 										<pg-icon :icon="locateButtonIcon" :spinning="isSearchingLocation"></pg-icon>
