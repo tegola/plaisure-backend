@@ -28,7 +28,7 @@
 						<div class="header-photo"></div>
 					</div>
 					<a href="{{ route('site.promote') }}" class="header-photo header-photo-add">
-						<pg-icon icon="plus"></pg-icon>
+						@include ('site.icons.icon', ['name' => 'plus'])
 						<span class="header-photo-add-text">Aggiungi foto</span>
 					</a>
 				</div>

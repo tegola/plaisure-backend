@@ -15,7 +15,7 @@
 			@if (!$venue->isManaged())
 				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
 			@endif
-			<pg-icon icon="directions" class="contact-card-list-item-icon"></pg-icon>
+			@include ('site.icons.icon', ['name' => 'directions', 'class' => 'contact-card-list-item-icon'])
 			<p class="mb-2">
 				<strong>{{ $venue->name }}</strong><br>
 				@foreach ($venue->addressComponents() as $line)
@@ -30,18 +30,12 @@
 			@if (!$venue->isManaged())
 				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
 			@endif
-			<pg-icon icon="clock-outline" class="contact-card-list-item-icon text-muted"></pg-icon>
 
 			@if ($venue->businessHours->count())
-				@if ($venue->isOpen())
-					<a href="#" class="text-success" @click.prevent="toggleHours">
-						Aperto ora<pg-icon :icon="hoursIcon" class="ml-1 contact-card-chevron-icon"></pg-icon>
-					</a>
-				@else
-					<a href="#" class="text-danger" @click.prevent="toggleHours">
-						<strong>Chiuso ora</strong><pg-icon :icon="hoursIcon" class="ml-1 contact-card-chevron-icon"></pg-icon>
-					</a>
-				@endif
+				@include ('site.icons.icon', ['name' => 'clock-outline', 'class' => 'contact-card-list-item-icon'])
+				<a href="#" class="text-success" @click.prevent="toggleHours">
+					{{ $venue->isOpen() ? 'Aperto ora' : 'Chiuso ora'}}<pg-icon :icon="hoursIcon" class="ml-1 contact-card-chevron-icon"></pg-icon>
+				</a>
 				<table v-if="hoursExpanded" v-cloak>
 					@foreach($venue->businessHoursByDay() as $dayIndex => $hoursForDay)
 						@foreach($hoursForDay as $index => $hours)
@@ -61,6 +55,7 @@
 					@endforeach
 				</table>
 			@else
+				@include ('site.icons.icon', ['name' => 'clock-outline', 'class' => 'contact-card-list-item-icon text-muted'])
 				<p class="mb-0 text-muted">
 					Nessun orario
 				</p>
@@ -73,8 +68,8 @@
 			@if (!$venue->isManaged())
 				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
 			@endif
-			<pg-icon icon="phone" class="contact-card-list-item-icon text-muted"></pg-icon>
 			@if ($venue->contact_phone || $venue->contact_email || $venue->contact_facebook || $venue->contact_twitter)
+				@include ('site.icons.icon', ['name' => 'phone', 'class' => 'contact-card-list-item-icon'])
 				<ul class="list-unstyled mb-0">
 					@if ($venue->contact_phone)
 						<li><a href="tel://{{ $venue->contact_phone }}">{{ $venue->contact_phone }}</a></li>
@@ -90,6 +85,7 @@
 					@endif
 				</ul>
 			@else
+				@include ('site.icons.icon', ['name' => 'phone', 'class' => 'contact-card-list-item-icon text-muted'])
 				<p class="mb-0 text-muted">
 					Nessuna informazione di contatto
 				</p>
@@ -101,8 +97,8 @@
 			@if (!$venue->isManaged())
 				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
 			@endif
-			<pg-icon icon="globe" class="contact-card-list-item-icon text-muted"></pg-icon>
 			@if ($venue->url_site || $venue->url_facebook || $venue->url_tripadvisor)
+				@include ('site.icons.icon', ['name' => 'globe', 'class' => 'contact-card-list-item-icon'])
 				<ul class="list-unstyled mb-0">
 					@if ($venue->url_site)
 						<li><a href="{{ $venue->url_site }}" target="_blank">{{ $venue->readableSiteUrl() }}</a></li>
@@ -115,6 +111,7 @@
 					@endif
 				</ul>
 			@else
+				@include ('site.icons.icon', ['name' => 'globe', 'class' => 'contact-card-list-item-icon text-muted'])
 				<p class="mb-0 text-muted">
 					Nessun sito o pagina social
 				</p>

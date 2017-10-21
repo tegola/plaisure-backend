@@ -105,7 +105,7 @@
 							<div class="form-group">
 								<label class="initialism d-none d-lg-inline-block">&nbsp;</label>
 								<button type="submit" class="btn btn-lg btn-block btn-accent search-submit-btn" :disabled="!canSubmit">
-									<pg-icon icon="search"></pg-icon>
+									@include ('site.icons.icon', ['name' => 'search'])
 									Cerca
 								</button>
 							</div>

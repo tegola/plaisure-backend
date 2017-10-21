@@ -81,7 +81,7 @@ class VenueBusinessHour extends Model
 	 */
 	public function readableDay()
 	{
-		return Carbon::parse('Sunday')->addDay($this->day)->formatLocalized('%A');
+		return ucfirst(Carbon::parse('Sunday')->addDay($this->day)->formatLocalized('%A'));
 	}
 
 	/**

@@ -100,12 +100,13 @@
 					aria-label="Cerca in questa zona"
 					data-toggle="tooltip"
 					data-placement="right"
+					v-cloak
 					@click="load">
-					<pg-icon icon="refresh"></pg-icon>
+					@include ('site.icons.icon', ['name' => 'refresh'])
 				</button>
 				{{--
 				<button class="btn btn-sm map-btn map-location-btn" @click="load" title="Usa la tua posizione" aria-label="Usa la tua posizione" data-toggle="tooltip" data-placement="right">
-					<pg-icon icon="location-outline"></pg-icon>
+					@include ('site.icons.icon', ['name' => 'location-outline'])
 				</button>
 				--}}
 			</div>
