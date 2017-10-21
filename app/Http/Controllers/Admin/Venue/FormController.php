@@ -7,11 +7,13 @@ use App\Http\Requests\StoreVenue;
 use App\Models\Venue;
 use App\Models\ImportedVenue;
 use App\Models\VenuePlan;
+use App\Models\VenueBusinessHour;
 use App\Models\VenueCategory;
 use App\Models\Concessionaire;
 use App\Models\VltPlatform;
 use App\Models\PayPerViewPlatform;
 use JavaScript;
+use DB;
 
 class FormController extends Controller
 {
@@ -36,8 +38,11 @@ class FormController extends Controller
 	public function edit(Venue $venue)
 	{
 		if (old()) $venue->fill(old());
-		$venue->load('plan');
 
+		$venue->load([
+			'businessHours',
+			'plan'
+		]);
 
 		// If the venus has no geo or address, data, get the original Imported venue
 		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venued->address_street) && $venue->aams_census_code) {
@@ -67,6 +72,7 @@ class FormController extends Controller
 		$vltPlatforms = VltPlatform::pluck('name', 'id')->all();
 		$payPerViewPlatforms = PayPerViewPlatform::pluck('name', 'id')->all();
 
+		$daysOfWeek = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
 		$plans = config('plans');
 
 		JavaScript::put(compact(
@@ -83,7 +89,7 @@ class FormController extends Controller
 			'plans'
 		));
 
-		return view('admin.venues.form', compact('venue'));
+		return view('admin.venues.form', compact('venue', 'daysOfWeek'));
 	}
 
 	/**
@@ -94,18 +100,35 @@ class FormController extends Controller
 	 */
 	public function store(StoreVenue $request)
 	{
-		// Save venue
-		$venue = new Venue($request);
-		$venue->save();
+		DB::transaction(function() use($request) {
+			// Save venue
+			$venue = new Venue($request);
+			$venue->save();
 
-		// Save categories
-		$venue->categories()->sync($request->categories);
+			// Save categories
+			$venue->categories()->sync($request->categories);
 
-		// Save VLT platforms
-		$venue->vltPlatforms()->sync($request->vlt_platforms);
+			// Save VLT platforms
+			$venue->vltPlatforms()->sync($request->vlt_platforms);
 
-		// Save pay per view Platforms
-		$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
+			// Save pay per view Platforms
+			$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
+
+			// Save business hours
+			if ($request->business_hours) {
+				foreach ($request->business_hours as $hours) {
+					$hour = new VenueBusinessHour($hours);
+					$venue->businessHours()->save($hour);
+				}
+			}
+
+			// Save plan
+			if ($request->plan) {
+				$plan = new VenuePlan();
+				$plan->fill($request->plan);
+				$venue->plan()->save();
+			}
+		});
 
 		return redirect()->route('admin.venues.index');
 	}
@@ -119,27 +142,38 @@ class FormController extends Controller
 	 */
 	public function update(StoreVenue $request, Venue $venue)
 	{
-		// Save venue
-		$venue->fill($request->all());
-		$venue->save();
+		DB::transaction(function() use ($request, $venue) {
+			// Save venue
+			$venue->fill($request->all());
+			$venue->save();
 
-		// Save categories
-		$venue->categories()->sync($request->categories);
+			// Save categories
+			$venue->categories()->sync($request->categories);
 
-		// Save VLT platforms
-		$venue->vltPlatforms()->sync($request->vlt_platforms);
+			// Save VLT platforms
+			$venue->vltPlatforms()->sync($request->vlt_platforms);
 
-		// Save pay per view Platforms
-		$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
+			// Save pay per view Platforms
+			$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
 
-		// Save plan
-		if ($request->plan) {
-			$plan = $venue->plan ?: new VenuePlan();
-			$plan->fill($request->plan);
-			$venue->plan()->save($plan);
-		} else {
-			if ($venue->plan) $venue->plan->delete();
-		}
+			// Save business hours
+			$venue->businessHours()->delete();
+			if ($request->business_hours) {
+				foreach ($request->business_hours as $hours) {
+					$hour = new VenueBusinessHour($hours);
+					$venue->businessHours()->save($hour);
+				}
+			}
+
+			// Save plan
+			if ($request->plan) {
+				$plan = $venue->plan ?: new VenuePlan();
+				$plan->fill($request->plan);
+				$venue->plan()->save($plan);
+			} else {
+				if ($venue->plan) $venue->plan->delete();
+			}
+		});
 
 		return redirect()->route('admin.venues.index');
 	}

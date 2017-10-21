@@ -40,9 +40,15 @@
 						{{ $venue->categories->count() ? "{$venue_category_string} a" : '' }}
 						{{ $venue->address_city }}
 					</li>
-					{{-- <li class="list-inline-item header-subtitle2">
-						<strong>Probabilmente aperto</strong>
-					</li> --}}
+					@if ($venue->businessHours->count())
+						<li class="list-inline-item">
+							@if ($venue->isOpen())
+								<span class="text-success">Aperto ora</span>
+							@else
+								<strong class="text-danger">Chiuso ora</strong>
+							@endif
+						</li>	
+					@endif
 				</ul>
 			</div>
 		</div>

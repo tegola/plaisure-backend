@@ -98,7 +98,12 @@ class StoreVenue extends FormRequest
 			'amenity_wifi'                 => 'boolean',
 			'categories'                   => 'required|exists:venue_categories,id',
 			'vlt_platforms'                => 'nullable|exists:vlt_platforms,id',
-			'pay_per_view_platforms'       => 'nullable|exists:pay_per_view_platforms,id'
+			'pay_per_view_platforms'       => 'nullable|exists:pay_per_view_platforms,id',
+
+			'business_hours'               => 'nullable|sometimes|array',
+			'business_hours.*.day'         => 'required|numeric|between:0,6',
+			'business_hours.*.opens'       => ['required', 'regex:/^\d\d:\d\d$/'], // FIXME: Use a time pattern (up to 24:00)
+			'business_hours.*.closes'      => ['required', 'regex:/^\d\d:\d\d$/'] // FIXME: Use a time pattern (up to 24:00)
 		];
 	}
 }

@@ -1,9 +1,26 @@
 Generale:
  ☐ Controllare l'aspetto degli indirizzi senza numero civico
- ☐ Aggiungere orari e farli renderizzare
+ ✔ Aggiungere orari e farli renderizzare @done (17-10-21 01:51)
  ☐ Aggiungere caricamento foto
  ☐ Iniziare iter per rivendicazione attività
  ☐ Supporto per i jackpot (inserimento, filtro nella lista)
+ ☐ Supporto promozioni (es: caffè gratis, bevande gratis, stuzzichini, orari per pranzo e cena, ecc.)
+ ☐ Aggiungere pagina di errore
+ ☐ Aggiungere pagina di downtime
+ ☐ Supporto ai like/dislike
+ ☐ Aggiungere i link di Prontogioco ai social network
+ ☐ Servizi aggiuntivi
+   - aria condizionata
+   - sala non fumatori
+   - tabacchi
+   - servizi lottomatica
+   - servizio bar gratuito
+   - area relax / lounge bar?
+   - cucina o punto ristoro invece di ristorante?
+   - area privè
+   - videosorveglianza
+   - servizio navetta
+   - cassaforte
  ✔ Mostrare determinati dettagli solo per Negozio di gioco e Bingo (es. posti a sedere per quest'ultimo) @done (17-09-28 00:23)
  ✔ Aggiungere campo "descrizione generale" per ogni esercizio @done (17-09-21 00:11)
  ✔ Far renderizzare informazioni di contatto e url @done (17-09-27 22:55)
@@ -21,10 +38,6 @@ Generale:
  ✔ Rimuovere l'accesso utente per il momento @done (17-08-09 18:46)
  ✔ Aggiungere favicon @done (17-08-25 17:33)
  ✔ Autocomplete: fare un wrapper per aggiungere gli eventi 1. place_change(vuoto), 2. select all on click, 3. non chiudere menu se premo invio, 4. blur alla chiusura @done (17-09-18 23:28)
- ☐ Aggiungere pagina di errore
- ☐ Aggiungere pagina di downtime
- ☐ Supporto ai like/dislike
- ☐ Aggiungere i link di Prontogioco ai social network
 
 SEO e analytics:
  ☐ Tag OpenGraph

@@ -100,6 +100,11 @@
 		position: absolute;
 		left: -($grid-gutter-width);
 	}
+	.contact-card-chevron-icon {
+		height: $icon-size-base * 0.75;
+		width: $icon-size-base * 0.75;
+		vertical-align: -0.25rem;
+	}
 
 	// Jackpots
 	.jackpot {

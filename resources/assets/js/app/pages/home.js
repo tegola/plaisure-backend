@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import axios from 'axios';

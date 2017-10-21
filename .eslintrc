@@ -6,7 +6,10 @@
 	"globals": {
 		"pg": true // ProntoGioco
 	},
-	"extends": "eslint:recommended",
+	"extends": [
+		"eslint:recommended",
+		"plugin:vue/recommended"
+	],
 	"plugins": ["vue"],
 	"parserOptions": {
 		"sourceType": "module"

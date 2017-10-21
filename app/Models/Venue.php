@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\File;
+use App\Models\VenueBusinessHour;
 use DB;
 use Auth;
-use App\Models\File;
+use Carbon;
 
 class Venue extends Model
 {
@@ -404,14 +406,106 @@ class Venue extends Model
 	}
 
 	/**
-	 * Query builder to find venues in the specified location bounds.
+	 * Business hours for this venue.
+	 * 
+	 * @return [\App\Models\VenueBusinessHour]
+	 */
+	public function businessHours()
+	{
+		return $this
+			->hasMany('App\Models\VenueBusinessHour')
+			->whereNotNull('day'); // Exclude exception days for now
+	}
+
+	/**
+	 * Business hours for this venue, grouped by day and exceptions.
+	 * 
+	 * @param  boolean $includeClosedDays Whether to include days when the venue is closed
+	 * @return array
+	 */
+	public function businessHoursByDay($includeClosedDays = false)
+	{
+		$days = [
+			1 => [],
+			2 => [],
+			3 => [],
+			4 => [],
+			5 => [],
+			6 => [],
+			0 => []
+		];
+
+		// Copy business hours in every day
+		foreach($this->businessHours as $hours) {
+			array_push($days[$hours->day], $hours);
+		}
+
+		// Fill empty days with an empty record
+		foreach($days as $dayIndex => $hours) {
+			if (!count($hours)) {
+				$closedHours = new VenueBusinessHour([
+					'day' => $dayIndex
+				]);
+				$days[$dayIndex] = [$closedHours];
+			}
+		}
+
+		return $days;
+	}
+
+	/**
+	 * Finds out if the venue is open right now.
+	 * 
+	 * @return boolean
+	 */
+	public function isOpen()
+	{
+		$now = Carbon::now();
+		$day = $now->dayOfWeek;
+		$time = $now->format('H:i:s');
+
+		// Find a match in today's normal hours
+		$query = $this->businessHours();
+		$query
+			->where('day', $day)
+			->where('opens', '<=', $time)
+			->where('closes', '>=', $time);
+
+		if ($query->count()) return true;
+
+		// Find a match in today's inverted hours, meaning the closing time is
+		// in late night, and so is smaller than the opening time
+		$query = $this->businessHours();
+		$query
+			->where('day', $day)
+			->whereRaw('closes < opens')
+			->where('opens', '<=', $time);
+
+		if ($query->count()) return true;
+
+		// Find a match in yesterday's hours by getting the previous week day
+		$day = $now->subDay()->dayOfWeek;
+
+		$query = $this->businessHours();
+		$query
+			->where('day', $day)
+			->whereRaw('closes < opens')
+			->where('closes', '>=', $time);
+
+		if ($query->count()) return true;
+
+		// No match
+		return false;
+	}
+
+	/**
+	 * Venues in the specified location bounds.
 	 *
 	 * @param  Illuminate\Database\Query\Builder  $query   Query builder instance
 	 * @param  float                              $ne_lat  North-East latitude (or just North)
 	 * @param  float                              $ne_lng  North-East longitude (or just East)
 	 * @param  float                              $sw_lat  South-West latitude (or just South)
 	 * @param  float                              $sw_lng  South-West longitude (or just West)
-     *
 	 * @return Illuminate\Database\Query\Builder           Modified query builder
 	 */
 	public function scopeInBounds($query, $ne_lat, $ne_lng, $sw_lat, $sw_lng)
@@ -425,8 +519,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Query builder scope to find venues with a distance radius from a given
-	 * location.
+	 * Venues with a distance radius from a given location.
 	 * 
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
 	 *
@@ -435,7 +528,6 @@ class Venue extends Model
 	 * @param  mixed                              $lng     Longitude of given location
 	 * @param  integer                            $radius  Optional distance
 	 * @param  string                             $units   Optional units
-	 *
 	 * @return Illuminate\Database\Query\Builder           Modified query builder
 	 */
 	public function scopeNear($query, $lat, $lng, $radius = 100, $units = "km")
@@ -459,7 +551,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Query builder to order venues by distance from a given location.
+	 * Order venues by distance from a given location.
 	 * 
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
 	 * 
@@ -467,7 +559,6 @@ class Venue extends Model
 	 * @param  mixed                              $lat    Lattitude of given location
 	 * @param  mixed                              $lng    Longitude of given location
 	 * @param  string                             $units  Optional units
-	 * 
 	 * @return Illuminate\Database\Query\Builder          Modified query builder
 	 */
 	public function scopeWithDistanceFrom($query, $lat, $lng, $units = 'km')
@@ -501,12 +592,10 @@ class Venue extends Model
 	}
 
 	/**
-	 * Scope to search for venues with a given name or in a category with that 
-	 * same name.
+	 * Venues with a given name or in a category with that same name.
 	 * 
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
 	 * @param  String                             $name
-	 * 
 	 * @return Illuminate\Database\Query\Builder          Modified query builder
 	 */
 	public function scopeWithNameOrCategoryName($query, $name)
@@ -516,5 +605,44 @@ class Venue extends Model
 			->orWhereHas('categories', function($query) use ($name) { // Category name
 				$query->where('name', 'like', "%{$name}%");
 			});
+	}
+
+	/**
+	 * Venues that are open right now.
+	 * 
+	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
+	 * @return Illuminate\Database\Query\Builder          Modified query builder
+	 */
+	public function scopeOpen($query)
+	{
+		return $query->whereHas('businessHours', function($builder) {
+			$now = Carbon::now();
+			$day = $now->dayOfWeek;
+			$time = $now->format('H:i:s');
+			$yesterday = $now->subDay()->dayOfWeek;
+
+			$builder
+				// Find a match in today's normal hours
+				->where([
+					['day', $day],
+					['opens', '<=', $time],
+					['closes', '>=', $time]
+				])
+				// Find a match in today's inverted hours, meaning the closing
+				// time is in late night, and so is smaller than the opening
+				// time
+				->orWhereRaw('closes < opens')
+				->where([
+					['day', $day],
+					['opens', '<=', $time]
+				])
+				// Find a match in yesterday's hours by getting the previous
+				// week day
+				->orWhereRaw('closes < opens')
+				->orWhere([
+					['day', $yesterday],
+					['closes', '>=', $time]
+				]);
+		});
 	}
 }

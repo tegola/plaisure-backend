@@ -134,7 +134,7 @@
 				</div>
 				<div class="form-group col-sm-6 col-md-3">
 					<label>Comodità</label>
-					@foreach([
+					@foreach ([
 						'amenity_atm' => 'Totem Bancomat',
 						'amenity_bar' => 'Bar',
 						'amenity_pay_per_view' => 'Pay per view',
@@ -164,7 +164,7 @@
 				</div>
 				<div class="form-group col-sm-6 col-md-3">
 					<label>Servizi</label>
-					@foreach([
+					@foreach ([
 						'sports_betting' => 'Scommesse sportive',
 						'virtual_betting' => 'Scommesse virtuali',
 						'horse_betting' => 'Scommesse ippiche',
@@ -319,6 +319,10 @@
 					</label>
 				</div>
 			</div>
+
+			<h5 class="mt-4">Orari di apertura</h5>
+			<hr>
+			<pga-business-hours-manager name="business_hours" :value="venue.business_hours" @input="onBusinessHoursInput"></pga-business-hours-manager>
 
 			<h5 class="mt-4">Dettagli piano</h5>
 			<hr>

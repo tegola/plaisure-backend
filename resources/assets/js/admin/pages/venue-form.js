@@ -4,10 +4,13 @@ import _assign from 'lodash/assign';
 import { Map, Marker } from 'vue2-google-maps';
 import { geocode } from '../../utilities/geocoder';
 
+import PGABusinessHoursManager from '../components/business-hours/manager';
+
 export default {
 	name: 'pga-venue-form-page',
 
 	components: {
+		'pga-business-hours-manager': PGABusinessHoursManager,
 		'pg-map': Map,
 		'pg-map-marker': Marker
 	},
@@ -94,6 +97,10 @@ export default {
 
 			this.venue.geo_latitude = latLng.lat().toFixed(6);
 			this.venue.geo_longitude = latLng.lng().toFixed(6);
+		},
+
+		onBusinessHoursInput(businessHours) {
+			this.venue.business_hours = businessHours;
 		},
 
 		onPlanSelection(planName) {

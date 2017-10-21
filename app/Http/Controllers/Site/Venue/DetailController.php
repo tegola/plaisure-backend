@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Venue;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Carbon;
 
 class DetailController extends Controller
 {
@@ -24,10 +25,14 @@ class DetailController extends Controller
 		// Prepare categories string
 		$venue_category_string = $venue->categories->pluck('name')->implode(', ');
 
+		// Get today's date
+		$today = Carbon::now();
+
 		return view('site.venues.detail', compact(
 			'venue',
 			'venue_category_string',
-			'nearby_venues'
+			'nearby_venues',
+			'today'
 		));
 	}
 }

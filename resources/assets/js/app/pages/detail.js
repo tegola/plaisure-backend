@@ -21,7 +21,20 @@ export default {
 						'stylers': [{ 'visibility': 'off' }]
 					}
 				]
-			}
+			},
+			hoursExpanded: false
 		};
+	},
+
+	computed: {
+		hoursIcon() {
+			return this.hoursExpanded ? 'chevron-up' : 'chevron-down';
+		}
+	},
+
+	methods: {
+		toggleHours() {
+			this.hoursExpanded = !this.hoursExpanded;
+		}
 	}
 };

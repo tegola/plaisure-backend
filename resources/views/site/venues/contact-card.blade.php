@@ -31,9 +31,41 @@
 				<a href="{{ route('site.promote') }}" class="float-right">modifica</a>
 			@endif
 			<pg-icon icon="clock-outline" class="contact-card-list-item-icon text-muted"></pg-icon>
-			<p class="mb-0 text-muted">
-				Nessun orario
-			</p>
+
+			@if ($venue->businessHours->count())
+				@if ($venue->isOpen())
+					<a href="#" class="text-success" @click.prevent="toggleHours">
+						Aperto ora<pg-icon :icon="hoursIcon" class="ml-1 contact-card-chevron-icon"></pg-icon>
+					</a>
+				@else
+					<a href="#" class="text-danger" @click.prevent="toggleHours">
+						<strong>Chiuso ora</strong><pg-icon :icon="hoursIcon" class="ml-1 contact-card-chevron-icon"></pg-icon>
+					</a>
+				@endif
+				<table v-if="hoursExpanded" v-cloak>
+					@foreach($venue->businessHoursByDay() as $dayIndex => $hoursForDay)
+						@foreach($hoursForDay as $index => $hours)
+							<tr class="{{ $hours->isCurrent() ? 'font-weight-bold' : '' }}">
+								<td class="align-top pr-3">
+									{{ !$index ? $hours->readableDay() : ''}}
+								</td>
+								<td>
+									@if ($hours->opens && $hours->closes)
+										<div class="{{ $hours->isCurrent() ? 'font-weight-bold' : '' }}">{{ $hours->opens }}&ndash;{{ $hours->closes }}</div>
+									@else
+										<div class="text-muted">Chiuso</div>
+									@endif
+								</td>
+							</tr>
+						@endforeach
+					@endforeach
+				</table>
+			@else
+				<p class="mb-0 text-muted">
+					Nessun orario
+				</p>
+			@endif
+
 		</div>
 
 		{{-- Contacts --}}
