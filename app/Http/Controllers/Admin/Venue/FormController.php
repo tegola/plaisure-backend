@@ -12,6 +12,7 @@ use App\Models\VenueCategory;
 use App\Models\Concessionaire;
 use App\Models\VltPlatform;
 use App\Models\PayPerViewPlatform;
+use App\Models\File;
 use JavaScript;
 use DB;
 
@@ -41,6 +42,7 @@ class FormController extends Controller
 
 		$venue->load([
 			'businessHours',
+			'photos',
 			'plan'
 		]);
 
@@ -162,6 +164,33 @@ class FormController extends Controller
 				foreach ($request->business_hours as $hours) {
 					$hour = new VenueBusinessHour($hours);
 					$venue->businessHours()->save($hour);
+				}
+			}
+
+			// Delete discarded photos
+			$currentPhotos = $venue->photos();
+			if ($request->photos) $currentPhotos = $currentPhotos->whereNotIn('id', $request->photos);
+
+			foreach ($currentPhotos->get() as $file) {
+				$file->delete();
+			}
+
+			// Store new photos
+			if ($request->photos) {
+				$uploadedPhotos = File::orphans()->whereIn('id', $request->photos);
+
+				foreach ($uploadedPhotos->get() as $uploadedPhoto) {
+					// Set type
+					$uploadedPhoto->update([
+						'type' => File::TYPE_VENUE_PHOTO
+					]);
+
+					// Make the files public
+					$uploadedPhoto->makePublic();
+				}
+
+				if ($uploadedPhotos->count()) {
+					$venue->photos()->saveMany($uploadedPhotos->get());
 				}
 			}
 

@@ -27,18 +27,13 @@ class SeoController extends Controller
 
 			// Venues
 			$venues = Venue::all();
-
 			foreach ($venues as $venue) {
 				$sitemap->add(route('site.venues.detail', ['venue' => $venue]), $venue->updated_at, 0.9, 'daily');
 			}
 
-			// About
+			// About, Promote, Play responsibly
 			$sitemap->add(route('site.about'), null, '0.9', 'monthly');
-
-			// Promote
 			$sitemap->add(route('site.promote'), null, '0.9', 'weekly');
-			
-			// Play responsibly
 			$sitemap->add(route('site.about'), null, '0.9', 'weekly');
 		}
 
@@ -59,7 +54,7 @@ class SeoController extends Controller
 		];
 
 		if (App::environment('production')) {
-			$sitemapUrl = url('/sitemap');
+			$sitemapUrl = route('sitemap');
 			array_push($lines, "Sitemap: {$sitemapUrl}");
 		} else {
 			array_push($lines, "Disallow: *");

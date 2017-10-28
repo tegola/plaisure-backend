@@ -78,7 +78,13 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => ['au
 	Route::get('/users', 'User\ListController@index')->name('admin.users.index');
 });
 
+// File upload/download/view --------------------------------------------------
+Route::group(['prefix' => '/files', 'middleware' => ['auth']], function() {
+	Route::post('/',                     'FileController@upload')->name('files.store');
+	Route::get('/{file}/{size}/{token}', 'FileController@view')  ->name('files.show');
+});
+
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
-Route::get('sitemap', 'SeoController@sitemap') ;
+Route::get('sitemap', 'SeoController@sitemap')->name('sitemap');
 Route::get('robots.txt', 'SeoController@robots') ;

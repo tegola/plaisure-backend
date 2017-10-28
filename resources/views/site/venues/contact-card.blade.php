@@ -33,7 +33,7 @@
 
 			@if ($venue->businessHours->count())
 				@include ('site.icons.icon', ['name' => 'clock-outline', 'class' => 'contact-card-list-item-icon'])
-				<a href="#" class="text-success" @click.prevent="toggleHours">
+				<a href="#" class="{{ $venue->isOpen() ? 'text-success' : 'text-danger' }}" @click.prevent="toggleHours">
 					{{ $venue->isOpen() ? 'Aperto ora' : 'Chiuso ora'}}<pg-icon :icon="hoursIcon" class="ml-1 contact-card-chevron-icon"></pg-icon>
 				</a>
 				<table v-if="hoursExpanded" v-cloak>

@@ -6,24 +6,24 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			item: {
-				type: Object,
-				required: true
-			}
-		},
+export default {
+	props: {
+		item: {
+			type: Object,
+			required: true
+		}
+	},
 
-		computed: {
-			metadata() {
-				if (this.item.category && this.item.city) {
-					return [this.item.category, this.item.city].join(', ');
-				} else if (this.item.category || this.item.city) {
-					return this.item.category || this.item.city;
-				} else {
-					return null;
-				}
+	computed: {
+		metadata() {
+			if (this.item.category && this.item.city) {
+				return [this.item.category, this.item.city].join(', ');
+			} else if (this.item.category || this.item.city) {
+				return this.item.category || this.item.city;
+			} else {
+				return null;
 			}
 		}
-	};
+	}
+};
 </script>

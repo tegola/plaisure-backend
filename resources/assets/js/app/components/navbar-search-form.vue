@@ -21,73 +21,73 @@
 </template>
 
 <script>
-	import PgIcon from './icon';
-	import PgPlaceTextbox from './place-textbox';
+import PgIcon from './icon';
+import PgPlaceTextbox from './place-textbox';
 
-	export default {
-		name: 'pg-navbar-search-form',
+export default {
+	name: 'pg-navbar-search-form',
 
-		components: {
-			PgIcon,
-			PgPlaceTextbox
+	components: {
+		PgIcon,
+		PgPlaceTextbox
+	},
+
+	props: {
+		action: {
+			type: String,
+			default: null
 		},
-
-		props: {
-			action: {
-				type: String,
-				default: null
-			},
-			query: {
-				type: String,
-				default: null
-			},
-			center: {
-				type: Object,
-				default: null,
-			},
-			autoSubmit: {
-				type: Boolean,
-				default: true
-			}
+		query: {
+			type: String,
+			default: null
 		},
-
-		data() {
-			return {
-				mutableQuery: this.query,
-				mutableCenter: this.center
-			};
+		center: {
+			type: Object,
+			default: null,
 		},
+		autoSubmit: {
+			type: Boolean,
+			default: true
+		}
+	},
 
-		methods: {
-			onPlaceChanged(place) {
-				if (place) {
-					const viewport = place.geometry.viewport;
-					const center = viewport.getCenter();
+	data() {
+		return {
+			mutableQuery: this.query,
+			mutableCenter: this.center
+		};
+	},
 
-					this.mutableCenter = {
-						lat: center.lat(),
-						lng: center.lng()
-					};
+	methods: {
+		onPlaceChanged(place) {
+			if (place) {
+				const viewport = place.geometry.viewport;
+				const center = viewport.getCenter();
 
-					if (place.vicinity && place.name != place.vicinity) {
-						this.mutableQuery = `${place.name}, ${place.vicinity}`;
-					} else {
-						this.mutableQuery = place.name;
-					}
+				this.mutableCenter = {
+					lat: center.lat(),
+					lng: center.lng()
+				};
+
+				if (place.vicinity && place.name != place.vicinity) {
+					this.mutableQuery = `${place.name}, ${place.vicinity}`;
 				} else {
-					this.mutableQuery = null;
-					this.mutableCenter = null;
+					this.mutableQuery = place.name;
 				}
-
-				if (this.autoSubmit) {
-					this.$nextTick(() =>{
-						this.$el.submit();
-					});
-					return;
-				}
-
-				this.$emit('place-changed', place);
+			} else {
+				this.mutableQuery = null;
+				this.mutableCenter = null;
 			}
+
+			if (this.autoSubmit) {
+				this.$nextTick(() =>{
+					this.$el.submit();
+				});
+				return;
+			}
+
+			this.$emit('place-changed', place);
 		}
 	}
+};
 </script>

@@ -401,7 +401,7 @@ class Venue extends Model
 	 */
 	public function photos()
 	{
-		return $this->morphMany('App\File', 'filable')
+		return $this->morphMany('App\Models\File', 'filable')
 				->where('type', File::TYPE_VENUE_PHOTO);
 	}
 

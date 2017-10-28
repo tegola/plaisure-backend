@@ -3,6 +3,7 @@ import _clone from 'lodash/clone';
 import _assign from 'lodash/assign';
 import { Map, Marker } from 'vue2-google-maps';
 import { geocode } from '../../utilities/geocoder';
+import Uploader from 'vue-upload-component';
 
 import PGABusinessHoursManager from '../components/business-hours/manager';
 
@@ -12,7 +13,8 @@ export default {
 	components: {
 		'pga-business-hours-manager': PGABusinessHoursManager,
 		'pg-map': Map,
-		'pg-map-marker': Marker
+		'pg-map-marker': Marker,
+		'pg-uploader': Uploader
 	},
 
 	data() {
@@ -21,24 +23,38 @@ export default {
 			venueCategories: pg.venueCategories,
 			venueVltPlatforms: pg.venueVltPlatforms,
 			venuePayPerViewPlatforms: pg.venuePayPerViewPlatforms,
+
 			importedVenue: pg.importedVenue || null,
 			importedVenueAddress: null,
+
 			machineTypes: pg.machineTypes,
 			categories: pg.categories,
 			concessionaires: pg.concessionaires,
 			vltPlatforms: pg.vltPlatforms,
 			payPerViewPlatforms: pg.payPerViewPlatforms,
+
 			mapCenter: {
 				lat: pg.venue.geo_latitude || pg.config.defaultMapCenter.lat,
 				lng: pg.venue.geo_longitude || pg.config.defaultMapCenter.lng
 			},
 			mapZoom: pg.venue.geo_latitude && pg.venue.geo_longitude ? 15 : 5,
+
+			uploaderHeaders: {
+				'X-CSRF-TOKEN': pg.config.csrfToken
+			},
+			uploaderFiles: [],
+
 			plans: pg.plans,
 			selectedPlan: pg.venue.plan ? pg.venue.plan.machine_name : null
 		};
 	},
 
 	watch: {
+		uploaderFiles(newUploaderFiles) {
+			newUploaderFiles.forEach(file => {
+				if (file.success) this.venue.photos.push(file.response);
+			});
+		},
 		selectedPlan: 'onPlanSelection'
 	},
 
@@ -103,6 +119,16 @@ export default {
 			this.venue.business_hours = businessHours;
 		},
 
+		onUploaderFileSelected() {
+			// Autostart uploader
+			this.$refs.photoUploader.active = true;
+		},
+
+		deletePhoto(file) {
+			if (!confirm('Sei sicuro di voler eliminare questa foto? Verrà eliminata quando salvi i dati della sala.')) return;
+			this.venue.photos.splice(this.venue.photos.indexOf(file), 1);
+		},
+
 		onPlanSelection(planName) {
 			if (!planName) return;
 
@@ -130,6 +156,7 @@ export default {
 	},
 
 	mounted() {
+		// Copy imported venue address for searching purposes
 		const iv = this.importedVenue;
 		this.importedVenueAddress = iv ? [iv.address_1, iv.address_2].join(' ') : null;
 	}

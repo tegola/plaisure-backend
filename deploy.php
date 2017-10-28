@@ -129,6 +129,7 @@ task('deploy', [
     // 'artisan:optimize',        // Optimize on server // Removed as per Laravel 5.5 upgrade guide
     'artisan:migrate',         // Migrate DB on production server
     // 'artisan:migrate:refresh', // Refresh DB on test server
+    'deploy:public_disk',      // Symlink the shared storage dir to the public dir for the current release
     'deploy:symlink',          // Symlink /current on server
     'deploy:unlock',           // Unlock deploys on server
     'cleanup',                 // Cleanup old releases on server

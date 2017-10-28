@@ -1,28 +1,28 @@
 {
-	"env": {
-		"browser": true,
-		"es6": true
-	},
-	"globals": {
-		"pg": true // ProntoGioco
-	},
-	"extends": [
-		"eslint:recommended",
-		"plugin:vue/recommended"
-	],
-	"plugins": ["vue"],
-	"parserOptions": {
-		"sourceType": "module"
-	},
-	"rules": {
-		"indent": ["error", "tab", {
-			"SwitchCase": 1
-		}],
-		"linebreak-style": ["error", "unix"],
-		"no-console": "off",
-		"quotes": ["error", "single", {
-			"avoidEscape": true
-			}],
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "globals": {
+        "pg": true // ProntoGioco
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:vue/recommended"
+    ],
+    "plugins": ["vue"],
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": ["error", "tab", {
+            "SwitchCase": 1
+        }],
+        "linebreak-style": ["error", "unix"],
+        "no-console": "off",
+        "quotes": ["error", "single", {
+            "avoidEscape": true
+        }],
         "semi": ["error", "always"]
-	}
+    }
 }

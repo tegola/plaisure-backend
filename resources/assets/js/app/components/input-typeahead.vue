@@ -30,119 +30,119 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			classes: String,
-			name: String,
-			value: [String, Number],
-			placeholder: String,
-			autofocus: Boolean,
-			itemComponent: {
-				type: String,
-				required: true
-			},
-			suggestions: {
-				type: Array,
-				default: []
-			}
+export default {
+	props: {
+		classes: String,
+		name: String,
+		value: [String, Number],
+		placeholder: String,
+		autofocus: Boolean,
+		itemComponent: {
+			type: String,
+			required: true
 		},
+		suggestions: {
+			type: Array,
+			default: []
+		}
+	},
 
-		data() {
+	data() {
+		return {
+			open: false,
+			focused: false,
+			query: this.value,
+			current: -1
+		};
+	},
+
+	watch: {
+		value(newValue) {
+			this.query = newValue;
+		},
+		items() {
+			this.current = -1;
+		}
+	},
+
+	computed: {
+		items() {
+			return this.suggestions;
+		}
+	},
+
+	methods: {
+		itemClass(index) {
 			return {
-				open: false,
-				focused: false,
-				query: this.value,
-				current: -1
+				'active': this.current === index
 			};
 		},
 
-		watch: {
-			value(newValue) {
-				this.query = newValue;
-			},
-			items() {
-				this.current = -1;
-			}
+		input() {
+			this.open = true;
+			this.$emit('input', this.query);
 		},
 
-		computed: {
-			items() {
-				return this.suggestions;
-			}
+		esc() {
+			this.open = false;
 		},
 
-		methods: {
-			itemClass(index) {
-				return {
-					'active': this.current === index
-				};
-			},
-
-			input() {
+		up(event) {
+			if (this.items.length) {
 				this.open = true;
-				this.$emit('input', this.query);
-			},
+				event.preventDefault();
+			}
 
-			esc() {
-				this.open = false;
-			},
-
-			up(event) {
-				if (this.items.length) {
-					this.open = true;
-					event.preventDefault();
-				}
-
-				if (this.current > 0) {
-					this.current--;
-				} else if (this.current === -1) {
-					this.current = this.items.length - 1;
-				} else {
-					this.current = -1;
-				}
-			},
-
-			down(event) {
-				if (this.items.length) {
-					this.open = true;
-					event.preventDefault();
-				}
-
-				if (this.current < this.items.length - 1) {
-					this.current++;
-				} else {
-					this.current = -1;
-				}
-			},
-
-			focus() {
-				if (this.items.length) {
-					this.open = true;
-				}
-			},
-
-			blur() {
-				this.open = false;
-			},
-
-			mouseover() {
+			if (this.current > 0) {
+				this.current--;
+			} else if (this.current === -1) {
+				this.current = this.items.length - 1;
+			} else {
 				this.current = -1;
-			},
+			}
+		},
 
-			mousedown(index) {
-				this.current = index;
-				this.select();
-			},
+		down(event) {
+			if (this.items.length) {
+				this.open = true;
+				event.preventDefault();
+			}
 
-			select(event) {
-				if (this.current === -1) return;
+			if (this.current < this.items.length - 1) {
+				this.current++;
+			} else {
+				this.current = -1;
+			}
+		},
 
-				// Stop enter key if still open
-				if (event && this.open) event.preventDefault();
+		focus() {
+			if (this.items.length) {
+				this.open = true;
+			}
+		},
 
-				this.open = false;
-				this.$emit('select', this.items[this.current]);
-			},
-		}
-	};
+		blur() {
+			this.open = false;
+		},
+
+		mouseover() {
+			this.current = -1;
+		},
+
+		mousedown(index) {
+			this.current = index;
+			this.select();
+		},
+
+		select(event) {
+			if (this.current === -1) return;
+
+			// Stop enter key if still open
+			if (event && this.open) event.preventDefault();
+
+			this.open = false;
+			this.$emit('select', this.items[this.current]);
+		},
+	}
+};
 </script>

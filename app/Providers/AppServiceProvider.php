@@ -28,21 +28,6 @@ class AppServiceProvider extends ServiceProvider
 		// Set locale for dates
 		Carbon::setLocale(App::getLocale());
 		setlocale(LC_TIME, App::getLocale());
-
-		Javascript::put([
-			'app' => [
-				'name' => config('app.name')
-			],
-			'config' => [
-				'locale' => App::getLocale(),
-				'googleMapsApiKey' => config('constants.google_maps_api_key'),
-				'defaultMapCenter' => [
-					// Italy
-					'lat' => 41.909,
-					'lng' => 12.255
-				]
-			]
-		]);
 	}
 
 	/**

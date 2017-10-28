@@ -18,19 +18,35 @@
 		<div class="header">
 			<div class="container">
 				{{-- Gallery --}}
-				<div class="header-gallery">
+				<div class="header-gallery" ref="gallery">
 					<div class="header-gallery-bg">
-						<div class="header-photo"></div>
-						<div class="header-photo"></div>
-						<div class="header-photo"></div>
-						<div class="header-photo"></div>
-						<div class="header-photo"></div>
-						<div class="header-photo"></div>
+						<div class="header-photo header-photo-placeholder"></div>
+						<div class="header-photo header-photo-placeholder"></div>
+						<div class="header-photo header-photo-placeholder"></div>
+						<div class="header-photo header-photo-placeholder"></div>
+						<div class="header-photo header-photo-placeholder"></div>
+						<div class="header-photo header-photo-placeholder"></div>
 					</div>
-					<a href="{{ route('site.promote') }}" class="header-photo header-photo-add">
-						@include ('site.icons.icon', ['name' => 'plus'])
-						<span class="header-photo-add-text">Aggiungi foto</span>
-					</a>
+					@if (!$venue->isManaged())
+						<a href="{{ route('site.promote') }}" class="header-photo header-photo-add">
+							@include ('site.icons.icon', ['name' => 'plus'])
+							Aggiungi foto
+						</a>
+					@endif
+					<template v-for="(file, index) in venue.photos">
+						<a v-if="index < 10" :href="file.resized_url" class="header-photo" @click.prevent="showPhoto(index)">
+							<div class="embed-responsive embed-responsive-1by1 header-photo-img" :style="'background-image: url(' + file.thumbnail_url + ')'">
+							</div>
+						</a>
+						<a v-if="index == 10" :href="file.resized_url" class="header-photo" @click.prevent="showPhoto(index)">
+							<div class="embed-responsive embed-responsive-1by1 header-photo-img" :style="'background-image: url(' + file.thumbnail_url + ')'">
+								<div class="header-photo-zoom">
+									@include ('site.icons.icon', ['name' => 'search', 'class' => 'mb-1'])
+									Guarda tutte le foto
+								</div>
+							</div>
+						</a>
+					</template>
 				</div>
 
 				{{-- Title --}}
@@ -378,6 +394,16 @@
 				</div>
 			</div>
 		</div>
+
+		<pg-lightbox
+			v-if="lightboxImages"
+			title="{{ $venue->name }}"
+			:images="lightboxImages"
+			:index="lightboxIndex"
+			:visible.sync="lightboxVisible"
+			:arrows="$mq.comfortable"
+			:thumbnails="$mq.comfortable">
+		</pg-lightbox>
 	</div>
 </pg-venue-detail-page>
 @endsection

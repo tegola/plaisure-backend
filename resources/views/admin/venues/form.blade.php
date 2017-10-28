@@ -66,7 +66,7 @@
 				<div class="input-group">
 					<input type="text" class="form-control" name="name" v-model="venue.name">
 					<span class="input-group-btn">
-						<button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#guidelines" aria-expanded="false" aria-controls="guidelines">Linee guida</button>
+						<button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#guidelines" aria-expanded="false" aria-controls="guidelines">Linee guida</button>
 					</span>
 				</div>
 			</div>
@@ -324,7 +324,39 @@
 			<hr>
 			<pga-business-hours-manager name="business_hours" :value="venue.business_hours" @input="onBusinessHoursInput"></pga-business-hours-manager>
 
-			<h5 class="mt-4">Dettagli piano</h5>
+			<h5 class="mt-4">Foto</h5>
+			<hr>
+
+			<div v-if="venue.photos.length" class="row mb-3">
+				<div v-for="file in venue.photos" class="col-4 col-md-3 col-lg-2">
+					<input type="hidden" name="photos[]" :value="file.id">
+					<a :href="file.resized_url" target="_blank">
+						<div class="embed-responsive embed-responsive-1by1 rounded image-frame" :style="{ 'background-image': 'url(' + file.thumbnail_url + ')' }">
+						</div>
+					</a>
+					<button type="button" class="btn btn-sm btn-danger btn-block mt-2" @click="deletePhoto(file)">Elimina</button>
+				</div>
+			</div>
+			<div v-else class="text-center text-muted py-4">
+				<i class="fa fa-4x fa-image"></i>
+				<h4 class="mt-3">Nessuna foto</h4>
+			</div>
+
+			<pg-uploader
+				class="btn btn-secondary"
+				ref="photoUploader"
+				accept="image/*"
+				multiple
+				:drop="true"
+				post-action="{{ route('files.store') }}"
+				:headers="uploaderHeaders"
+				v-model="uploaderFiles"
+				@input-file="onUploaderFileSelected">
+				Carica foto
+			</pg-uploader>
+
+
+			<h5 class="mt-4">Piano</h5>
 			<hr>
 			<div class="row">
 				<div class="form-group col-md-6">

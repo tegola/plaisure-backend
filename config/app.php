@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'it_IT.utf8',
+    'locale' => env('APP_LOCALE', 'it_IT'),
 
     /*
     |--------------------------------------------------------------------------
@@ -230,7 +230,8 @@ return [
         'View'         => Illuminate\Support\Facades\View::class,
 
         'Carbon'       => Carbon\Carbon::class,
-        'Javascript'   => Laracasts\Utilities\JavaScript\JavaScriptFacade::class
+        'Javascript'   => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
+        'Image'        => Intervention\Image\Facades\Image::class,
 
     ],
 
