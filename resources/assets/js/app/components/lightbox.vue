@@ -1,5 +1,10 @@
 <template>
-	<div class="pg-lightbox" :class="{ 'pg-lightbox--visible': visible }" @click.self="close" @keydown.esc="close">
+	<div class="pg-lightbox"
+		:class="{ 'pg-lightbox--visible': visible }"
+		@click.self="close"
+		@keydown.esc="close"
+		@keydown.left="prev"
+		@keydown.right="next">
 		<div class="pg-lightbox__header">
 			<div style="flex: 1">
 				<h4 class="pg-lightbox__title">{{ title }}</h4>
@@ -10,7 +15,7 @@
 			</button>
 		</div>
 
-		<div class="pg-lightbox__display" ref="display" tabindex="0" @keydown.left="prev" @keydown.right="next">
+		<div class="pg-lightbox__display" ref="display" tabindex="0">
 			<div v-for="image in images" class="pg-lightbox__slide">
 				<img :src="image.url" class="pg-lightbox__image">
 			</div>
@@ -34,7 +39,6 @@
 </template>
 
 <script>
-import $ from 'jquery';
 import Flickity from 'flickity';
 import Icon from './icon';
 
@@ -127,7 +131,7 @@ export default {
 
 		onVisibilityChange() {
 			if (this.visible) this.$refs.display.focus();
-			$(document.body).toggleClass('pg--pg-lightbox-visible', this.visible ? true : false);
+			document.body.classList.toggle('pg--pg-lightbox-visible', this.visible ? true : false);
 		},
 
 		imageClass(image) {

@@ -12,12 +12,12 @@
 		padding: map-get($spacers, 1) map-get($spacers, 2);
 		border-radius: $border-radius-sm;
 		border: $border-width solid transparent;
-		background-color: grayscale(100);
+		background-color: gray('100');
 		color: $text-muted;
 		cursor: pointer;
 
 		&:hover {
-			border-color: grayscale(300);
+			border-color: gray('300');
 		}
 	}
 	.filter-tag-input:checked + .filter-tag-token {
@@ -37,7 +37,7 @@
 		border-top: 0;
 		border-left: 0;
 		border-right: 0;
-		border-color: grayscale(200);
+		border-color: gray('200');
 		margin-bottom: 0;
 		display: none;
 	}
@@ -80,7 +80,7 @@
 	}
 	.map-btn {
 		background-color: $body-bg;
-		color: grayscale(700);
+		color: gray('700');
 		border-radius: $border-radius-sm;
 		box-shadow: 0 1px 4px -1px rgba(#000, 0.3);
 		padding: 0;

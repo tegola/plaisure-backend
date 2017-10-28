@@ -1,8 +1,5 @@
 const mix = require('laravel-mix');
 const BabiliPlugin = require('babili-webpack-plugin');
-const webpackConfig = {
-	plugins: []
-};
 
 mix.autoload({
 	jquery: ['jQuery'], // Bootstrap
@@ -25,8 +22,12 @@ if (mix.inProduction()) {
 	mix.options({
 		uglify: false
 	});
-	webpackConfig.plugins.push(new BabiliPlugin());
-	mix.webpackConfig(webpackConfig);
+
+	mix.webpackConfig({
+		plugins: [
+			new BabiliPlugin()
+		]
+	});
 } else {
 	mix.sourceMaps();
 }

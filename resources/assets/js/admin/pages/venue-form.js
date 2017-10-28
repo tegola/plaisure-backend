@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import _clone from 'lodash/clone';
 import _assign from 'lodash/assign';
 import { Map, Marker } from 'vue2-google-maps';
@@ -73,26 +72,25 @@ export default {
 				}
 
 				const result = results[0];
+				const provinceRegex = /(Provincia di )|(Città Metropolitana di )/gi;
 
-				const provinceReplace = /(Provincia di )|(Città Metropolitana di )/gi;
-				$.extend(this.venue, {
+				_assign(this.venue, {
 					address_street: result.streetName || '',
 					address_number: result.streetNumber || '',
 					address_city: result.city || '',
 					address_postcode: result.zipcode || '',
-					address_province: result.administrativeLevels.level2long ? result.administrativeLevels.level2long.replace(provinceReplace, '') : '',
+					address_province: result.administrativeLevels.level2long ? result.administrativeLevels.level2long.replace(provinceRegex, '') : '',
 					address_region: result.administrativeLevels.level1long || '',
 					address_country: result.country || '',
 					geo_latitude: result.latitude || '',
 					geo_longitude: result.longitude || ''
 				});
 
+				this.mapZoom = 15;
 				this.mapCenter = {
 					lat: result.latitude,
 					lng: result.longitude
 				};
-
-				this.mapZoom = 15;
 
 				if (!result.streetName ||
 					!result.streetNumber ||

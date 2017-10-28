@@ -129,6 +129,7 @@
 	height: 60px;
 	background-size: cover;
 	background-position: center center;
+	background-repeat: no-repeat;
 	border-radius: 0.1rem;
 	opacity: 0.5;
 	border: 1px solid rgba($white, 0.1);
@@ -139,6 +140,10 @@
 		margin-left: 1rem;
 	}
 
+	&:hover,
+	&:focus {
+		opacity: 1;
+	}
 	&:active {
 		transform: scale(0.95);
 	}

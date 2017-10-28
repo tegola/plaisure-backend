@@ -1,3 +1,6 @@
+// Load polyfills
+import 'classlist-polyfill';
+
 // Globals
 import $ from 'jquery';
 import Popper from 'popper.js/dist/umd/popper.js'; // Autoload wasn't working
@@ -53,7 +56,7 @@ new Vue({
 
 	mounted() {
 		// Support for showing geolocation controls
-		$('html').addClass(navigator.geolocation ? 'has-geolocation' : 'no-geolocation');
+		document.documentElement.classList.add(navigator.geolocation ? 'has-geolocation' : 'no-geolocation');
 
 		// Start tooltips
 		$('[data-toggle="tooltip"]').tooltip();
