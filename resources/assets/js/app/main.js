@@ -1,15 +1,17 @@
 // Load polyfills
 import 'classlist-polyfill';
+import 'core-js/es6/set'; // For vue-match-media
+import 'core-js/fn/array/from'; // For vue-match-media
 
-// Globals
+// Set globals
 import $ from 'jquery';
-import Popper from 'popper.js/dist/umd/popper.js'; // Autoload wasn't working
-window.Popper = Popper; // Autoload wasn't working
-import 'bootstrap/js/src/util';
-import 'bootstrap/js/src/dropdown';
-import 'bootstrap/js/src/tooltip';
+import Popper from 'popper.js';
+window.Popper = Popper;
+import 'bootstrap';
+
+// Load local libs
 import Vue from 'vue';
-import VueMatchMedia from 'vue-match-media/src';
+import VueMatchMedia from 'vue-match-media/dist';
 import { load as loadGMaps } from 'vue2-google-maps';
 import PgNavbarSearchForm from './components/navbar-search-form';
 import PgIcon from './components/icon';

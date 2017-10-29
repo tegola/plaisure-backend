@@ -1,9 +1,10 @@
 const mix = require('laravel-mix');
 const BabiliPlugin = require('babili-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 mix.autoload({
-	jquery: ['jQuery'], // Bootstrap
-	'popper.js/dist/umd/popper.js': ['Popper'] // Bootstrap
+	jquery: ['$', 'jQuery'], // Bootstrap
+	'popper.js': 'Popper', // Bootstrap
 });
 
 // Admin
@@ -18,16 +19,21 @@ mix.sass('resources/assets/sass/app/main.scss', 'public/css/app.css')
 
 
 if (mix.inProduction()) {
-	// Use Babili instead of UglifyJS
+	// Use Babili instead of UglifyJS, since it won't transpile ES6
 	mix.options({
 		uglify: false
 	});
-
 	mix.webpackConfig({
 		plugins: [
 			new BabiliPlugin()
 		]
 	});
 } else {
-	mix.sourceMaps();
+	mix.webpackConfig({
+		plugins: [
+			new BundleAnalyzerPlugin({
+				analyzerPort: 8889
+			})
+		]
+	});
 }

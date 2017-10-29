@@ -1,13 +1,10 @@
-// Globals
+// Set globals
 import $ from 'jquery';
-import Popper from 'popper.js/dist/umd/popper.js'; // Autoload wasn't working
-window.Popper = Popper; // Autoload wasn't working
+import Popper from 'popper.js';
+window.Popper = Popper;
+import 'bootstrap';
 
-import 'bootstrap/js/src/util';
-import 'bootstrap/js/src/collapse';
-import 'bootstrap/js/src/dropdown';
-import 'bootstrap/js/src/tooltip';
-
+// Load local libs
 import Vue from 'vue';
 import { load as loadGMaps } from 'vue2-google-maps';
 import PGAVenueFormPage from './pages/venue-form.js';
