@@ -13,13 +13,13 @@ class File extends Model
 	const UPLOAD_DIR = 'uploads';
 	const PUBLIC_DIR = 'public';
 
-	const SIZE_ORIGINAL = 'original';
-	const SIZE_RESIZED = 'resized';
+	const SIZE_ORIGINAL  = 'original';
+	const SIZE_RESIZED   = 'resized';
 	const SIZE_THUMBNAIL = 'thumbnail';
 
-	const TYPE_UNKNOWN = 0;
+	const TYPE_UNKNOWN     = 0;
 	const TYPE_VENUE_PHOTO = 1;
-	const TYPE_USER_PHOTO = 2;
+	const TYPE_USER_PHOTO  = 2;
 
 	/**
 	 * The attributes that aren't mass assignable.

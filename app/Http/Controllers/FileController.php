@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\File;
 use Storage;
 use Auth;
+use Validator;
 
 class FileController extends Controller
 {
@@ -20,7 +21,16 @@ class FileController extends Controller
 		$user = Auth::user();
 		$uploadedFile = $request->file('file');
 
-		// Stop if something's wrong
+		// Stope if file is too big, and force json response, since it is most
+		// probably a normal request
+		$validator = Validator::make($request->all(), [
+			'file' => 'bail|required|file|max:5192'
+		]);
+		if ($validator->fails()) {
+			return response()->json($validator->messages(), 400);
+		}
+
+		// Stop if something else is wrong
 		abort_if(!$uploadedFile->isValid(), 500, 'File upload error.');
 
 		// Store the uploaded file as a File record

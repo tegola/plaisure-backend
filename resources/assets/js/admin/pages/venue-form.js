@@ -49,11 +49,6 @@ export default {
 	},
 
 	watch: {
-		uploaderFiles(newUploaderFiles) {
-			newUploaderFiles.forEach(file => {
-				if (file.success) this.venue.photos.push(file.response);
-			});
-		},
 		selectedPlan: 'onPlanSelection'
 	},
 
@@ -117,9 +112,29 @@ export default {
 			this.venue.business_hours = businessHours;
 		},
 
-		onUploaderFileSelected() {
-			// Autostart uploader
-			this.$refs.photoUploader.active = true;
+		onUploaderFileInput(newFile, oldFile) {
+			// Update
+			if (newFile && oldFile) {
+				// FIXME: Qui dovremmo controllare l'errore del server e
+				// scriverlo nell'istanza del file, quindi mostrarlo
+				if (newFile.response && newFile.response.file) {
+					newFile.error = newFile.response.file[0];
+					// newFile = this.$refs.uploader.update(newFile, { error: newFile.response.file });
+				}
+
+				// Upload successful
+				if (newFile.success !== oldFile.success) {
+					this.venue.photos.push(newFile.response);
+					this.$refs.uploader.remove(newFile);
+				}
+			}
+
+			// Automatic upload
+			if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
+				if (!this.$refs.uploader.active) {
+					this.$refs.uploader.active = true;
+				}
+			}
 		},
 
 		deletePhoto(file) {

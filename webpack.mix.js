@@ -2,6 +2,10 @@ const mix = require('laravel-mix');
 const BabiliPlugin = require('babili-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+const webpackConfig = {
+	plugins: []
+};
+
 mix.autoload({
 	jquery: ['$', 'jQuery'], // Bootstrap
 	'popper.js': 'Popper', // Bootstrap
@@ -23,17 +27,15 @@ if (mix.inProduction()) {
 	mix.options({
 		uglify: false
 	});
-	mix.webpackConfig({
-		plugins: [
-			new BabiliPlugin()
-		]
-	});
+	webpackConfig.plugins.push(
+		new BabiliPlugin()
+	);
 } else {
-	mix.webpackConfig({
-		plugins: [
-			new BundleAnalyzerPlugin({
-				analyzerPort: 8889
-			})
-		]
-	});
+	webpackConfig.plugins.push(
+		new BundleAnalyzerPlugin({
+			analyzerPort: 8889
+		})
+	);
 }
+
+mix.webpackConfig(webpackConfig);

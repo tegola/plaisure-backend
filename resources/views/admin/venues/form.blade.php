@@ -327,7 +327,7 @@
 			<h5 class="mt-4">Foto</h5>
 			<hr>
 
-			<div class="row mb-3" :class="{ 'bg-light': $refs.photoUploader && $refs.photoUploader.dropActive }">
+			<div class="row mb-3" :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }">
 				<div v-for="file in venue.photos" class="col-4 col-md-3 col-lg-2 mb-3">
 					<input type="hidden" name="photos[]" :value="file.id">
 					<a :href="file.resized_url" target="_blank">
@@ -336,23 +336,38 @@
 					</a>
 					<button type="button" class="btn btn-sm btn-danger btn-block mt-2" @click="deletePhoto(file)">Elimina</button>
 				</div>
-				<pg-uploader
-					class="col-4 col-md-3 col-lg-2 mb-3"
-					ref="photoUploader"
-					accept="image/*"
-					multiple
-					:drop="true"
-					post-action="{{ route('files.store') }}"
-					:headers="uploaderHeaders"
-					v-model="uploaderFiles"
-					@input-file="onUploaderFileSelected">
-					<div class="embed-responsive embed-responsive-1by1 rounded bg-active">
+				<div v-for="file in uploaderFiles" class="col-4 col-md-3 col-lg-2 mb-3">
+					<div class="embed-responsive embed-responsive-1by1 rounded border">
+						<div class="embed-responsive-item d-flex flex-column align-items-center justify-content-center text-center">
+							<span v-if="file.error" class="text-danger small"><strong>Errore</strong><br>@{{ file.error }}</span>
+							<template v-else>
+								Caricamento
+								<div class="progress w-75 my-2" style="height: 2px;">
+									<div class="progress-bar" :style="{ width: `${file.progress}%` }" role="progressbar" :aria-valuenow="file.progress" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+								@{{ file.progress }}%
+							</template>
+						</div>
+					</div>
+					<button v-if="file.error" type="button" class="btn btn-sm btn-danger btn-block mt-2" @click="$refs.uploader.remove(file)">Rimuovi</button>
+				</div>
+				<div class="col-4 col-md-3 col-lg-2 mb-3 mb-3">
+					<pg-uploader
+						class="embed-responsive embed-responsive-1by1 rounded bg-active"
+						ref="uploader"
+						accept="image/*"
+						multiple
+						:drop="true"
+						post-action="{{ route('files.store') }}"
+						:headers="uploaderHeaders"
+						v-model="uploaderFiles"
+						@input-file="onUploaderFileInput">
 						<a class="embed-responsive-item text-primary border d-flex flex-column align-items-center justify-content-center">
 							<div class="fa fa-plus"></div>
 							Carica foto
 						</a>
-					</div>
-				</pg-uploader>
+					</pg-uploader>
+				</div>
 			</div>
 
 
