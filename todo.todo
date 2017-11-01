@@ -2,8 +2,12 @@ Generale:
  ☐ Controllare l'aspetto degli indirizzi senza numero civico
  ✔ Aggiungere orari e farli renderizzare @done (17-10-21 01:51)
  ✔ Aggiungere caricamento foto @done (17-11-01 19:23)
- ☐ Possibilità di inserire le descrizioni alle foto
+ ☐ Aggiungere il lazy load alla galleria foto
  ☐ Iniziare iter per rivendicazione attività
+ ☐ Possibilità di inserire le descrizioni alle foto
+ ☐ Possibilità di riordinare le foto
+ ✔ Lightbox: controllare che ESC funzioni sempre @done (17-11-02 00:05)
+ ✔ Lightbox: click sullo sfondo per chiudere @done (17-11-02 00:05)
  ☐ Supporto per i jackpot (inserimento, filtro nella lista)
  ☐ Supporto promozioni (es: caffè gratis, bevande gratis, stuzzichini, orari per pranzo e cena, ecc.)
  ☐ Aggiungere pagina di errore

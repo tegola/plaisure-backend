@@ -1,7 +1,8 @@
 <template>
 	<div class="pg-lightbox"
 		:class="{ 'pg-lightbox--visible': visible }"
-		@click.self="close"
+		tabindex="0"
+		@click="close"
 		@keydown.esc="close"
 		@keydown.left="prev"
 		@keydown.right="next">
@@ -15,7 +16,7 @@
 			</button>
 		</div>
 
-		<div class="pg-lightbox__display" ref="display" tabindex="0">
+		<div class="pg-lightbox__display" ref="display" @click.stop>
 			<div v-for="image in images" class="pg-lightbox__slide">
 				<img :src="image.url" class="pg-lightbox__image">
 			</div>
@@ -32,7 +33,7 @@
 				class="pg-lightbox__thumbnail"
 				:style="thumbnailStyle(image)"
 				:class="thumbnailClass(image)"
-				@click="select(index)">
+				@click.stop="select(index)">
 			</div>
 		</div>
 	</div>
@@ -123,11 +124,14 @@ export default {
 				accessibility: false // We handle the keyboard keys by ourselves
 			});
 
+			// Enable cells to get focus:
+			// https://github.com/metafizzy/flickity/issues/565#issuecomment-304754578
+			this.flickity.canPreventDefaultOnPointerDown = () => false;
+
+			// Update current index on cell change
 			this.flickity.on('select', () => {
 				this.currentIndex = this.flickity.selectedIndex;
 			});
-
-			this.$refs.display.focus();
 		},
 
 		refreshSlider() {
@@ -136,7 +140,7 @@ export default {
 		},
 
 		onVisibilityChange() {
-			if (this.visible) this.$refs.display.focus();
+			if (this.visible) this.$el.focus();
 			document.body.classList.toggle('pg--pg-lightbox-visible', this.visible ? true : false);
 		},
 
@@ -158,7 +162,7 @@ export default {
 			};
 		},
 
-		prev() {
+		prev(e) {
 			this.flickity.previous(true);
 		},
 
