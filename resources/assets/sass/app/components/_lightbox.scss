@@ -7,8 +7,6 @@
 	right: 0;
 	bottom: 0;
 	z-index: $zindex-modal-backdrop; // Use bootstrap's zindexes
-	pointer-events: none;
-	opacity: 0;
 	transition: opacity 200ms;
 	display: flex;
 	flex-direction: column;
@@ -20,13 +18,23 @@
 	padding: 1rem;
 	align-items: center;
 }
+.pg-lightbox__title-container {
+	flex: 1;
+	min-width: 0; // Allow text-overflow to work
+}
 .pg-lightbox__title {
 	color: inherit;
 	margin: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 .pg-lightbox__subtitle {
 	color: rgba($white, 0.5);
 	margin-bottom: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 .pg-lightbox__close {
 	margin-left: 1rem;
@@ -154,11 +162,16 @@
 	}
 }
 
-// Visibility
-.pg--pg-lightbox-visible { // Namespace + this class namespaced modifier
-	overflow: hidden; // Prevent scroling the container/body
+// Prevent scroling the container/body
+.pg--pg-lightbox-open { // Namespace + this class namespaced modifier
+	overflow: hidden;
 }
-.pg-lightbox--visible {
-	pointer-events: all;
-	opacity: 1;
+
+.pg-lightbox--visible-enter-active,
+.pg-lightbox--visible-leave-active {
+	transition: opacity 200ms;
+}
+.pg-lightbox--visible-enter,
+.pg-lightbox--visible-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
 }

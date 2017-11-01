@@ -1,42 +1,43 @@
 <template>
-	<div class="pg-lightbox"
-		:class="{ 'pg-lightbox--visible': visible }"
-		tabindex="0"
-		@click="close"
-		@keydown.esc="close"
-		@keydown.left="prev"
-		@keydown.right="next">
-		<div class="pg-lightbox__header">
-			<div style="flex: 1">
-				<h4 class="pg-lightbox__title">{{ title }}</h4>
-				<p class="pg-lightbox__subtitle" v-html="subtitle"></p>
+	<transition name="pg-lightbox--visible" @before-leave="beforeLeave" @after-leave="afterLeave">
+		<div class="pg-lightbox"
+			tabindex="0"
+			@click="close"
+			@keydown.esc="close"
+			@keydown.left="prev"
+			@keydown.right="next">
+			<div class="pg-lightbox__header">
+				<div class="pg-lightbox__title-container">
+					<h4 class="pg-lightbox__title">{{ title }}</h4>
+					<p class="pg-lightbox__subtitle" v-html="subtitle"></p>
+				</div>
+				<button type="button" class="pg-lightbox__close" @click="close" title="Chiudi" aria-label="Chiudi">
+					<pg-icon icon="close" class="pg-lightbox__close-icon"></pg-icon>
+				</button>
 			</div>
-			<button type="button" class="pg-lightbox__close" @click="close" title="Chiudi" aria-label="Chiudi">
-				<pg-icon icon="close" class="pg-lightbox__close-icon"></pg-icon>
-			</button>
-		</div>
 
-		<div class="pg-lightbox__display" ref="display" @click.stop>
-			<div v-for="image in images" class="pg-lightbox__slide">
-				<img :src="image.url" class="pg-lightbox__image">
+			<div class="pg-lightbox__display" ref="display" @click.stop>
+				<div v-for="image in images" class="pg-lightbox__slide">
+					<img :src="image.url" class="pg-lightbox__image">
+				</div>
+				<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__prev-arrow" @click="prev" title="Precedente" aria-label="Precedente">
+					<pg-icon icon="chevron-left" class="pg-lightbox__arrow-icon"></pg-icon>
+				</button>
+				<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__next-arrow" @click="next" title="Seguente" aria-label="Seguente">
+					<pg-icon icon="chevron-right" class="pg-lightbox__arrow-icon"></pg-icon>
+				</button>
 			</div>
-			<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__prev-arrow" @click="prev" title="Precedente" aria-label="Precedente">
-				<pg-icon icon="chevron-left" class="pg-lightbox__arrow-icon"></pg-icon>
-			</button>
-			<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__next-arrow" @click="next" title="Seguente" aria-label="Seguente">
-				<pg-icon icon="chevron-right" class="pg-lightbox__arrow-icon"></pg-icon>
-			</button>
-		</div>
 
-		<div class="pg-lightbox__thumbnail-list" v-if="showThumbnails" ref="thumbnails">
-			<div v-for="(image, index) in images"
-				class="pg-lightbox__thumbnail"
-				:style="thumbnailStyle(image)"
-				:class="thumbnailClass(image)"
-				@click.stop="select(index)">
+			<div class="pg-lightbox__thumbnail-list" v-if="showThumbnails" ref="thumbnails">
+				<div v-for="(image, index) in images"
+					class="pg-lightbox__thumbnail"
+					:style="thumbnailStyle(image)"
+					:class="thumbnailClass(image)"
+					@click.stop="select(index)">
+				</div>
 			</div>
 		</div>
-	</div>
+	</transition>
 </template>
 
 <script>
@@ -68,7 +69,6 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		visible: Boolean,
 		index: 0
 	},
 
@@ -98,9 +98,6 @@ export default {
 	},
 
 	watch: {
-		visible: 'onVisibilityChange',
-		arrows: 'refreshSlider',
-		thumbnails: 'refreshSlider',
 		index() {
 			this.select(this.index, true);
 		},
@@ -114,36 +111,6 @@ export default {
 	},
 
 	methods: {
-		initSlider() {
-			this.flickity = new Flickity(this.$refs.display, {
-				cellSelector: '.pg-lightbox__slide',
-				wrapAround: true,
-				prevNextButtons: false,
-				pageDots: false,
-				setGallerySize: false,
-				accessibility: false // We handle the keyboard keys by ourselves
-			});
-
-			// Enable cells to get focus:
-			// https://github.com/metafizzy/flickity/issues/565#issuecomment-304754578
-			this.flickity.canPreventDefaultOnPointerDown = () => false;
-
-			// Update current index on cell change
-			this.flickity.on('select', () => {
-				this.currentIndex = this.flickity.selectedIndex;
-			});
-		},
-
-		refreshSlider() {
-			this.flickity.destroy();
-			this.initSlider();
-		},
-
-		onVisibilityChange() {
-			if (this.visible) this.$el.focus();
-			document.body.classList.toggle('pg--pg-lightbox-visible', this.visible ? true : false);
-		},
-
 		imageClass(image) {
 			return {
 				'pg-lightbox__image--selected': this.images.indexOf(image) == this.currentIndex
@@ -162,7 +129,7 @@ export default {
 			};
 		},
 
-		prev(e) {
+		prev() {
 			this.flickity.previous(true);
 		},
 
@@ -175,18 +142,46 @@ export default {
 		},
 
 		close() {
-			this.$emit('update:visible', false);
-		}
+			this.$emit('close');
+		},
+
+		beforeLeave() {
+			// Remove body class
+			document.body.classList.remove('pg--pg-lightbox-open');
+		},
+
+		afterLeave() {
+			// Destroy slider
+			this.flickity.destroy();
+			this.flickity = null;
+		},
 	},
 
 	mounted() {
-		this.initSlider();
-		this.onVisibilityChange();
-	},
+		this.flickity = new Flickity(this.$refs.display, {
+			cellSelector: '.pg-lightbox__slide',
+			wrapAround: true,
+			prevNextButtons: false,
+			pageDots: false,
+			setGallerySize: false,
+			accessibility: false, // We handle the keyboard keys by ourselves
+			initialIndex: this.index
+		});
 
-	beforeDestroy () {
-		this.flickity.destroy();
-		this.flickity = null;
+		// Enable cells to get focus:
+		// https://github.com/metafizzy/flickity/issues/565#issuecomment-304754578
+		this.flickity.canPreventDefaultOnPointerDown = () => false;
+
+		// Update current index on cell change
+		this.flickity.on('select', () => {
+			this.currentIndex = this.flickity.selectedIndex;
+		});
+
+		// Focus
+		this.$el.focus();
+
+		// Add body class to prevent mouse scrolling
+		document.body.classList.add('pg--pg-lightbox-open');
 	}
 };
 </script>

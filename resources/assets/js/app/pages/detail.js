@@ -52,9 +52,13 @@ export default {
 	},
 
 	methods: {
-		showPhoto(index) {
+		showLightbox(index) {
 			this.lightboxIndex = index;
 			this.lightboxVisible = true;
+		},
+
+		closeLightbox() {
+			this.lightboxVisible = false;
 		},
 
 		toggleHours() {
