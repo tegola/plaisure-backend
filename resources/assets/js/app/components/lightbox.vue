@@ -19,15 +19,15 @@
 			<div v-for="image in images" class="pg-lightbox__slide">
 				<img :src="image.url" class="pg-lightbox__image">
 			</div>
-			<button v-if="arrows" type="button" class="pg-lightbox__arrow pg-lightbox__prev-arrow" @click="prev" title="Precedente" aria-label="Precedente">
+			<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__prev-arrow" @click="prev" title="Precedente" aria-label="Precedente">
 				<pg-icon icon="chevron-left" class="pg-lightbox__arrow-icon"></pg-icon>
 			</button>
-			<button v-if="arrows" type="button" class="pg-lightbox__arrow pg-lightbox__next-arrow" @click="next" title="Seguente" aria-label="Seguente">
+			<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__next-arrow" @click="next" title="Seguente" aria-label="Seguente">
 				<pg-icon icon="chevron-right" class="pg-lightbox__arrow-icon"></pg-icon>
 			</button>
 		</div>
 
-		<div class="pg-lightbox__thumbnail-list" v-if="thumbnails" ref="thumbnails">
+		<div class="pg-lightbox__thumbnail-list" v-if="showThumbnails" ref="thumbnails">
 			<div v-for="(image, index) in images"
 				class="pg-lightbox__thumbnail"
 				:style="thumbnailStyle(image)"
@@ -87,6 +87,12 @@ export default {
 				this.images.length,
 				currentImage.caption ? `&ndash; ${currentImage.caption}` : ''
 			].join(' ');
+		},
+		showArrows() {
+			return this.arrows && this.images.length > 1;
+		},
+		showThumbnails() {
+			return this.thumbnails && this.images.length > 1;
 		}
 	},
 
@@ -98,7 +104,7 @@ export default {
 			this.select(this.index, true);
 		},
 		currentIndex() {
-			if (!this.thumbnails) return;
+			if (!this.showThumbnails) return;
 
 			const thumb = this.$refs.thumbnails.childNodes[this.currentIndex];
 			thumb.scrollIntoView();
