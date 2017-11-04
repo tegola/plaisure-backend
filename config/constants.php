@@ -15,7 +15,7 @@ return [
 		'filename' => 'esercizi.csv'
 	],
 
-	'search_default_distance' => 5, // FIXME: Needed?
+	'search_default_distance' => 20, // FIXME: Needed?
 
 	'google_maps_api_key' => 'AIzaSyC7HUu36wqXlH_E27AMOFFF9v7t1809Upk',
 

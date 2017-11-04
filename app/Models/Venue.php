@@ -556,7 +556,7 @@ class Venue extends Model
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
 	 * 
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
-	 * @param  mixed                              $lat    Lattitude of given location
+	 * @param  mixed                              $lat    Latitude of given location
 	 * @param  mixed                              $lng    Longitude of given location
 	 * @param  string                             $units  Optional units
 	 * @return Illuminate\Database\Query\Builder          Modified query builder
@@ -589,22 +589,6 @@ class Venue extends Model
 		$query->orderBy('distance');
 
 		return $query;
-	}
-
-	/**
-	 * Venues with a given name or in a category with that same name.
-	 * 
-	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
-	 * @param  String                             $name
-	 * @return Illuminate\Database\Query\Builder          Modified query builder
-	 */
-	public function scopeWithNameOrCategoryName($query, $name)
-	{
-		return $query
-			->where('venues.name', 'like', "%{$name}%") // Venue name
-			->orWhereHas('categories', function($query) use ($name) { // Category name
-				$query->where('name', 'like', "%{$name}%");
-			});
 	}
 
 	/**

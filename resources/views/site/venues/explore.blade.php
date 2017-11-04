@@ -39,6 +39,13 @@
 					</div>
 				</div>
 
+				{{--
+				<div v-if="loading" class="text-center">
+					<pg-icon icon="circle-outline-notch" spinning></pg-icon><br>
+					<p>Caricamento</p>
+				</div>
+				--}}
+
 				{{-- Limited results --}}
 				<p v-if="hasMorePages" class="alert alert-info border-0 rounded-0">
 					Il numero di risultati è stato limitato automaticamente. <span v-if="$mq.comfortable">Ingrandisci la zona di tuo interesse per visualizzare più dettagli.</span>
@@ -56,7 +63,7 @@
 									</h5>
 									<div class="text-muted ml-3 text-nowrap" v-if="venue.distance">@{{ venue.distance | formatDistance }}</div>
 								</div>
-								<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">@{{ venue.categories[0].name }}</p>
+								<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">@{{ venueCategoriesString(venue) }}</p>
 								<p class="mb-0">@{{ venue.short_address }}</p>
 							</div>
 						</div>

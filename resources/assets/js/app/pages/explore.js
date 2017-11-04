@@ -191,6 +191,15 @@ export default {
 			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		},
 
+		venueCategoriesString(venue) {
+			if (!venue.categories || !venue.categories.length) return null;
+
+			return venue.categories
+				.slice(0, 2)
+				.map(category => category.name)
+				.join(', ');
+		},
+
 		mapMarkerIcon(venue, index) {
 			let variant;
 			let glyph;

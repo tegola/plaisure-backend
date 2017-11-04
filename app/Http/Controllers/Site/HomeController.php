@@ -30,46 +30,62 @@ class HomeController extends Controller
 	 */
 	public function suggestions(Request $request)
 	{
-		$what = trim($request->what);
-		$c_lat = $request->filled('c_lat') ? floatval($request->c_lat) : null;
-		$c_lng = $request->filled('c_lng') ? floatval($request->c_lng) : null;
-		$near = $request->near;
+		$query = trim($request->input('query'));
 		$venues = [];
 		$categories = [];
 		$suggestions = [];
 
 		// Find venues and categories
-		if ($what) {
-			if ($c_lat && $c_lng) {
-				$venues = Venue::with('categories')
-					->withNameOrCategoryName($what)
-					->withDistanceFrom($c_lat, $c_lng)
-					->take(5)
-					->get();
+		if ($query) {
+			$tokens = explode(' ', $query);
+
+			// Venues
+			$venuesQuery = Venue::with('categories');
+
+			// Find in venue name
+			foreach ($tokens as $token) {
+				$venuesQuery->where('name', 'like', "%{$token}%");
 			}
-			$categories = VenueCategory::where('name', 'like', "%{$what}%")
+
+			// Find in categories name
+			$venuesQuery->orWhereHas('categories', function($query) use ($tokens) {
+				foreach ($tokens as $token) {
+					$query->where('name', 'like', "%{$token}%");
+				}
+			});
+
+			$venues = $venuesQuery
+				->latest()
 				->take(5)
 				->get();
+
+			// Categories
+			$categoriesQuery = VenueCategory::query();
+			foreach ($tokens as $token) {
+				$categoriesQuery->orWhere('name', 'like', "%{$token}%");
+			}
+			$categories = $categoriesQuery->take(5)->get();
 		} else {
+			// Just categories
 			$categories = VenueCategory::take(5)->get();
 		}
 
 		// Prepare suggestions (categories first)
 		foreach ($categories as $c) {
 			array_push($suggestions, [
-				"type" => "category",
-				"id" => $c->id,
-				"name" => $c->name
+				'type' => 'category',
+				'id' => $c->id,
+				'name' => $c->name
 			]);
 		}
 		foreach ($venues as $v) {
 			array_push($suggestions, [
-				"type" => "venue",
-				"id" => $v->id,
-				"name" => $v->name,
-				"category" => $v->categories()->first()->name,
-				"city" => $v->address_city,
-				"url" => route('site.venues.detail', ['venue' => $v])
+				'type' => 'venue',
+				'id' => $v->id,
+				'name' => $v->name,
+				'category' => $v->categories()->first()->name,
+				'city' => $v->address_city,
+				'url' => route('site.venues.detail', ['venue' => $v])
 			]);
 		}
 

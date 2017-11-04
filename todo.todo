@@ -1,3 +1,10 @@
+ ☐ SUBITO: ricerca per posizione di default a 20km
+ ✔ Tutte le sale attuali devono avere la categoria "Sala VLT" @done (17-11-04 20:03)
+ ✔ Mostrare le prime due categorie per ogni sala @done (17-11-04 20:03)
+ ☐ Slider per ricerca distanza fino a 50km
+ ✔ Categorie: Sala VLT diventa Sala slot VLT @done (17-11-04 20:09)
+ ✔ Ricerca di parole spezzate ("Time city" cerca "time" e "city") @done (17-11-04 22:41)
+
 Generale:
  ☐ Controllare l'aspetto degli indirizzi senza numero civico
  ✔ Aggiungere orari e farli renderizzare @done (17-10-21 01:51)
@@ -7,27 +14,25 @@ Generale:
  ☐ Possibilità di inserire le descrizioni alle foto
  ☐ Possibilità di riordinare le foto
  ☐ Estrapolare l'indirizzo FB messenger dall'indirizzo Facebook (facebook.com/Planet-Rich-Frascati-293498787699636/ -> 293498787699636)
- ☐ Categorie: Sala slot e VLT invece di solo sala vlt?
+ ☐ Catena (Punto Snai, Eurobet, ecc.)
  ✔ Lightbox: controllare che ESC funzioni sempre @done (17-11-02 00:05)
  ✔ Lightbox: click sullo sfondo per chiudere @done (17-11-02 00:05)
  ☐ Supporto per i jackpot (inserimento, filtro nella lista)
- ☐ Supporto promozioni (es: caffè gratis, bevande gratis, stuzzichini, orari per pranzo e cena, ecc.)
+ ☐ Supporto promozioni (es: caffè gratis, bevande gratis, stuzzichini, orari per pranzo e cena, concorso, ecc.) - Cambia anche l'elemento nella lista
+ ☐ Sistema per mettere le parole chiave
  ☐ Aggiungere pagina di errore
  ☐ Aggiungere pagina di downtime
  ☐ Supporto ai like/dislike
  ☐ Aggiungere i link di Prontogioco ai social network
  ☐ Servizi aggiuntivi
-   - aria condizionata
-   - sala non fumatori
-   - tabacchi
-   - servizi lottomatica
-   - servizio bar gratuito
-   - area relax / lounge bar?
-   - cucina o punto ristoro invece di ristorante?
-   - area privè
-   - videosorveglianza
-   - servizio navetta
-   - cassaforte
+   - Area privè (privee?, privet?)
+   - Aria condizionata
+   - Tabacchi
+   - Ricariche e pagamenti
+   - Servizio bar gratuito
+   - Area relax
+   - Punto ristoro invece di Ristorante
+   - Servizio navetta
  ✔ Mostrare determinati dettagli solo per Negozio di gioco e Bingo (es. posti a sedere per quest'ultimo) @done (17-09-28 00:23)
  ✔ Aggiungere campo "descrizione generale" per ogni esercizio @done (17-09-21 00:11)
  ✔ Far renderizzare informazioni di contatto e url @done (17-09-27 22:55)
@@ -102,13 +107,18 @@ Admin:
  ☐ Modalità di manutenzione per esercizi con poche informazioni
 
 Sale premium:
- ☐ jackpot
- ☐ bonus distanza (in range e fuori range della mappa, o comunque quando la mappa non è visibile)
- ☐ nascondi attività vicine (edited)
- ☐ sala certificata GAP (Gioco d’Azzardo Patologico)
+ ☐ Bonus distanza (in range e fuori range della mappa, o comunque quando la mappa non è visibile)
+ ☐ Sala in home page quando si riconosce la posizione dell'utente
+ ☐ Promozioni in home page quando si riconosce la posizione dell'utente
+ ☐ Jackpot (+ API?)
+ ☐ Mostra pubblicità nelle pagine delle sale vicine
+ ☐ Nascondi attività vicine (edited)
+ ☐ Promozioni (Data da, data a, ora da, ora a,)
+ ☐ Sala certificata GAP (Gioco d’Azzardo Patologico)
     pensavo qualche badge importante da mettere oltre a filtro cerca solo sale
     certificate, Quindi se la tua sala è certificata (ovvero i tuoi dipendenti
     hanno fatto i corsi) puoi applicare il badge
+ ☐ Eventi
 
 Futuro:
  ☐ Supporto per dare un indirizzo email agli utenti

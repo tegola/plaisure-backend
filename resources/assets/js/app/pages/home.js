@@ -142,10 +142,7 @@ export default {
 		loadSearchSuggestions: _debounce(function(value) {
 			// Load suggestions and use them
 			axios.post('/suggestions', {
-				what: value,
-				c_lat: this.searchCenter.lat,
-				c_lng: this.searchCenter.lng,
-				near: this.placeQuery
+				query: value,
 			}).then(response => {
 				this.searchSuggestions = response.data;
 			});

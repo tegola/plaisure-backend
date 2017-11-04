@@ -33,7 +33,7 @@ class DetailController extends Controller
 		}
 
 		// Prepare categories string
-		$venue_category_string = $venue->categories->pluck('name')->implode(', ');
+		$venue_category_string = $venue->categories->slice(0, 2)->pluck('name')->implode(', ');
 
 		// Get today's date
 		$today = Carbon::now();
