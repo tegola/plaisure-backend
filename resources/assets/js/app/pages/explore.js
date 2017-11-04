@@ -37,6 +37,7 @@ export default {
 
 	data() {
 		return {
+			loading: false,
 			searchParams: pg.searchParams,
 			categories: pg.searchParams.categories,
 			pager: null,
@@ -148,9 +149,12 @@ export default {
 		},
 
 		load() {
+			this.loading = true;
+
 			// Load venues
 			$.get('/venues/search', this.searchParams, pager => {
 				this.pager = pager;
+				this.loading = false;
 			});
 
 			// Reset need to refresh the map

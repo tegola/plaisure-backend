@@ -42,13 +42,13 @@
 
 <script>
 import Flickity from 'flickity';
-import Icon from './icon';
+import PgIcon from './icon';
 
 export default {
 	name: 'pg-lightbox',
 
 	components: {
-		'pg-icon': Icon
+		'pg-icon': PgIcon
 	},
 
 	props: {

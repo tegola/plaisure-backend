@@ -13,7 +13,7 @@
 		])
 
 		<div class="wrapper">
-			<div class="venue-list px-0 col col-md-6 col-lg-5 col-xl-4">
+			<div class="venue-list px-0 col col-md-6 col-lg-5">
 				{{-- Mobile title --}}
 				<div v-if="venues.length" class="container-fluid d-md-none mt-4">
 					<h4>

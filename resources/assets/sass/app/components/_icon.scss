@@ -1,4 +1,4 @@
-.icon {
+.pg-icon {
 	display: inline-block;
 	width: $icon-size-base;
 	height: $icon-size-base;
@@ -7,25 +7,20 @@
 }
 
 // Sizes
-.icon-2x {
+.pg-icon--2x {
 	width: $icon-size-base * 2;
 	height: $icon-size-base * 2;
 }
-.icon-3x {
+.pg-icon--3x {
 	width: $icon-size-base * 3;
 	height: $icon-size-base * 3;
 }
 
 // Spinning icon
-.icon-spinning {
-	animation: icon-spin 1s infinite linear;
+.pg-icon--spinning {
+	animation: pg-icon__spin 1s infinite linear;
 }
 
-@keyframes icon-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(359deg);
-  }
+@keyframes pg-icon__spin {
+	100% { transform: rotate(359deg); }
 }

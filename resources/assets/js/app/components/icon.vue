@@ -1,5 +1,7 @@
 <template>
-	<svg :class="['icon', 'icon-' + icon, spinning ? 'icon-spinning': '']"><use v-bind="useProps"></use></svg>
+	<svg :class="svgClass">
+		<use v-bind="useProps"></use>
+	</svg>
 </template>
 
 <script>
@@ -15,9 +17,16 @@ export default {
 	},
 
 	computed: {
+		svgClass() {
+			return [
+				'pg-icon',
+				'pg-icon--' + this.icon,
+				this.spinning ? 'pg-icon--spinning' : null
+			];
+		},
 		useProps() {
 			return {
-				'xlink:href': '#icon-' + this.icon
+				'xlink:href': '#pg-icon-' + this.icon
 			};
 		}
 	}
