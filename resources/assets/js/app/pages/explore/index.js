@@ -112,6 +112,7 @@ export default {
 			this.searchMode = 'center';
 
 			// Update view
+			this.mapNeedsRefresh = false;
 			this.userLocation = null;
 			this.placeholder = undefined;
 
@@ -161,6 +162,7 @@ export default {
 			this.searchMode = 'center';
 
 			// Update view
+			this.mapNeedsRefresh = false;
 			this.locating = false;
 			this.userLocation = {
 				lat: latitude,
