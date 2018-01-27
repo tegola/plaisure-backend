@@ -17,6 +17,10 @@ export default {
 			type: String,
 			default: 'light'
 		},
+		fluid: {
+			type: Boolean,
+			default: false
+		},
 		placeholder: {
 			type: String,
 			default: 'Cerca vicino a...'
@@ -63,10 +67,12 @@ export default {
 			return this.$mq.comfortable;
 		},
 		lat() {
-			this.mutableCenter && this.mutableCenter.lat ? this.mutableCenter.lat : null;
+			const center = this.mutableCenter;
+			return center && center.lat ? center.lat : null;
 		},
 		lng() {
-			this.mutableCenter && this.mutableCenter.lng ? this.mutableCenter.lng : null;
+			const center = this.mutableCenter;
+			return center && center.lng ? center.lng : null;
 		}
 	},
 
@@ -92,9 +98,7 @@ export default {
 			}
 
 			if (this.autoSubmit) {
-				this.$nextTick(() =>{
-					this.$refs.form.submit();
-				});
+				this.$nextTick(() => this.$refs.form.submit());
 				return;
 			}
 
@@ -107,28 +111,30 @@ export default {
 
 <template>
 	<nav class="navbar navbar-expand-md" :class="classes">
-		<a class="navbar-brand" href="/" :aria-label="appName">
-			<pg-logo :text="showLogoText" :class="['navbar__logo', !showLogoText ? 'navbar__logo--no-text' : '']"></pg-logo>
-		</a>
+		<div :class="this.fluid ? 'container-fluid' : 'container'">
+			<a class="navbar-brand" href="/" :aria-label="appName">
+				<pg-logo :text="showLogoText" :class="['navbar__logo', !showLogoText ? 'navbar__logo--no-text' : '']"></pg-logo>
+			</a>
 
-		<form class="navbar__search" action="/explore" ref="form">
-			<input type="hidden" name="c_lat" :value="lat">
-			<input type="hidden" name="c_lng" :value="lng">
+			<form class="navbar__search" action="/venues/explore" ref="form">
+				<input type="hidden" name="c_lat" :value="lat">
+				<input type="hidden" name="c_lng" :value="lng">
 
-			<span class="navbar__search-icon-container">
-				<pg-icon icon="search" class="navbar__search-icon"></pg-icon>
-			</span>
-			<pg-place-textbox
-				class="form-control form-control-lg navbar__search-textbox"
-				:placeholder="placeholder"
-				:place="mutableQuery"
-				:options="{ types: ['geocode'] }"
-				@place-changed="onPlaceChanged">
-			</pg-place-textbox>
-		</form>
+				<span class="navbar__search-icon-container">
+					<pg-icon icon="search" class="navbar__search-icon"></pg-icon>
+				</span>
+				<pg-place-textbox
+					class="form-control form-control-lg navbar__search-textbox"
+					:placeholder="placeholder"
+					:place="mutableQuery"
+					:options="{ types: ['geocode'] }"
+					@place-changed="onPlaceChanged">
+				</pg-place-textbox>
+			</form>
 
-		<div class="ml-auto">
-			<slot name="right"></slot>
+			<div class="ml-auto">
+				<slot name="right"></slot>
+			</div>
 		</div>
 	</nav>
 </template>

@@ -7,6 +7,7 @@
 <pg-explore-page inline-template>
 	<div class="page-content">
 		<pg-navbar
+			fluid
 			variant="dark slim"
 			:placeholder="placeholder"
 			:query="query"
@@ -123,23 +124,22 @@
 				</pg-map-marker>
 				<template slot="visible">
 					{{-- Refresh buttons --}}
-					<button
-						ref="refreshBtn"
-						id="desktop-refresh-btn"
-						v-show="$mq.comfortable && mapNeedsRefresh"
-						class="btn map-btn map-refresh-btn"
-						aria-label="Cerca in questa zona"
-						v-cloak
-						@click="onSearchBoundsClick">
-						<pg-icon icon="refresh"></pg-icon>
-					</button>
-					<bs-tooltip
-						target="desktop-refresh-btn"
-						placement="right"
-						triggers=""
-						:show="mapNeedsRefresh">
-						Cerca in questa zona
-					</bs-tooltip>
+					<template v-if="$mq.comfortable && mapNeedsRefresh">
+						<button
+							id="desktop-refresh-btn"
+							class="btn map-btn map-refresh-btn"
+							aria-label="Cerca in questa zona"
+							@click="onSearchBoundsClick">
+							<pg-icon icon="refresh"></pg-icon>
+						</button>
+						<bs-tooltip
+							target="desktop-refresh-btn"
+							placement="right"
+							triggers=""
+							show>
+							Cerca in questa zona
+						</bs-tooltip>
+					</template>
 					<div class="container-fluid map-floating-controls" v-if="$mq.constrained && mapNeedsRefresh" v-cloak>
 						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">Cerca qui</button>
 					</div>

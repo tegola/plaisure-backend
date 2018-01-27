@@ -1,8 +1,10 @@
-import $ from 'jquery'; // FIXME: Remove jquery dependency
+import axios from 'axios';
+import _extend from 'lodash/extend';
 
 const errorMsg = 'Location not found.';
 const googleGeocoderUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
 // FIXME: Pass region per site and language per user locale
+// Better: create a class and throw those params in a constructor
 const googleGeocoderOptions = {
 	key: pg.config.googleMapsApiKey,
 	language: pg.config.locale,
@@ -12,11 +14,13 @@ const googleGeocoderOptions = {
 function geocode(address, callback) {
 	if (!address) return null;
 
-	const opts = $.extend(googleGeocoderOptions, {
-		address: address
-	});
+	axios.get(googleGeocoderUrl, {
+		params: _extend(googleGeocoderOptions, {
+			address: address
+		})
+	}).then(response => {
+		const data = response.data;
 
-	$.get(googleGeocoderUrl, opts, (data) => {
 		if (data.status != 'OK' || !data.results) {
 			callback(new Error(data.error_message || errorMsg));
 		} else {
@@ -27,11 +31,10 @@ function geocode(address, callback) {
 }
 
 function geocodeByIp(callback) {
-	$.get('https://freegeoip.net/json/').then((location) => {
-		if (!location) {
-			callback(new Error(errorMsg));
-		}
+	axios.get('https://freegeoip.net/json/').then(response => {
+		const location = response.data;
 
+		if (!location) callback(new Error(errorMsg));
 		callback(null, location);
 	});
 }
@@ -39,11 +42,13 @@ function geocodeByIp(callback) {
 function reverse(lat, lng, callback) {
 	if (!lat || !lng) return null;
 
-	const opts = $.extend(googleGeocoderOptions, {
-		latlng: [lat, lng].join()
-	});
+	axios.get(googleGeocoderUrl, {
+		params: _extend(googleGeocoderOptions, {
+			latlng: [lat, lng].join()
+		})
+	}).then(response => {
+		const data = response.data;
 
-	$.get(googleGeocoderUrl, opts, (data) => {
 		if (data.status != 'OK' || !data.results) {
 			callback(new Error(data.error_message || errorMsg));
 		} else {

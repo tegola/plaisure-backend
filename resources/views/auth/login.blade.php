@@ -1,7 +1,7 @@
 @extends('site.layout')
 
 @section('content')
-@include('site.components.navbar', ['show_search' => false])
+<pg-navbar></pg-navbar>
 
 <div class="container my-5">
 	<div class="text-center mb-5">
@@ -32,11 +32,10 @@
 				</div>
 
 				<div class="form-group">
-					<label class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" name="remember">
-						<span class="custom-control-indicator"></span>
-						<span class="custom-control-description">Resta connesso</span>
-					</label>
+					<div class="custom-control custom-checkbox">
+						<input id="remember" type="checkbox" class="custom-control-input" name="remember">
+						<label class="custom-control-label" for="remember">Resta connesso</label>
+					</div>
 				</div>
 
 				<div class="form-group">
@@ -50,4 +49,6 @@
 		</div>
 	</div>
 </div>
+
+@include('site.components.footer')
 @endsection

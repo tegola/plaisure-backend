@@ -128,7 +128,7 @@ class ExploreController extends Controller
 		}]);
 
 		// Return results
-		return $venues->simplePaginate(50);
+		return $venues->simplePaginate(100);
 	}
 
 	private function hasCenter()

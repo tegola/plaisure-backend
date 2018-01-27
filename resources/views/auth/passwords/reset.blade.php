@@ -1,7 +1,7 @@
 @extends('site.layout')
 
 @section('content')
-@include('site.components.navbar', ['show_search' => false])
+<pg-navbar></pg-navbar>
 
 <div class="container my-5">
 	<div class="text-center mb-5">
@@ -53,4 +53,6 @@
 		</div>
 	</div>
 </div>
+
+@include('site.components.footer')
 @endsection

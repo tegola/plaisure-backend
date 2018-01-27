@@ -1,7 +1,7 @@
 @extends('site.layout')
 
 @section('content')
-@include('site.components.navbar', ['show_search' => false])
+<pg-navbar></pg-navbar>
 
 <div class="container my-5">
 	<div class="text-center mb-5">
@@ -21,14 +21,14 @@
 				{{ csrf_field() }}
 
 				<div class="row">
-					<div class="col-sm-8 col-xl-9 form-group {{ $errors->has('email') ? ' has-danger' : '' }}">
+					<div class="col-sm-8 form-group {{ $errors->has('email') ? ' has-danger' : '' }}">
 						<label for="email" class="sr-only">Indirizzo email</label>
 						<input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Indirizzo email" required autofocus>
 						@if ($errors->has('email'))
 							<div class="form-control-feedback">{{ $errors->first('email') }}</div>
 						@endif
 					</div>
-					<div class="form-group col-sm-4 col-xl-3 form-group">
+					<div class="form-group col-sm-4 form-group">
 						<button type="submit" class="btn btn-primary btn-block">Invia</button>
 					</div>
 				</div>
@@ -38,4 +38,6 @@
 		</div>
 	</div>
 </div>
+
+@include('site.components.footer')
 @endsection

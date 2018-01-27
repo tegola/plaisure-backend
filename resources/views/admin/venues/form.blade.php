@@ -65,9 +65,9 @@
 				<label>Nome</label>
 				<div class="input-group">
 					<input type="text" class="form-control" name="name" v-model="venue.name">
-					<span class="input-group-btn">
+					<div class="input-group-append">
 						<button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#guidelines" aria-expanded="false" aria-controls="guidelines">Linee guida</button>
-					</span>
+					</div>
 				</div>
 			</div>
 			<div id="guidelines" class="collapse">
@@ -186,9 +186,9 @@
 				<label>Indirizzo originale</label>
 				<div class="input-group">
 					<input type="text" class="form-control" v-model="importedVenueAddress">
-					<span class="input-group-btn">
+					<div class="input-group-append">
 						<button type="button" class="btn btn-secondary btn-block" @click="geocode">Cerca indirizzo</a>
-					</span>
+					</div>
 				</div>
 			</div>
 
@@ -273,7 +273,9 @@
 					<div class="form-group">
 						<label>Twitter</label>
 						<div class="input-group">
-							<span class="input-group-addon">@</span>
+							<div class="input-group-prepend">
+								<span class="input-group-text">@</span>
+							</div>
 							<input type="text" class="form-control" name="contact_twitter" v-model="venue.contact_twitter">
 						</div>
 					</div>
