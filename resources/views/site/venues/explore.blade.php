@@ -125,16 +125,21 @@
 					{{-- Refresh buttons --}}
 					<button
 						ref="refreshBtn"
+						id="desktop-refresh-btn"
 						v-show="$mq.comfortable && mapNeedsRefresh"
 						class="btn map-btn map-refresh-btn"
-						title="Cerca in questa zona"
 						aria-label="Cerca in questa zona"
-						data-toggle="tooltip"
-						data-placement="right"
 						v-cloak
 						@click="onSearchBoundsClick">
 						<pg-icon icon="refresh"></pg-icon>
 					</button>
+					<bs-tooltip
+						target="desktop-refresh-btn"
+						placement="right"
+						triggers=""
+						:show="mapNeedsRefresh">
+						Cerca in questa zona
+					</bs-tooltip>
 					<div class="container-fluid map-floating-controls" v-if="$mq.constrained && mapNeedsRefresh" v-cloak>
 						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">Cerca qui</button>
 					</div>

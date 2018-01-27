@@ -3,16 +3,12 @@ import 'classlist-polyfill';
 import 'core-js/es6/set'; // For vue-match-media
 import 'core-js/fn/array/from'; // For vue-match-media
 
-// Set globals
-import $ from 'jquery';
-import Popper from 'popper.js';
-window.Popper = Popper;
-import 'bootstrap'; // FIXME: Upgrade to bootstrap final
-
 // Load local libs
 import Vue from 'vue';
 import VueMatchMedia from 'vue-match-media/dist';
 import { load as loadGMaps } from 'vue2-google-maps';
+import BsTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
+import BsTooltipDirective from 'bootstrap-vue/es/directives/tooltip/tooltip';
 import PgLogo from './components/logo';
 import PgNavbar from './components/navbar';
 import PgIcon from './components/icon';
@@ -28,10 +24,12 @@ loadGMaps({
 	libraries: 'places'
 });
 
-// Register Vue plugins
+// Register Vue plugins, directives and components
 Vue.use(VueMatchMedia);
 
-// Register global components
+Vue.directive('bs-tooltip', BsTooltipDirective);
+
+Vue.component('bs-tooltip', BsTooltip);
 Vue.component('pg-logo', PgLogo);
 Vue.component('pg-navbar', PgNavbar);
 Vue.component('pg-icon', PgIcon);
@@ -61,8 +59,5 @@ new Vue({
 	mounted() {
 		// Support for showing geolocation controls
 		document.documentElement.classList.add(navigator.geolocation ? 'has-geolocation' : 'no-geolocation');
-
-		// Start tooltips
-		$('[data-toggle="tooltip"]').tooltip();
 	}
 });

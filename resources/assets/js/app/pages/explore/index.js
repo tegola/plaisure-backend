@@ -100,17 +100,6 @@ export default {
 		}
 	},
 
-	watch: {
-		// Show reload tooltip when map changes
-		mapNeedsRefresh(newValue) {
-			if (!this.$mq.comfortable) return;
-
-			this.$nextTick(() => {
-				$(this.$refs.refreshBtn).tooltip(newValue ? 'show' : 'hide');	
-			});
-		}
-	},
-
 	methods: {
 		// Location search ----------------------------------------------------
 		onPlaceChanged(place) {

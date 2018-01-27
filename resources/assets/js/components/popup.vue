@@ -75,12 +75,14 @@ export default {
 				return;
 			}
 
+			const placementIsArray = Array.isArray(this.placement);
+
 			this.popper = new Popper(this.$el, this.$refs.popup, {
-				placement: Array.isArray(this.placement) ? this.placement[0] : this.placement,
+				placement: placementIsArray ? this.placement[0] : this.placement,
 				removeOnDestroy: true,
 				modifiers: {
 					flip: {
-						behavior: Array.isArray(this.placement) ? this.placement : 'flip'
+						behavior: placementIsArray ? this.placement : 'flip'
 					},
 					preventOverflow: {
 						priority: ['left', 'right'], // Don't move if top and bottom boundaries aren't enough

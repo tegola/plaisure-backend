@@ -12,6 +12,7 @@
     "devDependencies": {
         "axios": "^0.16.2",
         "bootstrap": "^4.0.0",
+        "bootstrap-vue": "^2.0.0-rc.1",
         "classlist-polyfill": "^1.2.0",
         "core-js": "^2.5.3",
         "cross-env": "^5.1.3",
