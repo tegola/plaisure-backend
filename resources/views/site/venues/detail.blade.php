@@ -12,7 +12,7 @@
 @section('content')
 <pg-venue-detail-page inline-template>
 	<div>
-		@include('site.components.navbar')
+		<pg-navbar variant="dark"></pg-navbar>
 
 		{{-- Header --}}
 		<div class="header">

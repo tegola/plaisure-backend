@@ -4,7 +4,7 @@
 @section('title', 'Chi siamo')
 
 @section('content')
-@include('site.components.navbar')
+<pg-navbar></pg-navbar>
 
 <div class="container my-5">
 	<div class="row section">

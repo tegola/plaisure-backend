@@ -1,5 +1,5 @@
 // Logo
-.navbar-logo {
+.navbar__logo {
 	display: block;
 	width: 196px;
 	height: 42px;
@@ -11,16 +11,16 @@
 	@include media-breakpoint-down(sm) {
 		// Hide logo without using display:none, which would also hide the
 		// gradient used by the color logo
-		&:not(.navbar-logo--no-text) {
+		&:not(.navbar__logo--no-text) {
 			width: 0 !important; // Override navbar-slim
 			height: 0 !important; // Override navbar-slim
 		}
 	}
 }
-.navbar-logo--no-symbol {
+.navbar__logo--no-symbol {
 	width: 155px;
 }
-.navbar-logo--no-text {
+.navbar__logo--no-text {
 	width: 29px;
 
 	// Hide logo without using display:none, which would also hide the
@@ -43,30 +43,32 @@
 	background-color: transparent !important;
 
 	&:focus {
+		border-color: none;
 		box-shadow: none;
 	}
 }
 
 @include media-breakpoint-up(md) {
-	.navbar__search-group {
+	.navbar__search {
 		position: relative;
 	}
 	.navbar__search-icon-container {
-		display: flex;
-		border-color: transparent;
-		background-color: transparent;
 		padding-left: $input-btn-padding-x-lg;
 		padding-right: $input-btn-padding-x-lg / 2;
 		position: absolute;
 		left: 0;
-		height: 100%;
-	}
-	.navbar__search-textbox {
-		padding-left: ($input-btn-padding-x-lg * 1.5) + $icon-size-base;
+		top: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		pointer-events: none;
 	}
 	.navbar__search-icon {
 		position: relative;
 		top: -0.1rem;
+	}
+	.navbar__search-textbox {
+		padding-left: ($input-btn-padding-x-lg * 1.5) + $icon-size-base;
 	}
 }
 
@@ -90,15 +92,15 @@
 	padding-top: $navbar-slim-padding-y;
 	padding-bottom: $navbar-slim-padding-y;
 
-	.navbar-logo {
+	.navbar__logo {
 		width: 160px;
 		height: 34px;
 	}
-	.navbar-logo--no-symbol {
+	.navbar__logo--no-symbol {
 		width: 125px;
 		height: 34px
 	}
-	.navbar-logo--no-text {
+	.navbar__logo--no-text {
 		width: 24px;
 		height: 34px;
 	}

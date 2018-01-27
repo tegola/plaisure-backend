@@ -4,10 +4,7 @@
 @section('title', "Gioca responsabilmente")
 
 @section('content')
-	@include('site.components.navbar', [
-		'class' => 'navbar-light',
-		'show_search' => false
-	])
+	<pg-navbar></pg-navbar>
 
 	<div class="container my-5">
 		<div class="row">

@@ -1,12 +1,13 @@
 <?php
 	if (!isset($text)) $text = true;
 	if (!isset($symbol)) $symbol = true;
+	if (!isset($class)) $class = '';
 
-	if ($text && $symbol) $view_box = '0 0 196 42';
-	elseif (!$text) $view_box = '0 0 29 42';
-	elseif (!$symbol) $view_box = '40 10 155 20';
+	if ($text && $symbol) $viewBox = '0 0 196 42';
+	elseif (!$text) $viewBox = '0 0 29 42';
+	elseif (!$symbol) $viewBox = '40 10 155 20';
 ?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="{{ $view_box }}" class="pg-logo {{ isset($class) ? $class : '' }}">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="{{ $viewBox }}" class="pg-logo {{ $class }}">
 	<defs>
 		<linearGradient id="pg-logo-shadow-gradient" x1="0%" y1="50%" y2="50%">
 			<stop stop-color="#144F12" offset="0%"/>

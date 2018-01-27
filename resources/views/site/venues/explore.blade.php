@@ -7,7 +7,7 @@
 <pg-explore-page inline-template>
 	<div class="page-content">
 		<pg-navbar
-			classes="navbar-dark navbar-slim"
+			variant="dark slim"
 			:placeholder="placeholder"
 			:query="query"
 			:auto-submit="false"
@@ -136,7 +136,7 @@
 						@include ('site.icons.icon', ['name' => 'refresh'])
 					</button>
 					<div class="container-fluid map-floating-controls" v-if="$mq.constrained && mapNeedsRefresh" v-cloak>
-						<button class="btn btn-lg btn-accent btn-block" @click="onSearchBoundsClick">Cerca qui</button>
+						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">Cerca qui</button>
 					</div>
 				</template>
 			</pg-map>

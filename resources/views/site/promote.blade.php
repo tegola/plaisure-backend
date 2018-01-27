@@ -4,7 +4,7 @@
 @section('title', "Promuovi la tua attività, è gratis!")
 
 @section('content')
-@include('site.components.navbar', ['class' => 'navbar-light'])
+<pg-navbar></pg-navbar>
 
 <div class="jumbotron jumbotron-fluid mb-0">
 	<div class="container text-center">

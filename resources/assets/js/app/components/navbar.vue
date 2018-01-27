@@ -1,33 +1,3 @@
-<template>
-	<nav class="navbar navbar-expand-md" :class="classes">
-		<a class="navbar-brand" href="/" :aria-label="appName">
-			<pg-logo :text="showLogoText" :class="['navbar-logo', !showLogoText ? 'navbar-logo--no-text' : '']"></pg-logo>
-		</a>
-
-		<form class="navbar__search" :action="action" ref="form">
-			<input type="hidden" name="c_lat" :value="lat">
-			<input type="hidden" name="c_lng" :value="lng">
-
-			<div class="input-group navbar__search-group">
-				<span class="input-group-addon navbar__search-icon-container">
-					<pg-icon icon="search" class="navbar__search-icon"></pg-icon>
-				</span>
-				<pg-place-textbox
-					class="form-control form-control-lg navbar__search-textbox"
-					:placeholder="placeholder"
-					:place="mutableQuery"
-					:options="{ types: ['geocode'] }"
-					@place-changed="onPlaceChanged">
-				</pg-place-textbox>
-			</div>
-		</form>
-
-		<div class="ml-auto">
-			<slot name="right"></slot>
-		</div>
-	</nav>
-</template>
-
 <script>
 import PgLogo from './logo';
 import PgIcon from './icon';
@@ -43,13 +13,9 @@ export default {
 	},
 
 	props: {
-		classes: {
+		variant: {
 			type: String,
-			default: 'navbar-dark'
-		},
-		action: {
-			type: String,
-			default: null
+			default: 'light'
 		},
 		placeholder: {
 			type: String,
@@ -84,6 +50,15 @@ export default {
 	},
 
 	computed: {
+		classes() {
+			const  variant = this.variant.split(' ');
+
+			return {
+				'navbar-slim': variant.indexOf('slim') != -1,
+				'navbar-light': variant.indexOf('light') != -1,
+				'navbar-dark': variant.indexOf('dark') != -1
+			}
+		},
 		showLogoText() {
 			return this.$mq.comfortable;
 		},
@@ -129,3 +104,31 @@ export default {
 
 };
 </script>
+
+<template>
+	<nav class="navbar navbar-expand-md" :class="classes">
+		<a class="navbar-brand" href="/" :aria-label="appName">
+			<pg-logo :text="showLogoText" :class="['navbar__logo', !showLogoText ? 'navbar__logo--no-text' : '']"></pg-logo>
+		</a>
+
+		<form class="navbar__search" action="/explore" ref="form">
+			<input type="hidden" name="c_lat" :value="lat">
+			<input type="hidden" name="c_lng" :value="lng">
+
+			<span class="navbar__search-icon-container">
+				<pg-icon icon="search" class="navbar__search-icon"></pg-icon>
+			</span>
+			<pg-place-textbox
+				class="form-control form-control-lg navbar__search-textbox"
+				:placeholder="placeholder"
+				:place="mutableQuery"
+				:options="{ types: ['geocode'] }"
+				@place-changed="onPlaceChanged">
+			</pg-place-textbox>
+		</form>
+
+		<div class="ml-auto">
+			<slot name="right"></slot>
+		</div>
+	</nav>
+</template>
