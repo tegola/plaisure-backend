@@ -16,7 +16,6 @@
 					</h5>
 					<div class="text-muted ml-3 text-nowrap" v-if="venue.distance">
 						{{ venue.distance | formatDistance }}<br>
-						<template v-if="venue.distance_with_bonus">bonus: {{ venue.distance_with_bonus | formatDistance }}</template>
 					</div>
 				</div>
 				<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">{{ categories }}</p>
