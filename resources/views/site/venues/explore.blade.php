@@ -133,7 +133,7 @@
 						data-placement="right"
 						v-cloak
 						@click="onSearchBoundsClick">
-						@include ('site.icons.icon', ['name' => 'refresh'])
+						<pg-icon icon="refresh"></pg-icon>
 					</button>
 					<div class="container-fluid map-floating-controls" v-if="$mq.constrained && mapNeedsRefresh" v-cloak>
 						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">Cerca qui</button>

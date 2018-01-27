@@ -48,7 +48,7 @@
 			</div>
 		</div>
 		<div class="text-center mt-3">
-			@include('site.vectors.logo', ['text' => false, 'class' => 'footer-logo'])
+			<pg-logo :text="false" class="footer-logo"></pg-logo>
 			<p class="mb-0">
 				Copyright {{ date('Y') }} {{ config('constants.company') }}<br>
 				P. IVA {{ config('constants.partita_iva')}}

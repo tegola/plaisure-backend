@@ -42,10 +42,8 @@
 		<div id="app">
 			@yield('content')
 		</div>
-		
-		@include('site.components.footer')
 
-		@include('site.icons.defs')
+		@include('site.components.vectors')
 
 		@include('scripts') {{-- FIXME: Replace with Blade stacks --}}
 		@yield('scripts')

@@ -3,7 +3,6 @@
 @section('body_class', 'page-home')
 
 @section('content')
-
 <pg-home-page inline-template>
 	<div>
 		<div class="hero">
@@ -12,7 +11,7 @@
 			<nav class="navbar navbar-transparent navbar-expand-md">
 				<div class="container justify-content-center">
 					<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
-						@include('site.vectors.logo', ['style' => 'dark', 'class' => 'navbar-logo'])
+						LOGO QUI
 					</a>
 					<div>
 						@if (Auth::guest())
@@ -49,7 +48,7 @@
 
 			<div class="container hero-content">
 				<div class="text-center">
-					@include('site.vectors.logo', ['class' => 'logo', 'style' => 'dark'])
+					<pg-logo class="logo"></pg-logo>
 					<div class="row">
 						<div class="col-lg-8 ml-lg-auto mr-lg-auto">
 							<h1>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h1>
@@ -105,7 +104,7 @@
 							<div class="form-group">
 								<label class="initialism d-none d-lg-inline-block">&nbsp;</label>
 								<button type="submit" class="btn btn-lg btn-block btn-accent search-submit-btn" :disabled="!canSubmit">
-									@include ('site.icons.icon', ['name' => 'search'])
+									<pg-icon icon="search"></pg-icon>
 									Cerca
 								</button>
 							</div>
@@ -146,6 +145,8 @@
 				</div>
 			</div>
 		</div>
+
+		@include('site.components.footer')
 	</div>
 </pg-home>
 @endsection

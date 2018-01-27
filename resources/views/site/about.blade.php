@@ -35,4 +35,6 @@
 		</div>
 	</div>
 </div>
+
+@include('site.components.footer')
 @endsection

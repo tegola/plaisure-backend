@@ -4,5 +4,8 @@
 @section('title', "Rivendica la tua attività")
 
 @section('content')
-	Rivendica la tua attività
+<pg-navbar></pg-navbar>
+Rivendica la tua attività
+
+@include('site.components.footer')
 @endsection

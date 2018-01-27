@@ -20,16 +20,13 @@
 				{{-- Gallery --}}
 				<div class="header-gallery" ref="gallery">
 					<div class="header-gallery-bg">
-						<div class="header-photo header-photo-placeholder"></div>
-						<div class="header-photo header-photo-placeholder"></div>
-						<div class="header-photo header-photo-placeholder"></div>
-						<div class="header-photo header-photo-placeholder"></div>
-						<div class="header-photo header-photo-placeholder"></div>
-						<div class="header-photo header-photo-placeholder"></div>
+						@for ($i = 0; $i <= 5; $i++)
+							<div class="header-photo header-photo-placeholder"></div>
+						@endfor
 					</div>
 					@if (!$venue->isManaged())
 						<a href="{{ route('site.promote') }}" class="header-photo header-photo-add">
-							@include ('site.icons.icon', ['name' => 'plus'])
+							<pg-icon icon="plus"></pg-icon>
 							Aggiungi foto
 						</a>
 					@endif
@@ -41,7 +38,7 @@
 						<a v-if="index == 10" :href="file.resized_url" class="header-photo" @click.prevent="showLightbox(index)">
 							<div class="embed-responsive embed-responsive-1by1 header-photo-img" :style="'background-image: url(' + file.thumbnail_url + ')'">
 								<div class="header-photo-zoom">
-									@include ('site.icons.icon', ['name' => 'search', 'class' => 'mb-1'])
+									<pg-icon icon="search" class="mb-1"></pg-icon>
 									Guarda tutte le foto
 								</div>
 							</div>
@@ -404,6 +401,8 @@
 			:thumbnails="$mq.comfortable"
 			@close="closeLightbox">
 		</pg-lightbox>
+
+		@include('site.components.footer')
 	</div>
 </pg-venue-detail-page>
 @endsection
