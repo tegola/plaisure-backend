@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App;
 use JavaScript;
+use Locale;
 
 class PrepareJavascriptData
 {
@@ -22,7 +23,7 @@ class PrepareJavascriptData
                 'name' => config('app.name')
             ],
             'config' => [
-                'locale' => App::getLocale(),
+                'locale' => Locale::getPrimaryLanguage(app()->getLocale()),
                 'csrfToken' => csrf_token(),
                 'googleMapsApiKey' => config('constants.google_maps_api_key'),
                 'defaultMapCenter' => [

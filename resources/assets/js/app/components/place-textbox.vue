@@ -1,14 +1,16 @@
 <template>
-	<gmap-autocomplete
+	<autocomplete
 		ref="input"
-		v-bind="$props"
+		v-bind="$attrs"
+		v-model="place"
 		:select-first-on-enter="selectFirstOnEnter"
 		@place_changed="onPlaceChanged"
 		@focus.native="onFocus"
+		@blur.native="onBlur"
 		@input.native="onInput"
 		@keydown.native.esc="onEscKey"
 		@keydown.native.enter="onEnterKey">
-	</gmap-autocomplete>
+	</autocomplete>
 </template>
 
 <script>
@@ -18,7 +20,7 @@ export default {
 	name: 'pg-place-textbox',
 
 	components: {
-		'gmap-autocomplete': Autocomplete
+		'autocomplete': Autocomplete
 	},
 
 	props: {
@@ -29,46 +31,29 @@ export default {
 		}
 	},
 
-	data() {
-		return {
-			mutablePlace: this.place
-		};
-	},
-
-	watch: {
-		place(newPlace) {
-			this.mutablePlace = newPlace;
-		}
-	},
-
 	methods: {
 		onPlaceChanged(place) {
-			this.mutablePlace = place;
 			this.$emit('place-changed', place);
 		},
 
 		onFocus(e) {
-			if (this.mutablePlace) e.target.select();
+			if (this.place) e.target.select();
 		},
 
 		onBlur(e) {
-			if (!this.mutablePlace) e.target.value = '';
+			if (!this.place) e.target.value = '';
 		},
 
 		onInput(e) {
 			const input = e.target;
 
-			if (this.mutablePlace) {
-				input.value = e.data;
-				this.mutablePlace = null;
-				this.$emit('place-changed', null);
-			}
-
 			this.$emit('input', input.value);
+
+			if (this.place) this.$emit('place-changed', null);
 		},
 
 		onEscKey(e) {
-			if (!this.mutablePlace) e.target.value = '';
+			if (!this.place) e.target.value = '';
 		},
 
 		onEnterKey(e) {

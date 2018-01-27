@@ -9,7 +9,6 @@
 			:placeholder="placeholder"
 			:autofocus="autofocus"
 			autocomplete="off"
-			v-model="query"
 			@keydown.down="down"
 			@keydown.up="up"
 			@keydown.esc="esc"

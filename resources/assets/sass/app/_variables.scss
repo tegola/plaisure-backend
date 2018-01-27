@@ -143,7 +143,7 @@ $font-size-xl:           1.7rem; // ~24px
 $font-weight-bold:       500;
 
 $headings-font-weight:   300;
-$headings-color:         $palette-dark-green-500;
+// $headings-color:         $palette-dark-green-500;
 
 $hr-border-color: rgba($black, .08);
 
@@ -175,6 +175,11 @@ $input-placeholder-color: $gray-500;
 // Icons
 $icon-size-base: 1.425rem; // ~20px
 $icon-size-sm: 1.15rem; // ~15px
+
+// Dropdowns
+$dropdown-bg:           $white !default;
+$dropdown-border-color: rgba($black, .08) !default;
+$dropdown-box-shadow:   0 .33rem 1rem rgba($black, 0.05) !default;
 
 // Navbar
 $navbar-slim-padding-y: map-get($spacers, 1);

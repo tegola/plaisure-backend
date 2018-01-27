@@ -1,70 +1,183 @@
 .page-explore {
+	display: flex;
 	overflow-x: hidden; // Fix scrollbar issues
 
+	#app, .page-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+	.wrapper {
+		flex: 1;
+		display: flex;
+	}
+
 	// Filters
-	.filter-tag {
-		margin: map-get($spacers, 1) 0;
+	.filters {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 100vw;
+		box-shadow: 0 $border-width 0 rgba(#000, 0.08); // FIXME: Replace with var
+		background-clip: padding-box;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+		z-index: 1;
 	}
-	.filter-tag-input {
-		display: none;
+	.filter-button {
+		position: relative;
+		padding: 0.85rem 1rem;
+		line-height: 1;
+		cursor: default;
+		user-select: none;
+		overflow: hidden;
+		white-space: nowrap;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		&:after	{
+			content: '';
+			position: absolute;
+			top: 0.5rem;
+			bottom: 0.5rem;
+			right: 0;
+			width: $border-width;
+			background-color: gray('200');
+		}
 	}
-	.filter-tag-token {
-		padding: map-get($spacers, 1) map-get($spacers, 2);
-		border-radius: $border-radius-sm;
-		border: $border-width solid transparent;
-		background-color: gray('100');
+	.filter-button__label {
+		text-transform: uppercase;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+		color: gray('600');
+	}
+	.filter-button__arrow {
+		width: 0.85rem;
+		height: 0.85rem;
+		vertical-align: middle;
+		color: gray('600');
+	}
+	.filter-button__text {
+		margin-top: 0.125rem;
+		font-size: $font-size-lg;
+	}
+	.filter-button__placeholder {
 		color: $text-muted;
-		cursor: pointer;
+	}
+	.filter-button--open {
+		color: $white;
+		background-color: $palette-green-500;
 
-		&:hover {
-			border-color: gray('300');
+		&:after {
+			visibility: hidden;
+		}
+		.filter-button__label,
+		.filter-button__arrow {
+			color: $palette-green-100;
+		}
+		.filter-button__text {
+			color: inherit;
 		}
 	}
-	.filter-tag-input:checked + .filter-tag-token {
-		background-color: theme-color(secondary);
-		color: #fff;
 
-		&:hover {
-			border-color: transparent;
+	.filter-button-popup {
+		z-index: $zindex-dropdown;
+		outline: none;
+	}
+	.filter-button-pane {
+		background-color: $dropdown-bg;
+		border-radius: $border-radius;
+		min-width: $dropdown-min-width;
+		padding: $dropdown-padding-y 0;
+		background-clip: padding-box;
+		border: $dropdown-border-width solid $dropdown-border-color;
+		box-shadow: $dropdown-box-shadow;
+	}
+	.filter-button-item {
+		display: flex;
+		padding: 0.5rem 1.75rem 0.5rem 1rem;
+		align-items: center;
+		cursor: default;
+		user-select: none;
+	}
+	.filter-button-item__icon-cell {
+		width: $icon-size-base;
+		color: $palette-green-500;
+		margin-right: 0.75rem;
+	}
+	.filter-button-item__text-cell {
+		flex: 1;
+		font-size: $font-size-md;
+	}
+	.filter-button-item {
+		&:hover,
+		&:focus {
+			outline: none;
+			background-color: $palette-green-100;
+			color: $palette-dark-green-500;
 		}
+	}
+
+	.filters__toggle-button {
+		outline: none !important;
+		background-color: transparent;
+		border-radius: 0;
+		color: $palette-green-500;
 	}
 
 	// Venue list
 	.venue-list {
 		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+		display: flex;
+		flex-direction: column;
 	}
-	.venue-list-filters {
-		border-top: 0;
-		border-left: 0;
-		border-right: 0;
-		border-color: gray('200');
-		margin-bottom: 0;
-		display: none;
-	}
-	.venue-list-empty-item {
+	.venue-list-placeholder-item {
 		text-align: center;
 		border: 0;
 		flex: auto;
+		display: flex;
+		flex-direction: column;
 		justify-content: center;
+		align-items: center;
 	}
 	.venue-list-item {
 		border: 0;
-		padding-top: map-get($spacers, 4);
-		padding-bottom: map-get($spacers, 4);
+		padding-top: map-get($spacers, 3);
+		padding-bottom: map-get($spacers, 3);
+	}
+	.venue-list-item-photo {
+		background-size: cover;
+		background-position: center center;
+		background-repeat: no-repeat;
+		border-radius: $border-radius-sm;
+		background-color: $palette-green-200;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	.venue-list-item-icon {
-		width: 60px;
-		flex: 0 0 auto;
-		padding: 5px;
-		background-color: #76b1a2;
-		border-radius: 50%;
-		margin-right: $grid-gutter-width / 2;
+		max-width: 66%;
+		max-height: 80%;
+	}
+	.venue-list-item--highlighted {
+		background-color: lighten($palette-green-100, 4%);
+
+		.venue-list-item-photo {
+			background-color: $palette-green-300;
+		}
+	}
+	.venue-list-item.active {
+		background-color: $palette-green-100;
+		color: inherit;
 	}
 
+
 	// Map
-	.map-container {
-		display: none;
-		position: relative;
+	.map {
+		flex: auto;
+		height: 100%;
 	}
 	.map-infowindow {
 		width: 250px;
@@ -93,51 +206,16 @@
 		width: 55px; // Align with zoom buttons
 		height: 55px;
 	}
-	.map-location-btn {
-		position: absolute;
-		left: 10px;
-		top: 75px;
-		width: 28px;
-		height: 28px;
+	.map-floating-controls {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding-bottom: 1rem;
 	}
 
-	@include media-breakpoint-up(md) {
-		display: flex;
-
-		#app, .page-content {
-			flex: 1;
-			display: flex;
-			flex-direction: column;
-		}
-		.wrapper {
-			flex: 1;
-			display: flex;
-		}
-		.venue-list-filters {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-between;
-		}
-		.venue-list-item {
-			&:hover {
-				background-color: lighten($palette-blue-100, 6%);
-			}
-			&.active,
-			&.active:hover {
-				background-color: $palette-blue-100;
-				color: inherit;
-			}
-		}
-		.map-container {
-			display: block;
-			flex: auto;
-		}
-		.map {
-			height: 100%;
-		}
-		.footer {
-			display: none;
-		}
+	// Footer
+	.footer {
+		display: none;
 	}
 }

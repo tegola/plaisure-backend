@@ -22,7 +22,7 @@ Route::group(['namespace' => 'Site'], function(){
 	// Venues
 	Route::group(['prefix' => '/venues', 'namespace' => 'Venue'], function(){
 		Route::get('/explore',       'ExploreController@index') ->name('site.venues.explore');
-		Route::get('/search',        'ExploreController@search')->name('site.venues.search');
+		Route::post('/search',       'ExploreController@search')->name('site.venues.search');
 		Route::get('/{venue}',       'DetailController@index')  ->name('site.venues.detail'); // TODO: /v/nome-sala/hash_per_id
 		Route::get('/{venue}/claim', 'ClaimController@index')   ->name('site.venues.claim');
 	});

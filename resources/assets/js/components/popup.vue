@@ -1,25 +1,29 @@
 <template>
-	<span :style="{ display: displayStyle }">
+	<div :is="element">
 		<slot></slot>
 
-		<div v-show="visible" ref="popup" :class="popupClasses" tabindex="0" @keyup.esc.stop="onEsc">
+		<div v-show="visible" ref="popup" :class="popupClasses" tabindex="0" @keyup.esc.stop="close">
+			<div tabindex="0" @focus.stop="onFirstElFocus" ref="firstEl"></div>
 			<slot name="popup">{{ content }}</slot>
+			<div tabindex="0" @focus.stop="onLastElFocus" ref="lastEl"></div>
 		</div>
-	</span>
+	</div>
 </template>
 
 <script>
 // FIXME: Aggiustare la gestione del focus come con dialog.vue (ciclo del focus, ripristino alla chiusura, ecc.)
+// FIXME: Fare in modo che funzioni con v-if (quindi inizializzare solo quando è effettivamente visibile)
 import Popper from 'popper.js';
 
 export default {
-	name: 'ap-popup',
+	name: 'pg-popup',
 
 	props: {
-		displayStyle: {
+		element: {
 			type: String,
-			default: 'inline-block' // inline-block, block
+			default: 'span'
 		},
+		popupClass: String,
 		visible: {
 			type: Boolean,
 			default: false
@@ -36,31 +40,31 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		content: String,
+		content: String
 	},
 
 	data() {
 		return {
+			outsideFocusedEl: null,
 			currentPlacement: this.placement
-		}
+		};
 	},
 
 	computed: {
 		popupClasses() {
 			return [
-				'ap-popup',
-				this.currentPlacement ? 'ap-popup--' + this.currentPlacement : ''
+				this.popupClass,
+				'pg-popup',
+				this.currentPlacement ? 'pg-popup--' + this.currentPlacement : ''
 			];
 		}
 	},
 
 	watch: {
-		visible(newValue) {
-			if (newValue) {
-				this.$nextTick(() => {
-					this.initPopper();
-				});
-			}
+		visible() {
+			this.$nextTick(() => {
+				this.visible ? this.onOpen() : this.onClose();
+			});
 		}
 	},
 
@@ -80,10 +84,11 @@ export default {
 					},
 					preventOverflow: {
 						priority: ['left', 'right'], // Don't move if top and bottom boundaries aren't enough
-						boundariesElement: this.boundaries
+						boundariesElement: this.boundaries,
+						padding: 0
 					},
 					arrow: {
-						element: '.ap-popup__connector' // FIXME: In nested popovers, querySelector gets the last one
+						element: '.pg-popup__connector' // FIXME: In nested popovers, querySelector gets the last one
 					}
 				},
 				onCreate: data => {
@@ -99,22 +104,64 @@ export default {
 			});
 		},
 
-		onEsc() {
-			this.close();
+		onOpen() {
+			this.outsideFocusedEl = document.activeElement;
+			this.initPopper();
+			this.focus();
+			this.$emit('open');
+		},
+
+		getFocusables() {
+			const selector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+			const focusables = this.$refs.popup.querySelectorAll(selector);
+
+			return [...focusables].filter(node => {
+				return node !== this.$refs.firstEl && node !== this.$refs.lastEl;
+			});
+		},
+
+		focus() {
+			this.$refs.lastEl.focus(); // Automatically focuses the first item;
+		},
+
+		onFirstElFocus() {
+			const focusables = this.getFocusables();
+			if (focusables.length) focusables[focusables.length-1].focus();
+		},
+
+		onLastElFocus() {
+			const focusables = this.getFocusables();
+			if (focusables.length) focusables[0].focus();
 		},
 
 		close() {
-			this.$emit('update:visible', false)	
+			this.$emit('update:visible', false);
 		},
 
-		onClickOut() {
-			if (this.visible && !this.$el.contains(event.target)) this.close();
+		onClose() {
+			if (this.outsideFocusedEl) this.outsideFocusedEl.focus();
+			this.$emit('close');
+		},
+
+		onClickOut(event) {
+			const target = event.target;
+			const popup = this.$refs.popup;
+
+			// Stop if popup is not shown or if click is inside the component
+			if (!this.visible ||
+				target === popup ||
+				popup.contains(target) ||
+				this.$el.contains(target))
+				return;
+
+			// Close the popup
+			this.close();
 		},
 	},
 
 	mounted() {
 		if (typeof document !== 'undefined') {
-			document.documentElement.addEventListener('click', this.onClickOut);
+			document.addEventListener('click', this.onClickOut);
 		}
 
 		this.$nextTick(this.initPopper);
@@ -130,5 +177,5 @@ export default {
 			this.popper = null;
 		}
 	}
-}
+};
 </script>

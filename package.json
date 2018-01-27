@@ -26,9 +26,9 @@
         "lodash": "^4.17.4",
         "moment": "^2.19.0",
         "popper.js": "^1.11.0",
-        "vue": "^2.4.2",
+        "vue": "^2.5.13",
         "vue-match-media": "^1.0.2",
-        "vue-template-compiler": "^2.4.2",
+        "vue-template-compiler": "^2.5.13",
         "vue-upload-component": "^2.6.2",
         "vue2-google-maps": "^0.8.1",
         "webpack-bundle-analyzer": "^2.9.0"

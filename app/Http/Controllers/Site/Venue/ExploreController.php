@@ -14,27 +14,47 @@ use App\Http\Controllers\Controller;
 class ExploreController extends Controller
 {
 	public function __construct(Request $request) {
-		$this->near = $request->near;
-		$this->categories = $request->filled('categories') ? $request->categories : VenueCategory::pluck('id')->all();
-		// $this->distance = config('constants.search_default_distance'); // FIXME: Move to bounds
-		$this->c_lat = $request->filled('c_lat') ? floatval($request->c_lat) : null;
-		$this->c_lng = $request->filled('c_lng') ? floatval($request->c_lng) : null;
-		$this->ne_lat = $request->filled('ne_lat') ? floatval($request->ne_lat) : null;
-		$this->ne_lng = $request->filled('ne_lng') ? floatval($request->ne_lng) : null;
-		$this->sw_lat = $request->filled('sw_lat') ? floatval($request->sw_lat) : null;
-		$this->sw_lng = $request->filled('sw_lng') ? floatval($request->sw_lng) : null;
+		$this->query = $request->input('query');
+
+		$categories = $request->filled('categories') ? $request->input('categories') : VenueCategory::pluck('id')->all();
+		$this->categories = array_map(function($id) { // pluck() returns IDs as strings
+			return (int) $id;
+		}, $categories);
+
+		// $this->amenities = $request->filled('amenities') ? $request->input('amenities') : [];
+		$this->radius = $request->filled('radius') ? intval($request->input('radius')) : config('constants.search_radiuses')[0];
+		$this->c_lat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
+		$this->c_lng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
+		$this->ne_lat = $request->filled('ne_lat') ? floatval($request->input('ne_lat')) : null;
+		$this->ne_lng = $request->filled('ne_lng') ? floatval($request->input('ne_lng')) : null;
+		$this->sw_lat = $request->filled('sw_lat') ? floatval($request->input('sw_lat')) : null;
+		$this->sw_lng = $request->filled('sw_lng') ? floatval($request->input('sw_lng')) : null;
 	}
+
+	/*
+	private function amenities() {
+		return collect([
+			['field' => 'amenity_atm',             'machine_name' => 'atm',             'name' => 'Totem Bancomat'],
+			['field' => 'amenity_bar',             'machine_name' => 'bar',             'name' => 'Bar'],
+			['field' => 'amenity_pay_per_view',    'machine_name' => 'pay_per_view',    'name' => 'Pay per view'],
+			['field' => 'amenity_pos',             'machine_name' => 'pos',             'name' => 'POS'],
+			['field' => 'amenity_private_parking', 'machine_name' => 'private_parking', 'name' => 'Parcheggio privato'],
+			['field' => 'amenity_restaurant',      'machine_name' => 'restaurant',      'name' => 'Ristorante'],
+			['field' => 'amenity_security',        'machine_name' => 'security',        'name' => 'Servizio di sicurezza'],
+			['field' => 'amenity_smoking_area',    'machine_name' => 'smoking_area',    'name' => 'Area fumatori'],
+			['field' => 'amenity_wifi',            'machine_name' => 'wifi',            'name' => 'Wi-Fi']
+		]);
+	}
+	*/
 
 	public function index()
 	{
-		// Make sure we have all location data
-		// if (!$this->hasLocationData()) {
-		// 	return back();
-		// }
-
+		// Prepare initial data
 		$searchParams = [
-			'near' => $this->near,
+			'query' => $this->query,
 			'categories' => $this->categories,
+			// 'amenities' => $this->amenities,
+			'radius' => $this->radius,
 			'c_lat' => $this->c_lat,
 			'c_lng' => $this->c_lng,
 			'ne_lat' => $this->ne_lat,
@@ -43,13 +63,15 @@ class ExploreController extends Controller
 			'sw_lng' => $this->sw_lng,
 		];
 
+		$radiuses = config('constants.search_radiuses');
 		$categories = VenueCategory::all();
+		// $amenities = $this->amenities()->all();
 
 		// Pass initial data to view
-		Javascript::put(compact('searchParams'));
+		Javascript::put(compact('searchParams', 'radiuses', 'categories'/*, 'amenities'*/));
 
 		return view('site.venues.explore', [
-			'near' => $this->near,
+			'query' => $this->query,
 			'categories' => $categories
 		]);
 	}
@@ -57,22 +79,23 @@ class ExploreController extends Controller
 	public function search()
 	{
 		// Make sure we have all location data
-		if (!$this->hasLocationData()) {
-			return response()->json([]);
-		}
+		if (!$this->hasCenter() && !$this->hasBounds()) return response()->json([]);
 
 		// Start loading venues
 		$venues = Venue::with(['categories']);
 
-		// Filter by bounds
-		if ($this->ne_lat && $this->ne_lng && $this->sw_lat && $this->sw_lng) {
-			// Find in bounds
+		// Find by bounds or center
+		if ($this->hasBounds()) {
 			$venues->inBounds($this->ne_lat, $this->ne_lng, $this->sw_lat, $this->sw_lng);
-		}
-
-		// Calculate distance
-		if ($this->c_lat && $this->c_lng) {
+		} elseif ($this->hasCenter()) {
 			$venues->withDistanceFrom($this->c_lat, $this->c_lng);
+
+			// Limit by radius
+			if ($this->radius) {
+				$venues
+					->having('distance', '<=', $this->radius)
+					->orHaving('distance_with_bonus', '<=', $this->radius);
+			}
 		}
 
 		// Filter by category
@@ -82,17 +105,40 @@ class ExploreController extends Controller
 			});
 		}
 
+		// Filter by amenities
+		/*
+		if ($this->amenities) {
+			$amenities = $this->amenities();
+
+			foreach ($this->amenities as $amenity) {
+				// Get amenity object
+				$currentAmenity = $amenities->where('machine_name', $amenity)->first();
+
+				// Skip if is not a valid amenity
+				if (!$currentAmenity) continue;
+
+				$venues->orWhere($currentAmenity['field'], true);
+			}
+		}
+		*/
+
+		// Load first photo
+		$venues->with(['photos' => function($query) {
+			$query->take(1);
+		}]);
+
 		// Return results
-		return $venues->simplePaginate(100);
+		return $venues->simplePaginate(50);
 	}
 
-	private function hasLocationData()
+	private function hasCenter()
 	{
-		if (!$this->ne_lat || !$this->ne_lng || !$this->sw_lat || !$this->sw_lng || !$this->c_lat || !$this->c_lng) {
-			return $this->getLocationData();
-		}
+		return $this->c_lat && $this->c_lng;
+	}
 
-		return true;
+	private function hasBounds()
+	{
+		return $this->ne_lat && $this->ne_lng && $this->sw_lat && $this->sw_lng;
 	}
 
 	/**
@@ -100,22 +146,22 @@ class ExploreController extends Controller
 	 *
 	 * @return boolean
 	 */
-	private function getLocationData()
+	private function geocode()
 	{
+		dd('faccio geocode');
 		// Stop if no location name is provided
-		if (!$this->near) {
-			return false;
-		}
+		if (!$this->query) return false;
 
+		// Ask Google Maps
 		$api_url = "https://maps.googleapis.com/maps/api/geocode/json";
 		$querystring = http_build_query(array(
 			'key' => config('constants.google_maps_api_key'),
-			'address' => $this->near,
+			'address' => $this->query,
 			'language' => App::getLocale(),
 			'region' => App::getLocale()
 		));
 
-		// Ask Google Maps and stop if it doesn't work
+		// Stop if it didn't work
 		$response = file_get_contents("{$api_url}?$querystring");
 		if (!$response) return false;
 

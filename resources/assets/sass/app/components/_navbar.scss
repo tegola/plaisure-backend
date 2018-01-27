@@ -32,28 +32,56 @@
 }
 
 // Search
-.navbar-search {
+.navbar__search {
 	flex: 1;
 }
-.navbar-search-input-group {
-	position: relative;
+.navbar__search-icon-container {
+	display: none;
 }
-.navbar-search-input-group-addon {
-	border-color: transparent;
-	background-color: transparent;
-	padding-left: $input-btn-padding-x-lg;
-	padding-right: $input-btn-padding-x-lg / 2;
-	position: absolute;
-	left: 0;
-	height: 100%;
-}
-.navbar-search-form-control {
-	padding-left: ($input-btn-padding-x-lg * 1.5) + $icon-size-base;
+.navbar__search-textbox {
 	border-color: transparent !important;
 	background-color: transparent !important;
 
 	&:focus {
 		box-shadow: none;
+	}
+}
+
+@include media-breakpoint-up(md) {
+	.navbar__search-group {
+		position: relative;
+	}
+	.navbar__search-icon-container {
+		display: flex;
+		border-color: transparent;
+		background-color: transparent;
+		padding-left: $input-btn-padding-x-lg;
+		padding-right: $input-btn-padding-x-lg / 2;
+		position: absolute;
+		left: 0;
+		height: 100%;
+	}
+	.navbar__search-textbox {
+		padding-left: ($input-btn-padding-x-lg * 1.5) + $icon-size-base;
+	}
+	.navbar__search-icon {
+		position: relative;
+		top: -0.1rem;
+	}
+}
+
+// Location button
+.navbar__location-btn {
+	background: transparent;
+	border-radius: 0;
+	box-shadow: none !important;
+	color: $palette-dark-green-300;
+	padding-left: 0.5rem !important;
+	padding-right: 0.5rem !important;
+	outline: none;
+
+	.no-geolocation & {
+		display: none;
 	}
 }
 
@@ -93,13 +121,13 @@
 	background-color: $white;
 	box-shadow: 0 $border-width 0 rgba($black, 0.08);
 
-	.navbar-search {
+	.navbar__search {
 		border-left: $border-width solid rgba($black, 0.05);
 	}
-	.navbar-search-input-group-addon {
+	.navbar__search-icon-container {
 		color: rgba($black, 0.5);
 	}
-	.navbar-search-form-control {
+	.navbar__search-textbox {
 		color: rgba($black, 0.5);
 
 		&::placeholder {
@@ -127,24 +155,20 @@
 		fill: $white;
 	}
 
-	.navbar-search {
+	.navbar__search {
 		border-left: $border-width solid rgba($white, 0.1);
 	}
-	.navbar-search-input-group-addon {
+	.navbar__search-icon-container {
 		color: rgba($white, 0.5);
 	}
-	.navbar-search-form-control {
-		color: rgba($white, 0.5);
+	.navbar__search-textbox {
+		color: $white;
 
 		&::placeholder {
 			color: rgba($white, 0.5);
 		}
-		&:focus {
-			color: $white;
-
-			&::placeholder {
-				color: rgba($white, 0.25);
-			}
+		&:focus::placeholder {
+			color: rgba($white, 0.25);
 		}
 	}
 }

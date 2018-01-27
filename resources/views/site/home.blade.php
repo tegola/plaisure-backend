@@ -84,9 +84,9 @@
 								<label class="initialism"><strong>Vicino a</strong></label><br>
 								<div style="position: relative">
 									<pg-place-textbox
-										class="form-control form-control-lg search-form-control search-near-control"
+										class="form-control form-control-lg search-form-control search-query-control"
 										ref="placeTextbox"
-										name="near"
+										name="query"
 										placeholder="Città"
 										autofocus
 										:place="placeQuery"

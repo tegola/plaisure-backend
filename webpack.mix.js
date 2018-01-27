@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-const BabiliPlugin = require('babili-webpack-plugin');
+const BabiliPlugin = require('babili-webpack-plugin'); // FIXME: Not needed anymore
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const webpackConfig = {

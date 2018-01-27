@@ -3,6 +3,7 @@
 	if (!isset($class)) $class = 'navbar-dark';
 	if (!isset($show_search)) $show_search = true;
 	if (!isset($vue_support)) $vue_support = false;
+	if (!isset($show_location_button)) $show_location_button = false;
 @endphp
 
 <nav class="navbar navbar-expand-md {{ $class }}">
@@ -30,8 +31,9 @@
 				>
 			</pg-navbar-search-form>
 		@endif
-		{{--
 		<div class="ml-auto">
+			{{ isset($right) ? $right : null }}
+			{{--
 			@if (Auth::guest())
 				<a class="btn btn-outline-neutral" href="{{ url('/login') }}">Accedi</a>
 				<a class="btn btn-secondary" href="{{ url('/register') }}">Iscriviti</a>
@@ -56,8 +58,8 @@
 					</div>
 				</span>
 			@endif
+			--}}
 		</div>
-		--}}
 	@if (!$fluid)
 	</div>
 	@endif

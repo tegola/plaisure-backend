@@ -7,13 +7,14 @@ import 'core-js/fn/array/from'; // For vue-match-media
 import $ from 'jquery';
 import Popper from 'popper.js';
 window.Popper = Popper;
-import 'bootstrap';
+import 'bootstrap'; // FIXME: Upgrade to bootstrap final
 
 // Load local libs
 import Vue from 'vue';
 import VueMatchMedia from 'vue-match-media/dist';
 import { load as loadGMaps } from 'vue2-google-maps';
-import PgNavbarSearchForm from './components/navbar-search-form';
+import PgLogo from './components/logo';
+import PgNavbar from './components/navbar';
 import PgIcon from './components/icon';
 import PgHomePage from './pages/home';
 import PgExplorePage from './pages/explore';
@@ -31,7 +32,8 @@ loadGMaps({
 Vue.use(VueMatchMedia);
 
 // Register global components
-Vue.component('pg-navbar-search-form', PgNavbarSearchForm);
+Vue.component('pg-logo', PgLogo);
+Vue.component('pg-navbar', PgNavbar);
 Vue.component('pg-icon', PgIcon);
 
 // Startup VM

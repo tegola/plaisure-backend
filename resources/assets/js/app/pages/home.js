@@ -173,8 +173,7 @@ export default {
 				return;
 			}
 
-			const viewport = place.geometry.viewport;
-			const center = viewport.getCenter();
+			const center = place.geometry.viewport.getCenter();
 
 			this.searchCenter = {
 				lat: center.lat(),
