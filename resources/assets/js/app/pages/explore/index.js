@@ -359,7 +359,9 @@ export default {
 
 			// Update url
 			const baseName = _last(location.pathname.split('/'));
-			const params = stringify(this.searchParams);
+			const params = stringify(this.searchParams, {
+				skipNulls: true
+			});
 
 			window.history.replaceState({}, '', `${baseName}?${params}`);
 

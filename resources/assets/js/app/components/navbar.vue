@@ -125,6 +125,7 @@ export default {
 				</span>
 				<pg-place-textbox
 					class="form-control form-control-lg navbar__search-textbox"
+					name="query"
 					:placeholder="placeholder"
 					:place="mutableQuery"
 					:options="{ types: ['geocode'] }"
