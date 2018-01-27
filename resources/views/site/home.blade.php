@@ -66,7 +66,7 @@
 							<div class="form-group">
 								<label class="initialism"><strong>Trova</strong></label><br>
 								<pg-input-typeahead
-									classes="form-control form-control-lg search-form-control"
+									input-class="form-control form-control-lg search-form-control"
 									name="what"
 									placeholder="VLT, Bingo, Ricevitoria"
 									autofocus

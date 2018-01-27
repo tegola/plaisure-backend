@@ -24,6 +24,7 @@
         "lodash": "^4.17.4",
         "moment": "^2.20.1",
         "popper.js": "^1.13.0",
+        "qs": "^6.5.1",
         "vue": "^2.5.13",
         "vue-match-media": "^1.0.2",
         "vue-template-compiler": "^2.5.13",

@@ -3,26 +3,24 @@
 		<input
 			ref="input"
 			type="text"
-			:class="classes"
-			:name="name"
+			:class="inputClass"
 			:value="value"
-			:placeholder="placeholder"
-			:autofocus="autofocus"
 			autocomplete="off"
-			@keydown.down="down"
-			@keydown.up="up"
-			@keydown.esc="esc"
-			@keydown.enter="select"
-			@input="input"
-			@focus="focus"
-			@blur="blur">
+			v-bind="$attrs"
+			@keydown.down="onDownPress"
+			@keydown.up="onUpPress"
+			@keydown.esc="onEscPress"
+			@keydown.enter="onEnterPress"
+			@input="onInput"
+			@focus="onFocus"
+			@blur="onBlur">
 		<div v-if="open && items.length" class="dropdown-menu w-100 show">
 			<component v-for="(item, index) in items" :key="item.id"
 				:is="itemComponent"
 				:item="item"
 				:class="itemClass(index)"
-				@mouseover.native="mouseover"
-				@mousedown.native="mousedown(index)">
+				@mouseover.native="onMouseOver"
+				@mousedown.native="onMouseDown(index)">
 			</component>
 		</div>
 	</div>
@@ -30,12 +28,13 @@
 
 <script>
 export default {
+	name: 'pg-input-typeahead',
+
+	inheritAttrs: false,
+
 	props: {
-		classes: String,
-		name: String,
+		inputClass: String,
 		value: [String, Number],
-		placeholder: String,
-		autofocus: Boolean,
 		itemComponent: {
 			type: String,
 			required: true
@@ -50,15 +49,11 @@ export default {
 		return {
 			open: false,
 			focused: false,
-			query: this.value,
 			current: -1
 		};
 	},
 
 	watch: {
-		value(newValue) {
-			this.query = newValue;
-		},
 		items() {
 			this.current = -1;
 		}
@@ -77,16 +72,18 @@ export default {
 			};
 		},
 
-		input() {
-			this.open = true;
-			this.$emit('input', this.query);
+		onInput(event) {
+			const value = event.target.value;
+
+			this.open = value ? true : false;
+			this.$emit('input', value);
 		},
 
-		esc() {
+		onEscPress() {
 			this.open = false;
 		},
 
-		up(event) {
+		onUpPress(event) {
 			if (this.items.length) {
 				this.open = true;
 				event.preventDefault();
@@ -101,7 +98,7 @@ export default {
 			}
 		},
 
-		down(event) {
+		onDownPress(event) {
 			if (this.items.length) {
 				this.open = true;
 				event.preventDefault();
@@ -114,30 +111,30 @@ export default {
 			}
 		},
 
-		focus() {
-			if (this.items.length) {
-				this.open = true;
-			}
+		onEnterPress(event) {
+			if (this.open) event.preventDefault();
+			this.select();
 		},
 
-		blur() {
+		onFocus() {
+			if (this.items.length) this.open = true;
+		},
+
+		onBlur() {
 			this.open = false;
 		},
 
-		mouseover() {
+		onMouseOver() {
 			this.current = -1;
 		},
 
-		mousedown(index) {
+		onMouseDown(index) {
 			this.current = index;
 			this.select();
 		},
 
 		select(event) {
 			if (this.current === -1) return;
-
-			// Stop enter key if still open
-			if (event && this.open) event.preventDefault();
 
 			this.open = false;
 			this.$emit('select', this.items[this.current]);

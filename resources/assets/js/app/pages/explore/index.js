@@ -1,4 +1,5 @@
-import $ from 'jquery';
+import axios from 'axios';
+import { stringify } from 'qs';
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import _last from 'lodash/last';
@@ -360,14 +361,14 @@ export default {
 			// Load venues
 			this.loading = true;
 
-			$.post('/venues/search', paramsWithToken, pager => {
-				this.pager = pager;
+			axios.post('/venues/search', paramsWithToken).then(response => {
+				this.pager = response.data;
 				this.loading = false;
 			});
 
 			// Update url
 			const baseName = _last(location.pathname.split('/'));
-			const params = $.param(this.searchParams);
+			const params = stringify(this.searchParams);
 
 			window.history.replaceState({}, '', `${baseName}?${params}`);
 
