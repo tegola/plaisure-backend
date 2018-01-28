@@ -21,8 +21,7 @@
 			</div>
 		</div>
 
-		@include('scripts') {{-- FIXME: Replace with Blade stacks --}}
+		@include('scripts')
 		<script src="{{ mix('js/admin.js') }}"></script>
-		@yield('scripts')
 	</body>
 </html>

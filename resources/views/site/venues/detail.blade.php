@@ -9,6 +9,8 @@
 {{ $venue->address_city }}
 @endsection
 
+@section('description', $venue->description ?: null)
+
 @section('head')
 {!! $venue->structuredData() !!}
 @endsection

@@ -19,13 +19,17 @@
 			@endif
 		</title>
 
+		{{-- Description --}}
+		@hasSection('description')
+			<meta name="description" content="@yield('description')">
+		@endif
+
 		{{-- Typekit --}}
 		<script src="https://use.typekit.net/qwv3xzz.js"></script>
 		<script>try{Typekit.load({ async: true });}catch(e){}</script>
 
 		{{-- Styles --}}
 		<link rel="stylesheet" href="{{ mix('css/app.css') }}">
-		@yield('stylesheets')
 
 		{{-- Favicons --}}
 		<link rel="apple-touch-icon" href="/img/favicons/apple-touch-icon.png">
@@ -47,8 +51,7 @@
 
 		@include('site.components.vectors')
 
-		@include('scripts') {{-- FIXME: Replace with Blade stacks --}}
-		@yield('scripts')
+		@include('scripts')
 		<script src="{{ mix('js/app.js') }}"></script>
 	</body>
 </html>
