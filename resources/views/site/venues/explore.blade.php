@@ -14,7 +14,13 @@
 			:auto-submit="false"
 			@place-changed="onPlaceChanged">
 			<template slot="right">
-				<button class="btn navbar__location-btn" :disabled="userLocation ? true : false" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="findUserLocation">
+				<button
+					class="btn navbar__location-btn"
+					:disabled="userLocation ? true : false"
+					title="Usa la tua posizione"
+					aria-label="Usa la tua posizione"
+					v-if="$root.hasGeolocation"
+					@click="findUserLocation">
 					<pg-icon :icon="locationButtonIcon" :spinning="locating"></pg-icon>
 				</button>
 			</template>

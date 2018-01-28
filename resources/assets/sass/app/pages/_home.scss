@@ -103,9 +103,6 @@
 		&:not([disabled]):focus {
 			color: theme-color(accent);
 		}
-		.no-geolocation & {
-			display: none;
-		}
 	}
 
 	// Cards

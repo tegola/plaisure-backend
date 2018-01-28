@@ -44,6 +44,10 @@ new Vue({
 		PgVenueDetailPage
 	},
 
+	data: {
+		hasGeolocation: navigator.geolocation ? true : false
+	},
+
 	mq: {
 		/*
 		xs: '(max-width: 575px)',
@@ -54,10 +58,5 @@ new Vue({
 		*/
 		constrained: '(max-width: 767px)',
 		comfortable: '(min-width: 768px)'
-	},
-
-	mounted() {
-		// Support for showing geolocation controls
-		document.documentElement.classList.add(navigator.geolocation ? 'has-geolocation' : 'no-geolocation');
 	}
 });

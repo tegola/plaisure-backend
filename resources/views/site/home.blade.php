@@ -94,7 +94,17 @@
 										:options="placeTextboxOptions"
 										@place-changed="onPlaceChanged">
 									</pg-place-textbox>
-									<button type="button" ref="locateButton" class="btn btn-lg btn-link search-locate-btn" data-toggle="tooltip" title="Usa la tua posizione" aria-label="Usa la tua posizione" @click="locate" :disabled="isSearchingLocation" tabindex="-1">
+									<button
+										type="button"
+										ref="locateButton"
+										class="btn btn-lg btn-link search-locate-btn"
+										data-toggle="tooltip"
+										title="Usa la tua posizione"
+										aria-label="Usa la tua posizione"
+										tabindex="-1"
+										:disabled="isSearchingLocation"
+										v-if="$root.hasGeolocation"
+										@click="locate">
 										<pg-icon :icon="locateButtonIcon" :spinning="isSearchingLocation"></pg-icon>
 									</button>
 								</div>
