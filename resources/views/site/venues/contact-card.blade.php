@@ -37,7 +37,7 @@
 					{{ $venue->isOpen() ? 'Aperto ora' : 'Chiuso ora'}}<pg-icon :icon="hoursIcon" class="ml-1 contact-card-chevron-icon"></pg-icon>
 				</a>
 				<table v-if="hoursExpanded" v-cloak>
-					@foreach($venue->businessHoursByDay() as $dayIndex => $hoursForDay)
+					@foreach($venue->businessHoursByDay(true) as $dayIndex => $hoursForDay)
 						@foreach($hoursForDay as $index => $hours)
 							<tr class="{{ $hours->isCurrent() ? 'font-weight-bold' : '' }}">
 								<td class="align-top pr-3">

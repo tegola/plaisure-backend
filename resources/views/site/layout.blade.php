@@ -37,6 +37,8 @@
 		@if(env('GOOGLE_ANALYTICS_CODE'))
 			@include('site.components.google-analytics', ['code' => env('GOOGLE_ANALYTICS_CODE')])
 		@endif
+
+		@yield('head')
 	</head>
 	<body class="page @yield('body_class')">
 		<div id="app">

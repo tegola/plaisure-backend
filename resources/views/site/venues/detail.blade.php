@@ -3,10 +3,14 @@
 @section('body_class', 'page-detail')
 
 @section('title')
-	{{ $venue->name }}
-	&ndash;
-	{{ $venue->categories->count() ? "{$venue_category_string} a" : '' }}
-	{{ $venue->address_city }}
+{{ $venue->name }}
+&ndash;
+{{ $venue->categories->count() ? "{$venueCategoryString} a" : '' }}
+{{ $venue->address_city }}
+@endsection
+
+@section('head')
+{!! $venue->structuredData() !!}
 @endsection
 
 @section('content')
@@ -50,7 +54,7 @@
 				<h2 class="header-title">{{ $venue->name }}</h2>
 				<ul class="list-inline header-subtitle">
 					<li class="list-inline-item">
-						{{ $venue->categories->count() ? "{$venue_category_string} a" : '' }}
+						{{ $venue->categories->count() ? "{$venueCategoryString} a" : '' }}
 						{{ $venue->address_city }}
 					</li>
 					@if ($venue->businessHours->count())
@@ -362,20 +366,20 @@
 					])
 
 					{{-- Nearby venues --}}
-					@if ($nearby_venues && $nearby_venues->count())
+					@if ($nearbyVenues && $nearbyVenues->count())
 						<div class="my-5">
 							<h5 class="mb-3">Attività nei dintorni</h5>
 							<ul class="list-unstyled">
-								@foreach ($nearby_venues as $nearby_venue)
+								@foreach ($nearbyVenues as $nearbyVenue)
 									@php
-										$img = $nearby_venue->first_category_machine_name ?: 'collapsed';
+										$img = $nearbyVenue->first_category_machine_name ?: 'collapsed';
 									@endphp
 									<li class="d-flex align-items-start">
 										<img class="mr-3" src="{{ asset("img/map/pin-normal-{$img}.svg")}}">
 										<p>
-											<strong><a href="{{ route('site.venues.detail', ['venue' => $nearby_venue]) }}">{{ $nearby_venue->name }}</a></strong><br>
-											<span class="initialism text-muted">{{ $nearby_venue->categories()->first()->name }}</span><br>
-											{{ $nearby_venue->short_address }}
+											<strong><a href="{{ route('site.venues.detail', ['venue' => $nearbyVenue]) }}">{{ $nearbyVenue->name }}</a></strong><br>
+											<span class="initialism text-muted">{{ $nearbyVenue->categories()->first()->name }}</span><br>
+											{{ $nearbyVenue->short_address }}
 										</p>
 									</li>
 								@endforeach

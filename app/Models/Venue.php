@@ -9,6 +9,7 @@ use App\Models\VenueBusinessHour;
 use DB;
 use Auth;
 use Carbon;
+use Spatie\SchemaOrg\Schema;
 
 class Venue extends Model
 {
@@ -440,13 +441,17 @@ class Venue extends Model
 			array_push($days[$hours->day], $hours);
 		}
 
-		// Fill empty days with an empty record
+		// Fill empty days with an empty record, or remove the day
 		foreach($days as $dayIndex => $hours) {
-			if (!count($hours)) {
+			if (count($hours)) continue;
+
+			if ($includeClosedDays) {
 				$closedHours = new VenueBusinessHour([
 					'day' => $dayIndex
 				]);
 				$days[$dayIndex] = [$closedHours];
+			} else {
+				unset($days[$dayIndex]);
 			}
 		}
 
@@ -496,6 +501,52 @@ class Venue extends Model
 
 		// No match
 		return false;
+	}
+
+	/**
+	 * Prepare structured data schema.
+	 * 
+	 * @return Spatie\SchemaOrg\Schema
+	 */
+	public function structuredData()
+	{
+		// Data that doesn't need to be checked
+		$schema = Schema::entertainmentBusiness()
+			->name($this->name)
+			->url(route('site.venues.detail', $this))
+			->address($this->long_address) // FIXME: Separare i campi?
+			->setProperty('geo', Schema::geoCoordinates()
+				->latitude($this->geo_latitude)
+				->longitude($this->geo_longitude)
+			);
+
+		// Data that need to be checked for existence
+		if ($this->description)   $schema->description($this->description);
+		if ($this->contact_phone) $schema->telephone($this->contact_phone);
+		if ($this->contact_email) $schema->email($this->contact_email);
+
+		// Image
+		$photo = $this->photos()->latest()->take(1)->first();
+
+		if ($photo) $schema->image($photo->thumbnail_url);
+
+		// Opening hours
+		$hoursSchema = [];
+
+		foreach ($this->businessHours as $hours) {
+			$day = substr(date('D', strtotime("Sunday +{$hours->day} days")), 0, 2);
+
+			array_push(
+				$hoursSchema,
+				Schema::openingHoursSpecification()
+					->dayOfWeek($day)
+					->opens($hours->opens)
+					->closes($hours->closes)
+			);
+		}
+		if (count($hoursSchema)) $schema->setProperty('openingHoursSpecification', $hoursSchema);
+
+		return $schema;
 	}
 
 	/**
