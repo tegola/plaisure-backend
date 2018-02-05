@@ -37,12 +37,21 @@ class StoreVenue extends FormRequest
 	 */
 	public function rules()
 	{
-		// Set default values for the checkboxes
+		// Set default values for possible null values
 		$this->merge([
+			'description'             => $this->filled('description') ? $this->input('description') : '',
 			'sports_betting'          => $this->input('sports_betting', 0),
 			'virtual_betting'         => $this->input('virtual_betting', 0),
 			'horse_betting'           => $this->input('horse_betting', 0),
 			'arcade_roulette'         => $this->input('arcade_roulette', 0),
+			'contact_phone'           => $this->filled('contact_phone') ? $this->input('contact_phone') : '',
+			'contact_email'           => $this->filled('contact_email') ? $this->input('contact_email') : '',
+			'contact_facebook'        => $this->filled('contact_facebook') ? $this->input('contact_facebook') : '',
+			'contact_twitter'         => $this->filled('contact_twitter') ? $this->input('contact_twitter') : '',
+			'url_site'                => $this->filled('url_site') ? $this->input('url_site') : '',
+			'url_online_casino'       => $this->filled('url_online_casino') ? $this->input('url_online_casino') : '',
+			'url_facebook'            => $this->filled('url_facebook') ? $this->input('url_facebook') : '',
+			'url_tripadvisor'         => $this->filled('url_tripadvisor') ? $this->input('url_tripadvisor') : '',
 			'amenity_atm'             => $this->input('amenity_atm', 0),
 			'amenity_bar'             => $this->input('amenity_bar', 0),
 			'amenity_pay_per_view'    => $this->input('amenity_pay_per_view', 0),
@@ -69,7 +78,7 @@ class StoreVenue extends FormRequest
 			'virtual_betting'              => 'boolean',
 			'horse_betting'                => 'boolean',
 			'arcade_roulette'              => 'boolean',
-			// 'machine_type'                 => ''
+			'machine_type'                 => 'nullable|numeric',
 			'address_street'               => 'required|string',
 			'address_number'               => 'nullable|string',
 			'address_city'                 => 'required|string',
@@ -81,8 +90,8 @@ class StoreVenue extends FormRequest
 			'geo_longitude'                => 'required|numeric|between:-180,180',
 			'contact_phone'                => 'nullable|string',
 			'contact_email'                => 'nullable|email',
-			// 'contact_facebook'             => '',
-			// 'contact_twitter'              => '',
+			'contact_facebook'             => 'nullable|string',
+			'contact_twitter'              => 'nullable|string',
 			'url_site'                     => 'nullable|url',
 			'url_online_casino'            => 'nullable|url',
 			'url_facebook'                 => 'nullable|url',

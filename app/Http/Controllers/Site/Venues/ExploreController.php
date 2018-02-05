@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Site\Venue;
+namespace App\Http\Controllers\Site\Venues;
 
 use JavaScript;
 use Illuminate\Http\Request;

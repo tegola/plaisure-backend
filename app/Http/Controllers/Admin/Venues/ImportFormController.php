@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Venue\Import;
+namespace App\Http\Controllers\Admin\Venues;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ImportedVenue;
 
-class FormController extends Controller
+class ImportFormController extends Controller
 {
 	/**
 	 * Shows the upload form.

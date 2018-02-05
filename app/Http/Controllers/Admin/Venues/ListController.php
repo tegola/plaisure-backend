@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Venue;
+namespace App\Http\Controllers\Admin\Venues;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

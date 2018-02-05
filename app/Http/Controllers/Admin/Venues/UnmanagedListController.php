@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Venue\Unmanaged;
+namespace App\Http\Controllers\Admin\Venues;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Venue;
 use App\Models\ImportedVenue;
 
-class ListController extends Controller
+class UnmanagedListController extends Controller
 {
 	/**
 	 * Find unmanaged venues by scanning imported ones.

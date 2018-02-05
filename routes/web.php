@@ -20,7 +20,7 @@ Route::group(['namespace' => 'Site'], function(){
 	Route::post('/suggestions', 'HomeController@suggestions')->name('site.suggestions');
 
 	// Venues
-	Route::group(['prefix' => '/venues', 'namespace' => 'Venue'], function(){
+	Route::group(['prefix' => '/venues', 'namespace' => 'Venues'], function(){
 		Route::get('/explore',       'ExploreController@index') ->name('site.venues.explore');
 		Route::post('/search',       'ExploreController@search')->name('site.venues.search');
 		Route::get('/{venue}',       'DetailController@index')  ->name('site.venues.detail'); // TODO: /v/nome-sala/hash_per_id
@@ -45,32 +45,26 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => ['au
 	Route::get('/', 'AdminController@index')->name('admin.home');
 
 	// Venues
-	Route::group(['prefix' => '/venues', 'namespace' => 'Venue'], function(){
+	Route::group(['prefix' => '/venues', 'namespace' => 'Venues'], function(){
 		// Obsolete
-		Route::group(['prefix' => '/obsolete', 'namespace' => 'Obsolete'], function(){
-			Route::get('/', 'ListController@index')->name('admin.venues.obsolete.index');
-		});
+		Route::get('/obsolete', 'ObsoleteListController@index')->name('admin.venues.obsolete.index');
 
 		// Unmanaged
-		Route::group(['prefix' => '/unmanaged', 'namespace' => 'Unmanaged'], function(){
-			Route::get('/',                        'ListController@index')  ->name('admin.venues.unmanaged.index');
-			Route::get('/{importedVenue}/promote', 'FormController@promote')->name('admin.venues.unmanaged.promote');
-		});
+		Route::get('/unmanaged', 'UnmanagedListController@index')->name('admin.venues.unmanaged.index');
 
 		// Import (upload CSV)
-		Route::group(['namespace' => 'Import'], function(){
-			Route::get('/import', 'FormController@edit')   ->name('admin.venues.import.edit');
-			Route::post('/import', 'FormController@update')->name('admin.venues.import.update');
-		});
+		Route::get('/import',  'ImportFormController@edit')  ->name('admin.venues.import.edit');
+		Route::post('/import', 'ImportFormController@update')->name('admin.venues.import.update');
 
 		// Normal ones
-		Route::get('/',             'ListController@index')         ->name('admin.venues.index');
-		Route::get('/add',          'FormController@create')        ->name('admin.venues.create');
-		Route::post('/',            'FormController@store')         ->name('admin.venues.store');
-		// Route::get('/{venue}',      'DetailController@show')        ->name('admin.venues.show');
-		Route::get('/{venue}/edit', 'FormController@edit')          ->name('admin.venues.edit');
-		Route::patch('/{venue}',    'FormController@update')        ->name('admin.venues.update');
-		Route::delete('/{venue}',   'ListController@delete')        ->name('admin.venues.delete');
+		Route::get('/',                        'ListController@index')  ->name('admin.venues.index');
+		Route::get('/add',                     'FormController@create') ->name('admin.venues.create');
+		Route::get('/promote/{importedVenue}', 'FormController@promote')->name('admin.venues.promote');
+		Route::post('/',                       'FormController@store')  ->name('admin.venues.store');
+		// Route::get('/{venue}',                 'DetailController@show') ->name('admin.venues.show');
+		Route::get('/{venue}/edit',            'FormController@edit')   ->name('admin.venues.edit');
+		Route::patch('/{venue}',               'FormController@update') ->name('admin.venues.update');
+		Route::delete('/{venue}',              'ListController@delete') ->name('admin.venues.delete');
 
 	});
 

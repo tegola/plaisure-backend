@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Venue\Obsolete;
+namespace App\Http\Controllers\Admin\Venues;
 
 use App\Http\Controllers\Controller;
 use App\Models\Venue;
 use App\Models\ImportedVenue;
 
-class ListController extends Controller
+class ObsoleteListController extends Controller
 {
 	/**
 	 * Shows the list of obsolete venues by scanning imported venues.

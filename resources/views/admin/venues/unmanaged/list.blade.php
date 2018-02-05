@@ -44,7 +44,7 @@
 				@foreach($importedVenues as $importedVenue)
 					<tr>
 						<td>
-							<strong><a href="{{ route('admin.venues.unmanaged.promote', [$importedVenue]) }}">{{ $importedVenue->name }}</a></strong>
+							<strong><a href="{{ route('admin.venues.promote', [$importedVenue]) }}">{{ $importedVenue->name }}</a></strong>
 						</td>
 						<td>
 							{{ $importedVenue->address_1 }}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Venue;
+namespace App\Http\Controllers\Admin\Venues;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVenue;
@@ -28,6 +28,38 @@ class FormController extends Controller
 		$venue = new Venue(old());
 
 		return $this->showForm($venue);
+	}
+
+	/**
+	 * Create a new venue from an imported venue.
+	 * 
+	 * @param  ImportedVenue $importedVenue
+	 * @return \Illuminate\Http\Response
+	 */
+	public function promote(ImportedVenue $importedVenue)
+	{
+		// Create the new venue
+		$venue = new Venue();
+
+		// Fill new venue with previously posted data or Imported venue data
+		if (old()) {
+			$venue->fill(old());
+		} else {
+			$venue->fill([
+				'aams_census_code' => $importedVenue->aams_census_code,
+				'aams_subject_enrollment_code' => $importedVenue->aams_subject_enrollment_code,
+				'name' => $importedVenue->name,
+				'surface_size' => $importedVenue->surface_size
+			]);
+			
+			switch ($importedVenue->machine_type) {
+				case 'A': $venue->machine_type = Venue::MACHINE_TYPE_A; break;
+				case 'B': $venue->machine_type = Venue::MACHINE_TYPE_B; break;
+				case 'A/B': $venue->machine_type = Venue::MACHINE_TYPE_AB; break;
+			}
+		}
+
+		return $this->showForm($venue, $importedVenue);
 	}
 
 	/**
@@ -104,7 +136,7 @@ class FormController extends Controller
 	{
 		DB::transaction(function() use($request) {
 			// Save venue
-			$venue = new Venue($request);
+			$venue = new Venue($request->all());
 			$venue->save();
 
 			// Save categories
