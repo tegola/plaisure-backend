@@ -31,36 +31,38 @@
 
 	@if($importedVenues->total())
 
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Nome <i class="fa fa-caret-down"></i></th>
-					<th>Citt&agrave;</th>
-					<th>Codice AAMS</th>
-					<th>Codice soggetto AAMS</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($importedVenues as $importedVenue)
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
 					<tr>
-						<td>
-							<strong><a href="{{ route('admin.venues.promote', [$importedVenue]) }}">{{ $importedVenue->name }}</a></strong>
-						</td>
-						<td>
-							{{ $importedVenue->address_1 }}
-							-
-							{{ $importedVenue->address_2 }}
-						</td>
-						<td>
-							{{ $importedVenue->aams_census_code }}
-						</td>
-						<td>
-							{{ $importedVenue->aams_subject_enrollment_code }}
-						</td>
+						<th>Nome <i class="fa fa-caret-down"></i></th>
+						<th>Citt&agrave;</th>
+						<th>Codice AAMS</th>
+						<th>Codice soggetto AAMS</th>
 					</tr>
-				@endforeach
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					@foreach($importedVenues as $importedVenue)
+						<tr>
+							<td>
+								<strong><a href="{{ route('admin.venues.promote', [$importedVenue]) }}">{{ $importedVenue->name }}</a></strong>
+							</td>
+							<td>
+								{{ $importedVenue->address_1 }}
+								-
+								{{ $importedVenue->address_2 }}
+							</td>
+							<td>
+								{{ $importedVenue->aams_census_code }}
+							</td>
+							<td>
+								{{ $importedVenue->aams_subject_enrollment_code }}
+							</td>
+						</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
 
 		{{ $importedVenues->links('admin.components.pagination') }}
 

@@ -22,7 +22,8 @@
 					<input type="text" class="form-control" name="query" value="{{ old('query') }}" placeholder="Cerca nome, città, provincia o codice AAMS&hellip;">
 				</div>
 				<label class="form-check-label mb-0 ml-2">
-					<input class="form-check-input" type="checkbox" name="without_geo_data" value="1" @if(old('without_geo_data')) checked @endif> <span class="text-nowrap">Senza dati geografici</span>
+					<input class="form-check-input" type="checkbox" name="without_geo_data" value="1" {{ old('without_geo_data') ? 'checked' : null }}>
+					<span class="text-nowrap">Senza dati geografici</span>
 				</label>
 				<button type="submit" class="btn btn-primary ml-2">Cerca</button>
 				<a class="btn btn-secondary ml-2 {{ old('query') || old('without_geo_data') ? '' : 'disabled' }}" href="{{ route('admin.venues.index') }}" title="Reimposta ricerca" data-toggle="tooltip">
@@ -34,35 +35,37 @@
 
 	@if($venues->total())
 
-		<table class="table table-responsive">
-			<thead>
-				<tr>
-					<th>Nome</th>
-					<th>Citt&agrave;</th>
-					<th>Codice AAMS</th>
-					<th class="text-right text-nowrap">Aggiornato <i class="fa fa-caret-down"></i></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($venues as $venue)
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
 					<tr>
-						<td>
-							<strong><a href="{{ route('admin.venues.edit', $venue) }}">{{ $venue->name }}</a></strong>
-						</td>
-						<td>
-							{{ $venue->address_city }}
-							{{ $venue->address_province ? "({$venue->address_province})" : '' }}
-						</td>
-						<td>
-							{{ $venue->aams_census_code }}
-						</td>
-						<td class="text-right text-nowrap">
-							{{ $venue->updated_at->format('j F Y') }}
-						</td>
+						<th>Nome</th>
+						<th>Citt&agrave;</th>
+						<th>Codice AAMS</th>
+						<th class="text-right text-nowrap">Aggiornato <i class="fa fa-caret-down"></i></th>
 					</tr>
-				@endforeach
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					@foreach($venues as $venue)
+						<tr>
+							<td>
+								<strong><a href="{{ route('admin.venues.edit', $venue) }}">{{ $venue->name }}</a></strong>
+							</td>
+							<td>
+								{{ $venue->address_city }}
+								{{ $venue->address_province ? "({$venue->address_province})" : '' }}
+							</td>
+							<td>
+								{{ $venue->aams_census_code }}
+							</td>
+							<td class="text-right text-nowrap">
+								{{ $venue->updated_at->format('j F Y') }}
+							</td>
+						</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
 
 		{{ $venues->links('admin.components.pagination') }}
 

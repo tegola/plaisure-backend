@@ -31,34 +31,36 @@
 
 	@if($users->total())
 
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Nome</th>
-					<th>E-mail</th>
-					<th>Codice soggetto AAMS</th>
-					<th class="text-right">Data di registrazione <i class="fa fa-caret-down"></i></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($users as $user)
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
 					<tr>
-						<td>
-							<strong>{{ $user->name }}</strong>
-						</td>
-						<td>
-							<a href="mailto:{{ $user->email }}" title="Scrivi a {{ $user->email }}" data-toggle="tooltip">{{ $user->email }}</a>
-						</td>
-						<td>
-							{{ $user->aams_subject_enrollment_code }}
-						</td>
-						<td class="text-right">
-							{{ $user->created_at->format('j F Y') }}
-						</td>
+						<th>Nome</th>
+						<th>E-mail</th>
+						<th>Codice soggetto AAMS</th>
+						<th class="text-right">Data di registrazione <i class="fa fa-caret-down"></i></th>
 					</tr>
-				@endforeach
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					@foreach($users as $user)
+						<tr>
+							<td>
+								<strong>{{ $user->name }}</strong>
+							</td>
+							<td>
+								<a href="mailto:{{ $user->email }}" title="Scrivi a {{ $user->email }}" data-toggle="tooltip">{{ $user->email }}</a>
+							</td>
+							<td>
+								{{ $user->aams_subject_enrollment_code }}
+							</td>
+							<td class="text-right">
+								{{ $user->created_at->format('j F Y') }}
+							</td>
+						</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
 
 		{{ $users->links('admin.components.pagination') }}
 

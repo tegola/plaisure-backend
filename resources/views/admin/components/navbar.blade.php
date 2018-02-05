@@ -1,39 +1,25 @@
-<nav class="navbar navbar-expand-md navbar-light bg-faded mb-3">
-	<div class="container">
-		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Mostra menu di navigazione">
-			<span class="navbar-toggler-icon"></span>
-		 </button>
-		<a class="navbar-brand" href="{{ route('admin.home') }}">{{ config('app.name') }} - Amministrazione</a>
-
-		<div class="collapse navbar-collapse" id="navbar-collapse">
-			<ul class="navbar-nav">
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbar-venues-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Esercizi
-					</a>
-					<div class="dropdown-menu" aria-labelledby="navbar-venues-link">
-						<a class="dropdown-item" href="{{ route('admin.venues.index') }}">Esercizi attivi</a>
-						<a class="dropdown-item" href="{{ route('admin.venues.obsolete.index') }}">Esercizi obsoleti</a>
-						<a class="dropdown-item" href="{{ route('admin.venues.unmanaged.index') }}">Esercizi da gestire</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="{{ route('admin.venues.import.edit') }}">Carica file CSV</a>
-					</div>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ route('admin.users.index') }}">Utenti</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav ml-auto">
-				<div class="navbar-text">
-					<strong>{{ Auth::user()->name }}</strong>
-				</div>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('navbar-user-logout-form').submit();">Esci</a>
-					<form id="navbar-user-logout-form" action="{{ url('/logout') }}" method="POST" hidden>
-						{{ csrf_field() }}
-					</form>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
+<b-navbar toggleable="md" variant="light" ref="navbar" class="mb-3">
+	<b-navbar-toggle target="navbar-collapse2"></b-navbar-toggle>
+	<b-container>
+		<b-navbar-brand href="{{ route('admin.home') }}">{{ config('app.name') }} - Amministrazione</b-navbar-brand>
+		<b-collapse is-nav id="navbar-collapse2">
+			<b-navbar-nav>
+				<b-nav-item-dropdown text="Esercizi">
+					<b-dropdown-item href="{{ route('admin.venues.index') }}">Esercizi attivi</b-dropdown-item>
+					<b-dropdown-item href="{{ route('admin.venues.obsolete.index') }}">Esercizi obsoleti</b-dropdown-item>
+					<b-dropdown-item href="{{ route('admin.venues.unmanaged.index') }}">Esercizi da gestire</b-dropdown-item>
+					<b-dropdown-divider></b-dropdown-divider>
+					<b-dropdown-item href="{{ route('admin.venues.import.edit') }}">Carica file CSV</b-dropdown-item>
+				</b-nav-item-dropdown>
+				<b-nav-item href="{{ route('admin.users.index') }}">Utenti</b-nav-item>
+			</b-navbar-nav>
+			<b-navbar-nav class="ml-auto">
+				<b-nav-text><strong>{{ Auth::user()->name }}</strong></b-nav-text>
+				<b-nav-item href="{{ url('/logout') }}" @click.prevent="onLogoutClick">Esci</b-nav-item>
+				<form action="{{ url('/logout') }}" method="post" hidden ref="logoutForm">
+					{{ csrf_field() }}
+				</form>
+			</b-navbar-nav>
+		</b-collapse>
+	</b-container>
+</b-navbar>
