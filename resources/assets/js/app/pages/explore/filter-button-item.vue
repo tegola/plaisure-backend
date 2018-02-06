@@ -1,5 +1,5 @@
 <template>
-	<div class="filter-button-item" @click="onClick" tabindex="0">
+	<div class="filter-button-item" @click="onClick" @mouseenter="onHover" tabindex="0">
 		<div class="filter-button-item__icon-cell">
 			<pg-icon class="filter-button-item__icon" :icon="icon" v-if="checked"></pg-icon>
 		</div>
@@ -29,6 +29,10 @@ export default {
 	methods: {
 		onClick() {
 			this.$emit('click');
+		},
+
+		onHover(event) {
+			event.target.focus();
 		}
 	}
 };

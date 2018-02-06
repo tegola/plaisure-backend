@@ -23,6 +23,7 @@
 		overflow: auto;
 		-webkit-overflow-scrolling: touch;
 		z-index: 1;
+		position: relative; // Stay above the content
 	}
 	.filter-button {
 		position: relative;
