@@ -74,16 +74,16 @@ export default {
 
 	data() {
 		return {
-			currentIndex: this.index
+			mutableIndex: this.index
 		};
 	},
 
 	computed: {
 		subtitle() {
-			const currentImage = this.images[this.currentIndex];
+			const currentImage = this.images[this.mutableIndex];
 
 			return [
-				this.currentIndex + 1,
+				this.mutableIndex + 1,
 				'di',
 				this.images.length,
 				currentImage.caption ? `&ndash; ${currentImage.caption}` : ''
@@ -100,23 +100,10 @@ export default {
 	watch: {
 		index() {
 			this.select(this.index, true);
-		},
-		currentIndex() {
-			if (!this.showThumbnails) return;
-
-			const thumb = this.$refs.thumbnails.childNodes[this.currentIndex];
-			thumb.scrollIntoView();
 		}
-
 	},
 
 	methods: {
-		imageClass(image) {
-			return {
-				'pg-lightbox__image--selected': this.images.indexOf(image) == this.currentIndex
-			};
-		},
-
 		thumbnailStyle(image) {
 			return {
 				'background-image': `url(${image.thumbnail_url})`
@@ -125,7 +112,7 @@ export default {
 
 		thumbnailClass(image) {
 			return {
-				'pg-lightbox__thumbnail--selected': this.images.indexOf(image) == this.currentIndex
+				'pg-lightbox__thumbnail--selected': this.images.indexOf(image) == this.mutableIndex
 			};
 		},
 
@@ -174,7 +161,12 @@ export default {
 
 		// Update current index on cell change
 		this.flickity.on('select', () => {
-			this.currentIndex = this.flickity.selectedIndex;
+			this.mutableIndex = this.flickity.selectedIndex;
+			
+			if (!this.showThumbnails) return;
+
+			const thumb = this.$refs.thumbnails.childNodes[this.mutableIndex];
+			thumb.scrollIntoView();
 		});
 
 		// Focus
