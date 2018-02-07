@@ -69,7 +69,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => ['au
 	});
 
 	// Users
-	Route::get('/users', 'User\ListController@index')->name('admin.users.index');
+	Route::get('/users', 'Users\ListController@index')->name('admin.users.index');
 });
 
 // File upload/download/view --------------------------------------------------
