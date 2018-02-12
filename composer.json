@@ -16,8 +16,8 @@
         "spatie/schema-org": "^1.4"
     },
     "require-dev": {
-        "deployer/deployer": "^4.3",
-        "deployer/recipes": "^4.0",
+        "deployer/deployer": "^6.0",
+        "deployer/recipes": "^6.0",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
