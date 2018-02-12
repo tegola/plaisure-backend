@@ -6,8 +6,8 @@ require 'recipe/npm.php';
 
 set('allow_anonymous_stats', false);
 set('git_tty', true); // Allocate tty for git clone. Default value is false.
-set('base_path', '/var/www/vhosts/prontogioco.it');
 set('default_stage', 'testing');
+set('deploy_path', '/var/www/vhosts/prontogioco.it/{{stage}}');
 set('repository', 'git@bitbucket.org:tegola/prontogioco.git');
 set('bin/php', '/opt/plesk/php/7.1/bin/php');
 set('bin/composer', function() { // Always use composer.phar
@@ -17,35 +17,28 @@ set('bin/composer', function() { // Always use composer.phar
     return '{{bin/php}} ' . $composer;
 });
 
-// Shared files/dirs between deploys 
-add('shared_files', []);
-add('shared_dirs', []);
-
-// Writable dirs by web server 
-add('writable_dirs', []);
-
 // Hosts
 host('testing')
 	->stage('testing')
 	->user('prontogioco')
-	->hostname('vps512931.ovh.net')
-    ->set('deploy_path', '{{base_path}}/testing');
+	->hostname('vps512931.ovh.net');
+
+host('production')
+	->stage('production')
+	->user('prontogioco')
+	->hostname('vps512931.ovh.net');
     
 // Tasks
-/*
-task('build', function() {
-    run('cd {{release_path}} && build');
-});
-*/
-
 task('php_path', function() {
 	run('PATH=/opt/plesk/php/7.1/bin:$PATH');
 });
-before('deploy:vendors','php_path');
+task('npm:build', function() {
+	run("cd {{release_path}} && {{bin/npm}} run production");
+});
 
-// [Optional] if deploy fails automatically unlock.
-after('deploy:failed', 'deploy:unlock');
-
-// Migrate database before symlink new release.
-before('deploy:symlink', 'artisan:migrate');
+after('deploy:update_code', 'npm:install'); // Install NPM packages
+after('npm:install', 'npm:build'); // Build NPM packages
+before('deploy:vendors','php_path'); // Set php path so laravel uses it
+after('deploy:failed', 'deploy:unlock'); // Unlock if deploy fails
+before('deploy:symlink', 'artisan:migrate'); // Migrate database before link to the new release
 
