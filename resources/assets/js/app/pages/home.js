@@ -1,10 +1,10 @@
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import axios from 'axios';
-import * as geocoder from '../../utilities/geocoder';
-import PgPlaceTextbox from '../components/place-textbox';
-import InputTypeahead from '../components/input-typeahead';
-import VenueSuggestionItem from '../components/venue-suggestion-item';
+import * as geocoder from 'prontogioco/utilities/geocoder';
+import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
+import InputTypeahead from 'prontogioco/app/components/input-typeahead';
+import VenueSuggestionItem from 'prontogioco/app/components/venue-suggestion-item';
 import { Map } from 'vue2-google-maps';
 
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';

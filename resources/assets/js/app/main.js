@@ -9,12 +9,12 @@ import VueMatchMedia from 'vue-match-media/dist';
 import { load as loadGMaps } from 'vue2-google-maps';
 import BsTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
 import BsTooltipDirective from 'bootstrap-vue/es/directives/tooltip/tooltip';
-import PgLogo from './components/logo';
-import PgNavbar from './components/navbar';
-import PgIcon from './components/icon';
-import PgHomePage from './pages/home';
-import PgExplorePage from './pages/explore';
-import PgVenueDetailPage from './pages/detail';
+import PgLogo from 'prontogioco/app/components/logo';
+import PgNavbar from 'prontogioco/app/components/navbar';
+import PgIcon from 'prontogioco/app/components/icon';
+import PgHomePage from 'prontogioco/app/pages/home';
+import PgExplorePage from 'prontogioco/app/pages/explore';
+import PgVenueDetailPage from 'prontogioco/app/pages/detail';
 
 // Load Google Maps API
 loadGMaps({

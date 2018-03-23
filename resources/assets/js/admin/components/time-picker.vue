@@ -31,7 +31,7 @@
 </style>
 
 <script>
-import Popup from '../../components/popup';
+import Popup from 'prontogioco/components/popup';
 
 export default {
 	name: 'pga-time-picker',

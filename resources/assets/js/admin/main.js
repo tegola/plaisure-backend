@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import { load as loadGMaps } from 'vue2-google-maps';
-import PGAVenueFormPage from './pages/venue-form.js';
+import PGAVenueFormPage from 'prontogioco/admin/pages/venue-form.js';
 
 Vue.use(BootstrapVue);
 

@@ -1,10 +1,10 @@
 import _clone from 'lodash/clone';
 import _assign from 'lodash/assign';
 import { Map, Marker } from 'vue2-google-maps';
-import { geocode } from '../../utilities/geocoder';
+import { geocode } from 'prontogioco/utilities/geocoder';
 import Uploader from 'vue-upload-component';
 
-import PGABusinessHoursManager from '../components/business-hours/manager';
+import PGABusinessHoursManager from 'prontogioco/admin/components/business-hours';
 
 export default {
 	name: 'pga-venue-form-page',

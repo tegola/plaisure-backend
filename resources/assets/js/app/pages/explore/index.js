@@ -3,12 +3,12 @@ import { stringify } from 'qs';
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import _last from 'lodash/last';
-import singularOrPlural from '../../../utilities/singular-or-plural';
+import singularOrPlural from 'prontogioco/utilities/singular-or-plural';
 import { Map, Marker, InfoWindow } from 'vue2-google-maps';
-import PgNavbar from '../../components/navbar';
+import PgNavbar from 'prontogioco/app/components/navbar';
+import PgPane from 'prontogioco/app/components/pane';
 import PgFilterButton from './filter-button';
 import PgFilterButtonItem from './filter-button-item';
-import PgPane from '../../components/pane';
 import PgVenueListItem from './list-item';
 
 export default {
