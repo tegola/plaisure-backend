@@ -149,7 +149,7 @@ class Venue extends Model
 		parent::boot();
 
 		// Don't show venues without geo data to normal users
-		if (!$user || !$user->isAdmin()) {
+		if (!$user || !$user->is_admin) {
 			static::addGlobalScope('noGeoData', function (Builder $builder) {
 				$builder->whereNotNull('geo_latitude')
 						->whereNotNull('geo_longitude')

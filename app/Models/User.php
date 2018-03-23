@@ -33,16 +33,6 @@ class User extends Authenticatable
 	];
 
 	/**
-	 * Get the admin status.
-	 * 
-	 * @return boolean
-	 */
-	public function isAdmin()
-	{
-		return $this->is_admin;
-	}
-
-	/**
 	 * Venues claimed by this user.
 	 * 
 	 * @return [\App\Models\Venue]
