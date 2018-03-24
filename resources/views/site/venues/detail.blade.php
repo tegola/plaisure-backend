@@ -96,7 +96,7 @@
 											<img class="jackpot-icon" src="{{ asset("img/detail/jackpot-{$i}.svg") }}">
 											<div>
 												<div class="jackpot-name">{{ $venue->$labelAttr && $venue->$valueAttr ? $venue->$labelAttr : "Jackpot {$i}" }}</div>
-												<div class="jackpot-value">€ {{ $venue->$valueAttr }}</div>
+												<div class="jackpot-value">@currency($venue->$valueAttr)</div>
 												@if (!$venue->isManaged())
 													<div><a href="{{ route('site.promote') }}">modifica</a></div>
 												@endif

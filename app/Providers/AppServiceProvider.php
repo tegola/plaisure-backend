@@ -28,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
 		// Set locale for dates
 		Carbon::setLocale(App::getLocale());
 		setlocale(LC_TIME, App::getLocale());
+
+		// Blade currency directive
+		Blade::directive('currency', function ($value, $decimals = 2) {
+			return "<?php echo '&euro; ' . number_format($value, $decimals, ',', '.'); ?>";
+		});
 	}
 
 	/**
