@@ -83,38 +83,30 @@
 					])
 					
 					{{-- Jackpots --}}
-					<div class="row my-5 pt-2">
-						<div class="col-md-4">
-							<div class="jackpot mb-3 mb-md-0">
-								<img class="jackpot-icon" src="{{ asset('img/detail/jackpot-1.svg') }}">
-								<div>
-									<div class="jackpot-name">Jackpot 1</div>
-									<div class="jackpot-value">€ 0,00</div>
-									<div><a href="{{ route('site.promote') }}">modifica</a></div>
-								</div>
-							</div>
+					@if (!$venue->isManaged() || $venue->jackpot1_value || $venue->jackpot2_value || $venue->jackpot3_value)
+						<div class="row my-5 pt-2">
+							@for ($i = 1; $i <= 3; $i++)
+								@php
+									$labelAttr = "jackpot{$i}_label";
+									$valueAttr = "jackpot{$i}_value";
+								@endphp
+								@if (!$venue->isManaged() || $venue->$valueAttr)
+									<div class="col-md-4">
+										<div class="jackpot {{ $i < 3 ? 'mb-3 mb-md-0' : '' }}">
+											<img class="jackpot-icon" src="{{ asset("img/detail/jackpot-{$i}.svg") }}">
+											<div>
+												<div class="jackpot-name">{{ $venue->$labelAttr && $venue->$valueAttr ? $venue->$labelAttr : "Jackpot {$i}" }}</div>
+												<div class="jackpot-value">€ {{ $venue->$valueAttr }}</div>
+												@if (!$venue->isManaged())
+													<div><a href="{{ route('site.promote') }}">modifica</a></div>
+												@endif
+											</div>
+										</div>
+									</div>
+								@endif
+							@endfor
 						</div>
-						<div class="col-md-4">
-							<div class="jackpot mb-3 mb-md-0">
-								<img class="jackpot-icon" src="{{ asset('img/detail/jackpot-2.svg') }}">
-								<div>
-									<div class="jackpot-name">Jackpot 2</div>
-									<div class="jackpot-value">€ 0,00</div>
-									<div><a href="{{ route('site.promote') }}">modifica</a></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="jackpot">
-								<img class="jackpot-icon" src="{{ asset('img/detail/jackpot-3.svg') }}">
-								<div>
-									<div class="jackpot-name">Jackpot 3</div>
-									<div class="jackpot-value">€ 0,00</div>
-									<div><a href="{{ route('site.promote') }}">modifica</a></div>
-								</div>
-							</div>
-						</div>
-					</div>
+					@endif
 
 					{{-- Description --}}
 					@if ($venue->description)

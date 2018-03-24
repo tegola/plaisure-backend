@@ -322,6 +322,22 @@
 				</div>
 			</div>
 
+			<h5 class="mt-4">Jackpot</h5>
+			<hr>
+			<div class="row">
+				@for ($i = 1; $i <= 3; $i++)
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Jackpot {{ $i }}</label>
+							<input type="text" class="form-control" name="jackpot{{ $i }}_label" placeholder="Nome" v-model="venue.jackpot{{ $i }}_label">
+						</div>
+						<div class="form-group">
+							<input type="number" class="form-control" name="jackpot{{ $i }}_value" placeholder="Valore" v-model.number="venue.jackpot{{ $i }}_value" step="0.01">
+						</div>
+					</div>
+				@endfor
+			</div>
+
 			<h5 class="mt-4">Orari di apertura</h5>
 			<hr>
 			<pga-business-hours-manager name="business_hours" :value="venue.business_hours" @input="onBusinessHoursInput"></pga-business-hours-manager>

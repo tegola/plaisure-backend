@@ -66,6 +66,13 @@ class Venue extends Model
 		'url_facebook' => '',
 		'url_tripadvisor' => '',
 
+		'jackpot1_label' => '',
+		'jackpot1_value' => 0,
+		'jackpot2_label' => '',
+		'jackpot2_value' => 0,
+		'jackpot3_label' => '',
+		'jackpot3_value' => 0,
+
 		'amenity_atm' => false,
 		'amenity_bar' => false,
 		'amenity_pay_per_view' => false,
@@ -115,6 +122,12 @@ class Venue extends Model
 		'url_online_casino',
 		'url_facebook',
 		'url_tripadvisor',
+		'jackpot1_label',
+		'jackpot1_value',
+		'jackpot2_label',
+		'jackpot2_value',
+		'jackpot3_label',
+		'jackpot3_value',
 		'amenity_atm',
 		'amenity_bar',
 		'amenity_pay_per_view',
@@ -185,7 +198,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the managed status.
+	 * Determine if this venue is being managed by an owner.
 	 * 
 	 * @return boolean
 	 */
