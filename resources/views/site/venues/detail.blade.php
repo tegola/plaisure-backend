@@ -347,7 +347,7 @@
 						<div class="card-body">
 							<h4 class="card-title">È la tua attività?</h4>
 							<p class="card-text">Se sei proprietaro o gestore di questa attività, puoi rivendicarla gratuitamente e tenerla aggiornata, aggiungere foto, jackpot e tanto altro. <a href="{{ route('site.promote') }}">Ulteriori informazioni&hellip;</a></p>
-							<p class="card-text"><a class="btn btn-primary" href="mailto:{{ config('constants.email.venues') }}?subject={{ rawurlencode("Rivendicazione attività: {$venue->name} (identificativo: {$venue->id})") }}">Rivendica attività</a></p>
+							<p class="card-text"><a class="btn btn-primary" href="mailto:{{ config('constants.email.venues') }}?subject={{ rawurlencode("Rivendicazione attività: {$venue->name} (identificativo: {$venue->id_hashed})") }}">Rivendica attività</a></p>
 						</div>
 					</div>
 				</div>
@@ -384,7 +384,7 @@
 					{{-- Report --}}
 					<div class="my-4">
 						<h5>Hai trovato un errore?</h5>
-						<p>Se l'indirizzo o i dati sono errati, l'attività non esiste più, o se ci sono foto offensive, puoi <a href="mailto:{{ config('constants.email.report') }}?subject={{ rawurlencode("Segnalazione errore: {$venue->name} (identificativo: {$venue->id})") }}">segnalare questa attività</a>.</p>
+						<p>Se l'indirizzo o i dati sono errati, l'attività non esiste più, o se ci sono foto offensive, puoi <a href="mailto:{{ config('constants.email.report') }}?subject={{ rawurlencode("Segnalazione errore: {$venue->name} (identificativo: {$venue->id_hashed})") }}">segnalare questa attività</a>.</p>
 					</div>
 				</div>
 			</div>

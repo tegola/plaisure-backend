@@ -86,6 +86,13 @@ class Venue extends Model
 	];
 
 	/**
+	 * The attributes that should be hidden for arrays.
+	 *
+	 * @var array
+	 */
+	protected $hidden = ['id']; // Only use id_hashed
+
+	/**
 	 * The attributes that aren't mass assignable.
 	 *
 	 * @var array

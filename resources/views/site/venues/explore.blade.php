@@ -95,9 +95,9 @@
 						v-if="venues.length"
 						v-for="venue in venues"
 						:venue="venue"
-						:highlighted="highlightedVenueId == venue.id"
-						:selected="selectedVenueId == venue.id"
-						:key="venue.id"
+						:highlighted="highlightedVenueId == venue.id_hashed"
+						:selected="selectedVenueId == venue.id_hashed"
+						:key="venue.id_hashed"
 						@mouseover="highlight(venue)"
 						@mouseout="highlight()"
 						@click="select(venue)">
@@ -113,14 +113,14 @@
 
 			<pg-map v-if="showMap" class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
 				<pg-map-marker v-if="userLocation" :position="userLocation" icon="/img/map/pin-user.svg" title="La tua posizione"></pg-map-marker>
-				<pg-map-marker v-for="(venue, index) in venues" :key="venue.id" :position="{ lat: venue.geo_latitude,
+				<pg-map-marker v-for="(venue, index) in venues" :key="venue.id_hashed" :position="{ lat: venue.geo_latitude,
 				lng: venue.geo_longitude }" :icon="mapMarkerIcon(venue, index)" @click="select(venue)">
-					<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">
+					<pg-map-info-window v-cloak :opened="venue.id_hashed == selectedVenueId" @closeclick="select(null)">
 						<div class="map-infowindow">
 							<img class="map-infowindow-icon" :src="'/img/avatars/' + venue.first_category_machine_name + '.svg'">
 							<div>
 								<h5 class="mb-0 font-weight-bold">
-									<a :href="'/venues/' + venue.id">@{{ venue.name }}</a>
+									<a :href="'/venues/' + venue.id_hashed">@{{ venue.name }}</a>
 								</h5>
 								<p v-if="venue.categories.length" class="mt-1 mb-0 small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
 								<p class="mt-1 mb-0">@{{ venue.short_address }}</p>

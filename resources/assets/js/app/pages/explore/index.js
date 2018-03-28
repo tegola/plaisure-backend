@@ -301,7 +301,7 @@ export default {
 			let glyph;
 
 			// Determine variant
-			if (venue.id == this.selectedVenueId || venue.id == this.highlightedVenueId) {
+			if (venue.id_hashed == this.selectedVenueId || venue.id_hashed == this.highlightedVenueId) {
 				variant = 'inverse';
 			} else {
 				variant = 'normal';
@@ -374,7 +374,7 @@ export default {
 			// Disabled when map is not visible
 			if (!this.showMap) return;
 
-			this.highlightedVenueId = venue ? venue.id : null;
+			this.highlightedVenueId = venue ? venue.id_hashed : null;
 		},
 
 		select(venue) {
@@ -388,7 +388,7 @@ export default {
 			}
 
 			// Select/deselect
-			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
+			this.selectedVenueId = this.selectedVenueId != venue.id_hashed ? venue.id_hashed : null;
 		}
 	},
 

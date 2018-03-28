@@ -19,7 +19,7 @@
 			{{ csrf_field() }}
 			@if ($venue->exists)
 				{{ method_field('PATCH') }}
-				{{-- <input type="hidden" name="id" value="{{ $venue->id }}"> --}}
+				{{-- <input type="hidden" name="id_hashed" value="{{ $venue->id_hashed }}"> --}}
 			@endif
 			<input type="hidden" name="aams_census_code" v-model="venue.aams_census_code">
 			<input type="hidden" name="aams_subject_enrollment_code" v-model="venue.aams_subject_enrollment_code">
