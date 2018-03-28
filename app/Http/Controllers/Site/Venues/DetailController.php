@@ -12,6 +12,23 @@ use JavaScript;
 class DetailController extends Controller
 {
 	/**
+	 * Redirect /venues/{id} to /venues/{id_hashed} or shows the 404 page.
+	 * FIXME: Remove whene there are no more hits.
+	 * 
+	 * @param  int $id The venue id
+	 * @return Illuminate\Http\Response
+	 */
+	public function redirect($id) {
+		$venue = Venue::find($id);
+
+		// Stop if venue doesn't exist
+		abort_if(!$venue, 404);
+
+		// Redirect to venue with hashed id
+		return redirect(route('site.venues.detail', $venue), 301);
+	}
+
+	/**
 	 * Show the venue detail page.
 	 * 
 	 * @param  Venue  $venue [description]

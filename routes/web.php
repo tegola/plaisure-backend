@@ -21,10 +21,11 @@ Route::group(['namespace' => 'Site'], function(){
 
 	// Venues
 	Route::group(['prefix' => '/venues', 'namespace' => 'Venues'], function(){
-		Route::get('/explore',       'ExploreController@index') ->name('site.venues.explore');
-		Route::post('/search',       'ExploreController@search')->name('site.venues.search');
-		Route::get('/{venue}',       'DetailController@index')  ->name('site.venues.detail'); // TODO: /v/nome-sala/hash_per_id
-		Route::get('/{venue}/claim', 'ClaimController@index')   ->name('site.venues.claim');
+		Route::get('/explore',       'ExploreController@index')  ->name('site.venues.explore');
+		Route::post('/search',       'ExploreController@search') ->name('site.venues.search');
+		Route::get('/{id}',          'DetailController@redirect')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits
+		Route::get('/{venue}',       'DetailController@index')   ->name('site.venues.detail');
+		Route::get('/{venue}/claim', 'ClaimController@index')    ->name('site.venues.claim');
 	});
 
 	// About

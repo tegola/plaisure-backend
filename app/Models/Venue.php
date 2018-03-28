@@ -10,6 +10,7 @@ use DB;
 use Auth;
 use Carbon;
 use Spatie\SchemaOrg\Schema;
+use Hashids\Hashids;
 
 class Venue extends Model
 {
@@ -170,6 +171,23 @@ class Venue extends Model
 						->where('address_city', '!=', '');
 			});
 		}
+
+		// Automatically create the hashed id
+		static::created(function($model) {
+			$hasher = new Hashids(static::class, 10);
+			$model->id_hashed = $hasher->encode($model->id);
+			$model->save();
+		});
+	}
+
+	/**
+	 * Get the route key for the model.
+	 *
+	 * @return string
+	 */
+	public function getRouteKeyName()
+	{
+		return 'id_hashed';
 	}
 
 	/**
