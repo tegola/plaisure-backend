@@ -69,7 +69,7 @@ export default {
 	computed: {
 		mapProps() {
 			return {
-				center: this.searchCenter.lat && this.searchCenter.lng ? this.searchCenter : pg.config.defaultMapCenter,
+				center: this.searchCenter.lat && this.searchCenter.lng ? this.searchCenter : pg.map.defaultMapCenter,
 				zoom: this.searchCenter.lat && this.searchCenter.lng ? 15 : 5,
 				options: mapOptions
 			};

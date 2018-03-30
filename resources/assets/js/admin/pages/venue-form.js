@@ -33,13 +33,13 @@ export default {
 			payPerViewPlatforms: pg.payPerViewPlatforms,
 
 			mapCenter: {
-				lat: pg.venue.geo_latitude || pg.config.defaultMapCenter.lat,
-				lng: pg.venue.geo_longitude || pg.config.defaultMapCenter.lng
+				lat: pg.venue.geo_latitude || pg.app.defaultMapCenter.lat,
+				lng: pg.venue.geo_longitude || pg.app.defaultMapCenter.lng
 			},
 			mapZoom: pg.venue.geo_latitude && pg.venue.geo_longitude ? 15 : 5,
 
 			uploaderHeaders: {
-				'X-CSRF-TOKEN': pg.config.csrfToken
+				'X-CSRF-TOKEN': pg.app.csrfToken
 			},
 			uploaderFiles: [],
 

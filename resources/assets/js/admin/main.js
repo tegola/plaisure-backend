@@ -7,9 +7,9 @@ import PGAVenueFormPage from 'prontogioco/admin/pages/venue-form.js';
 Vue.use(BootstrapVue);
 
 loadGMaps({
-	key: pg.config.googleMapsApiKey,
-	language: pg.config.locale,
-	region: pg.config.locale,
+	key: pg.app.googleMapsApiKey,
+	language: pg.app.locale,
+	region: pg.app.locale,
 	libraries: 'places'
 });
 

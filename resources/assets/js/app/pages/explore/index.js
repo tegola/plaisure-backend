@@ -347,7 +347,7 @@ export default {
 
 		// Data loading -------------------------------------------------------
 		load() {
-			const paramsWithToken = _extend({}, this.searchParams, { _token: pg.config.csrfToken });
+			const paramsWithToken = _extend({}, this.searchParams, { _token: pg.app.csrfToken });
 
 			// Load venues
 			this.loading = true;

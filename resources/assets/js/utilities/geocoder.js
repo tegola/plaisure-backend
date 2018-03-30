@@ -6,9 +6,9 @@ const googleGeocoderUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
 // FIXME: Pass region per site and language per user locale
 // Better: create a class and throw those params in a constructor
 const googleGeocoderOptions = {
-	key: pg.config.googleMapsApiKey,
-	language: pg.config.locale,
-	region: pg.config.locale
+	key: pg.app.googleMapsApiKey,
+	language: pg.app.locale,
+	region: pg.app.locale
 };
 
 function geocode(address, callback) {

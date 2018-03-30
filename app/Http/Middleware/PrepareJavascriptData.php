@@ -20,9 +20,7 @@ class PrepareJavascriptData
     {
         Javascript::put([
             'app' => [
-                'name' => config('app.name')
-            ],
-            'config' => [
+                'name' => config('app.name'),
                 'locale' => Locale::getPrimaryLanguage(app()->getLocale()),
                 'csrfToken' => csrf_token(),
                 'googleMapsApiKey' => config('constants.google_maps_api_key'),

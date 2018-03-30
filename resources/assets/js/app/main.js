@@ -18,9 +18,9 @@ import PgVenueDetailPage from 'prontogioco/app/pages/detail';
 
 // Load Google Maps API
 loadGMaps({
-	key: pg.config.googleMapsApiKey,
-	language: pg.config.locale,
-	region: pg.config.locale,
+	key: pg.app.googleMapsApiKey,
+	language: pg.app.locale,
+	region: pg.app.locale,
 	libraries: 'places'
 });
 
