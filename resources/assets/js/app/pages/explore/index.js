@@ -5,7 +5,6 @@ import _debounce from 'lodash/debounce';
 import _last from 'lodash/last';
 import singularOrPlural from 'prontogioco/utilities/singular-or-plural';
 import { Map, Marker, InfoWindow } from 'vue2-google-maps';
-import PgNavbar from 'prontogioco/app/components/navbar';
 import PgPane from 'prontogioco/app/components/pane';
 import PgFilterButton from './filter-button';
 import PgFilterButtonItem from './filter-button-item';
@@ -15,7 +14,6 @@ export default {
 	name: 'pg-explore-page',
 
 	components: {
-		'pg-navbar': PgNavbar,
 		'pg-map': Map,
 		'pg-map-marker': Marker,
 		'pg-map-info-window': InfoWindow,
