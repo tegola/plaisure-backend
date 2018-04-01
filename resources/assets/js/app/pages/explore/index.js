@@ -43,7 +43,7 @@ export default {
 			searchParams: pg.searchParams,
 			placeholder: undefined,
 			query: pg.searchParams.query,
-			pager: null,
+			venues: [],
 			currentView: 'list',
 			highlightedVenueId: null,
 			selectedVenueId: null,
@@ -83,11 +83,8 @@ export default {
 		locationButtonIcon() {
 			return this.locating ? 'circle-outline-notch' : this.userLocation ? 'location' : 'location-outline';
 		},
-		venues() {
-			return this.pager && this.pager.data ? this.pager.data : [];
-		},
 		hasMorePages() {
-			return this.pager && this.pager.next_page_url ? true : false;
+			return this.venues ? this.venues.length >= 100 : false;
 		},
 		showRadiusFilter() {
 			return this.searchMode == 'center';
@@ -296,23 +293,16 @@ export default {
 			this.mapNeedsRefresh = true;
 		}, 200),
 
+		venueFirstCategoryMachineName(venue) {
+			if (!venue.categories || !venue.categories.data.length) return null;
+
+			return venue.categories.data[0].machine_name;
+		},
+
 		mapMarkerIcon(venue, index) {
-			let variant;
-			let glyph;
-
-			// Determine variant
-			if (venue.id_hashed == this.selectedVenueId || venue.id_hashed == this.highlightedVenueId) {
-				variant = 'inverse';
-			} else {
-				variant = 'normal';
-			}
-
-			// Determine glyph
-			if (index < 25 && venue.first_category_machine_name) {
-				glyph = venue.first_category_machine_name;
-			} else {
-				glyph = 'collapsed';
-			}
+			const variant = venue.id == this.selectedVenueId || venue.id == this.highlightedVenueId ? 'inverse' : 'normal';
+			const firstCategoryMachineName = this.venueFirstCategoryMachineName(venue);
+			const glyph = index < 25 && firstCategoryMachineName ? firstCategoryMachineName : 'collapsed';
 
 			return `/img/map/pin-${variant}-${glyph}.svg`;
 		},
@@ -353,7 +343,7 @@ export default {
 			this.loading = true;
 
 			axios.post('/venues/search', paramsWithToken).then(response => {
-				this.pager = response.data;
+				this.venues = response.data.data;
 				this.loading = false;
 			});
 
@@ -374,7 +364,7 @@ export default {
 			// Disabled when map is not visible
 			if (!this.showMap) return;
 
-			this.highlightedVenueId = venue ? venue.id_hashed : null;
+			this.highlightedVenueId = venue ? venue.id : null;
 		},
 
 		select(venue) {
@@ -388,7 +378,7 @@ export default {
 			}
 
 			// Select/deselect
-			this.selectedVenueId = this.selectedVenueId != venue.id_hashed ? venue.id_hashed : null;
+			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		}
 	},
 

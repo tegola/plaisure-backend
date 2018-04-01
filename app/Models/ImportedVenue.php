@@ -13,7 +13,6 @@ class ImportedVenue extends Model
 	 */
 	protected $guarded = [];
 
-
 	/**
 	 * Query builder to search for text in some fields.
 	 * 

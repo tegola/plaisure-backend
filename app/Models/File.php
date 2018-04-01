@@ -29,32 +29,6 @@ class File extends Model
 	protected $guarded = [];
 
 	/**
-	 * The accessors to append to the model's array form.
-	 *
-	 * @var array
-	 */
-	protected $appends = [
-		'resized_url',
-		'thumbnail_url'
-	];
-
-	/**
-	 * The attributes that should be visible in arrays.
-	 *
-	 * @var array
-	 */
-	protected $visible = [
-		'id',
-		'name',
-		'extension',
-		'mime_type',
-		'size',
-		'caption',
-		'resized_url',
-		'thumbnail_url'
-	];
-
-	/**
 	 * Get all of the owning filable models.
 	 */
 	public function filable()

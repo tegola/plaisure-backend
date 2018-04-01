@@ -148,17 +148,6 @@ class Venue extends Model
 	];
 
 	/**
-	 * The accessors to append to the model's array form.
-	 *
-	 * @var array
-	 */
-	protected $appends = [
-		'short_address',
-		'long_address',
-		'first_category_machine_name'
-	];
-
-	/**
 	 * The "booting" method of the model.
 	 *
 	 * @return void

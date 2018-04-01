@@ -5,21 +5,21 @@
 				<div class="embed-responsive embed-responsive-4by3">
 					<div v-if="photo" class="embed-responsive-item venue-list-item-photo" :style="`background-image: url(${photo.resized_url})`"></div>
 					<div v-else class="embed-responsive-item venue-list-item-photo">
-						<img class="venue-list-item-icon" :src="'/img/avatars/' + venue.first_category_machine_name + '.svg'">
+						<img class="venue-list-item-icon" :src="`/img/avatars/${firstCategoryMachineName}.svg`">
 					</div>
 				</div>
 			</div>
 			<div class="col-9">
 				<div class="d-flex w-100 justify-content-between">
 					<h5 class="mb-0 font-weight-bold">
-						<a class="text-inherit" :href="'/venues/' + venue.id_hashed">{{ venue.name }}</a>
+						<a class="text-inherit" :href="'/venues/' + venue.id">{{ venue.name }}</a>
 					</h5>
 					<div class="text-muted ml-3 text-nowrap" v-if="venue.distance">
 						{{ venue.distance | formatDistance }}<br>
 					</div>
 				</div>
-				<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">{{ categories }}</p>
-				<p class="mb-0">{{ venue.short_address }}</p>
+				<p v-if="venue.categories.data.length" class="small text-uppercase text-muted mb-1">{{ categories }}</p>
+				<p class="mb-0">{{ venue.address.short }}</p>
 			</div>
 		</div>
 	</div>
@@ -50,17 +50,22 @@ export default {
 			};
 		},
 		categories() {
-			if (!this.venue.categories || !this.venue.categories.length) return null;
+			if (!this.venue.categories || !this.venue.categories.data.length) return null;
 
-			return this.venue.categories
+			return this.venue.categories.data
 				.slice(0, 2)
 				.map(category => category.name)
 				.join(', ');
 		},
-		photo() {
-			if (!this.venue.photos || !this.venue.photos.length) return null;
+		firstCategoryMachineName() {
+			if (!this.venue.categories || !this.venue.categories.data.length) return null;
 
-			return this.venue.photos[0];
+			return this.venue.categories.data[0].machine_name;
+		},
+		photo() {
+			if (!this.venue.photos || !this.venue.photos.data.length) return null;
+
+			return this.venue.photos.data[0];
 		}
 	},
 

@@ -10,6 +10,9 @@ use App\Models\Venue;
 use App\Models\VenueCategory;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Transformers\VenueTransformer;
+use App\Transformers\VenueCategoryTransformer;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class ExploreController extends Controller
 {
@@ -128,7 +131,18 @@ class ExploreController extends Controller
 		}]);
 
 		// Return results
-		return $venues->simplePaginate(100);
+		// We take a maximum of 100 venues, and the client knows it's the max
+		// number it can get. We did it to avoid using simplePaginate(), which
+		// is not supported by Fractal transformers, and to avoid paginate(),
+		// which don't work with MySQL HAVINGs
+		$venues = $venues
+			->take(100)
+			->get()
+			->transformWith(new VenueTransformer())
+			->includeCategories()
+			->includePhotos();
+
+		return $venues;
 	}
 
 	private function hasCenter()
@@ -148,7 +162,6 @@ class ExploreController extends Controller
 	 */
 	private function geocode()
 	{
-		dd('faccio geocode');
 		// Stop if no location name is provided
 		if (!$this->query) return false;
 
