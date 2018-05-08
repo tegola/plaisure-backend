@@ -2,7 +2,7 @@ import { Map, Marker } from 'vue2-google-maps';
 import PgLightbox from 'prontogioco/app/components/lightbox';
 
 export default {
-	name: 'pg-venue-detail-page',
+	name: 'PgVenueDetailPage',
 
 	components: {
 		'pg-map': Map,

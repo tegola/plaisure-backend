@@ -10,10 +10,11 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@tegola/vue-popup": "^1.0.1",
         "axios": "^0.17",
         "babel-plugin-syntax-dynamic-import": "^6.18.0",
         "bootstrap": "^4.0.0",
-        "bootstrap-vue": "^2.0.0-rc.1",
+        "bootstrap-vue": "^2.0.0-rc.9",
         "classlist-polyfill": "^1.2.0",
         "core-js": "^2.5.3",
         "cross-env": "^5.1",
@@ -32,6 +33,7 @@
         "vue-template-compiler": "^2.5.13",
         "vue-upload-component": "^2.8.0",
         "vue2-google-maps": "^0.8.4",
+        "vuelidate": "^0.6.2",
         "webpack-bundle-analyzer": "^2.9.2"
     }
 }

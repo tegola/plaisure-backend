@@ -28,7 +28,7 @@
 
 <script>
 export default {
-	name: 'pg-input-typeahead',
+	name: 'PgInputTypeahead',
 
 	inheritAttrs: false,
 

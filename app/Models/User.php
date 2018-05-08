@@ -11,12 +11,12 @@ class User extends Authenticatable
 	use Notifiable;
 
 	/**
-	 * The attributes that are mass assignable.
+	 * The attributes that should be cast to native types.
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'name', 'email', 'password',
+	protected $casts = [
+		'is_admin' => 'boolean'
 	];
 
 	/**
@@ -28,8 +28,13 @@ class User extends Authenticatable
 		'password', 'remember_token',
 	];
 
-	protected $casts = [
-		'is_admin' => 'boolean'
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [
+		'name', 'email', 'password',
 	];
 
 	/**

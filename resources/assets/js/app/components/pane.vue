@@ -19,10 +19,10 @@ import PgIcon from './icon';
 import _throttle from 'lodash/throttle';
 
 export default {
-	name: 'pg-pane',
+	name: 'PgPane',
 
 	components: {
-		'pg-icon': PgIcon
+		PgIcon
 	},
 
 	props: {

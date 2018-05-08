@@ -121,7 +121,7 @@
 								<h5 class="mb-0 font-weight-bold">
 									<a :href="'/venues/' + venue.id">@{{ venue.name }}</a>
 								</h5>
-								<p v-if="venue.categories && venue.categories.data.length" class="mt-1 mb-0 small text-uppercase text-muted">@{{ venue.categories.data[0].name }}</p>
+								<p v-if="venue.categories && venue.categories.length" class="mt-1 mb-0 small text-uppercase text-muted">@{{ venue.categories[0].name }}</p>
 								<p class="mt-1 mb-0">@{{ venue.address.short }}</p>
 							</div>
 						</div>
@@ -137,13 +137,13 @@
 							@click="onSearchBoundsClick">
 							<pg-icon icon="refresh"></pg-icon>
 						</button>
-						<bs-tooltip
+						<b-tooltip
 							target="desktop-refresh-btn"
 							placement="right"
 							triggers=""
 							show>
 							Cerca in questa zona
-						</bs-tooltip>
+						</b-tooltip>
 					</template>
 					<div class="container-fluid map-floating-controls" v-if="$mq.constrained && mapNeedsRefresh" v-cloak>
 						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">Cerca qui</button>

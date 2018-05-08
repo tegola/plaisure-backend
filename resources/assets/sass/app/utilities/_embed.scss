@@ -1,0 +1,5 @@
+.embed-responsive-2by3 {
+	&::before {
+		padding-top: percentage(3 / 2);
+	}
+}

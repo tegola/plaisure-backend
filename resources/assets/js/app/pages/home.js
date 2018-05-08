@@ -1,6 +1,5 @@
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
-import axios from 'axios';
 import * as geocoder from 'prontogioco/utilities/geocoder';
 import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
 import InputTypeahead from 'prontogioco/app/components/input-typeahead';
@@ -141,7 +140,7 @@ export default {
 
 		loadSearchSuggestions: _debounce(function(value) {
 			// Load suggestions and use them
-			axios.post('/suggestions', {
+			this.$axios.post('/suggestions', {
 				query: value,
 			}).then(response => {
 				this.searchSuggestions = response.data;

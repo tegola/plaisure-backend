@@ -177,9 +177,9 @@ $icon-size-base: 1.425rem; // ~20px
 $icon-size-sm: 1.15rem; // ~15px
 
 // Dropdowns
-$dropdown-bg:           $white !default;
-$dropdown-border-color: rgba($black, .08) !default;
-$dropdown-box-shadow:   0 .33rem 1rem rgba($black, 0.05) !default;
+$dropdown-bg:           $white;
+$dropdown-border-color: rgba($black, .08);
+$dropdown-box-shadow:   0 .33rem 1rem rgba($black, 0.05);
 
 // Navbar
 $navbar-slim-padding-y: map-get($spacers, 1);
@@ -190,3 +190,9 @@ $card-border-radius: $border-radius-lg;
 
 // List group
 $list-group-border-color: rgba($black, .08);
+
+// Modal
+$modal-content-box-shadow-xs:    0 .25rem 1.5rem rgba($black, .25);
+$modal-content-box-shadow-sm-up: 0 .5rem 3rem rgba($black, .25);
+
+$modal-backdrop-opacity:         .25;

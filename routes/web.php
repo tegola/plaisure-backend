@@ -20,13 +20,15 @@ Route::group(['namespace' => 'Site'], function(){
 	Route::post('/suggestions', 'HomeController@suggestions')->name('site.suggestions');
 
 	// Venues
-	Route::group(['prefix' => '/venues', 'namespace' => 'Venues'], function(){
-		Route::get('/explore',       'ExploreController@index')  ->name('site.venues.explore');
-		Route::post('/search',       'ExploreController@search') ->name('site.venues.search');
-		Route::get('/{id}',          'DetailController@redirect')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits
-		Route::get('/{venue}',       'DetailController@index')   ->name('site.venues.detail');
-		Route::get('/{venue}/claim', 'ClaimController@index')    ->name('site.venues.claim');
-	});
+	Route::get ('/venues/explore',       'Venues\ExploreController@index')  ->name('site.venues.explore');
+	Route::post('/venues/search',        'Venues\ExploreController@search') ->name('site.venues.search');
+	Route::get ('/venues/add',           'Venues\FormController@create')    ->name('site.venues.create');
+	Route::post('/venues',               'Venues\FormController@store')     ->name('site.venues.store');
+	Route::get ('/venues/{venue}/edit',  'Venues\FormController@edit')      ->name('site.venues.edit');
+	Route::post('/venues/{venue}',       'Venues\FormController@update')    ->name('site.venues.update');
+	Route::get ('/venues/{id}',          'Venues\DetailController@redirect')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits
+	Route::get ('/venues/{venue}',       'Venues\DetailController@index')   ->name('site.venues.detail');
+	Route::get ('/venues/{venue}/claim', 'Venues\ClaimController@index')    ->name('site.venues.claim');
 
 	// About
 	Route::get('/about', 'AboutController@index')->name('site.about');
@@ -38,7 +40,9 @@ Route::group(['namespace' => 'Site'], function(){
 	Route::get('/play-responsibly', 'PlayResponsiblyController@index')->name('site.play-responsibly.index');
     
     // User
-	Route::get('/user', 'UserController@index')->name('site.user');
+	Route::group(['middleware' => 'auth'], function() {
+		Route::get('/user', 'UserController@index')->name('site.user');
+	});
 });
 
 // Admin ----------------------------------------------------------------------

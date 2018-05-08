@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { stringify } from 'qs';
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import _last from 'lodash/last';
 import singularOrPlural from 'prontogioco/utilities/singular-or-plural';
 import { Map, Marker, InfoWindow } from 'vue2-google-maps';
+
 import PgPane from 'prontogioco/app/components/pane';
 import PgFilterButton from './filter-button';
 import PgFilterButtonItem from './filter-button-item';
@@ -292,9 +292,9 @@ export default {
 		}, 200),
 
 		venueFirstCategoryMachineName(venue) {
-			if (!venue.categories || !venue.categories.data.length) return null;
+			if (!venue.categories || !venue.categories.length) return null;
 
-			return venue.categories.data[0].machine_name;
+			return venue.categories[0].machine_name;
 		},
 
 		mapMarkerIcon(venue, index) {
@@ -340,8 +340,8 @@ export default {
 			// Load venues
 			this.loading = true;
 
-			axios.post('/venues/search', paramsWithToken).then(response => {
-				this.venues = response.data.data;
+			this.$axios.post('/venues/search', paramsWithToken).then(response => {
+				this.venues = response.data;
 				this.loading = false;
 			});
 

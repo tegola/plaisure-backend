@@ -14,16 +14,11 @@ class FileTransformer extends TransformerAbstract
 	 */
 	public function transform(File $file)
 	{
-		return [
-			'id' => $file->id,
-			// 'name' => $file->name,
-			// 'extension' => $file->extension,
-			// 'mime_type' => $file->mime_type,
-			// 'size' => $file->size,
-			'caption' => $file->caption,
-			// 'original_url' => $file->original_url,
-			'resized_url' => $file->resized_url,
-			'thumbnail_url' => $file->thumbnail_url
-		];
+		return $file->only([
+			'id',
+			'caption',
+			'resized_url',
+			'thumbnail_url'
+		]);
 	}
 }

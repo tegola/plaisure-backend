@@ -86,6 +86,28 @@ class Venue extends Model
 	];
 
 	/**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'sports_betting' => 'boolean',
+		'virtual_betting' => 'boolean',
+		'horse_betting' => 'boolean',
+		'arcade_roulette' => 'boolean',
+
+		'amenity_atm' => 'boolean',
+		'amenity_bar' => 'boolean',
+		'amenity_pay_per_view' => 'boolean',
+		'amenity_pos' => 'boolean',
+		'amenity_private_parking' => 'boolean',
+		'amenity_restaurant' => 'boolean',
+		'amenity_security' => 'boolean',
+		'amenity_smoking_area' => 'boolean',
+		'amenity_wifi' => 'boolean'
+	];
+
+	/**
 	 * The attributes that should be hidden for arrays.
 	 *
 	 * @var array

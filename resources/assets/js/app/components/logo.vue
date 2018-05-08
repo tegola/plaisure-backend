@@ -1,6 +1,6 @@
 <script>
 export default {
-	name: 'pg-logo',
+	name: 'PgLogo',
 
 	props: {
 		text: {

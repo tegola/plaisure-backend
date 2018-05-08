@@ -15,7 +15,7 @@
 @import "~bootstrap/scss/transitions";
 @import "~bootstrap/scss/dropdown";
 // @import "~bootstrap/scss/button-group";
-// @import "~bootstrap/scss/input-group";
+@import "~bootstrap/scss/input-group";
 @import "~bootstrap/scss/custom-forms";
 @import "~bootstrap/scss/nav";
 @import "~bootstrap/scss/navbar";
@@ -29,7 +29,7 @@
 // @import "~bootstrap/scss/media";
 @import "~bootstrap/scss/list-group";
 // @import "~bootstrap/scss/close";
-// @import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/modal";
 @import "~bootstrap/scss/tooltip";
 // @import "~bootstrap/scss/popover";
 // @import "~bootstrap/scss/carousel";
@@ -42,17 +42,19 @@
 // Components
 @import "components/buttons";
 @import "components/dropdown";
-@import "components/icon";
 @import "components/flickity";
 @import "components/footer";
 @import "components/google-maps";
+@import "components/icon";
 @import "components/lightbox";
 @import "components/logo";
+@import "components/modal";
 @import "components/navbar";
 @import "components/pane";
 @import "components/typeahead";
 
 // Utility classes
+@import "utilities/embed";
 @import "utilities/text";
 @import "utilities/visibility";
 

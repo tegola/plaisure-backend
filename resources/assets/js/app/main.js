@@ -7,14 +7,14 @@ import 'core-js/fn/array/from'; // For vue-match-media
 import Vue from 'vue';
 import VueMatchMedia from 'vue-match-media/dist';
 import { load as loadGMaps } from 'vue2-google-maps';
-import BsTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
-import BsTooltipDirective from 'bootstrap-vue/es/directives/tooltip/tooltip';
-import PgLogo from 'prontogioco/app/components/logo';
-import PgNavbar from 'prontogioco/app/components/navbar';
-import PgIcon from 'prontogioco/app/components/icon';
-import PgHomePage from 'prontogioco/app/pages/home';
-import PgExplorePage from 'prontogioco/app/pages/explore';
-import PgVenueDetailPage from 'prontogioco/app/pages/detail';
+
+// Setup Axios
+import axios from 'axios';
+Vue.prototype.$axios = axios.create({
+	headers: {
+		'X-Requested-With': 'XMLHttpRequest'
+	}
+});
 
 // Load Google Maps API
 loadGMaps({
@@ -27,22 +27,29 @@ loadGMaps({
 // Register Vue plugins, directives and components
 Vue.use(VueMatchMedia);
 
-Vue.directive('bs-tooltip', BsTooltipDirective);
+// Register common components and directives
+import PgLogo from 'prontogioco/app/components/logo';
+import PgNavbar from 'prontogioco/app/components/navbar';
+import PgIcon from 'prontogioco/app/components/icon';
 
-Vue.component('bs-tooltip', BsTooltip);
 Vue.component('pg-logo', PgLogo);
 Vue.component('pg-navbar', PgNavbar);
 Vue.component('pg-icon', PgIcon);
 
+// Register pages
+import PgHomePage from 'prontogioco/app/pages/home';
+import PgExplorePage from 'prontogioco/app/pages/explore';
+import PgVenueDetailPage from 'prontogioco/app/pages/venues/detail';
+import PgVenueEditor from 'prontogioco/app/pages/venues/editor';
+
+Vue.component('pg-home-page', PgHomePage);
+Vue.component('pg-explore-page', PgExplorePage);
+Vue.component('pg-venue-detail-page', PgVenueDetailPage);
+Vue.component('pg-venue-editor', PgVenueEditor);
+
 // Startup VM
 new Vue({
 	el: '#app',
-
-	components: {
-		PgHomePage,
-		PgExplorePage,
-		PgVenueDetailPage
-	},
 
 	data: {
 		hasGeolocation: navigator.geolocation ? true : false

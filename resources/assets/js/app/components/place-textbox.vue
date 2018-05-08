@@ -17,7 +17,7 @@
 import { Autocomplete } from 'vue2-google-maps';
 
 export default {
-	name: 'pg-place-textbox',
+	name: 'PgPlaceTextbox',
 
 	components: {
 		'autocomplete': Autocomplete

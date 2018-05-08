@@ -3,7 +3,6 @@
 @section('title', $venue->exists ? 'Modifica esercizio' : 'Aggiungi esercizio')
 
 @section('content')
-
 <pga-venue-form-page inline-template>
 	<div class="container my-5">
 
@@ -19,7 +18,6 @@
 			{{ csrf_field() }}
 			@if ($venue->exists)
 				{{ method_field('PATCH') }}
-				{{-- <input type="hidden" name="id_hashed" value="{{ $venue->id_hashed }}"> --}}
 			@endif
 			<input type="hidden" name="aams_census_code" v-model="venue.aams_census_code">
 			<input type="hidden" name="aams_subject_enrollment_code" v-model="venue.aams_subject_enrollment_code">
@@ -187,7 +185,7 @@
 				<div class="input-group">
 					<input type="text" class="form-control" v-model="importedVenueAddress">
 					<div class="input-group-append">
-						<button type="button" class="btn btn-secondary btn-block" @click="geocode">Cerca indirizzo</a>
+						<button type="button" class="btn btn-secondary btn-block" @click="geocode">Cerca indirizzo</button>
 					</div>
 				</div>
 			</div>
@@ -241,7 +239,7 @@
 						<label>Posizione esatta (trascina per riposizionare)</label>
 						<div class="embed-responsive embed-responsive-1by1" style="height: 382px; border-radius: 5px">
 							<pg-map class="embed-responsive-item" :center="mapCenter" :zoom="mapZoom">
-								<pg-map-marker :position="mapCenter" draggable @drag="onMarkerDrag"></g-map-marker>
+								<pg-map-marker :position="mapCenter" draggable @drag="onMarkerDrag"></pg-map-marker>
 							</pg-map>
 						</div>
 					</div>
@@ -437,5 +435,4 @@
 			
 	</div>
 </pga-venue-form-page>
-
 @endsection

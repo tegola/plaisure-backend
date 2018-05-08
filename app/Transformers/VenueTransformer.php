@@ -4,8 +4,11 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use App\Models\Venue;
-use App\Transformers\VenueCategoryTransformer;
+use App\Models\VenueCategory;
+use App\Models\VltPlatform;
+use App\Models\PayPerViewPlatform;
 use App\Transformers\FileTransformer;
+use Illuminate\Database\Eloquent\Collection;
 
 class VenueTransformer extends TransformerAbstract
 {
@@ -15,8 +18,14 @@ class VenueTransformer extends TransformerAbstract
 	 * @var array
 	 */
 	protected $availableIncludes = [
+		'business_hours',
 		'categories',
-		'photos'
+		'category_ids',
+		'pay_per_view_platforms',
+		'pay_per_view_platform_ids',
+		'photos',
+		'vlt_platforms',
+		'vlt_platform_ids'
 	];
 
 	/**
@@ -24,9 +33,7 @@ class VenueTransformer extends TransformerAbstract
 	 *
 	 * @var array
 	 */
-	protected $defaultIncludes = [
-		// 'categories'
-	];
+	protected $defaultIncludes = [];
 	
 	/**
 	 * A Fractal transformer.
@@ -107,8 +114,75 @@ class VenueTransformer extends TransformerAbstract
 				'wifi' => $venue->amenity_wifi
 			],
 			'distance' => $venue->distance
-			// 'categories' => [] // Included
 		];
+	}
+
+	/**
+	 * Include business hours grouped by day.
+	 * [
+	 *   { day: 1, hours: ['10:00', '16:00'] },
+	 *   ...
+	 * ]
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includeBusinessHours(Venue $venue)
+	{
+		$hoursByDay = [
+			1 => [],
+			2 => [],
+			3 => [],
+			4 => [],
+			5 => [],
+			6 => [],
+			0 => []
+		];
+
+		// Copy business hours in every day
+		foreach($venue->businessHours as $hours) {
+			array_push($hoursByDay[$hours->day], $hours->opens, $hours->closes);
+		}
+
+		// Return as a collection
+		return $this->collection($hoursByDay, function($hoursByDay) {
+			return $hoursByDay;
+		});
+
+		/*
+		$businessHours = $venue
+			->businessHours
+			->groupBy('day')
+			->map(function($item) {
+				return [
+					'day' => $item->first()->day,
+					'hours' => $item->reduce(function($hours, $record) {
+						array_push($hours, $record->opens, $record->closes);
+						return $hours;
+					}, [])
+				];
+			});
+
+		// Add missing days
+		$includedDays = $businessHours->pluck('day')->all();
+
+		foreach ([1, 2, 3, 4, 5, 6, 0] as $i) {
+			if (in_array($i, $includedDays)) continue;
+
+			$businessHours->push([
+				'day' => $i,
+				'hours' => []
+			]);
+		}
+
+		// Sort and reorder indexes
+		$businessHours = $businessHours->sortBy('day')->values();
+
+		// Prepare the collection
+		return $this->collection($businessHours, function($businessHours) {
+			return $businessHours;
+		});
+		*/
 	}
 
 	/**
@@ -119,9 +193,48 @@ class VenueTransformer extends TransformerAbstract
 	 */
 	public function includeCategories(Venue $venue)
 	{
-		$categories = $venue->categories;
+		return $this->collection($venue->categories, function(VenueCategory $category) {
+			return $category->only('id', 'machine_name', 'name');
+		});
+	}
 
-		return $this->collection($categories, new VenueCategoryTransformer());
+	/**
+	 * Include category ids.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includeCategoryIds(Venue $venue)
+	{
+		return $this->item($venue->categories, function(Collection $categories) {
+			return $categories->pluck('id')->all();
+		});
+	}
+
+	/**
+	 * Include pay per view platforms.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includePayPerViewPlatforms(Venue $venue)
+	{
+		return $this->collection($venue->payPerViewPlatforms, function (PayPerViewPlatform $payPerViewPlatform) {
+			return $payPerViewPlatform->only('id', 'name');
+		});
+	}
+
+	/**
+	 * Include pay per view platform ids.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includePayPerViewPlatformIds(Venue $venue)
+	{
+		return $this->item($venue->payPerViewPlatforms, function(Collection $payPerViewPlatforms) {
+			return $payPerViewPlatforms->pluck('id')->all();
+		});
 	}
 
 	/**
@@ -132,8 +245,32 @@ class VenueTransformer extends TransformerAbstract
 	 */
 	public function includePhotos(Venue $venue)
 	{
-		$photos = $venue->photos;
+		return $this->collection($venue->photos, new FileTransformer());
+	}
 
-		return $this->collection($photos, new FileTransformer());
+	/**
+	 * Include VLT platforms.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includeVltPlatforms(Venue $venue)
+	{
+		return $this->collection($venue->vltPlatforms, function(VltPlatform $vltPlatform) {
+			return $vltPlatform->only('id', 'name');
+		});
+	}
+
+	/**
+	 * Include VLT platform ids.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includeVltPlatformIds(Venue $venue)
+	{
+		return $this->item($venue->vltPlatforms, function(Collection $vltPlatforms) {
+			return $vltPlatforms->pluck('id')->all();
+		});
 	}
 }

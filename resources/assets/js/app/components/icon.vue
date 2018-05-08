@@ -6,12 +6,16 @@
 
 <script>
 export default {
-	name: 'pg-icon',
+	name: 'PgIcon',
 
 	props: {
 		icon: {
 			type: String,
 			required: true
+		},
+		size: {
+			type: String,
+			validator: value => ['2x', '3x'].indexOf(value) !== -1
 		},
 		spinning: Boolean
 	},
@@ -20,7 +24,8 @@ export default {
 		svgClass() {
 			return [
 				'pg-icon',
-				'pg-icon--' + this.icon,
+				`pg-icon--${this.icon}`,
+				this.size ? `pg-icon--${this.size}` : null,
 				this.spinning ? 'pg-icon--spinning' : null
 			];
 		},

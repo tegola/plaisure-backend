@@ -45,10 +45,10 @@ import Flickity from 'flickity';
 import PgIcon from './icon';
 
 export default {
-	name: 'pg-lightbox',
+	name: 'PgLightbox',
 
 	components: {
-		'pg-icon': PgIcon
+		PgIcon
 	},
 
 	props: {

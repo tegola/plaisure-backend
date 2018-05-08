@@ -4,7 +4,7 @@ import PgIcon from './icon';
 import PgPlaceTextbox from './place-textbox';
 
 export default {
-	name: 'pg-navbar',
+	name: 'PgNavbar',
 
 	components: {
 		PgLogo,

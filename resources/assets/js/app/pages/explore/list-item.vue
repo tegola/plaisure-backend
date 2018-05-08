@@ -18,7 +18,7 @@
 						{{ venue.distance | formatDistance }}<br>
 					</div>
 				</div>
-				<p v-if="venue.categories.data.length" class="small text-uppercase text-muted mb-1">{{ categories }}</p>
+				<p v-if="venue.categories.length" class="small text-uppercase text-muted mb-1">{{ categories }}</p>
 				<p class="mb-0">{{ venue.address.short }}</p>
 			</div>
 		</div>
@@ -50,22 +50,22 @@ export default {
 			};
 		},
 		categories() {
-			if (!this.venue.categories || !this.venue.categories.data.length) return null;
+			if (!this.venue.categories || !this.venue.categories.length) return null;
 
-			return this.venue.categories.data
+			return this.venue.categories
 				.slice(0, 2)
 				.map(category => category.name)
 				.join(', ');
 		},
 		firstCategoryMachineName() {
-			if (!this.venue.categories || !this.venue.categories.data.length) return null;
+			if (!this.venue.categories || !this.venue.categories.length) return null;
 
-			return this.venue.categories.data[0].machine_name;
+			return this.venue.categories[0].machine_name;
 		},
 		photo() {
-			if (!this.venue.photos || !this.venue.photos.data.length) return null;
+			if (!this.venue.photos || !this.venue.photos.length) return null;
 
-			return this.venue.photos.data[0];
+			return this.venue.photos[0];
 		}
 	},
 
