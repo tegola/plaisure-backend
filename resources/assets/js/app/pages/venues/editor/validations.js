@@ -1,4 +1,4 @@
-import { required, url, email } from 'vuelidate/lib/validators'
+import { required, url, email } from 'vuelidate/lib/validators';
 
 export default {
 	venue: {
@@ -58,4 +58,4 @@ export default {
 			}
 		}
 	}
-}
+};

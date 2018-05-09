@@ -1,7 +1,9 @@
 <script>
 import BInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
 import BSelect from 'bootstrap-vue/es/components/form-select/form-select';
-import BCheckbox from 'bootstrap-vue/es/components/form-checkbox/form-checkbox';
+import BRadio from 'bootstrap-vue/es/components/form-radio/form-radio';
+import BRadioGroup from 'bootstrap-vue/es/components/form-radio/form-radio-group';
+import BButton from 'bootstrap-vue/es/components/button/button';
 
 // Generate options
 let options = [];
@@ -15,15 +17,15 @@ for (let h = 0; h <= 24; h++) {
 	});
 }
 
-const defaultValue = ['10:00', '20:00'];
-
 export default {
 	name: 'PgVenuEditorHourRow',
 
 	components: {
 		BInputGroup,
 		BSelect,
-		BCheckbox
+		BRadio,
+		BRadioGroup,
+		BButton
 	},
 
 	props: {
@@ -33,39 +35,85 @@ export default {
 		},
 		value: {
 			type: Array,
-			default: () => defaultValue
+			default: () => ['10:00', '20:00']
 		}
 	},
 
 	data() {
 		return {
 			mutableValue: this.value,
-			enabled: this.value.length > 0,
-			showSecondary: this.value.length > 2,
 			options: options
 		};
+	},
+
+	computed: {
+		mode: {
+			get() {
+				const value = this.value;
+
+				if (!value.length) return 'closed';
+				if (value.length == 2) return 'full';
+				if (value.length > 2) return 'split';
+			},
+			set(value) {
+				const old = this.mutableValue;
+
+				switch (value) {
+					case 'closed': 
+						this.mutableValue = [];
+						break;
+
+					case 'full':
+						this.mutableValue = [
+							old[0] || '10:00',
+							old[1] || '20:00'
+						]
+						break;
+
+					case 'split':
+						this.mutableValue = [
+							old[0] || '10:00',
+							old[1] || '13:00',
+							old[3] || '14:00',
+							old[4] || '20:00'
+						];
+						break;
+				}
+
+				this.$emit('input', this.mutableValue)
+			}
+		},
+
+		primaryDisabled() {
+			return this.value.length == 0;
+		},
+
+		secondaryDisabled() {
+			return this.value.length <= 2;
+		},
+
+		show24h() {
+			const value = this.value
+			return value.length == 2 && (value[0] != '00:00' || value[1] != '24:00');
+		}
 	},
 
 	watch: {
 		value() {
 			this.mutableValue = this.value;
-			this.enabled = this.value.length > 0;
-			this.showSecondary = this.value.length > 2;
 		}
 	},
 
 	methods: {
-		onEnabledChange(checked) {
-			this.$emit('input', checked ? defaultValue : []);
-		},
-
 		onTimeChange(index, value) {
+			this.mutableValue = this.mutableValue.slice(0);
 			this.mutableValue[index] = value;
 			this.$emit('input', this.mutableValue);
 		},
 
-		onShowSecondaryInput(checked) {
-			this.$emit('input', checked ? this.mutableValue.concat(defaultValue) : this.mutableValue.slice(0, 2));
+		on24hClick() {
+			this.mutableValue = ['00:00', '24:00'];
+			this.$emit('input', this.mutableValue);
 		}
 	}
 };
@@ -73,46 +121,49 @@ export default {
 
 <template>
 	<div>
-		<div class="form-group form-row align-items-center">
-			<div class="col-md-3">
-				<b-checkbox :checked="enabled" @change="onEnabledChange">{{ label }}</b-checkbox>
+		<div class="form-group row">
+			<label class="col-md-2 col-form-label">{{ label }}</label>
+			<div class="col-md">
+				<b-radio-group v-model="mode">
+					<b-radio value="closed">Chiuso</b-radio>
+					<b-radio value="full">Orario continuato</b-radio>
+					<b-radio value="split">Orario spezzato</b-radio>
+				</b-radio-group>
 			</div>
-			<div class="col-md-6">
+		</div>
+		<div class="form-row" v-if="mode != 'closed'">
+			<div class="form-group ml-md-auto col-md-5">
+				<template v-if="!secondaryDisabled">Mattina</template>
 				<b-input-group>
 					<b-select
-						:disabled="!enabled"
-						:value="mutableValue[0]"
+						:disabled="primaryDisabled"
+						:value="value[0]"
 						@change="onTimeChange(0, $event)">
 						<option v-for="option in options">{{ option }}</option>
 					</b-select>
 					<b-select
-						:disabled="!enabled"
-						:value="mutableValue[1]"
+						:disabled="primaryDisabled"
+						:value="value[1]"
 						@change="onTimeChange(1, $event)">
 						<option v-for="option in options">{{ option }}</option>
 					</b-select>
 				</b-input-group>
 			</div>
-			<div class="col-md-3" v-if="enabled">
-				<b-checkbox :checked="showSecondary" @input="onShowSecondaryInput">Due orari</b-checkbox>
-			</div>
-		</div>
-		<div v-if="enabled && showSecondary" class="form-group form-row">
-			<div class="ml-md-auto col-md-6 mr-md-auto">
-				<b-input-group>
+			<div class="form-group col-md-5 align-items-center" :class="secondaryDisabled ? 'd-flex align-items-center' : ''">
+				<template v-if="!secondaryDisabled">Pomeriggio</template>
+				<b-input-group v-if="!secondaryDisabled">
 					<b-select
-						:disabled="!enabled"
-						:value="mutableValue[2]"
+						:value="value[2]"
 						@change="onTimeChange(2, $event)">
 						<option v-for="option in options">{{ option }}</option>
 					</b-select>
 					<b-select
-						:disabled="!enabled"
-						:value="mutableValue[3]"
+						:value="value[3]"
 						@change="onTimeChange(3, $event)">
 						<option v-for="option in options">{{ option }}</option>
 					</b-select>
 				</b-input-group>
+				<a href="#" v-if="show24h" @click="on24hClick">Sempre aperto (24h)</a>
 			</div>
 		</div>
 	</div>

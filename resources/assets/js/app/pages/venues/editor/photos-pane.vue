@@ -1,5 +1,5 @@
 <script>
-import BBtn from 'bootstrap-vue/es/components/button/button';
+import BButton from 'bootstrap-vue/es/components/button/button';
 
 import PgImageFrame from 'prontogioco/app/components/image-frame';
 import PgConfirmModal from 'prontogioco/app/components/confirm-modal';
@@ -9,7 +9,7 @@ export default {
 	name: 'PgVenueEditorPhotosPane',
 
 	components: {
-		BBtn,
+		BButton,
 		PgImageFrame,
 		PgConfirmModal,
 		PgUploader
@@ -82,7 +82,7 @@ export default {
 				<a :href="photo.resized_url" target="_blank">
 					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" />
 				</a>
-				<b-btn size="sm" variant="danger" block class="mt-2" @click="deletePhoto(photo)">Elimina</b-btn>
+				<b-button size="sm" variant="danger" block class="mt-2" @click="deletePhoto(photo)">Elimina</b-button>
 			</div>
 			<div v-for="file in uploaderFiles" class="col-6 col-md-4 col-lg-3 mb-3">
 				<div class="embed-responsive embed-responsive-1by1 rounded border">
@@ -97,7 +97,7 @@ export default {
 						</template>
 					</div>
 				</div>
-				<b-btn v-if="file.error" size="sm" variant="danger" block class="mt-2" @click="$refs.uploader.remove(file)">Rimuovi</b-btn>
+				<b-button v-if="file.error" size="sm" variant="danger" block class="mt-2" @click="$refs.uploader.remove(file)">Rimuovi</b-button>
 			</div>
 			<div class="col-6 col-md-4 col-lg-3 mb-3">
 				<pg-uploader
@@ -118,15 +118,13 @@ export default {
 			</div>
 		</div>
 
-		<transition name="pg-modal--appear-in">
-			<pg-confirm-modal v-model="confirmDeleteOpen"
-				variant="danger"
-				title="Rimuovi foto"
-				ok-title="Rimuovi"
-				@ok="confirmDeletePhoto">
-				<p class="lead">Stai per <strong class="text-danger">rimuovere questa foto</strong>. Essa verrà effettivamente eliminata dalla galleria una volta salvati i dati dell'attività.</p>
-				<img v-if="currentPhoto" :src="currentPhoto.thumbnail_url" class="img-fluid rounded">
-			</pg-confirm-modal>
-		</transition>
+		<pg-confirm-modal v-model="confirmDeleteOpen"
+			variant="danger"
+			title="Rimuovi foto"
+			ok-title="Rimuovi"
+			@ok="confirmDeletePhoto">
+			<p class="lead">Stai per <strong class="text-danger">rimuovere questa foto</strong>. Essa verrà effettivamente eliminata dalla galleria una volta salvati i dati dell'attività.</p>
+			<img v-if="currentPhoto" :src="currentPhoto.thumbnail_url" class="img-fluid rounded">
+		</pg-confirm-modal>
 	</div>
 </template>

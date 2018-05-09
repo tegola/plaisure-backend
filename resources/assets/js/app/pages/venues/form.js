@@ -79,4 +79,4 @@ export default {
 			this.venue.photos.splice(this.venue.photos.indexOf(file), 1);
 		}
 	}
-}
+};

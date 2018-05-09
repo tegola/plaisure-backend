@@ -3,7 +3,9 @@ import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import _last from 'lodash/last';
 import singularOrPlural from 'prontogioco/utilities/singular-or-plural';
-import { Map, Marker, InfoWindow } from 'vue2-google-maps';
+import { Map as PgMap, Marker as PgMapMarker, InfoWindow as PgMapInfoWindow } from 'vue2-google-maps';
+
+import BTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
 
 import PgPane from 'prontogioco/app/components/pane';
 import PgFilterButton from './filter-button';
@@ -14,13 +16,14 @@ export default {
 	name: 'pg-explore-page',
 
 	components: {
-		'pg-map': Map,
-		'pg-map-marker': Marker,
-		'pg-map-info-window': InfoWindow,
-		'pg-filter-button': PgFilterButton,
-		'pg-filter-button-item': PgFilterButtonItem,
-		'pg-pane': PgPane,
-		'pg-venue-list-item': PgVenueListItem
+		PgMap,
+		PgMapMarker,
+		PgMapInfoWindow,
+		BTooltip,
+		PgFilterButton,
+		PgFilterButtonItem,
+		PgPane,
+		PgVenueListItem
 	},
 
 	filters: {

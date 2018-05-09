@@ -5,7 +5,7 @@ import { validationMixin } from 'vuelidate'
 
 import BNav from 'bootstrap-vue/es/components/nav/nav'
 import BNavItem from 'bootstrap-vue/es/components/nav/nav-item'
-import BBtn from 'bootstrap-vue/es/components/button/button';
+import BButton from 'bootstrap-vue/es/components/button/button';
 
 import PgVenueEditorGeneralPane from './general-pane'
 import PgVenueEditorCategoriesPane from './categories-pane'
@@ -23,7 +23,7 @@ export default {
 	components: {
 		BNav,
 		BNavItem,
-		BBtn,
+		BButton,
 		PgVenueEditorGeneralPane,
 		PgVenueEditorCategoriesPane,
 		PgVenueEditorAddressPane,
@@ -143,7 +143,7 @@ export default {
 						{{ label }}
 					</b-nav-item>
 				</b-nav>
-				<b-btn :variant="isUnsaved ? 'danger' : 'primary'" @click="submit">{{ venue.id ? 'Salva' : 'Aggiungi' }}</b-btn>
+				<b-button :variant="isUnsaved ? 'danger' : 'primary'" @click="submit">{{ venue.id ? 'Salva' : 'Aggiungi' }}</b-button>
 			</div>
 		</div>
 		<div class="container my-5">
