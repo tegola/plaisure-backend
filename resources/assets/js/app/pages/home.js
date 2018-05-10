@@ -3,8 +3,8 @@ import _debounce from 'lodash/debounce';
 import * as geocoder from 'prontogioco/utilities/geocoder';
 import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
 import InputTypeahead from 'prontogioco/app/components/input-typeahead';
-import VenueSuggestionItem from 'prontogioco/app/components/venue-suggestion-item';
-import { Map } from 'vue2-google-maps';
+import PgVenueSuggestionItem from 'prontogioco/app/components/venue-suggestion-item';
+import { Map as PgMap } from 'vue2-google-maps';
 
 const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
 const placeTextboxOptions = {
@@ -40,10 +40,10 @@ export default {
 
 	components: {
 		PgPlaceTextbox,
-		'pg-map': Map,
+		PgMap,
 		'pg-input-typeahead': _extend(InputTypeahead, {
 			components: {
-				'pg-venue-suggestion-item': VenueSuggestionItem
+				PgVenueSuggestionItem
 			}
 		}),
 	},

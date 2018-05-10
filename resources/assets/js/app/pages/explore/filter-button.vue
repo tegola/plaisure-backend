@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import PgPopup from '../../../components/popup';
-import PgIcon from '../../components/icon';
+import PgPopup from 'prontogioco/components/popup';
+import PgIcon from 'prontogioco/app/components/icon';
 
 export default {
 	components: {
-		'pg-popup': PgPopup,
-		'pg-icon': PgIcon
+		PgPopup,
+		PgIcon
 	},
 
 	props: {

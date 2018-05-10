@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import formatDistance from '../../../utilities/format-distance';
+import formatDistance from 'prontogioco/utilities/format-distance';
 
 export default {
 	props: {

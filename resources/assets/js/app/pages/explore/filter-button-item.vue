@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import PgIcon from '../../components/icon';
+import PgIcon from 'prontogioco/app/components/icon';
 
 export default {
 	components: {
-		'pg-icon': PgIcon
+		PgIcon
 	},
 
 	props: {
