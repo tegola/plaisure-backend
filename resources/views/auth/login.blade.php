@@ -24,7 +24,6 @@
 
 				<div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
 					<label for="password">Password</label>
-					<a class="float-right" href="{{ url('/password/reset') }}">Password dimenticata?</a>
 					<input id="password" type="password" class="form-control" name="password" required>
 					@if ($errors->has('password'))
 						<div class="form-control-feedback">{{ $errors->first('password') }}</div>
@@ -41,6 +40,10 @@
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary btn-block">Accedi</button>
 				</div>
+
+				<p class="text-center">
+					<a href="{{ url('/password/reset') }}">Password dimenticata?</a>
+				</p>
 			</form>
 
 			<p class="text-center mb-0">
