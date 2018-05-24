@@ -86,7 +86,7 @@ class VenueTransformer extends TransformerAbstract
 				'site' => $venue->url_site,
 				'online_casino' => $venue->url_online_casino,
 				'facebook' => $venue->url_facebook,
-				'tripadvisor' => $venue->url_tripadvisor,
+				// 'tripadvisor' => $venue->url_tripadvisor,
 			],
 			'jackpots' => [
 				'1' => [

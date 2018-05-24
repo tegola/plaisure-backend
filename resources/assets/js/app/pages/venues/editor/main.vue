@@ -1,21 +1,22 @@
 <script>
-import _cloneDeep from 'lodash/cloneDeep'
-import _isEqual from 'lodash/isEqual'
-import { validationMixin } from 'vuelidate'
+import _cloneDeep from 'lodash/cloneDeep';
+import _isEqual from 'lodash/isEqual';
+import { validationMixin } from 'vuelidate';
 
-import BNav from 'bootstrap-vue/es/components/nav/nav'
-import BNavItem from 'bootstrap-vue/es/components/nav/nav-item'
-import BButton from 'bootstrap-vue/es/components/button/button';
+import anime from 'animejs';
 
-import PgVenueEditorGeneralPane from './general-pane'
-import PgVenueEditorCategoriesPane from './categories-pane'
-import PgVenueEditorAddressPane from './address-pane'
-import PgVenueEditorContactsPane from './contacts-pane'
-import PgVenueEditorPhotosPane from './photos-pane'
-import PgVenueEditorJackpotsPane from './jackpots-pane'
-import PgVenueEditorHoursPane from './hours-pane'
+import BNav from 'bootstrap-vue/es/components/nav/nav';
+import BNavItem from 'bootstrap-vue/es/components/nav/nav-item';
 
-import validations from './validations'
+import PgButton from 'prontogioco/app/components/button';
+import PgVenueEditorGeneralPane from './general-pane';
+import PgVenueEditorServicesPane from './services-pane';
+import PgVenueEditorContactsPane from './contacts-pane';
+import PgVenueEditorHoursPane from './hours-pane';
+import PgVenueEditorPhotosPane from './photos-pane';
+import PgVenueEditorJackpotsPane from './jackpots-pane';
+
+import validations from './validations';
 
 export default {
 	name: 'PgVenueEditor',
@@ -23,14 +24,13 @@ export default {
 	components: {
 		BNav,
 		BNavItem,
-		BButton,
+		PgButton,
 		PgVenueEditorGeneralPane,
-		PgVenueEditorCategoriesPane,
-		PgVenueEditorAddressPane,
+		PgVenueEditorServicesPane,
 		PgVenueEditorContactsPane,
+		PgVenueEditorHoursPane,
 		PgVenueEditorPhotosPane,
-		PgVenueEditorJackpotsPane,
-		PgVenueEditorHoursPane
+		PgVenueEditorJackpotsPane
 	},
 
 	mixins: [validationMixin],
@@ -44,29 +44,30 @@ export default {
 
 	data: () => ({
 		loading: false,
+		saving: false,
 		defaultMapCenter: pg.app.defaultMapCenter,
-		panes: {
-			general: 'Generale',
-			categories: 'Categorie',
-			address: 'Indirizzo',
-			contacts: 'Contatti',
-			photos: 'Foto',
-			jackpots: 'Jackpot',
-			hours: 'Orari'
-		},
+		panes: [
+			{ value: 'general', title: 'Generale' },
+			{ value: 'services', title: 'Servizi' },
+			{ value: 'contacts', title: 'Contatti' },
+			{ value: 'hours', title: 'Orari' },
+			{ value: 'photos', title: 'Foto' },
+			{ value: 'jackpots', title: 'Jackpot' }
+		],
 		selectedPane: 'general',
 		categories: [],
 		concessionaires: [],
 		vltPlatforms: [],
 		payPerViewPlatforms: [],
 		venue: null,
-		venueBackup: null
+		venueBackup: null,
+		transition: ''
 	}),
 
 	computed: {
 		isUnsaved() {
 			return !_isEqual(this.venue, this.venueBackup);
-		}
+		},
 	},
 
 	validations,
@@ -93,25 +94,43 @@ export default {
 				})
 		},
 
-		submit() {
+		selectPane(newPane) {
+			const newIndex = this.panes.indexOf(newPane);
+			const oldIndex = this.panes.indexOf(this.panes.find(pane => pane.value === this.selectedPane));
 
+			this.transition = newIndex > oldIndex ? 'slide-left' : 'slide-right';
+			this.$nextTick(() => {
+				this.selectedPane = newPane.value;
+			})
+		},
+
+		onPaneSwitch(el) {
+			anime({
+				targets: this.$refs.paneContainer,
+				minHeight: el.getBoundingClientRect().height,
+				easing: 'easeInOutQuad',
+				duration: 200
+			});
+		},
+
+		submit() {
 			// Validate
 			this.$v.$touch();
 
 			// Stop on validation errors
-			// if (this.$v.$error) return;
+			if (this.$v.$error) return;
 
-			// this.saving = true;
+			this.saving = true;
 
 			// Prepare url
-			const url = [
-				'/venues',
-				this.venueId ? `/${this.venueId}` : null
-			].join('');
+			let url = '/venues';
+			if (this.venueId) url += `/${this.venueId}`
 
 			this.$axios.post(url, this.venue)
 				.then(({ data }) => {
 					console.log('data', data);
+				}).catch().then(() => {
+					this.saving = false;
 				})
 		}
 	},
@@ -124,81 +143,89 @@ export default {
 
 <template>
 	<!-- FIXME: Mostrare un loader mentre si caricano i dati -->
-	<div v-if="venue">
-		<div class="navbar navbar-light sticky-top">
-			<div class="container d-flex flex-row">
-				<div>
-					<h2 class="h4 mb-0">{{ venue.id ? 'Modifica' : 'Aggiungi' }} attività</h2>
-					<p class="mb-0">
-						<template v-if="venue.name">{{ venue.name }}</template>
-						<span class="text-muted" v-else>(Senza nome)</span>
-					</p>
-				</div>
-				<b-nav pills>
-					<b-nav-item
-						v-for="(label, value) in panes"
-						:key="value"
-						:active="selectedPane == value"
-						@click="selectedPane = value">
-						{{ label }}
-					</b-nav-item>
-				</b-nav>
-				<b-button :variant="isUnsaved ? 'danger' : 'primary'" @click="submit">{{ venue.id ? 'Salva' : 'Aggiungi' }}</b-button>
-			</div>
-		</div>
-		<div class="container my-5">
-			<div class="row">
-				<div class="col-md-3 col-lg-2">
-					<b-nav vertical pills>
+	<div>
+		<div class="sticky-top">
+			<div class="navbar navbar-light navbar-expand-sm">
+				<div class="container">
+					<div>
+						<h2 class="h4 mb-0">{{ venue && venue.id ? 'Modifica' : 'Aggiungi' }} attività</h2>
+					</div>
+					<b-nav pills class="ml-4 mr-auto" v-if="$mq.comfortable">
 						<b-nav-item
-							v-for="(label, value) in panes"
-							:key="value"
-							:active="selectedPane == value"
-							@click="selectedPane = value">
-							{{ label }}
+							v-for="pane in panes"
+							:key="pane.value"
+							:active="selectedPane == pane.value"
+							@click="selectPane(pane)">
+							{{ pane.title }}
+						</b-nav-item>
+					</b-nav>
+					<pg-button :variant="isUnsaved ? 'danger' : 'primary'" :loading="saving" @click="submit">{{ venue && venue.id ? 'Salva' : 'Aggiungi' }}</pg-button>
+				</div>
+			</div>
+			<div class="navbar navbar-light navbar-expand-sm" style="overflow: auto;" v-if="$mq.constrained">
+				<div class="container">
+					<b-nav pills class="flex-nowrap">
+						<b-nav-item
+							v-for="pane in panes"
+							:key="pane.value"
+							:active="selectedPane == pane.value"
+							@click="selectPane(pane)">
+							{{ pane.title }}
 						</b-nav-item>
 					</b-nav>
 				</div>
-				<div class="col-md-9 col-lg-8 mx-lg-auto">
-					<pg-venue-editor-general-pane
-						v-if ="selectedPane == 'general'"
+			</div>
+		</div>
+		<div class="container my-5" ref="paneContainer">
+			<div class="position-relative" v-if="venue">
+				<transition :name="transition" @enter="onPaneSwitch">
+					<keep-alive>
+						<pg-venue-editor-general-pane
+							v-if ="selectedPane == 'general'"
+							:venue="venue"
+							:concessionaires="concessionaires"
+							:categories="categories"
+							:address.sync="venue.address"
+							:coords.sync="venue.coords"
+							:default-coords="defaultMapCenter"
+						/>
+					</keep-alive>
+				</transition>
+				<transition :name="transition" @enter="onPaneSwitch">
+					<pg-venue-editor-services-pane
+						v-if ="selectedPane == 'services'"
 						:venue="venue"
-						:concessionaires="concessionaires"
 						:vltPlatforms="vltPlatforms"
 						:payPerViewPlatforms="payPerViewPlatforms"
 					/>
-					<pg-venue-editor-categories-pane
-						v-if ="selectedPane == 'categories'"
-						:venue="venue"
-						:categories="categories"
-					/>
-					<keep-alive>
-						<pg-venue-editor-address-pane
-							v-if ="selectedPane == 'address'"
-							:address.sync="venue.address"
-							:coords.sync="venue.coords"
-							:default-map-center="defaultMapCenter"
-						/>
-					</keep-alive>
+				</transition>
+				<transition :name="transition" @enter="onPaneSwitch">
 					<pg-venue-editor-contacts-pane
 						v-if ="selectedPane == 'contacts'"
 						:venue="venue"
 					/>
+				</transition>
+				<transition :name="transition" @enter="onPaneSwitch">
+					<pg-venue-editor-hours-pane
+						v-if ="selectedPane == 'hours'"
+						:venue="venue"
+						:hours.sync="venue.business_hours"
+					/>
+				</transition>
+				<transition :name="transition" @enter="onPaneSwitch">
 					<keep-alive>
 						<pg-venue-editor-photos-pane
 							v-if ="selectedPane == 'photos'"
 							:venue="venue"
 						/>
 					</keep-alive>
+				</transition>
+				<transition :name="transition" @enter="onPaneSwitch">
 					<pg-venue-editor-jackpots-pane
 						v-if ="selectedPane == 'jackpots'"
 						:venue="venue"
 					/>
-					<pg-venue-editor-hours-pane
-						v-if ="selectedPane == 'hours'"
-						:hours.sync="venue.business_hours"
-					/>
-				</div>
+				</transition>
 			</div>
 		</div>
 	</div>

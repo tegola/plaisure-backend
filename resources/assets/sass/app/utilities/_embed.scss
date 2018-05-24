@@ -3,3 +3,8 @@
 		padding-top: percentage(3 / 2);
 	}
 }
+.embed-responsive-3by2 {
+	&::before {
+		padding-top: percentage(2 / 3);
+	}
+}

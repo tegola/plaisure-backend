@@ -21,7 +21,7 @@ class FormController extends Controller
 
 	/**
 	 * Create a new venue.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
@@ -39,7 +39,7 @@ class FormController extends Controller
 
 	/**
 	 * Edit an existing venue.
-	 * 
+	 *
 	 * @param  Venue  $venue
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
@@ -56,7 +56,7 @@ class FormController extends Controller
 
 	/**
 	 * Load the data for adding/editing a venue with the Venue editor.
-	 * 
+	 *
 	 * @param  Venue $venue
 	 * @return [mixed]
 	 */
@@ -79,7 +79,7 @@ class FormController extends Controller
 				'photos',
 				'vlt_platform_ids'
 			]);
-		
+
 		$categories = VenueCategory::select('id', 'name')->get();
 		$concessionaires = Concessionaire::select('id', 'name')->get();
 		$vltPlatforms = VltPlatform::select('id', 'name')->get();
@@ -94,6 +94,12 @@ class FormController extends Controller
 		);
 	}
 
+	/**
+	 * Store a new Venue.
+	 *
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
 	public function store(Request $request)
 	{
 		$this->authorize('create', Venue::class);
@@ -103,6 +109,13 @@ class FormController extends Controller
 		return $this->save($venue, $request);
 	}
 
+	/**
+	 * Update an existing Venue.
+	 *
+	 * @param  Venue   $venue
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
 	public function update(Venue $venue, Request $request)
 	{
 		$this->authorize('update', $venue);
@@ -147,7 +160,7 @@ class FormController extends Controller
 			'urls.site'                 => 'nullable|url',
 			'urls.online_casino'        => 'nullable|url',
 			'urls.facebook'             => 'nullable|url',
-			'urls.tripadvisor'          => 'nullable|url',
+			// 'urls.tripadvisor'          => 'nullable|url',
 
 			'jackpots.1.label'          => 'nullable|string',
 			'jackpots.1.value'          => 'nullable|numeric|min:0',

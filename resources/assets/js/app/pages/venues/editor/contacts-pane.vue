@@ -1,11 +1,15 @@
 <script>
+import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import BInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
 
+import formGroupProps from './form-group-props'
+
 export default {
-	name: 'PgVenueEditorContactsPane',
+	name: 'PgVenueEditorGeneralPane',
 
 	components: {
+		BFormGroup,
 		BInput,
 		BInputGroup
 	},
@@ -19,81 +23,98 @@ export default {
 
 	data() {
 		return {
-			mutableVenue: this.venue
+			formGroupProps
 		};
 	},
 
-	watch: {
-		mutableVenue: {
-			deep: true,
-			handler() {
-				this.$emit('update:venue', this.mutableVenue);
-			}
-		}
+	computed: {
+		$v() {
+			return this.$parent.$v.venue;
+		},
 	}
 }
 </script>
 
 <template>
 	<div>
-		<h4>Contatti</h4>
-		<hr>
-		<div class="row">
-			<div class="col-md-4">
-				<div class="form-group">
-					<label>Telefono</label>
-					<b-input type="tel" v-model="mutableVenue.contacts.phone" />
+		<b-form-group
+			label="Telefono"
+			v-bind="formGroupProps">
+			<div class="form-row">
+				<div class="col-md-7 col-lg-5">
+					<b-input type="tel" v-model="venue.contacts.phone" />
 				</div>
 			</div>
-			<div class="col-md-4">
-				<div class="form-group">
-					<label>E-mail</label>
-					<b-input type="email" v-model="mutableVenue.contacts.email" />
+		</b-form-group>
+
+		<b-form-group
+			label="E-mail"
+			v-bind="formGroupProps"
+			:state="!$v.contacts.email.$error"
+			invalid-feedback="Inserisci un indirizzo email valido.">
+			<div class="form-row">
+				<div class="col-lg-9">
+					<b-input type="email" v-model="venue.contacts.email" placeholder="Es.: nome@gmail.com" />
 				</div>
 			</div>
-			<div class="col-md-4">
-				<div class="form-group">
-					<label>Facebook Messenger</label>
-					<b-input v-model="mutableVenue.contacts.facebook" />
+		</b-form-group>
+
+		<b-form-group
+			label="Facebook Messenger"
+			v-bind="formGroupProps">
+			<div class="form-row">
+				<div class="col-md-7 col-lg-5">
+					<b-input v-model="venue.contacts.facebook" />
 				</div>
 			</div>
-			<div class="col-md-4">
-				<div class="form-group">
-					<label>Twitter</label>
+		</b-form-group>
+
+		<b-form-group
+			label="Twitter"
+			v-bind="formGroupProps">
+			<div class="form-row">
+				<div class="col-md-7 col-lg-5">
 					<b-input-group prepend="@">
-						<b-input v-model="mutableVenue.contacts.twitter" />
+						<b-input v-model="venue.contacts.twitter" />
 					</b-input-group>
 				</div>
 			</div>
-		</div>
+		</b-form-group>
 
-		<h5 class="mt-4">Indirizzi web</h5>
-		<hr>
-		<div class="row">
-			<div class="col-md-6">
-				<div class="form-group">
-					<label>Sito web</label>
-					<b-input type="url" v-model="mutableVenue.urls.site" />
+		<b-form-group
+			label="Sito web"
+			v-bind="formGroupProps"
+			:state="!$v.urls.site.$error"
+			invalid-feedback="Inserisci un URL valido, che inizi con 'http://' o 'https://'.">
+			<div class="form-row">
+				<div class="col-lg-9">
+					<b-input type="url" v-model="venue.urls.site" placeholder="http://" />
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					<label>Casinò online</label>
-					<b-input type="url" v-model="mutableVenue.urls.online_casino" />
+		</b-form-group>
+
+		<b-form-group
+			label="Casinò online"
+			v-bind="formGroupProps"
+			:state="!$v.urls.online_casino.$error"
+			invalid-feedback="Inserisci un URL valido, che inizi con 'http://' o 'https://'.">
+			<div class="form-row">
+				<div class="col-lg-9">
+					<b-input type="url" v-model="venue.urls.online_casino" placeholder="http://" />
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					<label>Pagina Facebook</label>
-					<b-input type="url" v-model="mutableVenue.urls.facebook" />
+		</b-form-group>
+
+		<b-form-group
+			label="Pagina Facebook"
+			v-bind="formGroupProps"
+			:state="!$v.urls.facebook.$error"
+			invalid-feedback="Inserisci un URL valido, che inizi con 'http://' o 'https://'.">
+			<div class="form-row">
+				<div class="col-lg-9">
+					<b-input type="url" v-model="venue.urls.facebook" placeholder="http://" />
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					<label>Pagina TripAdvisor</label>
-					<b-input type="url" v-model="mutableVenue.urls.tripadvisor" />
-				</div>
-			</div>
-		</div>
+		</b-form-group>
 	</div>
 </template>

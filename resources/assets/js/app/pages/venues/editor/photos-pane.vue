@@ -1,5 +1,6 @@
 <script>
 import BButton from 'bootstrap-vue/es/components/button/button';
+import BProgress from 'bootstrap-vue/es/components/progress/progress';
 
 import PgImageFrame from 'prontogioco/app/components/image-frame';
 import PgConfirmModal from 'prontogioco/app/components/confirm-modal';
@@ -9,6 +10,7 @@ export default {
 	name: 'PgVenueEditorPhotosPane',
 
 	components: {
+		BProgress,
 		BButton,
 		PgImageFrame,
 		PgConfirmModal,
@@ -73,33 +75,33 @@ export default {
 
 <template>
 	<div>
-		<h4>Foto</h4>
-		<hr>
-
-		<div class="row mb-3" :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }">
-			<div v-for="photo in venue.photos" class="col-4 col-md-3 col-lg-2 mb-3">
+		<div class="row" :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }">
+			<!-- Current photos -->
+			<div v-for="photo in venue.photos" class="col-4 col-md-3 mb-3">
 				<input type="hidden" name="photos[]" :value="photo.id">
 				<a :href="photo.resized_url" target="_blank">
 					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" />
 				</a>
 				<b-button size="sm" variant="danger" block class="mt-2" @click="deletePhoto(photo)">Elimina</b-button>
 			</div>
-			<div v-for="file in uploaderFiles" class="col-6 col-md-4 col-lg-3 mb-3">
+
+			<!-- Current uploads -->
+			<div v-for="file in uploaderFiles" class="col-4 col-md-3 mb-3">
 				<div class="embed-responsive embed-responsive-1by1 rounded border">
 					<div class="embed-responsive-item d-flex flex-column align-items-center justify-content-center text-center">
-						<span v-if="file.error" class="text-danger small"><strong>Errore</strong><br>@{{ file.error }}</span>
+						<span v-if="file.error" class="text-danger small"><strong>Errore</strong><br>{{ file.error }}</span>
 						<template v-else>
 							Caricamento
-							<div class="progress w-75 my-2" style="height: 2px;">
-								<div class="progress-bar" :style="{ width: `${file.progress}%` }" role="progressbar" :aria-valuenow="file.progress" aria-valuemin="0" aria-valuemax="100"></div>
-							</div>
-							@{{ file.progress }}%
+							<b-progress class="w-75 my-2" style="height: 2px" :value="file.progress" />
+							{{ file.progress }}%
 						</template>
 					</div>
 				</div>
 				<b-button v-if="file.error" size="sm" variant="danger" block class="mt-2" @click="$refs.uploader.remove(file)">Rimuovi</b-button>
 			</div>
-			<div class="col-6 col-md-4 col-lg-3 mb-3">
+
+			<!-- Uploader -->
+			<div class="col-4 col-md-3 mb-3">
 				<pg-uploader
 					class="embed-responsive embed-responsive-1by1 rounded bg-active"
 					ref="uploader"

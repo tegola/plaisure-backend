@@ -1,14 +1,23 @@
 <script>
-import PgVenueEditorHourRow from './hour-row';
+import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
+
+import PgVenueEditorHourFieldset from './hour-fieldset';
+
+import formGroupProps from './form-group-props'
 
 export default {
-	name: 'PgVenueEditorHoursPane',
+	name: 'PgVenueEditorGeneralPane',
 
 	components: {
-		PgVenueEditorHourRow
+		BFormGroup,
+		PgVenueEditorHourFieldset
 	},
 
 	props: {
+		venue: {
+			type: Object,
+			required: true
+		},
 		hours: {
 			type: Array,
 			required: true
@@ -17,6 +26,7 @@ export default {
 
 	data() {
 		return {
+			formGroupProps,
 			mutableHours: this.hours,
 			days: [
 				{ index: 1, name: 'Lunedì' },
@@ -37,27 +47,31 @@ export default {
 	},
 
 	methods: {
-		onRowInput(index, value) {
+		onHourRowInput(index, value) {
 			this.mutableHours = this.mutableHours.slice(0);
 			this.mutableHours[index] = value;
 			this.$emit('update:hours', this.mutableHours)
 		}
 	}
-};
+}
 </script>
 
 <template>
 	<div>
-		<h4>Orari di apertura</h4>
-		<hr>
-
-		<div v-for="(day, index) in days" :key="day.index">
-			<hr v-if="index > 0">
-			<pg-venue-editor-hour-row
-				:label="day.name"
-				:value="hours[day.index]"
-				@input="onRowInput(day.index, $event)">
-			</pg-venue-editor-hour-row>
-		</div>
+		<b-form-group
+			v-for="day in days"
+			:key="day.index"
+			:label="day.name"
+			v-bind="formGroupProps">
+			<div class="form-row">
+				<div class="col-lg-9">
+					<pg-venue-editor-hour-fieldset
+						:label="day.name"
+						:value="hours[day.index]"
+						@input="onHourRowInput(day.index, $event)">
+					</pg-venue-editor-hour-fieldset>
+				</div>
+			</div>
+		</b-form-group>
 	</div>
 </template>

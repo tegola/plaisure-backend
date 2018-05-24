@@ -1,15 +1,42 @@
-import { required, url, email } from 'vuelidate/lib/validators';
+import {
+	required,
+	minValue,
+	minLength,
+	numeric,
+	url,
+	email
+} from 'vuelidate/lib/validators';
 
 export default {
 	venue: {
 		name: {
 			required
 		},
-
-		category_ids: {
-			required
+		surface_size: {
+			required,
+			numeric,
+			minValue: minValue(1)
 		},
-
+		vlt_machine_count: {
+			numeric,
+			minValue: minValue(0)
+		},
+		awp_machine_count: {
+			numeric,
+			minValue: minValue(0)
+		},
+		seating_capacity: {
+			numeric,
+			minValue: minValue(0)
+		},
+		parking_capacity: {
+			numeric,
+			minValue: minValue(0)
+		},
+		category_ids: {
+			required,
+			minLength: minLength(1)
+		},
 		address: {
 			street: {
 				required
@@ -27,7 +54,6 @@ export default {
 				required
 			}
 		},
-
 		coords: {
 			lat: {
 				required
@@ -36,13 +62,11 @@ export default {
 				required
 			}
 		},
-
 		contacts: {
 			email: {
 				email
 			}
 		},
-
 		urls: {
 			site: {
 				url
@@ -51,9 +75,6 @@ export default {
 				url
 			},
 			facebook: {
-				url
-			},
-			tripadvisor: {
 				url
 			}
 		}

@@ -154,23 +154,31 @@ $border-radius:    .2rem;
 $border-radius-lg: .25rem;
 $border-radius-sm: .15rem;
 
-// Buttons
-$btn-font-weight:        400;
+// Buttons + forms
+
 $input-btn-padding-y-lg: .8rem;
 $input-btn-padding-x-lg: 1.25rem;
 
+// Buttons
+$btn-font-weight:        400;
 $btn-box-shadow:        none;
+
 $btn-focus-box-shadow:  none;
+
 $btn-active-box-shadow: none;
 
 // Forms
-$input-border-color:       rgba($black, .08);
+$input-bg:                 $gray-100;
+$input-border-color:       rgba($black, .04);
 $input-box-shadow:         none;
 
 $input-focus-border-color: theme-color(primary);
 $input-focus-box-shadow:   inset 0 0 0 1px theme-color(primary);
 
-$input-placeholder-color: $gray-500;
+$input-placeholder-color: $gray-200;
+
+$custom-control-gutter:         1.75rem !default;
+$custom-control-indicator-size: 1.25rem !default;
 
 // Icons
 $icon-size-base: 1.425rem; // ~20px
