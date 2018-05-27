@@ -27,7 +27,7 @@ export default {
 	data() {
 		return {
 			uploaderHeaders: {
-				'X-CSRF-TOKEN': pg.app.csrfToken
+				'X-CSRF-TOKEN': pg.csrfToken
 			},
 			uploaderFiles: [],
 			confirmDeleteOpen: false,

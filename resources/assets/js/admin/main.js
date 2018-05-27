@@ -2,14 +2,17 @@
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import { load as loadGMaps } from 'vue2-google-maps';
+
 import PGAVenueFormPage from 'prontogioco/admin/pages/venue-form.js';
+
+import { GOOGLE_MAPS_API_KEY } from 'prontogioco/constants';
 
 Vue.use(BootstrapVue);
 
 loadGMaps({
-	key: pg.app.googleMapsApiKey,
-	language: pg.app.locale,
-	region: pg.app.locale,
+	key: GOOGLE_MAPS_API_KEY,
+	language: 'it',
+	region: 'it',
 	libraries: 'places'
 });
 

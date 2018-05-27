@@ -1,4 +1,4 @@
-.footer {
+.pg-footer {
 	margin-top: map-get($spacers, 4);
 	border-top: 1px solid gray('200');
 	padding-top: map-get($spacers, 5);
@@ -16,7 +16,7 @@
 }
 
 // Headings
-.footer-heading {
+.pg-footer-heading {
 	font-size: $font-size-sm;
 	letter-spacing: 0.1rem;
 	text-transform: uppercase;
@@ -26,7 +26,7 @@
 }
 
 // Logos and warning badge
-.footer-aams-logo-list {
+.pg-footer-aams-logo-list {
 	.list-inline-item:not(:last-child) {
 	  margin-right: $grid-gutter-width;
 	}
@@ -34,13 +34,13 @@
 		height: 54px;
 	}
 }
-.footer-age-badge {
+.pg-footer-age-badge {
 	background-color: gray('600');
 	color: $white;
 	padding: .5em .3em .4em .5em;
 	margin-right: map-get($spacers, 1);
 }
-.footer-age-text {
+.pg-footer-age-text {
 	font-size: $font-size-xs;
 	text-transform: uppercase;
 	letter-spacing: .05em;
@@ -51,7 +51,7 @@
 }
 
 // Logo
-.footer-logo {
+.pg-footer-logo {
 	height: 32px;
 	display: inline-block;
 

@@ -1,5 +1,6 @@
 <script>
 import _cloneDeep from 'lodash/cloneDeep';
+import _extend from 'lodash/extend';
 import _isEqual from 'lodash/isEqual';
 import { validationMixin } from 'vuelidate';
 
@@ -17,6 +18,8 @@ import PgVenueEditorPhotosPane from './photos-pane';
 import PgVenueEditorJackpotsPane from './jackpots-pane';
 
 import validations from './validations';
+
+import constants from 'prontogioco/constants'
 
 export default {
 	name: 'PgVenueEditor',
@@ -45,7 +48,6 @@ export default {
 	data: () => ({
 		loading: false,
 		saving: false,
-		defaultMapCenter: pg.app.defaultMapCenter,
 		panes: [
 			{ value: 'general', title: 'Generale' },
 			{ value: 'services', title: 'Servizi' },
@@ -135,6 +137,10 @@ export default {
 		}
 	},
 
+	beforeCreate() {
+		_extend(this, constants);
+	},
+
 	mounted() {
 		this.loadData()
 	}
@@ -187,7 +193,7 @@ export default {
 							:categories="categories"
 							:address.sync="venue.address"
 							:coords.sync="venue.coords"
-							:default-coords="defaultMapCenter"
+							:default-coords="DEFAULT_COORDS"
 						/>
 					</keep-alive>
 				</transition>

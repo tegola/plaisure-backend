@@ -54,5 +54,5 @@
 	</div>
 </div>
 
-@include('site.components.footer')
+<pg-page-footer></pg-page-footer>
 @endsection

@@ -14,11 +14,6 @@
 			@include('admin.components.navbar')
 
 			@yield('content')
-
-			<div class="container">
-				<hr>
-				<p>&copy; {{ date('Y') }} {{ config('constants.company') }}</p>
-			</div>
 		</div>
 
 		@include('scripts')

@@ -1,7 +1,11 @@
 <script>
+import _extend from 'lodash/extend';
+
 import PgLogo from './logo';
 import PgIcon from './icon';
 import PgPlaceTextbox from './place-textbox';
+
+import constants from 'prontogioco/constants';
 
 export default {
 	name: 'PgNavbar',
@@ -41,7 +45,6 @@ export default {
 
 	data() {
 		return {
-			appName: pg.app.name,
 			mutableQuery: this.query,
 			mutableCenter: this.center
 		};
@@ -104,15 +107,18 @@ export default {
 
 			this.$emit('place-changed', place);
 		}
-	}
+	},
 
+	beforeCreate() {
+		_extend(this, constants);
+	}
 };
 </script>
 
 <template>
 	<nav class="navbar navbar-expand-md" :class="classes">
 		<div :class="this.fluid ? 'container-fluid' : 'container'">
-			<a class="navbar-brand" href="/" :aria-label="appName">
+			<a class="navbar-brand" href="/" :aria-label="APP_NAME">
 				<pg-logo :text="showLogoText" :class="['navbar__logo', !showLogoText ? 'navbar__logo--no-text' : '']"></pg-logo>
 			</a>
 

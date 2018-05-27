@@ -7,5 +7,5 @@
 <pg-navbar></pg-navbar>
 Rivendica la tua attività
 
-@include('site.components.footer')
+<pg-page-footer></pg-page-footer>
 @endsection

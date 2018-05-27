@@ -17,10 +17,11 @@ Vue.prototype.$axios = axios.create({
 });
 
 // Load Google Maps API
+import { GOOGLE_MAPS_API_KEY } from 'prontogioco/constants';
 loadGMaps({
-	key: pg.app.googleMapsApiKey,
-	language: pg.app.locale,
-	region: pg.app.locale,
+	key: GOOGLE_MAPS_API_KEY,
+	language: 'it', // FIXME: Use user locale
+	region: 'it', // FIXME: Use user locale
 	libraries: 'places'
 });
 
@@ -31,10 +32,12 @@ Vue.use(VueMatchMedia);
 import PgLogo from 'prontogioco/app/components/logo';
 import PgNavbar from 'prontogioco/app/components/navbar';
 import PgIcon from 'prontogioco/app/components/icon';
+import PgPageFooter from 'prontogioco/app/components/page-footer';
 
 Vue.component('pg-logo', PgLogo);
 Vue.component('pg-navbar', PgNavbar);
 Vue.component('pg-icon', PgIcon);
+Vue.component('pg-page-footer', PgPageFooter);
 
 // Register pages
 import PgHomePage from 'prontogioco/app/pages/home';

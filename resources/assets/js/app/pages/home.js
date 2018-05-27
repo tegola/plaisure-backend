@@ -35,6 +35,8 @@ const mapOptions = {
 	]
 };
 
+import constants from 'prontogioco/constants';
+
 export default {
 	name: 'pg-home-page',
 
@@ -68,7 +70,7 @@ export default {
 	computed: {
 		mapProps() {
 			return {
-				center: this.searchCenter.lat && this.searchCenter.lng ? this.searchCenter : pg.app.defaultMapCenter,
+				center: this.searchCenter.lat && this.searchCenter.lng ? this.searchCenter : this.DEFAULT_COORDS,
 				zoom: this.searchCenter.lat && this.searchCenter.lng ? 15 : 5,
 				options: mapOptions
 			};
@@ -189,6 +191,10 @@ export default {
 		onSubmit(e) {
 			if (!this.canSubmit) e.preventDefault();
 		}
+	},
+
+	beforeCreate() {
+		_extend(this, constants);
 	},
 
 	mounted() {

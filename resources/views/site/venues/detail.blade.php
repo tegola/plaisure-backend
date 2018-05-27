@@ -399,7 +399,7 @@
 			@close="closeLightbox">
 		</pg-lightbox>
 
-		@include('site.components.footer')
+		<pg-page-footer></pg-page-footer>
 	</div>
 </pg-venue-detail-page>
 @endsection

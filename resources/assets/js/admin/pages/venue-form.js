@@ -1,10 +1,13 @@
 import _clone from 'lodash/clone';
 import _assign from 'lodash/assign';
+import _extend from 'lodash/extend';
 import { Map, Marker } from 'vue2-google-maps';
 import { geocode } from 'prontogioco/utilities/geocoder';
 import Uploader from 'vue-upload-component';
 
 import PGABusinessHoursManager from 'prontogioco/admin/components/business-hours';
+
+import constants from 'prontogioco/constants';
 
 export default {
 	name: 'pga-venue-form-page',
@@ -33,13 +36,13 @@ export default {
 			payPerViewPlatforms: pg.payPerViewPlatforms,
 
 			mapCenter: {
-				lat: pg.venue.geo_latitude || pg.app.defaultMapCenter.lat,
-				lng: pg.venue.geo_longitude || pg.app.defaultMapCenter.lng
+				lat: pg.venue.geo_latitude || this.DEFAULT_COORDS.lat,
+				lng: pg.venue.geo_longitude || this.DEFAULT_COORDS.lng
 			},
 			mapZoom: pg.venue.geo_latitude && pg.venue.geo_longitude ? 15 : 5,
 
 			uploaderHeaders: {
-				'X-CSRF-TOKEN': pg.app.csrfToken
+				'X-CSRF-TOKEN': pg.csrfToken
 			},
 			uploaderFiles: [],
 
@@ -166,6 +169,10 @@ export default {
 			this.venue.plan = null;
 			this.selectedPlan = null;
 		}
+	},
+
+	beforeCreate() {
+		_extend(this, constants);
 	},
 
 	mounted() {

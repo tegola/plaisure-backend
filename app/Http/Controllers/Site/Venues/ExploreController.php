@@ -160,6 +160,7 @@ class ExploreController extends Controller
 	 *
 	 * @return boolean
 	 */
+	/*
 	private function geocode()
 	{
 		// Stop if no location name is provided
@@ -168,7 +169,7 @@ class ExploreController extends Controller
 		// Ask Google Maps
 		$api_url = "https://maps.googleapis.com/maps/api/geocode/json";
 		$querystring = http_build_query(array(
-			'key' => config('constants.google_maps_api_key'),
+			'key' => // GOOGLE MAPS API KEY HERE
 			'address' => $this->query,
 			'language' => App::getLocale(),
 			'region' => App::getLocale()
@@ -194,4 +195,5 @@ class ExploreController extends Controller
 
 		return true;
 	}
+	*/
 }

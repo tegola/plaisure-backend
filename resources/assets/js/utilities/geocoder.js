@@ -1,14 +1,16 @@
 import axios from 'axios';
 import _extend from 'lodash/extend';
 
+import { GOOGLE_MAPS_API_KEY } from 'constants';
+
 const errorMsg = 'Location not found.';
 const googleGeocoderUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
 // FIXME: Pass region per site and language per user locale
 // Better: create a class and throw those params in a constructor
 const googleGeocoderOptions = {
-	key: pg.app.googleMapsApiKey,
-	language: pg.app.locale,
-	region: pg.app.locale
+	key: GOOGLE_MAPS_API_KEY,
+	language: 'it', // FIXME: Use user locale
+	region: 'it' // FIXME: Use user locale
 };
 
 function geocode(address, callback) {

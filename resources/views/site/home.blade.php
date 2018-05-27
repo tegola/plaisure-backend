@@ -156,7 +156,7 @@
 			</div>
 		</div>
 
-		@include('site.components.footer')
+		<pg-page-footer></pg-page-footer>
 	</div>
-</pg-home>
+</pg-home-page>
 @endsection

@@ -12,6 +12,8 @@ import PgFilterButton from './filter-button';
 import PgFilterButtonItem from './filter-button-item';
 import PgVenueListItem from './list-item';
 
+import constants from 'prontogioco/constants';
+
 export default {
 	name: 'pg-explore-page',
 
@@ -338,7 +340,7 @@ export default {
 
 		// Data loading -------------------------------------------------------
 		load() {
-			const paramsWithToken = _extend({}, this.searchParams, { _token: pg.app.csrfToken });
+			const paramsWithToken = _extend({}, this.searchParams, { _token: pg.csrfToken });
 
 			// Load venues
 			this.loading = true;
@@ -357,7 +359,7 @@ export default {
 			window.history.replaceState({}, '', `${baseName}?${params}`);
 
 			// Update title
-			document.title = this.query ? `${this.query} - ${pg.app.name}` : pg.app.name;
+			document.title = this.query ? `${this.query} - ${this.APP_NAME}` : this.APP_NAME;
 		},
 
 		// List support -------------------------------------------------------
@@ -381,6 +383,10 @@ export default {
 			// Select/deselect
 			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		}
+	},
+
+	beforeCreate() {
+		_extend(this, constants)
 	},
 
 	mounted() {
