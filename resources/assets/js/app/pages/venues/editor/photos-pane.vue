@@ -77,16 +77,15 @@ export default {
 	<div>
 		<div class="row" :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }">
 			<!-- Current photos -->
-			<div v-for="photo in venue.photos" class="col-4 col-md-3 mb-3">
-				<input type="hidden" name="photos[]" :value="photo.id">
+			<div v-for="photo in venue.photos" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
 				<a :href="photo.resized_url" target="_blank">
-					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" />
+					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" class="rounded" />
 				</a>
 				<b-button size="sm" variant="danger" block class="mt-2" @click="deletePhoto(photo)">Elimina</b-button>
 			</div>
 
 			<!-- Current uploads -->
-			<div v-for="file in uploaderFiles" class="col-4 col-md-3 mb-3">
+			<div v-for="file in uploaderFiles" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
 				<div class="embed-responsive embed-responsive-1by1 rounded border">
 					<div class="embed-responsive-item d-flex flex-column align-items-center justify-content-center text-center">
 						<span v-if="file.error" class="text-danger small"><strong>Errore</strong><br>{{ file.error }}</span>
@@ -101,7 +100,7 @@ export default {
 			</div>
 
 			<!-- Uploader -->
-			<div class="col-4 col-md-3 mb-3">
+			<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
 				<pg-uploader
 					class="embed-responsive embed-responsive-1by1 rounded bg-active"
 					ref="uploader"
@@ -113,7 +112,7 @@ export default {
 					v-model="uploaderFiles"
 					@input-file="onUploaderFileInput">
 					<a class="embed-responsive-item text-primary border d-flex flex-column align-items-center justify-content-center">
-						<div class="fa fa-plus"></div>
+						<pg-icon icon="plus" />
 						Carica foto
 					</a>
 				</pg-uploader>

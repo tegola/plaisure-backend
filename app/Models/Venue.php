@@ -284,7 +284,8 @@ class Venue extends Model
 	 */
 	public function getLongAddressAttribute()
 	{
-		return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
+		// return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
+		return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city }";
 	}
 
 	/**

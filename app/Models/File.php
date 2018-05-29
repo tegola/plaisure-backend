@@ -29,14 +29,6 @@ class File extends Model
 	protected $guarded = [];
 
 	/**
-	 * Get all of the owning filable models.
-	 */
-	public function filable()
-	{
-		return $this->morphTo();
-	}
-
-	/**
 	 * Cretes a new File from a Request's uploaded file, fills it with the file
 	 * data and saves it on the filesystem.
 	 * 
@@ -86,13 +78,11 @@ class File extends Model
 	}
 
 	/**
-	 * Get the venue that this file was uploaded for.
-	 * 
-	 * @return App\Models\Venue
+	 * Get all of the owning filable models.
 	 */
-	public function venue()
+	public function filable()
 	{
-		return $this->belongsTo('App\Models\Venue');
+		return $this->morphTo();
 	}
 
 	/**
@@ -256,6 +246,8 @@ class File extends Model
 	 */
 	public function makePublic()
 	{
+		if ($this->isPublic()) return $this;
+
 		// Move files
 		$publicDir = self::PUBLIC_DIR;
 		$originalPaths = [

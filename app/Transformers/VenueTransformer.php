@@ -24,6 +24,7 @@ class VenueTransformer extends TransformerAbstract
 		'pay_per_view_platforms',
 		'pay_per_view_platform_ids',
 		'photos',
+		'photo_ids',
 		'vlt_platforms',
 		'vlt_platform_ids'
 	];
@@ -67,8 +68,8 @@ class VenueTransformer extends TransformerAbstract
 				'city' => $venue->address_city,
 				'postcode' => $venue->address_postcode,
 				'province' => $venue->address_province,
-				'region' => $venue->address_region,
-				'country' => $venue->address_country,
+				// 'region' => $venue->address_region,
+				// 'country' => $venue->address_country,
 				'short' => $venue->short_address,
 				'long' => $venue->long_address
 			],
@@ -246,6 +247,19 @@ class VenueTransformer extends TransformerAbstract
 	public function includePhotos(Venue $venue)
 	{
 		return $this->collection($venue->photos, new FileTransformer());
+	}
+
+	/**
+	 * Include photo ids.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includePhotoIds(Venue $venue)
+	{
+		return $this->item($venue->photos, function(Collection $photos) {
+			return $photos->pluck('id')->all();
+		});
 	}
 
 	/**

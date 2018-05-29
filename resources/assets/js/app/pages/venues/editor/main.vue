@@ -91,8 +91,14 @@ export default {
 					this.payPerViewPlatforms = data.payPerViewPlatforms;
 					this.vltPlatforms = data.vltPlatforms;
 
-					this.venue = _cloneDeep(data.venue);
-					this.venueBackup = _cloneDeep(data.venue);
+					const venue = _extend(data.venue, {
+						category_ids: data.venue.categories.map(category => category.id),
+						pay_per_view_platform_ids: data.venue.pay_per_view_platforms.map(platform => platform.id),
+						vlt_platform_ids: data.venue.vlt_platforms.map(platform => platform.id)
+					})
+
+					this.venue = _cloneDeep(venue);
+					this.venueBackup = _cloneDeep(venue);
 				})
 		},
 
@@ -129,9 +135,10 @@ export default {
 			if (this.venueId) url += `/${this.venueId}`
 
 			this.$axios.post(url, this.venue)
-				.then(({ data }) => {
-					console.log('data', data);
-				}).catch().then(() => {
+				.then(() => {
+					// Set model backup as saved
+					this.venueBackup = _cloneDeep(this.venue);
+				}).catch(() => {}).then(() => {
 					this.saving = false;
 				})
 		}
@@ -181,6 +188,9 @@ export default {
 					</b-nav>
 				</div>
 			</div>
+		</div>
+		<div class="container" v-if="venueId">
+			<pg-button :href="`/venues/${venueId}`" variant="outline-secondary">Mostra</pg-button>
 		</div>
 		<div class="container my-5" ref="paneContainer">
 			<div class="position-relative" v-if="venue">

@@ -9,8 +9,10 @@ use App\Models\VenueCategory;
 use App\Models\Concessionaire;
 use App\Models\VltPlatform;
 use App\Models\PayPerViewPlatform;
+use App\Models\VenueBusinessHour;
+use App\Models\File;
 use App\Transformers\VenueTransformer;
-use JavaScript;
+use DB;
 
 class FormController extends Controller
 {
@@ -74,10 +76,10 @@ class FormController extends Controller
 		$venue = fractal($venue, new VenueTransformer())
 			->parseIncludes([
 				'business_hours',
-				'category_ids',
-				'pay_per_view_platform_ids',
+				'categories',
+				'pay_per_view_platforms',
 				'photos',
-				'vlt_platform_ids'
+				'vlt_platforms'
 			]);
 
 		$categories = VenueCategory::select('id', 'name')->get();
@@ -187,5 +189,117 @@ class FormController extends Controller
 			// 'business_hours.*'          => 'nullable|string', // FIXME: Use a time pattern (up to 24:00)
 			// 'business_hours.*.hours'    => 'sometimes|between:2,4' // FIXME: Use a time pattern (up to 24:00)
 		]);
+
+		DB::transaction(function() use($venue, $request) {
+			$venue->fill([
+				// General pane
+				'name' => $request->input('name'),
+				'concessionaire_id' =>  $request->input('concessioniare_id'),
+				'description' =>  $request->input('description'),
+				'surface_size' =>  $request->input('surface_size'),
+				'address_street' => $request->input('address.street'),
+				'address_number' => $request->input('address.number'),
+				'address_city' => $request->input('address.city'),
+				'address_postcode' => $request->input('address.postcode'),
+				'address_province' => $request->input('address.province'),
+				'geo_latitude' => $request->input('coords.lat'),
+				'geo_longitude' => $request->input('coords.lng'),
+
+				// Services pane
+				'sports_betting' => $request->input('sports_betting'),
+				'virtual_betting' => $request->input('virtual_betting'),
+				'horse_betting' => $request->input('horse_betting'),
+				'arcade_roulette' => $request->input('arcade_roulette'),
+				'vlt_machine_count' => $request->input('vlt_machine_count'),
+				'awp_machine_count' => $request->input('awp_machine_count'),
+				'seating_capacity' => $request->input('seating_capacity'),
+				'parking_capacity' => $request->input('parking_capacity'),
+				'amenity_atm' => $request->input('amenities.atm'),
+				'amenity_bar' => $request->input('amenities.bar'),
+				'amenity_pay_per_view' => $request->input('amenities.pay_per_view'),
+				'amenity_pos' => $request->input('amenities.pos'),
+				'amenity_private_parking' => $request->input('amenities.private_parking'),
+				'amenity_restaurant' => $request->input('amenities.restaurant'),
+				'amenity_security' => $request->input('amenities.security'),
+				'amenity_smoking_area' => $request->input('amenities.smoking_area'),
+				'amenity_wifi' => $request->input('amenities.wifi'),
+
+				// Contacts pane
+				'contact_phone' => $request->input('contacts.phone'),
+				'contact_email' => $request->input('contacts.email'),
+				'contact_facebook' => $request->input('contacts.facebook'),
+				'contact_twitter' => $request->input('contacts.twitter'),
+				'url_site' => $request->input('urls.site'),
+				'url_online_casino' => $request->input('urls.online_casino'),
+				'url_facebook' => $request->input('urls.facebook'),
+
+				// Jackpots pane
+				'jackpot1_label' => $request->input('jackpots.1.label'),
+				'jackpot1_value' => $request->input('jackpots.1.value'),
+				'jackpot2_label' => $request->input('jackpots.2.label'),
+				'jackpot2_value' => $request->input('jackpots.2.value'),
+				'jackpot3_label' => $request->input('jackpots.3.label'),
+				'jackpot3_value' => $request->input('jackpots.3.value')
+			]);
+
+			$venue->categories()->sync($request->category_ids);
+			$venue->vltPlatforms()->sync($request->vlt_platform_ids);
+			$venue->payPerViewPlatforms()->sync($request->pay_per_view_platform_ids);
+
+			// Business hours
+			$venue->businessHours()->delete();
+			foreach ($request->input('business_hours') as $day => $hours) {
+				if (count($hours) > 0) {
+					$split1 = new VenueBusinessHour([
+						'day' => $day,
+						'opens' => $hours[0],
+						'closes' => $hours[1]
+					]);
+					$venue->businessHours()->save($split1);
+				}
+				if (count($hours) > 2) {
+					$split2 = new VenueBusinessHour([
+						'day' => $day,
+						'opens' => $hours[2],
+						'closes' => $hours[3]
+					]);
+					$venue->businessHours()->save($split2);
+				}
+			}
+
+			// Delete old photos, then save new ones by using only orphan files
+			// or files already belonging to the venue
+			$photoInputCollection = collect($request->input('photos'));
+			$photoIds = $photoInputCollection->pluck('id')->all();
+
+			$venue
+				->photos()
+				->whereNotIn('id', $photoIds)
+				->each(function($photo) {
+					$photo->delete(); // Delete model + files
+				});
+
+			$photos = File::whereIn('id', $photoIds)
+				->whereIn('type', [File::TYPE_UNKNOWN, File::TYPE_VENUE_PHOTO])
+				->whereIn('filable_id', [0, $venue->id])
+				->each(function ($photo) use ($photoInputCollection, $venue) {
+					$input = $photoInputCollection->firstWhere('id', $photo->id);
+
+					$photo->caption = $input['caption'];
+					$photo->type = File::TYPE_VENUE_PHOTO;
+					$photo->filable()->associate($venue);
+					$photo->save();
+
+					// Make photo public
+					$photo->makePublic();
+				});
+
+			// Save
+			$venue->save();
+		});
+
+		return [
+			'id' => $venue->id
+		];
 	}
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\File;
+use App\Transformers\FileTransformer;
 use Storage;
 use Auth;
 use Validator;
@@ -37,6 +38,8 @@ class FileController extends Controller
 		$file = File::createFromUpload($uploadedFile);
 		$file->user()->associate($user);
 		$file->save();
+
+		$file = fractal($file, new FileTransformer());
 		
 		return $file;
 	}
