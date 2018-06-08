@@ -494,7 +494,7 @@ class Venue extends Model
 		// Data that doesn't need to be checked
 		$schema = Schema::entertainmentBusiness()
 			->name($this->name)
-			->url(route('site.venues.detail', $this))
+			->url(url("/venues/{$this->id_hashed}"))
 			->address($this->long_address) // FIXME: Separare i campi?
 			->setProperty('geo', Schema::geoCoordinates()
 				->latitude($this->geo_latitude)

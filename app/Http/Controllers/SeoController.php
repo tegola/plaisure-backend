@@ -9,6 +9,23 @@ use App;
 class SeoController extends Controller
 {
 	/**
+	 * Redirect /venues/{id} to /venues/{id_hashed} or shows the 404 page.
+	 * FIXME: Remove whene there are no more hits.
+	 * 
+	 * @param  int $id The venue id
+	 * @return Illuminate\Http\Response
+	 */
+	public function redirectToHashed($id) {
+		$venue = Venue::find($id);
+
+		// Stop if venue doesn't exist
+		abort_if(!$venue, 404);
+
+		// Redirect to venue with hashed id
+		return redirect("/venues/{$venue->id_hashed}", 301);
+	}
+
+	/**
 	 * Build the sitemap.
 	 * 
 	 * @return \Illuminate\Http\Response
@@ -21,20 +38,20 @@ class SeoController extends Controller
 		$sitemap->setCache('laravel.sitemap', 60);
 
 		// Build if not cached
-		if (!$sitemap->isCached()) {
+		if ($sitemap->isCached()) {
 			// Home page
-			$sitemap->add(route('site.home'), null, '1.0', 'weekly');
+			$sitemap->add(url('/'), null, '1.0', 'weekly');
 
 			// Venues
 			$venues = Venue::all();
 			foreach ($venues as $venue) {
-				$sitemap->add(route('site.venues.detail', ['venue' => $venue]), $venue->updated_at, 0.9, 'daily');
+				$sitemap->add(url("/venues/{$venue->id_hashed}"), $venue->updated_at, 0.9, 'daily');
 			}
 
 			// About, Promote, Play responsibly
-			$sitemap->add(route('site.about'), null, '0.9', 'monthly');
-			$sitemap->add(route('site.promote'), null, '0.9', 'weekly');
-			$sitemap->add(route('site.about'), null, '0.9', 'weekly');
+			$sitemap->add(url('/about'), null, '0.9', 'monthly');
+			$sitemap->add(url('/promote'), null, '0.9', 'weekly');
+			$sitemap->add(url('/play-responsibly'), null, '0.9', 'weekly');
 		}
 
 		// Generate XML
@@ -54,7 +71,7 @@ class SeoController extends Controller
 		];
 
 		if (App::environment('production')) {
-			$sitemapUrl = route('sitemap');
+			$sitemapUrl = url('/sitemap');
 			array_push($lines, "Sitemap: {$sitemapUrl}");
 		} else {
 			array_push($lines, "Disallow: *");

@@ -143,7 +143,7 @@ export default {
 	actions: {
 		load: ({ state, commit }, venueId) => {
 			// this.loading = true;
-			axios.get(`/support/venues/${venueId}`)
+			axios.get(`/venues/${venueId}`)
 				.then(({ data }) => {
 					commit('setVenue', data.venue);
 					commit('setNearbyVenues', data.nearbyVenues || []);

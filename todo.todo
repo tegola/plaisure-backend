@@ -1,10 +1,9 @@
 
- ☐ link con hash (play responsibly) non funzionano
- ☐ lo scrolling non va ad inizio pagina ad ogni caricamento
+ ☐ Far funzionare la ricerca in home page
  ☐ ripristinare structured data, titolo e descrizione nella vista dettaglio
- ☐ tracking analytics
+ ✔ tracking analytics @done (18-06-09 01:35)
  ☐ Spostare i css nelle pagine
- ☐ Controllare che il redirect con l'id normale all'id hashed funzioni ancora
+ ☐ Form: spostare la gestione dei tab a vue router
 
  ✔ Tutte le sale attuali devono avere la categoria "Sala VLT" @done (17-11-04 20:03)
  ✔ Mostrare le prime due categorie per ogni sala @done (17-11-04 20:03)

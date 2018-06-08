@@ -15,7 +15,13 @@
 Auth::routes();
 
 // App client API -------------------------------------------------------------
-Route::get('/support/venues/{venue}', 'Site\Venues\DetailController2@index');
+Route::group(['prefix' => '/support', 'namespace' => 'Site'], function() {
+	Route::get ('/venues/add',          'Venues\FormController@create');
+	Route::post('/venues',              'Venues\FormController@store');
+	Route::get ('/venues/{venue}',      'Venues\DetailController@index');
+	Route::get ('/venues/{venue}/edit', 'Venues\FormController@edit');
+	Route::post('/venues/{venue}',      'Venues\FormController@update');
+});
 
 // Site -----------------------------------------------------------------------
 Route::group(['namespace' => 'Site'], function(){
@@ -25,12 +31,6 @@ Route::group(['namespace' => 'Site'], function(){
 	// Venues
 	Route::get ('/venues/explore',       'Venues\ExploreController@index')  ->name('site.venues.explore');
 	Route::post('/venues/search',        'Venues\ExploreController@search') ->name('site.venues.search');
-	Route::get ('/venues/add',           'Venues\FormController@create')    ->name('site.venues.create');
-	Route::post('/venues',               'Venues\FormController@store')     ->name('site.venues.store');
-	Route::get ('/venues/{venue}/edit',  'Venues\FormController@edit')      ->name('site.venues.edit');
-	Route::post('/venues/{venue}',       'Venues\FormController@update')    ->name('site.venues.update');
-	Route::get ('/venues/{id}',          'Venues\DetailController@redirect')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits
-	// Route::get ('/venues/{venue}',       'Venues\DetailController@index')   ->name('site.venues.detail');
     
     // User
 	Route::group(['middleware' => 'auth'], function() {
@@ -78,8 +78,9 @@ Route::group(['prefix' => '/files', 'middleware' => ['auth']], function() {
 
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
-Route::get('sitemap', 'SeoController@sitemap')->name('sitemap');
-Route::get('robots.txt', 'SeoController@robots') ;
+Route::get ('/venues/{id}',  'SeoController@redirectToHashed')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits
+Route::get('/sitemap',       'SeoController@sitemap')->name('sitemap');
+Route::get('/robots.txt',    'SeoController@robots') ;
 
-// Single page app
+// Single page app ------------------------------------------------------------
 Route::get('/{any}', 'Site\MainController@index')->where('any', '.*');

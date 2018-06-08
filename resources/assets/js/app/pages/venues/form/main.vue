@@ -45,32 +45,31 @@ export default {
 	mixins: [validationMixin],
 
 	props: {
-		venueId: {
-			type: [String, Number],
-			required: true
-		}
+		venueId: [String, Number]
 	},
 
-	data: () => ({
-		loading: false,
-		saving: false,
-		panes: [
-			{ value: 'general', title: 'Generale' },
-			{ value: 'services', title: 'Servizi' },
-			{ value: 'contacts', title: 'Contatti' },
-			{ value: 'hours', title: 'Orari' },
-			{ value: 'photos', title: 'Foto' },
-			{ value: 'jackpots', title: 'Jackpot' }
-		],
-		selectedPane: 'general',
-		categories: [],
-		concessionaires: [],
-		vltPlatforms: [],
-		payPerViewPlatforms: [],
-		venue: null,
-		venueBackup: null,
-		transition: ''
-	}),
+	data() {
+		return {
+			loading: false,
+			saving: false,
+			panes: [
+				{ value: 'general', title: 'Generale' },
+				{ value: 'services', title: 'Servizi' },
+				{ value: 'contacts', title: 'Contatti' },
+				{ value: 'hours', title: 'Orari' },
+				{ value: 'photos', title: 'Foto' },
+				{ value: 'jackpots', title: 'Jackpot' }
+			],
+			selectedPane: 'general',
+			categories: [],
+			concessionaires: [],
+			vltPlatforms: [],
+			payPerViewPlatforms: [],
+			venue: null,
+			venueBackup: null,
+			transition: ''
+		}
+	},
 
 	computed: {
 		isSaved() {
@@ -112,7 +111,9 @@ export default {
 					this.venue = _cloneDeep(venue);
 					this.venueBackup = _cloneDeep(venue);
 
-					this.loading = false;
+					setTimeout(() => {
+						this.loading = false;
+					}, 500)
 				})
 		},
 
@@ -178,7 +179,7 @@ export default {
 		<div class="container d-flex text-muted text-center" style="height: 50vh" v-if="loading">
 			<div class="m-auto">
 				<pg-icon icon="circle-outline-notch" spinning />
-				<h5 class="m-0">Caricamento</h5>
+				<h5 class="m-0">{{ venueId ? 'Carica la tua attività' : 'Preparo una nuova attività' }}&hellip;</h5>
 			</div>
 		</div>
 		<!-- FIXME: Mostrare un loader mentre si caricano i dati -->

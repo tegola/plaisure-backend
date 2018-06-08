@@ -75,7 +75,7 @@ class HomeController extends Controller
 				'name' => $v->name,
 				'category' => $v->categories()->first()->name,
 				'city' => $v->address_city,
-				'url' => route('site.venues.detail', ['venue' => $v])
+				'url' => "/venues/{$v->id_hashed}"
 			]);
 		}
 

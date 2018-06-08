@@ -104,10 +104,6 @@ export default {
 			this.lightboxOpen = false;
 		},
 
-		toggleHours() {
-			this.hoursExpanded = !this.hoursExpanded;
-		},
-
 		prepareEmailLink(address, subject) {
 			return [
 				'mailto:',

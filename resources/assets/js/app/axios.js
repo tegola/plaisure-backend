@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 
 const instance = axios.create({
+	baseURL: '/support',
 	headers: {
 		'X-Requested-With': 'XMLHttpRequest'
 	}

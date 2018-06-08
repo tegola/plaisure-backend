@@ -9,6 +9,9 @@ import VueMatchMedia from 'vue-match-media/dist';
 
 Vue.use(VueMatchMedia);
 
+// Setup Google Analytics
+import './analytics';
+
 // Setup Axios
 import './axios';
 

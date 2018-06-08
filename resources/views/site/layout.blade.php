@@ -37,11 +37,6 @@
 		<link rel="icon" type="image/png" sizes="16x16" href="/img/favicons/16x16.png">
 		<link rel="mask-icon" href="/img/favicons/safari-pinned-tab.svg" color="#7dd194">
 
-		{{-- Analytics --}}
-		@if(env('GOOGLE_ANALYTICS_CODE'))
-			@include('site.components.google-analytics', ['code' => env('GOOGLE_ANALYTICS_CODE')])
-		@endif
-
 		@yield('head')
 	</head>
 	<body class="page @yield('body_class')">

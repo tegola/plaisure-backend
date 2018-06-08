@@ -8,7 +8,20 @@ Vue.use(VueRouter);
 const router = new VueRouter({
 	mode: 'history',
 	routes,
-	scrollBehaviour: () => ({ y: 0 })
+	scrollBehavior: (to) => {
+		if (to.hash) {
+			return {
+				selector: to.hash,
+				offset: {
+					y: 50 // Scroll a bit more to the top
+				}
+			};
+		} else {
+			return {
+				y: 0
+			};
+		}
+	}
 });
 
 router.afterEach((to) => {

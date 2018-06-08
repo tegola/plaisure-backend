@@ -31,6 +31,7 @@
         "popper.js": "^1.13.0",
         "qs": "^6.5.2",
         "vue": "^2.5.16",
+        "vue-analytics": "^5.12.2",
         "vue-match-media": "^1.0.3",
         "vue-router": "^3.0.1",
         "vue-template-compiler": "^2.5.16",
