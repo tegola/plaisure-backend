@@ -19,7 +19,7 @@ import {
 import formGroupProps from './form-group-props'
 
 export default {
-	name: 'PgVenueEditorGeneralPane',
+	name: 'PgVenueFormGeneralPane',
 
 	components: {
 		BFormGroup,

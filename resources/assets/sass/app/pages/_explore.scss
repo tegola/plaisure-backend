@@ -1,12 +1,9 @@
-.page-explore {
+.pg-explore-page {
 	display: flex;
 	overflow-x: hidden; // Fix scrollbar issues
+	flex-direction: column;
+	height: 100vh;
 
-	#app, .page-content {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-	}
 	.wrapper {
 		flex: 1;
 		display: flex;

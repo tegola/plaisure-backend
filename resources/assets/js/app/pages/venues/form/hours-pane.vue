@@ -1,16 +1,16 @@
 <script>
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 
-import PgVenueEditorHourFieldset from './hour-fieldset';
+import PgVenueFormHourFieldset from './hour-fieldset';
 
 import formGroupProps from './form-group-props'
 
 export default {
-	name: 'PgVenueEditorGeneralPane',
+	name: 'PgVenueFormGeneralPane',
 
 	components: {
 		BFormGroup,
-		PgVenueEditorHourFieldset
+		PgVenueFormHourFieldset
 	},
 
 	props: {
@@ -65,11 +65,11 @@ export default {
 			v-bind="formGroupProps">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<pg-venue-editor-hour-fieldset
+					<pg-venue-form-hour-fieldset
 						:label="day.name"
 						:value="hours[day.index]"
 						@input="onHourRowInput(day.index, $event)">
-					</pg-venue-editor-hour-fieldset>
+					</pg-venue-form-hour-fieldset>
 				</div>
 			</div>
 		</b-form-group>

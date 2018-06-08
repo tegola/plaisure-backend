@@ -32,11 +32,7 @@ class FormController extends Controller
 
 		$venue = new Venue();
 
-		if ($request->ajax()) {
-			return $this->load($venue);
-		} else {
-			return view('site.venues.form', compact('venue'));
-		}
+		return $this->load($venue);
 	}
 
 	/**
@@ -49,11 +45,7 @@ class FormController extends Controller
 	public function edit(Venue $venue, Request $request) {
 		$this->authorize('update', $venue);
 
-		if ($request->ajax()) {
-			return $this->load($venue);
-		} else {
-			return view('site.venues.form', compact('venue'));
-		}
+		return $this->load($venue);
 	}
 
 	/**

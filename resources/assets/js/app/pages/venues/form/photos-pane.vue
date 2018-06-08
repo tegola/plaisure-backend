@@ -7,7 +7,7 @@ import PgConfirmModal from 'prontogioco/app/components/confirm-modal';
 import PgUploader from 'vue-upload-component';
 
 export default {
-	name: 'PgVenueEditorPhotosPane',
+	name: 'PgVenueFormPhotosPane',
 
 	components: {
 		BProgress,
@@ -18,20 +18,27 @@ export default {
 	},
 	
 	props: {
-		venue: {
-			type: Object,
-			required: true
+		photos: {
+			type: Array,
+			default: () => []
 		}
 	},
 
 	data() {
 		return {
+			mutablePhotos: this.photos,
 			uploaderHeaders: {
 				'X-CSRF-TOKEN': pg.csrfToken
 			},
 			uploaderFiles: [],
 			confirmDeleteOpen: false,
 			currentPhoto: null
+		}
+	},
+
+	watch: {
+		photos() {
+			this.mutablePhotos = this.photos;
 		}
 	},
 
@@ -48,7 +55,8 @@ export default {
 
 				// Upload successful
 				if (newFile.success !== oldFile.success) {
-					this.venue.photos.push(newFile.response);
+					this.mutablePhotos.push(newFile.response)
+					this.$emit('update:photos', this.mutablePhotos)
 					this.$refs.uploader.remove(newFile);
 				}
 			}
@@ -67,7 +75,8 @@ export default {
 		},
 
 		confirmDeletePhoto() {
-			this.venue.photos.splice(this.venue.photos.indexOf(this.currentPhoto), 1);
+			this.mutablePhotos.splice(this.mutablePhotos.indexOf(this.currentPhoto), 1);
+			this.$emit('update:photos', this.mutablePhotos);
 		}
 	}
 }
@@ -77,7 +86,7 @@ export default {
 	<div>
 		<div class="row" :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }">
 			<!-- Current photos -->
-			<div v-for="photo in venue.photos" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+			<div v-for="photo in mutablePhotos" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
 				<a :href="photo.resized_url" target="_blank">
 					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" class="rounded" />
 				</a>
@@ -91,7 +100,7 @@ export default {
 						<span v-if="file.error" class="text-danger small"><strong>Errore</strong><br>{{ file.error }}</span>
 						<template v-else>
 							Caricamento
-							<b-progress class="w-75 my-2" style="height: 2px" :value="file.progress" />
+							<b-progress class="w-75 my-2" style="height: 2px" :value="parseFloat(file.progress)" />
 							{{ file.progress }}%
 						</template>
 					</div>
@@ -102,7 +111,7 @@ export default {
 			<!-- Uploader -->
 			<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
 				<pg-uploader
-					class="embed-responsive embed-responsive-1by1 rounded bg-active"
+					class="embed-responsive embed-responsive-1by1 rounded"
 					ref="uploader"
 					accept="image/*"
 					multiple

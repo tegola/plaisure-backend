@@ -5,10 +5,15 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const webpackConfig = {
 	resolve: {
 		alias: {
+			assets: path.resolve(__dirname, 'resources/assets/'),
 			prontogioco: path.resolve(__dirname, 'resources/assets/js/')
 		}
 	},
-	plugins: []
+	plugins: [],
+	output: {
+		chunkFilename: 'js/chunks/[name].js',
+		publicPath: '/'
+	}
 };
 
 if (!mix.inProduction()) {
@@ -25,16 +30,19 @@ mix.setPublicPath('public')
 		'popper.js': 'Popper', // Bootstrap
 	})
 	.babelConfig({
-		plugins: ['syntax-dynamic-import']
+		plugins: [
+			'transform-object-rest-spread',
+			'syntax-dynamic-import'
+		]
 	})
 	.webpackConfig(webpackConfig);
 
 // Admin
 mix.sass('resources/assets/sass/admin/main.scss', 'css/admin.css')
-	.js('resources/assets/js/admin/main.js', 'js/admin.js')
+	.js('resources/assets/js/admin/index.js', 'js/admin.js')
 	.version();
 
 // App
 mix.sass('resources/assets/sass/app/main.scss', 'css/app.css')
-	.js('resources/assets/js/app/main.js', 'js/app.js')
+	.js('resources/assets/js/app/index.js', 'js/app.js')
 	.version();

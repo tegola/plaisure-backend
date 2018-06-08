@@ -82,27 +82,27 @@ export default {
 				<div class="col-sm-4 col-lg-2">
 					<h3 class="pg-footer-heading">Sale ed esercizi</h3>
 					<ul class="list-unstyled">
-						<li><a href="/venues/explore">Ricerca</a></li>
+						<li><router-link to="/venues/explore">Ricerca</router-link></li>
 						<li v-for="preset in presets" :key="preset.city">
 							<a :href="preset.url">Esercizi a {{ preset.city }}</a>
 						</li>
-						<li><a href="/promote">Promuovi la tua attivit&agrave;</a></li>
+						<li><router-link to="/promote">Promuovi la tua attivit&agrave;</router-link></li>
 					</ul>
 				</div>
 				<div class="col-sm-4 col-lg-2">
 					<h3 class="pg-footer-heading">Azienda</h3>
 					<ul class="list-unstyled">
-						<li><a href="/about">Chi siamo</a></li>
-						<li><a href="/about#contact">Contatti</a></li>
+						<li><router-link to="/about">Chi siamo</router-link></li>
+						<li><router-link to="/about#contact">Contatti</router-link></li>
 					</ul>
 				</div>
 				<div class="col-sm-4 col-lg-2">
 					<h3 class="pg-footer-heading">Gioco responsabile</h3>
 					<ul class="list-unstyled">
-						<li><a href="/play-responsibly#toofar">Gioca senza esagerare</a></li>
-						<li><a href="/play-responsibly#rules">Le regole</a></li>
-						<li><a href="/play-responsibly#myths">Miti e credenze</a></li>
-						<li><a href="/play-responsibly#help">Dove chiedere aiuto</a></li>
+						<li><router-link to="/play-responsibly#toofar">Gioca senza esagerare</router-link></li>
+						<li><router-link to="/play-responsibly#rules">Le regole</router-link></li>
+						<li><router-link to="/play-responsibly#myths">Miti e credenze</router-link></li>
+						<li><router-link to="/play-responsibly#help">Dove chiedere aiuto</router-link></li>
 					</ul>
 				</div>
 				<div class="ml-lg-auto col-lg-5">

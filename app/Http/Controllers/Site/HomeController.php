@@ -12,16 +12,6 @@ use App\Http\Controllers\Controller;
 class HomeController extends Controller
 {
 	/**
-	 * Show the home page.
-	 * 
-	 * @return \Illuminate\Http\Response
-	 */
-	public function index()
-	{
-		return view('site.home');
-	}
-
-	/**
 	 * Prepare category and venue suggestions, the latter only if location data
 	 * is present.
 	 * 

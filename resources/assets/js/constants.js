@@ -4,8 +4,8 @@ export const COMPANY_NAME = 'PRG s.r.l.';
 export const COMPANY_VAT_NUMBER = '02554710695';
 
 export const EMAIL_GENERIC = 'info@prontogioco.it';
-export const EMAIL_VENUES = 'info@prontogioco.it';
-export const EMAIL_REPORT = 'info@prontogioco.it';
+export const EMAIL_VENUES = 'venues@prontogioco.it';
+export const EMAIL_REPORT = 'report@prontogioco.it';
 
 // Italy's default coords
 export const DEFAULT_COORDS = {

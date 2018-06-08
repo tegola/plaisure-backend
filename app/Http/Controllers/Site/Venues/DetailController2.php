@@ -9,25 +9,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Transformers\VenueTransformer;
 
-class DetailController extends Controller
+class DetailController2 extends Controller
 {
-	/**
-	 * Redirect /venues/{id} to /venues/{id_hashed} or shows the 404 page.
-	 * FIXME: Remove whene there are no more hits.
-	 * 
-	 * @param  int $id The venue id
-	 * @return Illuminate\Http\Response
-	 */
-	public function redirect($id) {
-		$venue = Venue::find($id);
-
-		// Stop if venue doesn't exist
-		abort_if(!$venue, 404);
-
-		// Redirect to venue with hashed id
-		return redirect(route('site.venues.detail', $venue), 301);
-	}
-
 	/**
 	 * Show the venue detail page.
 	 * 
@@ -45,13 +28,17 @@ class DetailController extends Controller
 		]);
 
 		// Get nearby venues (if the plan allows it)
+		$nearbyVenues = null;
+
 		if (!$venue->plan || !$venue->plan->hide_nearby_venues) {
 			$nearbyVenues = Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
 				->where('id', '!=', $venue->id)
+				->with('categories')
 				->take(3)
-				->get();
-		} else {
-			$nearbyVenues = null;
+				->get()
+				->transformWith(new VenueTransformer())
+				->includeCategories()
+				->toArray();
 		}
 
 		$venue = fractal($venue, new VenueTransformer())

@@ -14,9 +14,12 @@
 // Auth -----------------------------------------------------------------------
 Auth::routes();
 
+// App client API -------------------------------------------------------------
+Route::get('/support/venues/{venue}', 'Site\Venues\DetailController2@index');
+
 // Site -----------------------------------------------------------------------
 Route::group(['namespace' => 'Site'], function(){
-	Route::get('/',             'HomeController@index')      ->name('site.home');
+	// Route::get('/',             'HomeController@index')      ->name('site.home');
 	Route::post('/suggestions', 'HomeController@suggestions')->name('site.suggestions');
 
 	// Venues
@@ -27,17 +30,7 @@ Route::group(['namespace' => 'Site'], function(){
 	Route::get ('/venues/{venue}/edit',  'Venues\FormController@edit')      ->name('site.venues.edit');
 	Route::post('/venues/{venue}',       'Venues\FormController@update')    ->name('site.venues.update');
 	Route::get ('/venues/{id}',          'Venues\DetailController@redirect')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits
-	Route::get ('/venues/{venue}',       'Venues\DetailController@index')   ->name('site.venues.detail');
-	Route::get ('/venues/{venue}/claim', 'Venues\ClaimController@index')    ->name('site.venues.claim');
-
-	// About
-	Route::get('/about', 'AboutController@index')->name('site.about');
-
-	// Promote
-	Route::get('/promote', 'PromoteController@index')->name('site.promote');
-	
-	// Play responsibly
-	Route::get('/play-responsibly', 'PlayResponsiblyController@index')->name('site.play-responsibly.index');
+	// Route::get ('/venues/{venue}',       'Venues\DetailController@index')   ->name('site.venues.detail');
     
     // User
 	Route::group(['middleware' => 'auth'], function() {
@@ -87,3 +80,6 @@ Route::group(['prefix' => '/files', 'middleware' => ['auth']], function() {
 // FIXME: These still load the 'web' middleware, find a way to remove it
 Route::get('sitemap', 'SeoController@sitemap')->name('sitemap');
 Route::get('robots.txt', 'SeoController@robots') ;
+
+// Single page app
+Route::get('/{any}', 'Site\MainController@index')->where('any', '.*');

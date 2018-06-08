@@ -21,6 +21,10 @@ export default {
 			type: String,
 			default: 'light'
 		},
+		slim: {
+			type: Boolean,
+			default: false
+		},
 		fluid: {
 			type: Boolean,
 			default: false
@@ -58,13 +62,10 @@ export default {
 
 	computed: {
 		classes() {
-			const  variant = this.variant.split(' ');
-
-			return {
-				'navbar-slim': variant.indexOf('slim') != -1,
-				'navbar-light': variant.indexOf('light') != -1,
-				'navbar-dark': variant.indexOf('dark') != -1
-			}
+			return [
+				this.slim ? 'navbar-slim' : null,
+				`navbar-${this.variant}`
+			];
 		},
 		showLogoText() {
 			return this.$mq.comfortable;
@@ -116,11 +117,13 @@ export default {
 </script>
 
 <template>
-	<nav class="navbar navbar-expand-md" :class="classes">
+	<nav class="navbar navbar-expand" :class="classes">
 		<div :class="this.fluid ? 'container-fluid' : 'container'">
-			<a class="navbar-brand" href="/" :aria-label="APP_NAME">
+			<router-link class="navbar-brand" to="/" :aria-label="APP_NAME">
 				<pg-logo :text="showLogoText" :class="['navbar__logo', !showLogoText ? 'navbar__logo--no-text' : '']"></pg-logo>
-			</a>
+			</router-link>
+
+			<div class="navbar__divider"></div>
 
 			<form class="navbar__search" action="/venues/explore" ref="form">
 				<input type="hidden" name="c_lat" :value="lat">

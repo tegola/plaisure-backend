@@ -234,16 +234,6 @@ class Venue extends Model
 	}
 
 	/**
-	 * Determine if this venue is being managed by an owner.
-	 * 
-	 * @return boolean
-	 */
-	public function isManaged()
-	{
-	    return $this->owner_id ? true : false;
-	}
-
-	/**
 	 * Build an address array, useful for dividing it in multiple lines.
 	 * 
 	 * @return array
@@ -255,6 +245,16 @@ class Venue extends Model
 			$this->address_city,
 			$this->address_postcode . ' ' . $this->address_province
 		];
+	}
+
+	/**
+	 * Determine if this venue has a owner without exposing the owner id.
+	 * 
+	 * @return boolean
+	 */
+	public function getHasOwnerAttribute()
+	{
+	    return $this->owner_id ? true : false;
 	}
 
 	/**
@@ -316,75 +316,6 @@ class Venue extends Model
 		$categories = $this->categories();
 
 		return $categories->count() ? $categories->first()->machine_name : '';
-	}
-
-	/**
-	 * Get the Google Maps URL.
-	 * 
-	 * @return string
-	 */
-	public function googleMapsUrl() {
-		$base_url = 'https://www.google.com/maps/dir/?api=1&map_action=map&destination=';
-		$address = join(', ', [
-			$this->address_street,
-			$this->address_number,
-			$this->address_city,
-			$this->address_postcode,
-			$this->address_province,
-			$this->address_region,
-			$this->address_country
-		]);
-		$address_encoded = urlencode($address);
-		$final_url = "{$base_url}{$address_encoded}";
-
-		return $final_url;
-	}
-
-	/**
-	 * Get the readable (domain only) site URL.
-	 * 
-	 * @return string|null
-	 */
-	public function readableSiteUrl() {
-		if (!$this->url_site) return null;
-
-		$parsed = parse_url($this->url_site);
-		$domain = str_replace('www.', '', $parsed['host']);
-
-		return $domain ?: null;
-	}
-
-	/**
-	 * Get the generated Facebook Messenger URL.
-	 * 
-	 * @return string|null
-	 */
-	public function facebookMessengerUrl() {
-		if (!$this->contact_facebook) return null;
-
-		return implode('', ['https://www.messenger.com/t/', $this->contact_facebook]);
-	}
-
-	/**
-	 * Get the generated Twitter URL.
-	 * 
-	 * @return string|null
-	 */
-	public function twitterUrl() {
-		if (!$this->contact_twitter) return null;
-
-		return implode('', ['https://www.twitter.com/', $this->contact_twitter]);
-	}
-
-	/**
-	 * Checks if this venue has is in the specified category.
-	 * 
-	 * @param  string  $machine_name
-	 * @return boolean
-	 */
-	public function isInCategory($machine_name)
-	{
-		return $this->categories()->where('machine_name', $machine_name)->count() ? true : false;
 	}
 
 	/**

@@ -20,7 +20,7 @@ $gray-800: #404040;
 $gray-900: #292929;
 $black:    #000;
 
-$grays: () !default;
+$grays: ();
 $grays: map-merge((
   "100": $gray-100,
   "200": $gray-200,
@@ -69,7 +69,7 @@ $palette-dark-green-300: #768d8c;
 $palette-dark-green-400: #496766;
 $palette-dark-green-500: #1c4240;
 
-$colors: () !default;
+$colors: ();
 $colors: map-merge((
   "blue":       $blue,
   "indigo":     $indigo,
@@ -86,18 +86,18 @@ $colors: map-merge((
   "gray-dark":  $gray-800
 ), $colors);
 
-$primary:       $palette-blue-500 !default;
-$secondary:     $palette-green-500 !default;
-$accent:        $palette-fuchsia-500 !default;
-$neutral:       $gray-700 !default;
-$success:       $green !default;
-$info:          $cyan !default;
-$warning:       $yellow !default;
-$danger:        $red !default;
-$light:         $gray-100 !default;
-$dark:          $gray-800 !default;
+$primary:       $palette-blue-500;
+$secondary:     $palette-green-500;
+$accent:        $palette-fuchsia-500;
+$neutral:       $gray-700;
+$success:       $green;
+$info:          $cyan;
+$warning:       $yellow;
+$danger:        $red;
+$light:         $gray-100;
+$dark:          $gray-800;
 
-$theme-colors: () !default;
+$theme-colors: ();
 $theme-colors: map-merge((
   "primary":    $primary,
   "secondary":  $secondary,
@@ -168,17 +168,23 @@ $btn-focus-box-shadow:  none;
 $btn-active-box-shadow: none;
 
 // Forms
-$input-bg:                 $gray-100;
-$input-border-color:       rgba($black, .04);
+$input-bg:                 $white;
+$input-border-color:       rgba($black, .1);
 $input-box-shadow:         none;
 
 $input-focus-border-color: theme-color(primary);
 $input-focus-box-shadow:   inset 0 0 0 1px theme-color(primary);
 
-$input-placeholder-color: $gray-200;
+$input-placeholder-color: $gray-500;
 
-$custom-control-gutter:         1.75rem !default;
-$custom-control-indicator-size: 1.25rem !default;
+$input-group-addon-bg:           $input-bg;
+$input-group-addon-border-color: $input-border-color;
+
+$custom-control-gutter:         1.75rem;
+$custom-control-indicator-size: 1.25rem;
+
+$custom-select-focus-border-color:  $input-focus-border-color;
+$custom-select-focus-box-shadow:    inset 0 0 0 1px theme-color(primary);
 
 // Icons
 $icon-size-base: 1.425rem; // ~20px

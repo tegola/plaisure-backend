@@ -1,3 +1,11 @@
+
+ ☐ link con hash (play responsibly) non funzionano
+ ☐ lo scrolling non va ad inizio pagina ad ogni caricamento
+ ☐ ripristinare structured data, titolo e descrizione nella vista dettaglio
+ ☐ tracking analytics
+ ☐ Spostare i css nelle pagine
+ ☐ Controllare che il redirect con l'id normale all'id hashed funzioni ancora
+
  ✔ Tutte le sale attuali devono avere la categoria "Sala VLT" @done (17-11-04 20:03)
  ✔ Mostrare le prime due categorie per ogni sala @done (17-11-04 20:03)
  ✔ Slider per ricerca distanza fino a 50km @done (18-01-28 00:41)

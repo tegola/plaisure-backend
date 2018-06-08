@@ -1,7 +1,5 @@
-// Remove container-fluid space from
-.navbar > .container-fluid {
-	padding-left: 0;
-	padding-right: 0;
+.navbar {
+	align-items: stretch;
 }
 
 // Logo
@@ -35,6 +33,11 @@
 		width: 0 !important; // Override navbar-slim
 		height: 0 !important; // Override navbar-slim
 	}
+}
+
+.navbar__divider {
+	width: $border-width;
+	height: 100%;
 }
 
 // Search
@@ -125,8 +128,8 @@
 	background-color: $white;
 	box-shadow: 0 $border-width 0 rgba($black, 0.08);
 
-	.navbar__search {
-		border-left: $border-width solid rgba($black, 0.05);
+	.navbar__divider {
+		background-color: rgba($black, 0.05);
 	}
 	.navbar__search-icon-container {
 		color: rgba($black, 0.5);
@@ -159,9 +162,10 @@
 		fill: $white;
 	}
 
-	.navbar__search {
-		border-left: $border-width solid rgba($white, 0.1);
+	.navbar__divider {
+		background-color: rgba($white, 0.1);
 	}
+
 	.navbar__search-icon-container {
 		color: rgba($white, 0.5);
 	}

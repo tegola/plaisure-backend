@@ -6,7 +6,7 @@ import BInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
 import formGroupProps from './form-group-props'
 
 export default {
-	name: 'PgVenueEditorJackpotsPane',
+	name: 'PgVenueFormJackpotsPane',
 
 	components: {
 		BFormGroup,

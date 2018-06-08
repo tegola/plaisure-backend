@@ -7,7 +7,7 @@ import BCheckboxGroup from 'bootstrap-vue/es/components/form-checkbox/form-check
 import formGroupProps from './form-group-props'
 
 export default {
-	name: 'PgVenueEditorCategoriesPane',
+	name: 'PgVenueFormCategoriesPane',
 
 	components: {
 		BFormGroup,

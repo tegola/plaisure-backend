@@ -114,7 +114,8 @@ class VenueTransformer extends TransformerAbstract
 				'smoking_area' => $venue->amenity_smoking_area,
 				'wifi' => $venue->amenity_wifi
 			],
-			'distance' => $venue->distance
+			'distance' => $venue->distance,
+			'has_owner' => $venue->has_owner
 		];
 	}
 
