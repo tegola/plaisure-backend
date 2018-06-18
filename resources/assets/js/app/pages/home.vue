@@ -2,6 +2,7 @@
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import * as geocoder from 'prontogioco/utilities/geocoder';
+import PgButton from 'prontogioco/app/components/button';
 import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
 import InputTypeahead from 'prontogioco/app/components/input-typeahead';
 import PgVenueSuggestionItem from 'prontogioco/app/components/venue-suggestion-item';
@@ -42,6 +43,7 @@ export default {
 	name: 'PgHomePage',
 
 	components: {
+		PgButton,
 		PgPlaceTextbox,
 		PgMap,
 		'pg-input-typeahead': _extend(InputTypeahead, {
@@ -58,7 +60,7 @@ export default {
 			searchSuggestions: [],
 			placeQuery: null,
 			placeTextboxOptions: placeTextboxOptions,
-			isSearchingLocation: false,
+			locating: false,
 			isLocationFound: false,
 			mapOptions: mapOptions,
 			searchCenter: {
@@ -69,15 +71,15 @@ export default {
 	},
 
 	computed: {
+		hasGeolocation() {
+			return this.$root.hasGeolocation;
+		},
 		mapProps() {
 			return {
 				center: this.searchCenter.lat && this.searchCenter.lng ? this.searchCenter : this.DEFAULT_COORDS,
 				zoom: this.searchCenter.lat && this.searchCenter.lng ? 15 : 5,
 				options: mapOptions
 			};
-		},
-		locateButtonIcon() {
-			return this.isSearchingLocation ? 'circle-outline-notch' : this.isLocationFound ? 'location' : 'location-outline';
 		},
 		canSubmit() {
 			return this.searchCenter.lat && this.searchCenter.lng ? true : false;
@@ -86,7 +88,7 @@ export default {
 
 	methods: {
 		locate() {
-			this.isSearchingLocation = true;
+			this.locating = true;
 
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
@@ -98,7 +100,7 @@ export default {
 					// Find city name and use it to fill the City field
 					geocoder.reverse(this.searchCenter.lat, this.searchCenter.lng, (error, location) => {
 						this.isLocationFound = location ? true : false;
-						this.isSearchingLocation = false;
+						this.locating = false;
 
 						if (error) {
 							alert(locationNotFoundMsg);
@@ -114,7 +116,7 @@ export default {
 					});
 				},
 				() => {
-					this.isSearchingLocation = false;
+					this.locating = false;
 					this.isLocationFound = false;
 					alert(locationNotFoundMsg);
 				},
@@ -216,7 +218,7 @@ export default {
 <template>
 <div class="pg-home-page">
 	<div class="hero">
-		<pg-map class="map" v-bind="mapProps"></pg-map>
+		<pg-map class="map" v-bind="mapProps" />
 		<!--
 		<nav class="navbar navbar-transparent navbar-expand-md">
 			<div class="container justify-content-center">
@@ -258,7 +260,7 @@ export default {
 
 		<div class="container hero-content">
 			<div class="text-center">
-				<pg-logo class="logo"></pg-logo>
+				<pg-logo class="logo" />
 				<div class="row">
 					<div class="col-lg-8 ml-lg-auto mr-lg-auto">
 						<h1>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h1>
@@ -277,15 +279,15 @@ export default {
 							<label class="initialism"><strong>Trova</strong></label><br>
 							<pg-input-typeahead
 								input-class="form-control form-control-lg search-form-control"
-								name="what"
+								name="categories"
 								placeholder="VLT, Bingo, Ricevitoria"
 								autofocus
 								v-model="searchQuery"
 								:suggestions="searchSuggestions"
 								item-component="pg-venue-suggestion-item"
 								@input="onSearchInput"
-								@select="onSearchSuggestionSelect">
-							</pg-input-typeahead>
+								@select="onSearchSuggestionSelect"
+							/>
 						</div>
 					</div>
 					<div class="col-md-5 col-lg-4 mr-md-auto mr-lg-0">
@@ -300,33 +302,41 @@ export default {
 									autofocus
 									:place="placeQuery"
 									:value="placeQuery"
-									:disabled="isSearchingLocation"
 									:options="placeTextboxOptions"
-									@place-changed="onPlaceChanged">
-								</pg-place-textbox>
-								<button
-									type="button"
-									ref="locateButton"
-									class="btn btn-lg btn-link search-locate-btn"
-									data-toggle="tooltip"
-									title="Usa la tua posizione"
-									aria-label="Usa la tua posizione"
-									tabindex="-1"
-									:disabled="isSearchingLocation"
-									v-if="$root.hasGeolocation"
-									@click="locate">
-									<pg-icon :icon="locateButtonIcon" :spinning="isSearchingLocation"></pg-icon>
-								</button>
+									@place-changed="onPlaceChanged"
+								/>
+								<div
+									v-if="hasGeolocation"
+									class="search-locate-btn-wrapper"
+									v-b-tooltip
+									title="Usa la tua posizione">
+									<pg-button
+										size="lg"
+										variant="naked"
+										class="search-locate-btn"
+										:icon="isLocationFound ? 'location' : 'location-outline'"
+										tabindex="-1"
+										:loading="locating"
+										:disabled="isLocationFound"
+										@click="locate"
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="col-md-10 ml-md-auto mr-md-auto col-lg-2 ml-lg-0 mr-lg-auto">
 						<div class="form-group">
 							<label class="initialism d-none d-lg-inline-block">&nbsp;</label>
-							<button type="submit" class="btn btn-lg btn-block btn-accent search-submit-btn" :disabled="!canSubmit">
-								<pg-icon icon="search"></pg-icon>
+							<pg-button
+								type="submit"
+								block
+								variant="accent"
+								size="lg"
+								class="search-submit-btn"
+								:disabled="!canSubmit"
+								icon="search">
 								Cerca
-							</button>
+							</pg-button>
 						</div>
 					</div>
 				</div>

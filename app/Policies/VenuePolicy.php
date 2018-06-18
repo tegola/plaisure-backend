@@ -46,7 +46,7 @@ class VenuePolicy
 	 */
 	public function update(User $user, Venue $venue)
 	{
-		return $user->id == $venue->owner_id;
+		return $user->is_owner && $user->id == $venue->owner_id;
 	}
 
 	/**
@@ -58,6 +58,6 @@ class VenuePolicy
 	 */
 	public function delete(User $user, Venue $venue)
 	{
-		return $user->id == $venue->owner_id;
+		return $user->is_owner && $user->id == $venue->owner_id;
 	}
 }

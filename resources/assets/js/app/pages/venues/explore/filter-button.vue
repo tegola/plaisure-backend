@@ -3,7 +3,7 @@
 		<div class="filter-button" :class="{ 'filter-button--open': popupVisible }" @click="popupVisible = !popupVisible">
 			<div>
 				<span class="filter-button__label">{{ label }}</span>
-				<pg-icon icon="chevron-down" class="filter-button__arrow"></pg-icon>
+				<pg-icon icon="chevron-down" class="filter-button__arrow" />
 			</div>
 			<div class="filter-button__text" v-if="text">{{ text }}</div>
 			<div class="filter-button__text filter-button__placeholder" v-if="!text">{{ placeholder }}</div>

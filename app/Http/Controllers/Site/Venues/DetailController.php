@@ -12,12 +12,12 @@ use App\Transformers\VenueTransformer;
 class DetailController extends Controller
 {
 	/**
-	 * Show the venue detail page.
+	 * Get the data to show the venue detail page.
 	 * 
 	 * @param  Venue  $venue
 	 * @return Illuminate\Http\Response
 	 */
-	public function index(Venue $venue) {
+	public function detail(Venue $venue) {
 		// Eager load relationships
 		$venue->load([
 			'businessHours',

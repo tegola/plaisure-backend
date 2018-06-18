@@ -139,7 +139,7 @@ export default {
 							<div class="header-photo header-photo-placeholder" v-for="i in 6"></div>
 						</div>
 						<router-link to="/promote" class="header-photo header-photo-add" v-if="!venue.has_owner">
-							<pg-icon icon="plus"></pg-icon>
+							<pg-icon icon="plus" />
 							Aggiungi foto
 						</router-link>
 						<template v-for="(file, index) in venue.photos">
@@ -150,7 +150,7 @@ export default {
 							<a v-if="index == 10" :href="file.resized_url" class="header-photo" @click.prevent="showLightbox(index)">
 								<div class="embed-responsive embed-responsive-1by1 header-photo-img" :style="'background-image: url(' + file.thumbnail_url + ')'">
 									<div class="header-photo-zoom">
-										<pg-icon icon="search" class="mb-1"></pg-icon>
+										<pg-icon icon="search" class="mb-1" />
 										Guarda tutte le foto
 									</div>
 								</div>

@@ -25,6 +25,11 @@ loadGMaps({
 	libraries: 'places'
 });
 
+// Register directives
+import BTooltipDirective from 'bootstrap-vue/es/directives/tooltip/tooltip';
+
+Vue.directive('b-tooltip', BTooltipDirective);
+
 // Register common components
 import PgLogo from 'prontogioco/app/components/logo';
 import PgNavbar from 'prontogioco/app/components/navbar';

@@ -3,4 +3,4 @@ export default {
 	breakpoint: 'md',
 	labelCols: 3,
 	labelTextAlign: 'md-right'
-}
+};

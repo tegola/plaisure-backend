@@ -120,7 +120,7 @@ export default {
 	<nav class="navbar navbar-expand" :class="classes">
 		<div :class="this.fluid ? 'container-fluid' : 'container'">
 			<router-link class="navbar-brand" to="/" :aria-label="APP_NAME">
-				<pg-logo :text="showLogoText" :class="['navbar__logo', !showLogoText ? 'navbar__logo--no-text' : '']"></pg-logo>
+				<pg-logo :text="showLogoText" :class="['navbar__logo', !showLogoText ? 'navbar__logo--no-text' : '']" />
 			</router-link>
 
 			<div class="navbar__divider"></div>
@@ -130,7 +130,7 @@ export default {
 				<input type="hidden" name="c_lng" :value="lng">
 
 				<span class="navbar__search-icon-container">
-					<pg-icon icon="search" class="navbar__search-icon"></pg-icon>
+					<pg-icon icon="search" class="navbar__search-icon" />
 				</span>
 				<pg-place-textbox
 					class="form-control form-control-lg navbar__search-textbox"

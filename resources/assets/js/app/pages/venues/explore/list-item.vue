@@ -12,7 +12,7 @@
 			<div class="col-9">
 				<div class="d-flex w-100 justify-content-between">
 					<h5 class="mb-0 font-weight-bold">
-						<a class="text-inherit" :href="'/venues/' + venue.id">{{ venue.name }}</a>
+						<router-link class="text-inherit" :to="`/venues/${venue.id}`">{{ venue.name }}</router-link>
 					</h5>
 					<div class="text-muted ml-3 text-nowrap" v-if="venue.distance">
 						{{ venue.distance | formatDistance }}<br>

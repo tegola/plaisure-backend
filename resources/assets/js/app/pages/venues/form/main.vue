@@ -127,7 +127,7 @@ export default {
 
 			this.$nextTick(() => {
 				this.selectedPane = newPane.value;
-			})
+			});
 		},
 
 		onPaneSwitch(el) {
@@ -182,7 +182,7 @@ export default {
 				<h5 class="m-0">{{ venueId ? 'Carica la tua attività' : 'Preparo una nuova attività' }}&hellip;</h5>
 			</div>
 		</div>
-		<!-- FIXME: Mostrare un loader mentre si caricano i dati -->
+
 		<div v-if="!loading && venue">
 			<!-- Small screen menu -->
 			<div class="sticky-top" v-if="$mq.constrained">
@@ -222,7 +222,7 @@ export default {
 								<div class="card-body">
 									<h2 class="h4 mb-0">{{ venueId ? 'Modifica' : 'Aggiungi' }} attività</h2>
 									<p class="mb-0 text-muted" v-if="venueId">
-										<a :href="`/venues/${venueId}`" title="Apri pagina">{{ venue.name || '(nessun nome)' }}</a>
+										<router-link :to="`/venues/${venueId}`" title="Apri pagina">{{ venue.name || '(nessun nome)' }}</router-link>
 									</p>
 								</div>
 								<b-list-group flush>

@@ -2,12 +2,12 @@
 import { stringify } from 'qs';
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
-import _last from 'lodash/last';
 import singularOrPlural from 'prontogioco/utilities/singular-or-plural';
-import { Map as PgMap, Marker as PgMapMarker, InfoWindow as PgMapInfoWindow } from 'vue2-google-maps';
 
+import { Map as PgMap, Marker as PgMapMarker, InfoWindow as PgMapInfoWindow } from 'vue2-google-maps';
 import BTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
 
+import PgButton from 'prontogioco/app/components/button';
 import PgPane from 'prontogioco/app/components/pane';
 import PgFilterButton from './filter-button';
 import PgFilterButtonItem from './filter-button-item';
@@ -24,47 +24,68 @@ export default {
 		PgMapMarker,
 		PgMapInfoWindow,
 		BTooltip,
+		PgButton,
+		PgPane,
 		PgFilterButton,
 		PgFilterButtonItem,
-		PgPane,
 		PgVenueListItem
 	},
 
 	filters: {
-		singularOrPlural: singularOrPlural
+		singularOrPlural
 	},
 
 	data() {
+		const queryParams = this.$route.query;
+
+		// Prepare map center
+		let mapCenter = _extend({}, this.DEFAULT_COORDS)
+		if (['c_lat', 'c_lng'].every(key => key in queryParams)) {
+			mapCenter = {
+				lat: parseFloat(queryParams.c_lat),
+				lng: parseFloat(queryParams.c_lng)
+			};
+		}
+
+		// Prepare map bounds
+		let mapBounds = null;
+		if (['ne_lat', 'ne_lng', 'sw_lat', 'sw_lng'].every(key => key in queryParams)) {
+			mapBounds = {
+				north: parseFloat(queryParams.ne_lat),
+				east: parseFloat(queryParams.ne_lng),
+				south: parseFloat(queryParams.sw_lat),
+				west: parseFloat(queryParams.sw_lng)
+			}
+		}
+
+		// Prepare default search params
+		const searchParams = _extend({
+			radius: constants.SEARCH_RADIUSES[0],
+			categories: []
+		}, queryParams);
+
 		return {
-			radiuses: pg.radiuses,
-			categories: pg.categories,
-			// amenities: pg.amenities,
+			radiuses: this.SEARCH_RADIUSES,
+			categories: [],
+			// amenities: [],
 
 			loading: false,
 			locating: false,
 			userLocation: null,
 
 			searchMode: 'center', // bounds, center
-			searchParams: pg.searchParams,
+			searchParams,
 			placeholder: undefined,
-			query: pg.searchParams.query,
+			query: queryParams.query,
 			venues: [],
 			currentView: 'list',
 			highlightedVenueId: null,
 			selectedVenueId: null,
 
 			mapNeedsRefresh: false,
-			mapBoundsEventEnabled: true,
-			mapCenter: {
-				lat: pg.searchParams.c_lat,
-				lng: pg.searchParams.c_lng
-			},
-			mapBounds: {
-				north: pg.searchParams.ne_lat,
-				east: pg.searchParams.ne_lng,
-				south: pg.searchParams.sw_lat,
-				west: pg.searchParams.sw_lng
-			},
+			mapBoundsEventEnabled: false,
+			mapCenter,
+			mapBounds,
 			mapOptions: {
 				gestureHandling: 'greedy',
 				fullscreenControl: false,
@@ -85,9 +106,6 @@ export default {
 	},
 
 	computed: {
-		locationButtonIcon() {
-			return this.locating ? 'circle-outline-notch' : this.userLocation ? 'location' : 'location-outline';
-		},
 		hasMorePages() {
 			return this.venues ? this.venues.length >= 100 : false;
 		},
@@ -103,6 +121,24 @@ export default {
 	},
 
 	methods: {
+		loadData() {
+			this.loading = true;
+
+			return this.$axios.get('/venues/explore/data').then(response => {
+				// Fill data
+				this.categories = response.data.categories;
+				// this.amenities = response.data.amenities;
+
+				// Fill categories in search params
+				if (!this.searchParams.categories.length) {
+					this.searchParams.categories = this.categories.map(category => category.id);
+				}
+
+				// Stop loading
+				this.loading = false;
+			});
+		},
+
 		// Location search ----------------------------------------------------
 		onPlaceChanged(place) {
 			if (!place) return;
@@ -115,7 +151,6 @@ export default {
 
 			// Update view
 			this.mapNeedsRefresh = false;
-			this.userLocation = null;
 			this.placeholder = undefined;
 
 			if (place.vicinity && place.name != place.vicinity) {
@@ -124,10 +159,10 @@ export default {
 				this.query = place.name;
 			}
 
-			// Move map, but disable refresh on bounds change
-			if (bounds) {
+			// Move map, but disable map bounds tracking first
+			if (bounds && this.$refs.map) {
 				this.mapBoundsEventEnabled = false;
-				if (this.$refs.map) this.$refs.map.fitBounds(bounds);
+				this.$refs.map.fitBounds(bounds);
 			}
 
 			// Update search params
@@ -142,19 +177,17 @@ export default {
 			});
 
 			// Load venues
-			this.load();
+			this.search();
 		},
 
 		// User location ------------------------------------------------------
 		findUserLocation() {
-			const options = {
-				timeout: 10 * 1000, // 10 secs
-				maximumAge: 5 * 60 * 1000 // last 5 minutes
-			};
-
 			this.locating = true;
 
-			navigator.geolocation.getCurrentPosition(this.onUserLocationFound, this.onUserLocationNotFound, options);
+			navigator.geolocation.getCurrentPosition(this.onUserLocationFound, this.onUserLocationNotFound, {
+				timeout: 10 * 1000, // 10 secs
+				maximumAge: 5 * 60 * 1000 // last 5 minutes
+			});
 		},
 
 		onUserLocationFound(position) {
@@ -173,14 +206,14 @@ export default {
 			this.query = '';
 			this.placeholder = '(Vicino a te)';
 
-			// Move map center, but disable refresh on bounds change
+			// Move map center, but disable map bounds tracking first
 			this.mapBoundsEventEnabled = false;
-
 			this.mapBounds = null;
 			this.mapCenter = {
 				lat: latitude,
 				lng: longitude
 			};
+			if (this.$refs.map) this.$refs.map.panTo(this.mapCenter);
 
 			// Update search params
 			_extend(this.searchParams, {
@@ -194,7 +227,7 @@ export default {
 			});
 
 			// Load venues
-			this.load();
+			this.search();
 		},
 
 		onUserLocationNotFound() {
@@ -209,13 +242,20 @@ export default {
 		},
 
 		categoryFilterText() {
-			const ids = this.searchParams.categories;
+			let ids = this.searchParams.categories;
 
+			// All categories
+			if (ids.length == this.categories.length) return 'Tutti';
+
+			// One category
 			if (ids.length == 1) {
 				return this.categories.find(item => {
 					return item.id == ids[0];
 				}).name;
-			} else if (ids.length > 1) {
+			} 
+
+			// More than one categories
+			if (ids.length > 1) {
 				return `${ids.length} selezionati`;
 			}
 		},
@@ -242,7 +282,7 @@ export default {
 		isFilterItemSelected(type, key) {
 			switch (type) {
 				case 'radius': return this.searchParams.radius && this.searchParams.radius == key;
-				case 'category': return this.searchParams.categories.indexOf(key) !== -1;
+				case 'category': return this.searchParams.categories && this.searchParams.categories.indexOf(key) !== -1;
 				// case 'amenity': return this.searchParams.amenities.indexOf(key) !== -1;
 			}
 		},
@@ -280,7 +320,7 @@ export default {
 
 		onFilterClose() {
 			// TODO: Determine whether a reload is needed
-			this.load();
+			this.search();
 		},
 
 		// Map ----------------------------------------------------------------
@@ -318,7 +358,6 @@ export default {
 
 			// Update view
 			this.mapNeedsRefresh = false;
-			this.userLocation = null;
 			this.query = null;
 			this.placeholder = "(All'interno della mappa)";
 
@@ -337,28 +376,24 @@ export default {
 				sw_lng: sw.lng()
 			});
 
-			this.load();
+			this.search();
 		},
 
-		// Data loading -------------------------------------------------------
-		load() {
-			const paramsWithToken = _extend({}, this.searchParams, { _token: pg.csrfToken });
-
+		// Search -------------------------------------------------------------
+		search() {
 			// Load venues
 			this.loading = true;
 
-			this.$axios.post('/venues/search', paramsWithToken).then(response => {
-				this.venues = response.data;
-				this.loading = false;
-			});
+			this.$axios.post('/venues/explore/search', this.searchParams)
+				.then(response => {
+					this.venues = response.data;
+					this.loading = false;
+				});
 
-			// Update url
-			const baseName = _last(location.pathname.split('/'));
-			const params = stringify(this.searchParams, {
-				skipNulls: true
+			// Update URL
+			this.$router.replace({
+				query: this.searchParams
 			});
-
-			window.history.replaceState({}, '', `${baseName}?${params}`);
 
 			// Update title
 			setTitle(this.query);
@@ -392,8 +427,8 @@ export default {
 	},
 
 	mounted() {
-		// Load
-		this.load();
+		// Load initial data then search
+		this.loadData().then(this.search);
 	}
 };
 </script>
@@ -409,15 +444,16 @@ export default {
 			:auto-submit="false"
 			@place-changed="onPlaceChanged">
 			<template slot="right">
-				<button
-					class="btn navbar__location-btn"
-					:disabled="userLocation ? true : false"
+				<pg-button
+					variant="naked"
+					class="navbar__location-btn"
 					title="Usa la tua posizione"
 					aria-label="Usa la tua posizione"
+					:loading="locating"
+					:icon="userLocation ? 'location' : 'location-outline'"
 					v-if="$root.hasGeolocation"
-					@click="findUserLocation">
-					<pg-icon :icon="locationButtonIcon" :spinning="locating"></pg-icon>
-				</button>
+					@click="findUserLocation"
+				/>
 			</template>
 		</pg-navbar>
 
@@ -425,7 +461,7 @@ export default {
 		<div class="filters">
 			<div class="d-flex">
 				<a v-if="$mq.constrained" class="filter-button filters__toggle-button" href="#" :title="showMap ? 'Mostra lista' : 'Mostra mappa'" @click="currentView = currentView == 'map' ? 'list' : 'map'">
-					<pg-icon :icon="showMap ? 'list' : 'map'"></pg-icon>
+					<pg-icon :icon="showMap ? 'list' : 'map'" />
 				</a>
 				<pg-filter-button label="Distanza" :text="radiusFilterText()" @close="onFilterClose" v-if="showRadiusFilter">
 					<pg-pane class="filter-button-pane">
@@ -474,13 +510,13 @@ export default {
 			<div class="venue-list px-0 col col-md-8 col-lg-6 col-xl-5" v-if="showList">
 				<!-- Loader -->
 				<div v-if="loading" class="list-group-item venue-list-placeholder-item text-muted" v-cloak>
-					<pg-icon icon="circle-outline-notch" spinning></pg-icon>
+					<pg-icon icon="circle-outline-notch" spinning />
 					<h4 class="mb-0">Caricamento&hellip;</h4>
 				</div>
 				<template v-else v-cloak>
 					<!-- Empty list -->
 					<div v-if="!venues.length" class="list-group-item venue-list-placeholder-item text-muted">
-						<pg-icon icon="search" class="pg-icon--3x"></pg-icon>
+						<pg-icon icon="search" class="pg-icon--3x" />
 						<h4 class="mt-3">Nessuna attività trovata</h4>
 						<p>Cerca in un altra zona o modifica i criteri di rcerca.</p>
 					</div>
@@ -507,14 +543,14 @@ export default {
 			</div>
 
 			<pg-map v-if="showMap" class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
-				<pg-map-marker v-if="userLocation" :position="userLocation" icon="/img/map/pin-user.svg" title="La tua posizione"></pg-map-marker>
+				<pg-map-marker v-if="userLocation" :position="userLocation" icon="/img/map/pin-user.svg" title="La tua posizione" />
 				<pg-map-marker v-for="(venue, index) in venues" :key="venue.id" :position="venue.coords" :icon="mapMarkerIcon(venue, index)" @click="select(venue)">
 					<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">
 						<div class="map-infowindow">
 							<img class="map-infowindow-icon" :src="`/img/avatars/${venueFirstCategoryMachineName(venue)}.svg`">
 							<div>
 								<h5 class="mb-0 font-weight-bold">
-									<a :href="'/venues/' + venue.id">{{ venue.name }}</a>
+									<router-link :to="`/venues/${venue.id}`">{{ venue.name }}</router-link>
 								</h5>
 								<p v-if="venue.categories && venue.categories.length" class="mt-1 mb-0 small text-uppercase text-muted">{{ venue.categories[0].name }}</p>
 								<p class="mt-1 mb-0">{{ venue.address.short }}</p>

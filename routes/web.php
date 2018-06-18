@@ -16,21 +16,21 @@ Auth::routes();
 
 // App client API -------------------------------------------------------------
 Route::group(['prefix' => '/support', 'namespace' => 'Site'], function() {
-	Route::get ('/venues/add',          'Venues\FormController@create');
-	Route::post('/venues',              'Venues\FormController@store');
-	Route::get ('/venues/{venue}',      'Venues\DetailController@index');
-	Route::get ('/venues/{venue}/edit', 'Venues\FormController@edit');
-	Route::post('/venues/{venue}',      'Venues\FormController@update');
+	Route::post('/suggestions',           'HomeController@suggestions');
+
+	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');
+	Route::post('/venues/explore/search', 'Venues\ExploreController@search');
+
+	Route::get ('/venues/add',            'Venues\FormController@create');
+	Route::post('/venues',                'Venues\FormController@store');
+	Route::get ('/venues/{venue}',        'Venues\DetailController@detail');
+	Route::get ('/venues/{venue}/edit',   'Venues\FormController@edit');
+	Route::post('/venues/{venue}',        'Venues\FormController@update');
 });
 
 // Site -----------------------------------------------------------------------
 Route::group(['namespace' => 'Site'], function(){
 	// Route::get('/',             'HomeController@index')      ->name('site.home');
-	Route::post('/suggestions', 'HomeController@suggestions')->name('site.suggestions');
-
-	// Venues
-	Route::get ('/venues/explore',       'Venues\ExploreController@index')  ->name('site.venues.explore');
-	Route::post('/venues/search',        'Venues\ExploreController@search') ->name('site.venues.search');
     
     // User
 	Route::group(['middleware' => 'auth'], function() {

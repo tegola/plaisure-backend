@@ -7,5 +7,5 @@ if (process.env.NODE_ENV == 'production') {
 	Vue.use(VueAnalytics, {
 		id: GOOGLE_ANALYTICS_CODE,
 		router
-	})
+	});
 }

@@ -2,38 +2,17 @@
 
 namespace App\Http\Controllers\Site\Venues;
 
-use JavaScript;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App;
 use App\Models\Venue;
 use App\Models\VenueCategory;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use App\Transformers\VenueTransformer;
 use App\Transformers\VenueCategoryTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use App;
 
 class ExploreController extends Controller
 {
-	public function __construct(Request $request) {
-		$this->query = $request->input('query');
-
-		$categories = $request->filled('categories') ? $request->input('categories') : VenueCategory::pluck('id')->all();
-		$this->categories = array_map(function($id) { // pluck() returns IDs as strings
-			return (int) $id;
-		}, $categories);
-
-		// $this->amenities = $request->filled('amenities') ? $request->input('amenities') : [];
-		$this->radius = $request->filled('radius') ? intval($request->input('radius')) : config('constants.search_radiuses')[0];
-		$this->c_lat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
-		$this->c_lng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
-		$this->ne_lat = $request->filled('ne_lat') ? floatval($request->input('ne_lat')) : null;
-		$this->ne_lng = $request->filled('ne_lng') ? floatval($request->input('ne_lng')) : null;
-		$this->sw_lat = $request->filled('sw_lat') ? floatval($request->input('sw_lat')) : null;
-		$this->sw_lng = $request->filled('sw_lng') ? floatval($request->input('sw_lng')) : null;
-	}
-
 	/*
 	private function amenities() {
 		return collect([
@@ -50,70 +29,79 @@ class ExploreController extends Controller
 	}
 	*/
 
-	public function index()
+	/**
+	 * Load initial explore page data.
+	 * 
+	 * @return Illuminate\Http\Response
+	 */
+	public function data()
 	{
-		// Prepare initial data
-		$searchParams = [
-			'query' => $this->query,
-			'categories' => $this->categories,
-			// 'amenities' => $this->amenities,
-			'radius' => $this->radius,
-			'c_lat' => $this->c_lat,
-			'c_lng' => $this->c_lng,
-			'ne_lat' => $this->ne_lat,
-			'ne_lng' => $this->ne_lng,
-			'sw_lat' => $this->sw_lat,
-			'sw_lng' => $this->sw_lng,
-		];
-
-		$radiuses = config('constants.search_radiuses');
 		$categories = VenueCategory::all();
 		// $amenities = $this->amenities()->all();
+		
+		return compact('categories');
 
-		// Pass initial data to view
-		Javascript::put(compact('searchParams', 'radiuses', 'categories'/*, 'amenities'*/));
-
-		return view('site.venues.explore', [
-			'query' => $this->query,
-			'categories' => $categories
-		]);
 	}
 
-	public function search()
+	/**
+	 * Search for venues by given parameters.
+	 * 
+	 * @param  Request
+	 * @return Illuminate\Http\Response
+	 */
+	public function search(Request $request)
 	{
+		// $query = $request->input('query');
+
+		$categories = $request->filled('categories') ? $request->input('categories') : VenueCategory::pluck('id')->all();
+		$categoryIds = array_map(function($id) { // pluck() returns IDs as strings
+			return (int) $id;
+		}, $categories);
+		// $amenityIds = $request->filled('amenities') ? $request->input('amenities') : [];
+		$radius = $request->filled('radius') ? intval($request->input('radius')) : 10;
+		$c_lat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
+		$c_lng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
+		$ne_lat = $request->filled('ne_lat') ? floatval($request->input('ne_lat')) : null;
+		$ne_lng = $request->filled('ne_lng') ? floatval($request->input('ne_lng')) : null;
+		$sw_lat = $request->filled('sw_lat') ? floatval($request->input('sw_lat')) : null;
+		$sw_lng = $request->filled('sw_lng') ? floatval($request->input('sw_lng')) : null;
+
 		// Make sure we have all location data
-		if (!$this->hasCenter() && !$this->hasBounds()) return response()->json([]);
+		if (!$c_lat && !$c_lng && !$ne_lat && !$ne_lng && !$sw_lat && !$sw_lng) {
+			return response()->json([]);
+		}
 
 		// Start loading venues
 		$venues = Venue::with(['categories']);
 
 		// Find by bounds or center
-		if ($this->hasBounds()) {
-			$venues->inBounds($this->ne_lat, $this->ne_lng, $this->sw_lat, $this->sw_lng);
-		} elseif ($this->hasCenter()) {
-			$venues->withDistanceFrom($this->c_lat, $this->c_lng);
+		if ($ne_lat && $ne_lng && $sw_lat && $sw_lng) {
+			$venues->inBounds($ne_lat, $ne_lng, $sw_lat, $sw_lng);
+		} elseif ($c_lat && $c_lng) {
+			$venues->withDistanceFrom($c_lat, $c_lng);
 
 			// Limit by radius
-			if ($this->radius) {
+			if ($radius) {
 				$venues
-					->having('distance', '<=', $this->radius)
-					->orHaving('distance_with_bonus', '<=', $this->radius);
+					->having('distance', '<=', $radius)
+					->orHaving('distance_with_bonus', '<=', $radius);
 			}
 		}
 
 		// Filter by category
-		if ($this->categories) {
-			$venues->whereHas('categories', function($query) {
-				$query->whereIn('id', $this->categories);
+		if ($categoryIds) {
+			// var_export($categoryIds);
+			$venues->whereHas('categories', function($query) use ($categoryIds) {
+				$query->whereIn('id', $categoryIds);
 			});
 		}
 
 		// Filter by amenities
 		/*
-		if ($this->amenities) {
+		if ($amenityIds) {
 			$amenities = $this->amenities();
 
-			foreach ($this->amenities as $amenity) {
+			foreach ($amenities as $amenity) {
 				// Get amenity object
 				$currentAmenity = $amenities->where('machine_name', $amenity)->first();
 
@@ -144,56 +132,4 @@ class ExploreController extends Controller
 
 		return $venues;
 	}
-
-	private function hasCenter()
-	{
-		return $this->c_lat && $this->c_lng;
-	}
-
-	private function hasBounds()
-	{
-		return $this->ne_lat && $this->ne_lng && $this->sw_lat && $this->sw_lng;
-	}
-
-	/**
-	 * Get center and bounds with Google Maps geocoder
-	 *
-	 * @return boolean
-	 */
-	/*
-	private function geocode()
-	{
-		// Stop if no location name is provided
-		if (!$this->query) return false;
-
-		// Ask Google Maps
-		$api_url = "https://maps.googleapis.com/maps/api/geocode/json";
-		$querystring = http_build_query(array(
-			'key' => // GOOGLE MAPS API KEY HERE
-			'address' => $this->query,
-			'language' => App::getLocale(),
-			'region' => App::getLocale()
-		));
-
-		// Stop if it didn't work
-		$response = file_get_contents("{$api_url}?$querystring");
-		if (!$response) return false;
-
-		// Check geocode results
-		$geocode = json_decode($response);
-		if ($geocode->status != 'OK') return false;
-
-		// Find coords
-		$geometry = $geocode->results[0]->geometry;
-
-		$this->c_lat = $geometry->location->lat;
-		$this->c_lng = $geometry->location->lng;
-		$this->ne_lat = $geometry->bounds->northeast->lat;
-		$this->ne_lng = $geometry->bounds->northeast->lng;
-		$this->sw_lat = $geometry->bounds->southwest->lat;
-		$this->sw_lng = $geometry->bounds->southwest->lng;
-
-		return true;
-	}
-	*/
 }

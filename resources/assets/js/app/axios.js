@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import axios from 'axios'
+import Vue from 'vue';
+import axios from 'axios';
 
 const instance = axios.create({
 	baseURL: '/support',
 	headers: {
 		'X-Requested-With': 'XMLHttpRequest'
 	}
-})
+});
 
 // Register on all Vue instances
 Vue.prototype.$axios = instance;

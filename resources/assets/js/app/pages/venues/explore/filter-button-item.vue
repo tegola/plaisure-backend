@@ -1,7 +1,7 @@
 <template>
 	<div class="filter-button-item" @click="onClick" @mouseenter="onHover" tabindex="0">
 		<div class="filter-button-item__icon-cell">
-			<pg-icon class="filter-button-item__icon" :icon="icon" v-if="checked"></pg-icon>
+			<pg-icon class="filter-button-item__icon" :icon="icon" v-if="checked" />
 		</div>
 		<div class="filter-button-item__text-cell">
 			<slot>{{ label }}</slot>

@@ -12,7 +12,7 @@
 					<p class="pg-lightbox__subtitle" v-html="subtitle"></p>
 				</div>
 				<button type="button" class="pg-lightbox__close" @click="close" title="Chiudi" aria-label="Chiudi">
-					<pg-icon icon="close" class="pg-lightbox__close-icon"></pg-icon>
+					<pg-icon icon="close" class="pg-lightbox__close-icon" />
 				</button>
 			</div>
 
@@ -21,10 +21,10 @@
 					<img :src="image.url" class="pg-lightbox__image">
 				</div>
 				<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__prev-arrow" @click="prev" title="Precedente" aria-label="Precedente">
-					<pg-icon icon="chevron-left" class="pg-lightbox__arrow-icon"></pg-icon>
+					<pg-icon icon="chevron-left" class="pg-lightbox__arrow-icon" />
 				</button>
 				<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__next-arrow" @click="next" title="Seguente" aria-label="Seguente">
-					<pg-icon icon="chevron-right" class="pg-lightbox__arrow-icon"></pg-icon>
+					<pg-icon icon="chevron-right" class="pg-lightbox__arrow-icon" />
 				</button>
 			</div>
 

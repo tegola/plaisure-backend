@@ -39,7 +39,7 @@
 
 		@yield('head')
 	</head>
-	<body class="page @yield('body_class')">
+	<body>
 		<div id="app">
 			<router-view :key="$route.path"></router-view>
 			@yield('content')

@@ -93,10 +93,13 @@
 	.search-query-control {
 		padding-right: ($input-btn-padding-x-lg * 2) + 1rem;
 	}
-	.search-locate-btn {
+	.search-locate-btn-wrapper {
 		position: absolute;
 		top: 0;
 		right: 0;
+	}
+	.search-locate-btn {
+		background-color: transparent;
 		color: $gray-600;
 
 		&:not([disabled]):hover,

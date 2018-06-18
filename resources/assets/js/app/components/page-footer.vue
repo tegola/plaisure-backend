@@ -84,7 +84,7 @@ export default {
 					<ul class="list-unstyled">
 						<li><router-link to="/venues/explore">Ricerca</router-link></li>
 						<li v-for="preset in presets" :key="preset.city">
-							<a :href="preset.url">Esercizi a {{ preset.city }}</a>
+							<router-link :to="preset.url">Esercizi a {{ preset.city }}</router-link>
 						</li>
 						<li><router-link to="/promote">Promuovi la tua attivit&agrave;</router-link></li>
 					</ul>
@@ -126,7 +126,7 @@ export default {
 				</div>
 			</div>
 			<div class="text-center mt-3">
-				<pg-logo :text="false" class="pg-footer-logo"></pg-logo>
+				<pg-logo :text="false" class="pg-footer-logo" />
 				<p class="mb-0">
 					Copyright {{ year }} {{ COMPANY_NAME }}<br>
 					P. IVA {{ COMPANY_VAT_NUMBER }}

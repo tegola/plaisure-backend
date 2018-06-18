@@ -8,7 +8,7 @@
 			<div class="pg-pane__bottom-shadow" :style="bottomShadowStyles"></div>
 		</template>
 		<div v-if="loading" class="pg-pane__loader">
-			<pg-icon icon="circle-outline-notch" spinning></pg-icon>
+			<pg-icon icon="circle-outline-notch" spinning />
 			Caricamento&hellip;
 		</div>
 	</div>

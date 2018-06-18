@@ -9,7 +9,7 @@ const indexToDayName = index => {
 	const name = date.toLocaleDateString(undefined, { weekday: 'long' });
 
 	return capitalizeFirst(name);
-}
+};
 
 export default {
 	namespaced: true,
@@ -90,7 +90,7 @@ export default {
 			if (!state.venue) return false;
 
 			const c = state.venue.contacts;
-			return c.phone || c.email || c.facebook || c.twitter
+			return c.phone || c.email || c.facebook || c.twitter;
 		},
 
 		hasUrls: (state) => {
@@ -111,13 +111,13 @@ export default {
 		facebookMessengerUrl: (state) => {
 			if (!state.venue || !state.venue.contacts.facebook) return null;
 
-			return `https://www.messenger.com/t/${state.venue.contacts.facebook}`
+			return `https://www.messenger.com/t/${state.venue.contacts.facebook}`;
 		},
 
 		twitterUrl: (state) => {
 			if (!state.venue || !state.venue.contacts.twitter) return null;
 
-			return `https://www.twitter.com/${state.venue.contacts.twitter}`
+			return `https://www.twitter.com/${state.venue.contacts.twitter}`;
 		},
 
 		readableSiteUrl: (state) => {
@@ -132,7 +132,7 @@ export default {
 
 	mutations: {
 		setVenue: (state, venue) => {
-		  state.venue = venue;
+			state.venue = venue;
 		},
 
 		setNearbyVenues: (state, nearbyVenues) => {
@@ -141,7 +141,7 @@ export default {
 	},
 
 	actions: {
-		load: ({ state, commit }, venueId) => {
+		load: ({ commit }, venueId) => {
 			// this.loading = true;
 			axios.get(`/venues/${venueId}`)
 				.then(({ data }) => {
@@ -149,7 +149,7 @@ export default {
 					commit('setNearbyVenues', data.nearbyVenues || []);
 				}).catch(() => {}).then(() =>  {
 					// this.loading = false;
-				})
+				});
 		}
 	}
 };
