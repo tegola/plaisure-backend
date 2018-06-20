@@ -14,7 +14,7 @@ import PgFilterButtonItem from './filter-button-item';
 import PgVenueListItem from './list-item';
 
 import setTitle from 'prontogioco/utilities/set-title';
-import constants from 'prontogioco/constants';
+import { DEFAULT_COORDS, SEARCH_RADIUSES } from 'prontogioco/constants';
 
 export default {
 	name: 'PgExplorePage',
@@ -39,7 +39,7 @@ export default {
 		const queryParams = this.$route.query;
 
 		// Prepare map center
-		let mapCenter = _extend({}, this.DEFAULT_COORDS)
+		let mapCenter = _extend({}, DEFAULT_COORDS)
 		if (['c_lat', 'c_lng'].every(key => key in queryParams)) {
 			mapCenter = {
 				lat: parseFloat(queryParams.c_lat),
@@ -60,12 +60,12 @@ export default {
 
 		// Prepare default search params
 		const searchParams = _extend({
-			radius: constants.SEARCH_RADIUSES[0],
+			radius: SEARCH_RADIUSES[0],
 			categories: []
 		}, queryParams);
 
 		return {
-			radiuses: this.SEARCH_RADIUSES,
+			radiuses: SEARCH_RADIUSES,
 			categories: [],
 			// amenities: [],
 
@@ -420,10 +420,6 @@ export default {
 			// Select/deselect
 			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		}
-	},
-
-	beforeCreate() {
-		_extend(this, constants)
 	},
 
 	mounted() {

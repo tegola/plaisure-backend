@@ -1,6 +1,6 @@
 
  ☐ Form: mostrare errore in caso di caricamento errato
- ☐ Far funzionare la ricerca in home page
+ ✔ Far funzionare la ricerca in home page @done (18-06-20 22:12)
  ☐ ripristinare structured data, titolo e descrizione nella vista dettaglio
  ✔ tracking analytics @done (18-06-09 01:35)
  ☐ Spostare i css nelle pagine

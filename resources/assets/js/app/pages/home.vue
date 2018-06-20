@@ -1,17 +1,12 @@
 <script>
 import _extend from 'lodash/extend';
-import _debounce from 'lodash/debounce';
 import * as geocoder from 'prontogioco/utilities/geocoder';
 import PgButton from 'prontogioco/app/components/button';
 import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
-import InputTypeahead from 'prontogioco/app/components/input-typeahead';
-import PgVenueSuggestionItem from 'prontogioco/app/components/venue-suggestion-item';
 import { Map as PgMap } from 'vue2-google-maps';
+import { DEFAULT_COORDS } from 'prontogioco/constants';
 
-const locationNotFoundMsg = 'Non è stato possibile trovare la tua posizione.';
-const placeTextboxOptions = {
-	types: ['geocode'] // Limit search to cities, addresses, etc.
-};
+const placeholder = 'Inserisci la tua città...';
 const mapOptions = {
 	disableDefaultUI: true,
 	scrollwheel: false,
@@ -37,35 +32,28 @@ const mapOptions = {
 	]
 };
 
-import constants from 'prontogioco/constants';
-
 export default {
 	name: 'PgHomePage',
 
 	components: {
 		PgButton,
 		PgPlaceTextbox,
-		PgMap,
-		'pg-input-typeahead': _extend(InputTypeahead, {
-			components: {
-				PgVenueSuggestionItem
-			}
-		}),
+		PgMap
 	},
 
 	data() {
 		return {
-			categories: [],
-			searchQuery: '',
-			searchSuggestions: [],
-			placeQuery: null,
-			placeTextboxOptions: placeTextboxOptions,
+			query: null,
+			placeholder: placeholder,
+			placeTextboxOptions: {
+				types: ['geocode'] // Limit search to cities, addresses, etc.
+			},
 			locating: false,
-			isLocationFound: false,
-			mapOptions: mapOptions,
-			searchCenter: {
-				lat: null,
-				lng: null
+			userLocationFound: false,
+			searchParams: {
+				query: null,
+				c_lat: null,
+				c_lng: null
 			}
 		};
 	},
@@ -74,130 +62,119 @@ export default {
 		hasGeolocation() {
 			return this.$root.hasGeolocation;
 		},
+
 		mapProps() {
+			let center = DEFAULT_COORDS;
+			let zoom = 5;
+			const options = mapOptions;
+
+			if (this.searchParams.c_lat && this.searchParams.c_lng) {
+				center = {
+					lat: this.searchParams.c_lat,
+					lng: this.searchParams.c_lng
+				};
+				zoom = 15;
+			}
+
 			return {
-				center: this.searchCenter.lat && this.searchCenter.lng ? this.searchCenter : this.DEFAULT_COORDS,
-				zoom: this.searchCenter.lat && this.searchCenter.lng ? 15 : 5,
-				options: mapOptions
+				center,
+				zoom,
+				options
 			};
 		},
+
 		canSubmit() {
-			return this.searchCenter.lat && this.searchCenter.lng ? true : false;
+			return (this.searchParams.c_lat && this.searchParams.c_lng);
 		}
 	},
 
 	methods: {
-		locate() {
+		findUserLocation() {
 			this.locating = true;
 
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					this.searchCenter = {
-						lat: position.coords.latitude,
-						lng: position.coords.longitude
-					};
-
-					// Find city name and use it to fill the City field
-					geocoder.reverse(this.searchCenter.lat, this.searchCenter.lng, (error, location) => {
-						this.isLocationFound = location ? true : false;
-						this.locating = false;
-
-						if (error) {
-							alert(locationNotFoundMsg);
-						} else {
-							let address = [];
-
-							if (location.streetName) address.push(location.streetName);
-							address.push(location.administrativeLevels.level3long);
-
-							this.placeQuery = address.join(', ');
-							this.$refs.placeTextbox.$refs.input.$refs.input.value = this.placeQuery; // Needed, the previous line wasn't always working
-						}
-					});
-				},
-				() => {
-					this.locating = false;
-					this.isLocationFound = false;
-					alert(locationNotFoundMsg);
-				},
-				{
-					timeout: 10 * 1000, // 10 secs
-					maximumAge: 5 * 60 * 1000 // last 5 minutes
-				}
-			);
-		},
-
-		onSearchInput(value) {
-			// Always reset the category (it will be set back when selecting
-			// a suggestion)
-			this.categories = [];
-
-			// Reset if empty
-			if (!value) {
-				this.searchQuery = null;
-				this.searchSuggestions = [];
-				return;
-			}
-
-			// Load suggestions
-			this.loadSearchSuggestions(value);
-		},
-
-		loadSearchSuggestions: _debounce(function(value) {
-			// Load suggestions and use them
-			this.$axios.post('/suggestions', {
-				query: value,
-			}).then(response => {
-				this.searchSuggestions = response.data;
+			navigator.geolocation.getCurrentPosition(this.onUserLocationFound, this.onUserLocationNotFound, {
+				timeout: 10 * 1000, // 10 secs
+				maximumAge: 5 * 60 * 1000 // last 5 minutes
 			});
-		}, 300),
+		},
 
-		onSearchSuggestionSelect(item) {
-			// If it's a venue, go to detail page,
-			// otherwise store the category name and value
-			if (item.type == 'venue') {
-				location.href = item.url;
-			} else if (item.type == 'category') {
-				this.categories = [item.id];
-				this.searchQuery = item.name;
-			}
+		onUserLocationFound(position) {
+			const { latitude, longitude } = position.coords;
+
+			this.locating = false;
+			this.userLocationFound = true;
+
+			// Update search params
+			_extend(this.searchParams, {
+				query: null,
+				c_lat: latitude,
+				c_lng: longitude
+			});
+
+			// Update view
+			this.query = null;
+			this.placeholder = '(Vicino a te)';
+
+			// Find city name
+			geocoder.reverse(latitude, longitude, (error, location) => {
+				if (error) return;
+
+				let address = [];
+
+				if (location.streetName) address.push(location.streetName);
+				address.push(location.administrativeLevels.level3long);
+				address = address.join(', ');
+
+				this.query = address;
+				this.searchParams.query = address;
+			});
+		},
+
+		onUserLocationNotFound() {
+			this.locating = false;
+			this.userLocationFound = false;
+			alert('Non è stato possibile trovare la tua posizione.');
 		},
 
 		onPlaceChanged(place) {
 			// Reset user location indicator
-			this.isLocationFound = false;
+			this.userLocationFound = false;
+			this.placeholder = placeholder;
 
-			// Reset center if no place is set
+			// Reset search
 			if (!place) {
-				this.placeQuery = null;
-				this.searchCenter = {
-					lat: null,
-					lng: null
-				};
+				this.query = null;
+				_extend(this.searchParams, {
+					query: null,
+					c_lat: null,
+					c_lng: null
+				});
 				return;
+			}
+
+			// Update search params
+			let query = place.name;
+			if (place.vicinity && place.name != place.vicinity) {
+				query = `${place.name}, ${place.vicinity}`;
 			}
 
 			const center = place.geometry.viewport.getCenter();
 
-			this.searchCenter = {
-				lat: center.lat(),
-				lng: center.lng()
-			};
+			this.query = query;
 
-			if (place.vicinity && place.name != place.vicinity) {
-				this.placeQuery = `${place.name}, ${place.vicinity}`;
-			} else {
-				this.placeQuery = place.name;
-			}
+			_extend(this.searchParams, {
+				query: query,
+				c_lat: center.lat(),
+				c_lng: center.lng()
+			});
 		},
 
-		onSubmit(e) {
-			if (!this.canSubmit) e.preventDefault();
+		submit() {
+			this.$router.push({
+				name: 'venues.explore',
+				query: this.searchParams
+			});
 		}
-	},
-
-	beforeCreate() {
-		_extend(this, constants);
 	},
 
 	mounted() {
@@ -205,11 +182,13 @@ export default {
 		geocoder.geocodeByIp((error, location) => {
 			if (!location || !location.latitude || !location.longitude || !location.city) return;
 
-			this.placeQuery = location.city;
-			this.searchCenter = {
-				lat: location.latitude,
-				lng: location.longitude
-			};
+			this.query = location.city;
+
+			_extend(this.searchParams, {
+				query: location.city,
+				c_lat: location.latitude,
+				c_lng: location.longitude
+			})
 		});
 	}
 };
@@ -262,46 +241,25 @@ export default {
 			<div class="text-center">
 				<pg-logo class="logo" />
 				<div class="row">
-					<div class="col-lg-8 ml-lg-auto mr-lg-auto">
+					<div class="col-lg-8 mx-lg-auto">
 						<h1>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h1>
 						<p>Più di 5000 sale tra cui&nbsp;scegliere!</p>
 					</div>
 				</div>
 			</div>
 
-			<form class="form-search" action="/venues/explore" method="get" @submit="onSubmit">
-				<input type="hidden" name="categories[]" v-model="categories" v-if="categories.length">
-				<input type="hidden" name="c_lat" v-model="searchCenter.lat">
-				<input type="hidden" name="c_lng" v-model="searchCenter.lng">
-				<div class="row">
-					<div class="ml-md-auto col-md-5 col-lg-4">
-						<div class="form-group">
-							<label class="initialism"><strong>Trova</strong></label><br>
-							<pg-input-typeahead
-								input-class="form-control form-control-lg search-form-control"
-								name="categories"
-								placeholder="VLT, Bingo, Ricevitoria"
-								autofocus
-								v-model="searchQuery"
-								:suggestions="searchSuggestions"
-								item-component="pg-venue-suggestion-item"
-								@input="onSearchInput"
-								@select="onSearchSuggestionSelect"
-							/>
-						</div>
-					</div>
-					<div class="col-md-5 col-lg-4 mr-md-auto mr-lg-0">
-						<div class="form-group dropdown">
-							<label class="initialism"><strong>Vicino a</strong></label><br>
-							<div style="position: relative">
+			<div class="row">
+				<div class="col-lg-8 mx-lg-auto">
+					<div class="form-row">
+						<div class="col-sm-8">
+							<div class="form-group position-relative">
+								<label class="sr-only">Cerca</label>
 								<pg-place-textbox
 									class="form-control form-control-lg search-form-control search-query-control"
-									ref="placeTextbox"
-									name="query"
-									placeholder="Città"
 									autofocus
-									:place="placeQuery"
-									:value="placeQuery"
+									:placeholder="placeholder"
+									:place="query"
+									:value="query"
 									:options="placeTextboxOptions"
 									@place-changed="onPlaceChanged"
 								/>
@@ -314,33 +272,32 @@ export default {
 										size="lg"
 										variant="naked"
 										class="search-locate-btn"
-										:icon="isLocationFound ? 'location' : 'location-outline'"
+										:icon="userLocationFound ? 'location' : 'location-outline'"
 										tabindex="-1"
 										:loading="locating"
-										:disabled="isLocationFound"
-										@click="locate"
+										:disabled="userLocationFound"
+										@click="findUserLocation"
 									/>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-md-10 ml-md-auto mr-md-auto col-lg-2 ml-lg-0 mr-lg-auto">
-						<div class="form-group">
-							<label class="initialism d-none d-lg-inline-block">&nbsp;</label>
-							<pg-button
-								type="submit"
-								block
-								variant="accent"
-								size="lg"
-								class="search-submit-btn"
-								:disabled="!canSubmit"
-								icon="search">
-								Cerca
-							</pg-button>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<pg-button
+									block
+									variant="accent"
+									size="lg"
+									class="search-submit-btn"
+									:disabled="!canSubmit"
+									icon="search"
+									@click="submit">
+									Cerca
+								</pg-button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
 

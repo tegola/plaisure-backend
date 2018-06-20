@@ -13,7 +13,7 @@ export const DEFAULT_COORDS = {
 	lng: 12.255
 };
 
-export const SEARCH_RADIUSES = [10, 20, 30, 50, 100]
+export const SEARCH_RADIUSES = [10, 20, 30, 50, 100];
 
 export const GOOGLE_MAPS_API_KEY = 'AIzaSyC7HUu36wqXlH_E27AMOFFF9v7t1809Upk';
 export const GOOGLE_ANALYTICS_CODE = 'UA-78547269-1';
