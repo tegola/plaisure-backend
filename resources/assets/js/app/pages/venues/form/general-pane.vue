@@ -15,8 +15,8 @@ import {
 	Marker as PgMapMarker,
 	InfoWindow as PgMapInfoWindow
 } from 'vue2-google-maps';
-
 import formGroupProps from './form-group-props'
+import { DEFAULT_COORDS } from 'prontogioco/constants';
 
 export default {
 	name: 'PgVenueFormGeneralPane',
@@ -55,10 +55,6 @@ export default {
 		coords: {
 			type: Object,
 			required: true
-		},
-		defaultCoords: {
-			type: Object,
-			required: true
 		}
 	},
 
@@ -72,7 +68,7 @@ export default {
 				lng: coords.lng
 			}
 		} else {
-			mapCenter = this.defaultCoords
+			mapCenter = DEFAULT_COORDS;
 		}
 
 		return {

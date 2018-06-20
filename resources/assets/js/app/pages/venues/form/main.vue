@@ -259,7 +259,6 @@ export default {
 										:categories="categories"
 										:address.sync="venue.address"
 										:coords.sync="venue.coords"
-										:default-coords="DEFAULT_COORDS"
 									/>
 								</keep-alive>
 							</transition>
