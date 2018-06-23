@@ -1,4 +1,11 @@
 export default [
+	// Auth -------------------------------------------------------------------
+	{
+		path: '/login',
+		name: 'login',
+		component: () => import('prontogioco/app/pages/login')
+	},
+
 	// Home -------------------------------------------------------------------
 	{
 		path: '/',
