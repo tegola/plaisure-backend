@@ -3,7 +3,8 @@ export default [
 	{
 		path: '/login',
 		name: 'login',
-		component: () => import('prontogioco/app/pages/login')
+		component: () => import('prontogioco/app/pages/login'),
+		props: route => ({ redirect: route.query.redirect })
 	},
 
 	// Home -------------------------------------------------------------------
@@ -28,7 +29,10 @@ export default [
 		path: '/venues/add',
 		name: 'venues.add',
 		component: () => import('prontogioco/app/pages/venues/form'),
-		props: true
+		props: true,
+		meta: {
+			requiresAuth: true
+		}
 	},
 
 	// Venue detail -----------------------------------------------------------
@@ -44,7 +48,10 @@ export default [
 		path: '/venues/:venueId/edit',
 		name: 'venues.edit',
 		component: () => import('prontogioco/app/pages/venues/form'),
-		props: true
+		props: true,
+		meta: {
+			requiresAuth: true
+		}
 	},
 
 	// Promote ----------------------------------------------------------------

@@ -7,6 +7,7 @@
  ☐ Form: spostare la gestione dei tab a vue router
  ☐ Aggiustare i menu nella pagina explore
  ☐ Convertire login in componenti vue
+ ☐ Aggiustare il bordo destro della card contatti nel dettaglio sala
 
  ✔ Tutte le sale attuali devono avere la categoria "Sala VLT" @done (17-11-04 20:03)
  ✔ Mostrare le prime due categorie per ogni sala @done (17-11-04 20:03)

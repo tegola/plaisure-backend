@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Venue;
 use App\Policies\VenuePolicy;
-use Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Passport::routes();
 
         Gate::define('administer', function($user) {
             return $user->is_admin;

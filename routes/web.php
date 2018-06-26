@@ -14,28 +14,15 @@
 // Auth -----------------------------------------------------------------------
 // Auth::routes();
 
-// App client API -------------------------------------------------------------
-Route::group(['prefix' => '/support', 'namespace' => 'Site'], function() {
-	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');
-	Route::post('/venues/explore/search', 'Venues\ExploreController@search');
-
-	// Venue edit
-	Route::group(['middleware' => 'auth'], function() {
-		Route::get ('/venues/add',            'Venues\FormController@create');
-		Route::post('/venues',                'Venues\FormController@store');
-		Route::get ('/venues/{venue}',        'Venues\DetailController@detail');
-		Route::get ('/venues/{venue}/edit',   'Venues\FormController@edit');
-		Route::post('/venues/{venue}',        'Venues\FormController@update');
-	});
-});
-
 // Site -----------------------------------------------------------------------
+/*
 Route::group(['namespace' => 'Site'], function(){
     // User
 	Route::group(['middleware' => 'auth'], function() {
 		Route::get('/user', 'UserController@index')->name('site.user');
 	});
 });
+*/
 
 // Admin ----------------------------------------------------------------------
 Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function(){

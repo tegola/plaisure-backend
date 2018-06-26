@@ -41,7 +41,7 @@
 	</head>
 	<body>
 		<div id="app">
-			<router-view :key="$route.path"></router-view>
+			<pg-app></pg-app>
 			@yield('content')
 		</div>
 

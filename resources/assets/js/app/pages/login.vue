@@ -6,6 +6,8 @@ import { validationMixin } from 'vuelidate';
 import { required, email } from 'vuelidate/lib/validators';
 import { APP_NAME } from 'prontogioco/constants';
 
+const storage = window.localStorage;
+
 export default {
 	name: 'PgLoginPage',
 
@@ -16,6 +18,13 @@ export default {
 	},
 
 	mixins: [validationMixin],
+
+	props: {
+		redirect: {
+			type: String,
+			default: '/'
+		}
+	},
 
 	data() {
 		return {
@@ -47,18 +56,23 @@ export default {
 			// Stop on validation errors
 			if (this.$v.$error) return;
 
-			this.saving = true;
+			this.loading = true;
 
-			// Prepare url
-			let url = '/venues';
-			if (this.venueId) url += `/${this.venueId}`
+			this.$axios.post('/login', this.model)
+				.then(response => {
+					// Store tokens
+					const accessToken = response.data.access_token;
+					const refreshToken = response.data.refresh_token;
 
-			this.$axios.post('/auth/login', this.model)
-				.then(() => {
-					// Set model backup as saved
-					this.venueBackup = _cloneDeep(this.venue);
-				}).catch(() => {}).then(() => {
-					this.saving = false;
+					// Login
+					this.$store.dispatch('user/login', { accessToken, refreshToken })
+					
+					// Go to the next page
+					this.$router.push(this.redirect);
+				}).catch(error => {
+					console.log('error', error);
+				}).then(() => {
+					this.loading = false;
 				})
 		}
 	}

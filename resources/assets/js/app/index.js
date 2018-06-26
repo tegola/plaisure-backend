@@ -30,12 +30,12 @@ import BTooltipDirective from 'bootstrap-vue/es/directives/tooltip/tooltip';
 
 Vue.directive('b-tooltip', BTooltipDirective);
 
-// Register common components
 import PgLogo from 'prontogioco/app/components/logo';
 import PgNavbar from 'prontogioco/app/components/navbar';
 import PgIcon from 'prontogioco/app/components/icon';
 import PgPageFooter from 'prontogioco/app/components/page-footer';
 
+// Register common components
 Vue.component('pg-logo', PgLogo);
 Vue.component('pg-navbar', PgNavbar);
 Vue.component('pg-icon', PgIcon);
@@ -45,20 +45,40 @@ Vue.component('pg-page-footer', PgPageFooter);
 import router from './router';
 import store from './store';
 
+import PgApp from 'prontogioco/app/main';
+
 // Startup VM
 new Vue({
 	el: '#app',
+
+	components: {
+		PgApp
+	},
 
 	router,
 
 	store,
 
+	mq: {
+		constrained: '(max-width: 767px)',
+		comfortable: '(min-width: 768px)'
+	},
+
 	data: {
 		hasGeolocation: navigator.geolocation ? true : false
 	},
 
-	mq: {
-		constrained: '(max-width: 767px)',
-		comfortable: '(min-width: 768px)'
+	computed: {
+		userIsAuthenticated() {
+			return this.$store.getters['user/isAuthenticated'];
+		}
+	},
+
+	watch: {
+		userIsAuthenticated() {
+			if (this.$route.meta.requiresAuth) {
+				this.$router.push({ name: 'login' });
+			}
+		}
 	}
 });

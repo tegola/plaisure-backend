@@ -31,7 +31,7 @@ mix.setPublicPath('public')
 	})
 	.babelConfig({
 		plugins: [
-			'transform-object-rest-spread',
+			// 'transform-object-rest-spread',
 			'syntax-dynamic-import'
 		]
 	})
