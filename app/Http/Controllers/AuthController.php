@@ -5,9 +5,58 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use App\Models\User;
 
 class AuthController extends Controller
 {
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+	    $this->middleware('auth:api')->except('register', 'login', 'refresh');
+	}
+
+	/**
+	 * Register a new user.
+	 * 
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function register(Request $request) {
+		// Validate fields
+		$request->validate([
+			'name' => 'required|string|max:255',
+			'email' => 'required|string|email|max:255|unique:users',
+			'password' => 'required|string|min:6|confirmed'
+		]);
+
+		// Register user
+		$user = User::create([
+			'name' => $request->name,
+			'email' => $request->email,
+			'password' => bcrypt($request->password),
+		]);
+
+		// Login using password grant client
+		$client = new Client();
+		$response = $client->post(url('/oauth/token'), [
+			'form_params' => [
+				'grant_type' => 'password',
+				'client_id' => env('APP_CLIENT_ID'),
+				'client_secret' => env('APP_CLIENT_SECRET'),
+				'username' => $request->email,
+				'password' => $request->password,
+				'scope' => ''
+			],
+			'http_errors' => false // Automatically handle errors
+		]);
+
+		return json_decode($response->getBody(), true);
+	}
+
 	/**
 	 * Login with email/password and receive access and refresh tokens.
 	 * 
@@ -17,7 +66,7 @@ class AuthController extends Controller
 	public function login(Request $request) {
 		// Validate fields
 		$request->validate([
-			'email' => 'required|email',
+			'email' => 'required|string|email',
 			'password' => 'required|string'
 		]);
 
@@ -39,10 +88,10 @@ class AuthController extends Controller
 	}
 
 	/**
-	 * Refresh access and refresh tokens using the old refresh token.
+	 * Refresh tokens using the old refresh token.
 	 * 
 	 * @param  Request $request
-	 * @return \Illuminate\Http\Request
+	 * @return \Illuminate\Http\Response
 	 */
 	public function refresh(Request $request) {
 		// Refresh token using password grant client
@@ -61,7 +110,29 @@ class AuthController extends Controller
 		return json_decode($response->getBody(), true);
 	}
 
-	public function register(Request $request) {
+	/**
+	 * Revoke access token, i.e.: logout.
+	 * 
+	 * @return \Illuminate\Http\Response
+	 */
+	public function logout(Request $request) {
+		$request->user()->token()->revoke();
 
+		return response(null, 200);
+	}
+
+	/**
+	 * Get the logged in user data.
+	 * 
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function user(Request $request)
+	{
+		return array_only($request->user()->toArray(), [
+			'id',
+			'name',
+			'email'
+		]);
 	}
 }

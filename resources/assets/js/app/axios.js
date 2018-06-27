@@ -37,7 +37,7 @@ instance.interceptors.response.use(
 
 		// No refresh token found, mark user as logged out
 		if (!refreshToken) {
-			store.dispatch('user/logout');
+			store.commit('user/setTokens', {});
 			return Promise.reject(error);
 		}
 
@@ -55,7 +55,7 @@ instance.interceptors.response.use(
 				const accessToken = response.data.access_token;
 				const refreshToken = response.data.refresh_token;
 
-				store.dispatch('user/login', { accessToken, refreshToken });
+				store.commit('user/setTokens', { accessToken, refreshToken });
 
 				// Retry pending requests
 				onAccessTokenRefresh(accessToken);

@@ -1,10 +1,21 @@
 export default [
-	// Auth -------------------------------------------------------------------
+	// User -------------------------------------------------------------------
 	{
 		path: '/login',
 		name: 'login',
 		component: () => import('prontogioco/app/pages/login'),
-		props: route => ({ redirect: route.query.redirect })
+		props: route => ({ redirect: route.query.redirect }),
+		meta: {
+			title: 'Accedi'
+		}
+	},
+	{
+		path: '/register',
+		name: 'register',
+		component: () => import('prontogioco/app/pages/register'),
+		meta: {
+			title: 'Registrati'
+		}
 	},
 
 	// Home -------------------------------------------------------------------

@@ -7,13 +7,28 @@ export default {
 
 	state: {
 		accessToken: storage.accessToken,
-		refreshToken: storage.refreshToken
+		refreshToken: storage.refreshToken,
+		data: null
 	},
 
 	mutations: {
 		setTokens: (state, { accessToken, refreshToken }) => {
 			state.accessToken = accessToken;
 			state.refreshToken = refreshToken;
+
+			if (accessToken && refreshToken) {
+				storage.accessToken = accessToken;
+				storage.refreshToken = refreshToken;
+				axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+			} else {
+				storage.removeItem('accessToken');
+				storage.removeItem('refreshToken');
+				axios.defaults.headers.common['Authorization'] = null;
+			}
+		},
+
+		setData: (state, data = null) => {
+			state.data = data;
 		}
 	},
 
@@ -24,23 +39,46 @@ export default {
 	},
 
 	actions: {
-		login: ({ commit }, { accessToken, refreshToken }) => {
-			commit('setTokens', { accessToken, refreshToken });
+		register: ({ dispatch, commit }, formData) => {
+			return axios.post('/auth/register', formData).then(response => {
+				if (response.error) throw new Error(response.error);
 
-			storage.accessToken = accessToken;
-			storage.refreshToken = refreshToken;
-			axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+				commit('setTokens', {
+					accessToken: response.data.access_token,
+					refreshToken: response.data.refresh_token
+				});
+			}).then(() => {
+				dispatch('refreshData');
+			});
+		},
+
+		login: ({ dispatch, commit }, { email, password }) => {
+			return axios.post('/auth/login', { email, password }).then(response => {
+				if (response.error) throw new Error(response.error);
+
+				commit('setTokens', {
+					accessToken: response.data.access_token,
+					refreshToken: response.data.refresh_token
+				});
+			}).then(() => {
+				dispatch('refreshData');
+			});
 		},
 
 		logout: ({ commit }) => {
-			commit('setTokens', {
-				accessToken: null,
-				refreshToken: null
+			return axios.post('/auth/logout').then(() => {
+				commit('setTokens', {
+					accessToken: null,
+					refreshToken: null
+				});
+				commit('setData', null);
 			});
+		},
 
-			storage.removeItem('accessToken');
-			storage.removeItem('refreshToken');
-			axios.defaults.headers.common['Authorization'] = null;
-		}
+		refreshData: ({ commit }) => {
+			return axios.get('/user').then(response => {
+				commit('setData', response.data);
+			});
+		},
 	}
 };

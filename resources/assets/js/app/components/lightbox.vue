@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import 'classlist-polyfill';
 import Flickity from 'flickity';
 import PgIcon from './icon';
 

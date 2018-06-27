@@ -13,8 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/login', 'AuthController@login');
-Route::post('/auth/refresh', 'AuthController@refresh');
+Route::post('/auth/register', 'AuthController@register');
+Route::post('/auth/login',    'AuthController@login');
+Route::post('/auth/refresh',  'AuthController@refresh');
+Route::post('/auth/logout',   'AuthController@logout');
+Route::get ('/user',          'AuthController@user');
 
 Route::group(['namespace' => 'Site'], function() {
 	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');
@@ -28,8 +31,4 @@ Route::group(['namespace' => 'Site'], function() {
 		Route::get ('/venues/{venue}/edit',   'Venues\FormController@edit');
 		Route::post('/venues/{venue}',        'Venues\FormController@update');
 	});
-});
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
 });

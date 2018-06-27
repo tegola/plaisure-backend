@@ -1,5 +1,4 @@
 // Load polyfills
-import 'classlist-polyfill';
 import 'core-js/es6/set'; // For vue-match-media
 import 'core-js/fn/array/from'; // For vue-match-media
 
@@ -79,6 +78,13 @@ new Vue({
 			if (this.$route.meta.requiresAuth) {
 				this.$router.push({ name: 'login' });
 			}
+		}
+	},
+
+	created() {
+		// Automatically get user data
+		if (this.$store.getters['user/isAuthenticated']) {
+			this.$store.dispatch('user/refreshData');
 		}
 	}
 });

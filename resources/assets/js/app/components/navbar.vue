@@ -61,6 +61,9 @@ export default {
 	},
 
 	computed: {
+		user() {
+			return this.$store.state.user.data;
+		},
 		classes() {
 			return [
 				this.slim ? 'navbar-slim' : null,
@@ -107,6 +110,13 @@ export default {
 			}
 
 			this.$emit('place-changed', place);
+		},
+
+		logout() {
+			this.$store.dispatch('user/logout')
+				.then(response => {
+					this.$router.push({ name: 'home' });
+				})
 		}
 	},
 
@@ -124,6 +134,9 @@ export default {
 			</router-link>
 
 			<div class="navbar__divider"></div>
+			<template v-if="user">
+				<a @click="logout">Logout {{ user.name }}</a>
+			</template>
 
 			<form class="navbar__search" action="/venues/explore" ref="form">
 				<input type="hidden" name="c_lat" :value="lat">

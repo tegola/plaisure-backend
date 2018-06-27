@@ -25,7 +25,11 @@ Route::group(['namespace' => 'Site'], function(){
 */
 
 // Admin ----------------------------------------------------------------------
-Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function(){
+Route::group([
+	'domain' => 'admin.' . env('APP_DOMAIN'),
+	'namespace' => 'Admin',
+	'middleware' => ['auth', 'can:administer']
+], function() {
 	Route::get('/', 'AdminController@index')->name('admin.home');
 
 	// Venues
