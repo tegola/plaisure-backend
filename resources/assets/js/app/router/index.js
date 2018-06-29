@@ -24,24 +24,6 @@ const router = new VueRouter({
 	}
 });
 
-// Go to login if needed
-router.beforeEach((to, from, next) => {
-	const storage = window.localStorage;
-	const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-	const isAuthenticated = (storage.accessToken && storage.refreshToken) ? true : false;
-
-	if (requiresAuth && !isAuthenticated) {
-		next({
-			name: 'login',
-			query: {
-				redirect: to.fullPath
-			}
-		});
-	} else {
-		next();
-	}
-});
-
 // Set page title from meta data
 router.afterEach(to => {
 	const metaTitle = to.meta.title || null;

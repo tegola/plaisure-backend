@@ -1,10 +1,13 @@
+import { requireAuth, redirectIfAuthenticated } from './guards';
+
 export default [
 	// User -------------------------------------------------------------------
 	{
 		path: '/login',
 		name: 'login',
-		component: () => import('prontogioco/app/pages/login'),
+		component: () => import('prontogioco/app/pages/auth/login'),
 		props: route => ({ redirect: route.query.redirect }),
+		beforeEnter: redirectIfAuthenticated,
 		meta: {
 			title: 'Accedi'
 		}
@@ -12,7 +15,8 @@ export default [
 	{
 		path: '/register',
 		name: 'register',
-		component: () => import('prontogioco/app/pages/register'),
+		component: () => import('prontogioco/app/pages/auth/register'),
+		beforeEnter: redirectIfAuthenticated,
 		meta: {
 			title: 'Registrati'
 		}
@@ -41,9 +45,7 @@ export default [
 		name: 'venues.add',
 		component: () => import('prontogioco/app/pages/venues/form'),
 		props: true,
-		meta: {
-			requiresAuth: true
-		}
+		beforeEnter: requireAuth
 	},
 
 	// Venue detail -----------------------------------------------------------
@@ -60,9 +62,7 @@ export default [
 		name: 'venues.edit',
 		component: () => import('prontogioco/app/pages/venues/form'),
 		props: true,
-		meta: {
-			requiresAuth: true
-		}
+		beforeEnter: requireAuth
 	},
 
 	// Promote ----------------------------------------------------------------
