@@ -74,17 +74,15 @@ new Vue({
 	},
 
 	watch: {
-		userIsAuthenticated() {
-			if (this.$route.meta.requiresAuth) {
-				this.$router.push({ name: 'login' });
-			}
+		userIsAuthenticated(newValue) {
+			if (!newValue) this.$router.push({ name: 'login' });
 		}
 	},
 
 	created() {
 		// Automatically get user data
-		if (this.$store.getters['user/isAuthenticated']) {
-			this.$store.dispatch('user/refreshData');
+		if (this.userIsAuthenticated) {
+			this.$store.dispatch('user/getData');
 		}
 	}
 });

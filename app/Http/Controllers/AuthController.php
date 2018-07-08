@@ -30,7 +30,7 @@ class AuthController extends Controller
 		$request->validate([
 			'name' => 'required|string|max:255',
 			'email' => 'required|string|email|max:255|unique:users',
-			'password' => 'required|string|min:6|confirmed'
+			'password' => 'required|string|min:8'
 		]);
 
 		// Register user
@@ -39,6 +39,8 @@ class AuthController extends Controller
 			'email' => $request->email,
 			'password' => bcrypt($request->password),
 		]);
+
+		// TODO: Send email confirmation
 
 		// Login using password grant client
 		$client = new Client();
@@ -119,20 +121,5 @@ class AuthController extends Controller
 		$request->user()->token()->revoke();
 
 		return response(null, 200);
-	}
-
-	/**
-	 * Get the logged in user data.
-	 * 
-	 * @param  Request $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function user(Request $request)
-	{
-		return array_only($request->user()->toArray(), [
-			'id',
-			'name',
-			'email'
-		]);
 	}
 }

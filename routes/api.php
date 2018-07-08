@@ -17,7 +17,9 @@ Route::post('/auth/register', 'AuthController@register');
 Route::post('/auth/login',    'AuthController@login');
 Route::post('/auth/refresh',  'AuthController@refresh');
 Route::post('/auth/logout',   'AuthController@logout');
-Route::get ('/user',          'AuthController@user');
+
+Route::get ('/user',          'UserController@user');
+Route::post('/user',          'userController@update');
 
 Route::group(['namespace' => 'Site'], function() {
 	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');

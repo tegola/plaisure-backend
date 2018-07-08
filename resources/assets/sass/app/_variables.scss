@@ -113,8 +113,6 @@ $theme-colors: map-merge((
 
 // Options
 $enable-shadows:  true;
-$enable-gradients: true;
-
 
 // Spacing
 $spacer: 1rem;
@@ -191,7 +189,6 @@ $icon-size-base: 1.425rem; // ~20px
 $icon-size-sm: 1.15rem; // ~15px
 
 // Dropdowns
-$dropdown-bg:           $white;
 $dropdown-border-color: rgba($black, .08);
 $dropdown-box-shadow:   0 .33rem 1rem rgba($black, 0.05);
 

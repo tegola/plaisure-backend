@@ -103,7 +103,8 @@ export default {
 						</b-form-group>
 
 						<p class="text-center">
-							<router-link to="/password/reset">Password dimenticata?</router-link>
+							<router-link to="/password/reset">Password dimenticata?</router-link><br>
+							Non sei ancora iscritto? <router-link :to="{ name: 'register', query: { redirect: redirect } }">Fallo subito!</router-link>
 						</p>
 					</form>
 				</div>

@@ -3,7 +3,7 @@ import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import PgButton from 'prontogioco/app/components/button';
 import { validationMixin } from 'vuelidate';
-import { required, email, sameAs } from 'vuelidate/lib/validators';
+import { required, email, minLength } from 'vuelidate/lib/validators';
 import { APP_NAME } from 'prontogioco/constants';
 
 export default {
@@ -31,8 +31,7 @@ export default {
 			model: {
 				name: '',
 				email: '',
-				password: '',
-				password_confirmation: ''
+				password: ''
 			}
 		}
 	},
@@ -47,10 +46,8 @@ export default {
 				required
 			},
 			password: {
-				required
-			},
-			password_confirmation: {
-				sameAsPassword: sameAs('password')
+				required,
+				minLength: minLength(8)
 			}
 		}
 	},
@@ -67,8 +64,8 @@ export default {
 
 			this.$store.dispatch('user/register', this.model)
 				.then(() => {
-					// Go to the user page
-					this.$router.push({ name: 'home' })
+					// Go to the next page
+					this.$router.push(this.redirect)
 				}).catch(error => {
 					console.log('error', error);
 				}).then(() => {
@@ -85,8 +82,8 @@ export default {
 
 		<div class="container my-5">
 			<div class="text-center mb-5">
-				<h2>Registrati a {{ appName }}</h2>
-				<p class="lead text-muted">Registrandoti potrai modificare la tua attività.</p>
+				<h2>Iscriviti a {{ appName }}</h2>
+				<p class="lead text-muted">Potrai così registrare o modificare la tua attività.</p>
 			</div>
 
 			<div class="row">
@@ -109,23 +106,18 @@ export default {
 						<b-form-group
 							label="Password"
 							:state="!$v.model.password.$error"
-							invalid-feedback="Inserisci la password.">
+							invalid-feedback="Scegli una password.">
 							<b-input type="password" v-model="model.password" />
 						</b-form-group>
 
-						<b-form-group
-							label="Ripeti password"
-							:state="!$v.model.password_confirmation.$error"
-							invalid-feedback="Ripeti la password.">
-							<b-input type="password" v-model="model.password_confirmation" />
-						</b-form-group>
+						<p class="small text-muted">Cliccando su su Iscriviti, accetti le nostre <a href="#">Condizioni</a>. Scopri in che modo usiamo i tuoi dati nella nostra <a href="#">Normativa sui dati</a>.</p>
 
 						<b-form-group>
-							<pg-button type="submit" variant="primary" block>Registrati</pg-button>
+							<pg-button type="submit" variant="primary" block>Iscriviti</pg-button>
 						</b-form-group>
 
 						<p class="text-center">
-							oppure <router-link :to="{ name: 'home' }">torna all'home page</router-link>
+							Sei già registrato? <router-link :to="{ name: 'login', query: { redirect: redirect } }">Accedi</router-link>
 						</p>
 					</form>
 				</div>

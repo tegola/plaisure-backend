@@ -14,16 +14,6 @@
 // Auth -----------------------------------------------------------------------
 // Auth::routes();
 
-// Site -----------------------------------------------------------------------
-/*
-Route::group(['namespace' => 'Site'], function(){
-    // User
-	Route::group(['middleware' => 'auth'], function() {
-		Route::get('/user', 'UserController@index')->name('site.user');
-	});
-});
-*/
-
 // Admin ----------------------------------------------------------------------
 Route::group([
 	'domain' => 'admin.' . env('APP_DOMAIN'),

@@ -196,6 +196,7 @@ export default {
 
 <template>
 <div class="pg-home-page">
+	<pg-navbar variant="dark" />
 	<div class="hero">
 		<pg-map class="map" v-bind="mapProps" />
 		<!--

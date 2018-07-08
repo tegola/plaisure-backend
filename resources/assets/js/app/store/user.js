@@ -8,7 +8,8 @@ export default {
 	state: {
 		accessToken: storage.accessToken,
 		refreshToken: storage.refreshToken,
-		data: null
+		user: null,
+		venues: []
 	},
 
 	mutations: {
@@ -27,9 +28,13 @@ export default {
 			}
 		},
 
-		setData: (state, data = null) => {
-			state.data = data;
-		}
+		setUser: (state, user = null) => {
+			state.user = user;
+		},
+
+		setVenues: (state, venues = []) => {
+			state.venues = venues;
+		},
 	},
 
 	getters: {
@@ -48,7 +53,7 @@ export default {
 					refreshToken: response.data.refresh_token
 				});
 			}).then(() => {
-				dispatch('refreshData');
+				dispatch('getData');
 			});
 		},
 
@@ -61,24 +66,38 @@ export default {
 					refreshToken: response.data.refresh_token
 				});
 			}).then(() => {
-				dispatch('refreshData');
+				dispatch('getData');
 			});
 		},
 
-		logout: ({ commit }) => {
-			return axios.post('/auth/logout').then(() => {
-				commit('setTokens', {
-					accessToken: null,
-					refreshToken: null
+		logout: ({ commit }, local = false) => {
+			const tokens = {
+				accessToken: null,
+				refreshToken: null
+			};
+
+			if (local) {
+				commit('setTokens', tokens);
+				commit('setUser', null);
+			} else {
+				return axios.post('/auth/logout').then(() => {
+					commit('setTokens', tokens);
+					commit('setUser', null);
 				});
-				commit('setData', null);
+			}
+		},
+
+		getData: ({ commit }) => {
+			return axios.get('/user').then(response => {
+				commit('setUser', response.data.user);
+				commit('setVenues', response.data.venues);
 			});
 		},
 
-		refreshData: ({ commit }) => {
-			return axios.get('/user').then(response => {
-				commit('setData', response.data);
+		update: ({ commit }, formData) => {
+			return axios.post('/user', formData).then(response => {
+				commit('setUser', response.data.user);
 			});
-		},
+		}
 	}
 };

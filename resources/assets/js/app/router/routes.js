@@ -1,7 +1,14 @@
 import { requireAuth, redirectIfAuthenticated } from './guards';
 
 export default [
-	// User -------------------------------------------------------------------
+	// Home -------------------------------------------------------------------
+	{
+		path: '/',
+		name: 'home',
+		component: () => import('prontogioco/app/pages/home')
+	},
+
+	// Login/register ---------------------------------------------------------
 	{
 		path: '/login',
 		name: 'login',
@@ -16,17 +23,29 @@ export default [
 		path: '/register',
 		name: 'register',
 		component: () => import('prontogioco/app/pages/auth/register'),
+		props: route => ({ redirect: route.query.redirect }),
 		beforeEnter: redirectIfAuthenticated,
 		meta: {
 			title: 'Registrati'
 		}
 	},
 
-	// Home -------------------------------------------------------------------
+	// User -------------------------------------------------------------------
 	{
-		path: '/',
-		name: 'home',
-		component: () => import('prontogioco/app/pages/home')
+		path: '/user/edit',
+		name: 'user.edit',
+		component: () => import('prontogioco/app/pages/user/form'),
+		meta: {
+			title: 'Modifica i tuoi dati'
+		},
+	},
+	{
+		path: '/user/venues',
+		name: 'user.venues',
+		component: () => import('prontogioco/app/pages/user/venues'),
+		meta: {
+			title: 'Gestisci le tue attività'
+		},
 	},
 
 	// Explore ----------------------------------------------------------------
@@ -52,7 +71,7 @@ export default [
 	{
 		path: '/venues/:venueId',
 		name: 'venues.detail',
-		component: () => import('prontogioco/app/pages/venues/detail/main.vue'),
+		component: () => import('prontogioco/app/pages/venues/detail/main'),
 		props: true
 	},
 
@@ -98,6 +117,6 @@ export default [
 	// Catch all --------------------------------------------------------------
 	{
 	    path: '*',
-	    component: () => import('prontogioco/app/pages/error.vue')
+	    component: () => import('prontogioco/app/pages/error')
 	}
 ]

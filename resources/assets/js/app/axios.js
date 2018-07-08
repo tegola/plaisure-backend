@@ -49,7 +49,7 @@ instance.interceptors.response.use(
 				refresh_token: refreshToken
 			}).then(response => {
 				// Stop if there's an error
-				if (response.error) throw new Error(response.error);
+				if (response.data.error) throw new Error(response.data.error);
 
 				// Store tokens (login)
 				const accessToken = response.data.access_token;
@@ -62,7 +62,7 @@ instance.interceptors.response.use(
 
 				isRefreshing = false;
 			}).catch(error => {
-				store.dispatch('user/logout');
+				store.dispatch('user/logout', true);
 				isRefreshing = false;
 				Promise.reject(error);
 			});

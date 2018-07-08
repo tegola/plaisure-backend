@@ -1,5 +1,12 @@
 <script>
+import { mapState } from 'vuex';
 import _extend from 'lodash/extend';
+
+import BNavbarNav from 'bootstrap-vue/es/components/navbar/navbar-nav';
+import BNavItemDropdown from 'bootstrap-vue/es/components/nav/nav-item-dropdown';
+import BDropdownItem from 'bootstrap-vue/es/components/dropdown/dropdown-item';
+import BDropdownItemButton from 'bootstrap-vue/es/components/dropdown/dropdown-item-button';
+import BDropdownDivider from 'bootstrap-vue/es/components/dropdown/dropdown-divider';
 
 import PgLogo from './logo';
 import PgIcon from './icon';
@@ -11,6 +18,11 @@ export default {
 	name: 'PgNavbar',
 
 	components: {
+		BNavbarNav,
+		BNavItemDropdown,
+		BDropdownItem,
+		BDropdownItemButton,
+		BDropdownDivider,
 		PgLogo,
 		PgIcon,
 		PgPlaceTextbox
@@ -61,9 +73,7 @@ export default {
 	},
 
 	computed: {
-		user() {
-			return this.$store.state.user.data;
-		},
+		...mapState('user', ['user', 'venues']),
 		classes() {
 			return [
 				this.slim ? 'navbar-slim' : null,
@@ -134,9 +144,6 @@ export default {
 			</router-link>
 
 			<div class="navbar__divider"></div>
-			<template v-if="user">
-				<a @click="logout">Logout {{ user.name }}</a>
-			</template>
 
 			<form class="navbar__search" action="/venues/explore" ref="form">
 				<input type="hidden" name="c_lat" :value="lat">
@@ -157,6 +164,18 @@ export default {
 
 			<div class="ml-auto">
 				<slot name="right"></slot>
+				<b-navbar-nav v-if="user">
+					<b-nav-item-dropdown right>
+						<template slot="button-content">
+							<pg-icon icon="user" />
+							{{ user.name }}
+						</template>
+						<b-dropdown-item :to="{ name: 'user.venues' }" active-class="" exact-active-class="">{{ venues.length ? 'Le tue attività' : 'Aggiungi la tua attività' }}</b-dropdown-item>
+						<b-dropdown-item :to="{ name: 'user.edit' }" active-class="" exact-active-class="">Modifica i tuoi dati</b-dropdown-item>
+						<b-dropdown-divider />
+						<b-dropdown-item-button @click="logout">Esci</b-dropdown-item-button>
+					</b-nav-item-dropdown>
+				</b-navbar-nav>
 			</div>
 		</div>
 	</nav>
