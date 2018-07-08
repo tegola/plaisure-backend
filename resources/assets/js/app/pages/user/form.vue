@@ -42,7 +42,7 @@ export default {
 				aams_subject_enrollment_code: newUser.aams_subject_enrollment_code,
 				new_password: '',
 				new_password_confirmation: '',
-				newsletter: false
+				send_newsletter: newUser.send_newsletter
 			}
 		}
 	},
@@ -131,7 +131,7 @@ export default {
 							<b-input type="password" v-model="model.new_password_confirmation" />
 						</b-form-group>
 						<b-form-group>
-							<b-checkbox v-model="model.newsletter">Voglio ricevere la newsletter di {{ appName }}</b-checkbox>
+							<b-checkbox v-model="model.send_newsletter">Voglio ricevere la newsletter di {{ appName }}</b-checkbox>
 						</b-form-group>
 						<b-form-group class="mt-3">
 							<div class="d-flex justify-content-md-end">

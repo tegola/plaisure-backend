@@ -61,12 +61,14 @@ class UserController extends Controller
 		$request->validate([
 			'name' => 'required|string|max:255',
 			'aams_subject_enrollment_code' => 'required|string|max:255',
-			'new_password' => 'nullable|string|min:8|confirmed'
+			'new_password' => 'nullable|string|min:8|confirmed',
+			'send_newsletter' => 'boolean'
 		]);
 
 		// Save user data
 		$user->name = $request->input('name');
 		$user->aams_subject_enrollment_code = $request->input('aams_subject_enrollment_code');
+		$user->send_newsletter = $request->input('send_newsletter');
 
 		// Save new password
 		if ($request->has('new_password')) {

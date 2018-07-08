@@ -17,6 +17,7 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $casts = [
+		'send_newsletter' => 'boolean',
 		'is_admin' => 'boolean',
 		'is_owner' => 'boolean'
 	];
@@ -27,7 +28,8 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $hidden = [
-		'password', 'remember_token',
+		'password',
+		'remember_token'
 	];
 
 	/**
@@ -36,7 +38,9 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'email', 'password',
+		'name',
+		'email',
+		'password'
 	];
 
 	/**
