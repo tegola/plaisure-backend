@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
-import setTitle from 'prontogioco/utilities/set-title';
+import headful from 'prontogioco/app/plugins/headful';
 
 Vue.use(VueRouter);
 
@@ -29,7 +29,7 @@ router.afterEach(to => {
 	const metaTitle = to.meta.title || null;
 	const title = typeof metaTitle === 'function' ? metaTitle(to) : metaTitle;
 
-	setTitle(title);
+	headful({ title });
 });
 
 export default router;

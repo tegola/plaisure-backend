@@ -162,7 +162,7 @@ export default {
 				</pg-place-textbox>
 			</form>
 
-			<div class="ml-auto">
+			<div class="ml-auto d-flex">
 				<slot name="right"></slot>
 				<b-navbar-nav v-if="user">
 					<b-nav-item-dropdown right>

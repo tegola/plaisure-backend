@@ -6,7 +6,7 @@ import constants from 'prontogioco/constants';
 import PgLightbox from 'prontogioco/app/components/lightbox';
 import PgVenueDetailPageContactCard from './contact-card'
 
-import setTitle from 'prontogioco/utilities/set-title';
+import headful from 'prontogioco/app/plugins/headful';
 
 export default {
 	name: 'PgVenueDetailPage',
@@ -80,7 +80,9 @@ export default {
 
 	watch: {
 		venue() {
-			setTitle(this.venue ? [this.venue.name, '–', this.subtitle].join(' ') : '');
+			headful({
+				title: this.venue ? [this.venue.name, '–', this.subtitle].join(' ') : ''
+			});
 		}
 	},
 

@@ -13,7 +13,7 @@ import PgFilterButton from './filter-button';
 import PgFilterButtonItem from './filter-button-item';
 import PgVenueListItem from './list-item';
 
-import setTitle from 'prontogioco/utilities/set-title';
+import headful from 'prontogioco/app/plugins/headful';
 import { DEFAULT_COORDS, SEARCH_RADIUSES } from 'prontogioco/constants';
 
 export default {
@@ -396,7 +396,9 @@ export default {
 			});
 
 			// Update title
-			setTitle(this.query);
+			headful({
+				title: this.query
+			});
 		},
 
 		// List support -------------------------------------------------------
@@ -503,7 +505,7 @@ export default {
 		</div>
 
 		<div class="wrapper">
-			<div class="venue-list px-0 col col-md-8 col-lg-6 col-xl-5" v-if="showList">
+			<div class="venue-list px-0 col col-md-7 col-lg-6 col-xl-5" v-if="showList">
 				<!-- Loader -->
 				<div v-if="loading" class="list-group-item venue-list-placeholder-item text-muted" v-cloak>
 					<pg-icon icon="circle-outline-notch" spinning />

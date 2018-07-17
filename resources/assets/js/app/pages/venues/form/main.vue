@@ -22,7 +22,7 @@ import PgVenueFormJackpotsPane from './jackpots-pane';
 
 import validations from './validations';
 
-import setTitle from 'prontogioco/utilities/set-title';
+import headful from 'prontogioco/app/plugins/headful';
 import constants from 'prontogioco/constants';
 
 export default {
@@ -81,7 +81,9 @@ export default {
 
 	watch: {
 		venue() {
-			setTitle(this.venue && this.venue.id ? 'Modifica attività' : 'Aggiungi attività');
+			headful({
+				title: this.venue && this.venue.id ? 'Modifica attività' : 'Aggiungi attività'
+			});
 		}
 	},
 

@@ -9,10 +9,10 @@ import VueMatchMedia from 'vue-match-media/dist';
 Vue.use(VueMatchMedia);
 
 // Setup Google Analytics
-import './analytics';
+import './plugins/analytics';
 
 // Setup Axios
-import './axios';
+import './plugins/axios';
 
 // Load Google Maps API
 import { load as loadGMaps } from 'vue2-google-maps';

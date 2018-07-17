@@ -1,4 +1,4 @@
-import axios from 'prontogioco/app/axios';
+import axios from 'prontogioco/app/plugins/axios';
 
 const storage = window.localStorage;
 

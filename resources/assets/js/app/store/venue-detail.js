@@ -1,5 +1,5 @@
-import axios from 'prontogioco/app/axios';
-import capitalizeFirst from 'prontogioco/utilities/capitalize-first';
+import axios from 'prontogioco/app/plugins/axios';
+import capitalize from 'capitalize';
 
 const indexToDayName = index => {
 	// Create any date but se the right day of the week
@@ -8,7 +8,7 @@ const indexToDayName = index => {
 
 	const name = date.toLocaleDateString(undefined, { weekday: 'long' });
 
-	return capitalizeFirst(name);
+	return capitalize(name);
 };
 
 export default {

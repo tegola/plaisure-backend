@@ -1,5 +1,5 @@
 <script>
-import setTitle from 'prontogioco/utilities/set-title';
+import headful from 'prontogioco/app/plugins/headful';
 
 export default {
 	name: 'PgErrorPage',
@@ -16,7 +16,9 @@ export default {
 	},
 
 	mounted() {
-		setTitle(this.message);
+		headful({
+			title: this.message
+		});
 	}
 }
 </script>
