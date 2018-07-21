@@ -3,7 +3,7 @@
  ✔ tracking analytics @done (18-06-09 01:35)
  ✔ Convertire login in componenti vue @done (18-07-09 21:49)
  ☐ Form: mostrare errore in caso di caricamento errato
- ☐ ripristinare structured data, titolo e descrizione nella vista dettaglio
+ ✔ ripristinare structured data, titolo e descrizione nella vista dettaglio @done (18-07-21 16:21)
  ☐ Aggiustare i menu nella pagina explore
  ☐ Edit sala: passaggio al tab giusto quando c'è errore
  ☐ Aggiustare il bordo destro della card contatti nel dettaglio sala

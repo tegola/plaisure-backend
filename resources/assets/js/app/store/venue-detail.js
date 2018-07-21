@@ -16,7 +16,8 @@ export default {
 
 	state: {
 		venue: null,
-		nearbyVenues: []
+		nearbyVenues: [],
+		structuredData: null
 	},
 
 	getters: {
@@ -135,8 +136,12 @@ export default {
 			state.venue = venue;
 		},
 
-		setNearbyVenues: (state, nearbyVenues) => {
+		setNearbyVenues: (state, nearbyVenues = []) => {
 			state.nearbyVenues = nearbyVenues;
+		},
+
+		setStructuredData: (state, structuredData) => {
+			state.structuredData = structuredData;
 		}
 	},
 
@@ -146,8 +151,9 @@ export default {
 			axios.get(`/venues/${venueId}`)
 				.then(({ data }) => {
 					commit('setVenue', data.venue);
-					commit('setNearbyVenues', data.nearbyVenues || []);
-				}).catch(() => {}).then(() =>  {
+					commit('setNearbyVenues', data.nearbyVenues);
+					commit('setStructuredData', data.structuredData);
+				}).catch(() => {}).then(() => {
 					// this.loading = false;
 				});
 		}

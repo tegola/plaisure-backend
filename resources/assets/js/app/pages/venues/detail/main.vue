@@ -48,6 +48,12 @@ export default {
 			'nearbyVenues'
 		]),
 
+		structuredData() {
+			const data = this.$store.state.venueDetail.structuredData;
+
+			return data ? JSON.stringify(data) : null;
+		},
+
 		...mapGetters('venueDetail', [
 			'isOpen',
 			'vltPlatformNames',
@@ -129,6 +135,9 @@ export default {
 <template>
 	<div class="pg-venue-detail-page">
 		<pg-navbar variant="dark" />
+
+		<!-- Structured data -->
+		<script type="application/ld+json" v-if="structuredData">{{ structuredData }}</script>
 
 		<!-- FIXME: Mostrare un loader mentre si caricano i dati -->
 		<template v-if="!loading && venue">
