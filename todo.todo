@@ -6,7 +6,7 @@
  ✔ ripristinare structured data, titolo e descrizione nella vista dettaglio @done (18-07-21 16:21)
  ☐ Aggiustare i menu nella pagina explore
  ☐ Edit sala: passaggio al tab giusto quando c'è errore
- ☐ Aggiustare il bordo destro della card contatti nel dettaglio sala
+ ✔ Aggiustare il bordo destro della card contatti nel dettaglio sala @done (18-07-21 16:40)
  ☐ Spostare le icone svg (views/site/components/vectors.blade.php) in javascript
  ☐ Pagine di recupero password
  ☐ Spostare i css nelle pagine
