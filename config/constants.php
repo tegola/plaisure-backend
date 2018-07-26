@@ -17,7 +17,7 @@ return [
 
 	'search_radiuses' => [10, 20, 30, 50, 100],
 
-	'google_maps_api_key' => 'AIzaSyC7HUu36wqXlH_E27AMOFFF9v7t1809Upk',
+	'google_maps_api_key' => 'AIzaSyDfes2NBJiO8mSTmmTcCliqaV3vKGMD3nk',
 
 	'footer_explore_cities' => [
 		'Milano' => [
