@@ -8,31 +8,25 @@ import VueMatchMedia from 'vue-match-media/dist';
 
 Vue.use(VueMatchMedia);
 
-// Setup Google Analytics
+// Setup Axios, Google Maps and Analytics
+import './plugins/axios';
+import './plugins/maps';
 import './plugins/analytics';
 
-// Setup Axios
-import './plugins/axios';
+// Init router, store and i18n
+import router from './router';
+import store from './store';
+import i18n from './lang';
 
-// Load Google Maps API
-import { load as loadGMaps } from 'vue2-google-maps';
-import { GOOGLE_MAPS_API_KEY } from 'prontogioco/constants';
-loadGMaps({
-	key: GOOGLE_MAPS_API_KEY,
-	language: 'it', // FIXME: Use user locale
-	region: 'it', // FIXME: Use user locale
-	libraries: 'places'
-});
-
-// Register directives
 import BTooltipDirective from 'bootstrap-vue/es/directives/tooltip/tooltip';
-
-Vue.directive('b-tooltip', BTooltipDirective);
 
 import PgLogo from 'prontogioco/app/components/logo';
 import PgNavbar from 'prontogioco/app/components/navbar';
 import PgIcon from 'prontogioco/app/components/icon';
 import PgPageFooter from 'prontogioco/app/components/page-footer';
+
+// Register directives
+Vue.directive('b-tooltip', BTooltipDirective);
 
 // Register common components
 Vue.component('pg-logo', PgLogo);
@@ -40,11 +34,7 @@ Vue.component('pg-navbar', PgNavbar);
 Vue.component('pg-icon', PgIcon);
 Vue.component('pg-page-footer', PgPageFooter);
 
-// Init router and store
-import router from './router';
-import store from './store';
-
-import PgApp from 'prontogioco/app/main';
+import PgApp from './main';
 
 // Startup VM
 new Vue({
@@ -57,6 +47,8 @@ new Vue({
 	router,
 
 	store,
+
+	i18n,
 
 	mq: {
 		constrained: '(max-width: 767px)',

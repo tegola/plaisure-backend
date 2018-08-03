@@ -26,7 +26,6 @@ export default {
 
 	data() {
 		return {
-			appName: APP_NAME,
 			loading: false,
 			model: {
 				email: '',
@@ -67,6 +66,10 @@ export default {
 					this.loading = false;
 				});
 		}
+	},
+
+	created() {
+		this.APP_NAME = APP_NAME
 	}
 }
 </script>
@@ -77,34 +80,38 @@ export default {
 
 		<div class="container my-5">
 			<div class="text-center mb-5">
-				<h2>Accedi</h2>
-				<p class="lead text-muted">Inserisci email e password per accedere a {{ appName }}.</p>
+				<h2>{{ $t('login.title') }}</h2>
+				<p class="lead text-muted">{{ $t('login.intro', { name: APP_NAME }) }}</p>
 			</div>
 
 			<div class="row">
 				<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 					<form @submit.prevent="submit">
 						<b-form-group
-							label="Indirizzo e-mail"
+							:label="$t('login.email')"
 							:state="!$v.model.email.$error"
-							invalid-feedback="Inserisci il tuo indirizzo e-mail.">
+							:invalid-feedback="$t('login.email_error')">
 							<b-input type="email" v-model="model.email" autofocus />
 						</b-form-group>
 
 						<b-form-group
-							label="Password"
+							:label="$t('login.password')"
 							:state="!$v.model.password.$error"
-							invalid-feedback="Inserisci la password.">
+							:invalid-feedback="$t('login.password_error')">
 							<b-input type="password" v-model="model.password" />
 						</b-form-group>
 
 						<b-form-group>
-							<pg-button type="submit" variant="primary" block>Accedi</pg-button>
+							<pg-button type="submit" variant="primary" block>{{ $t('login.submit') }}</pg-button>
 						</b-form-group>
 
 						<p class="text-center">
-							<router-link to="/password/reset">Password dimenticata?</router-link><br>
-							Non sei ancora iscritto? <router-link :to="{ name: 'register', query: { redirect: redirect } }">Fallo subito!</router-link>
+							<router-link to="/password/reset">{{ $t('login.forgot') }}</router-link><br>
+							<i18n path="login.register1">
+								<span place="link">
+									<router-link :to="{ name: 'register', query: { redirect: redirect } }">{{ $t('login.register2') }}</router-link>
+								</span>
+							</i18n>
 						</p>
 					</form>
 				</div>

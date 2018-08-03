@@ -26,7 +26,6 @@ export default {
 
 	data() {
 		return {
-			appName: APP_NAME,
 			loading: false,
 			model: {
 				name: '',
@@ -72,6 +71,10 @@ export default {
 					this.loading = false;
 				});
 		}
+	},
+
+	created() {
+		this.APP_NAME = APP_NAME
 	}
 }
 </script>
@@ -82,42 +85,49 @@ export default {
 
 		<div class="container my-5">
 			<div class="text-center mb-5">
-				<h2>Iscriviti a {{ appName }}</h2>
-				<p class="lead text-muted">Potrai così registrare o modificare la tua attività.</p>
+				<h2>{{ $t('register.title', { name: APP_NAME }) }}</h2>
+				<p class="lead text-muted">{{ $t('register.intro') }}</p>
 			</div>
 
 			<div class="row">
 				<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 					<form @submit.prevent="submit">
 						<b-form-group
-							label="Nome"
+							:label="$t('register.name')"
 							:state="!$v.model.email.$error"
-							invalid-feedback="Inserisci il tuo nome.">
+							:invalid-feedback="$t('register.name_error')">
 							<b-input type="text" v-model="model.name" autofocus />
 						</b-form-group>
 
 						<b-form-group
-							label="Indirizzo e-mail"
+							:label="$t('register.email')"
 							:state="!$v.model.email.$error"
-							invalid-feedback="Inserisci il tuo indirizzo e-mail.">
+							:invalid-feedback="$t('register.email_error')">
 							<b-input type="email" v-model="model.email" />
 						</b-form-group>
 
 						<b-form-group
-							label="Password"
+							:label="$t('register.password')"
 							:state="!$v.model.password.$error"
-							invalid-feedback="Scegli una password.">
+							:invalid-feedback="$t('register.password_error')">
 							<b-input type="password" v-model="model.password" />
 						</b-form-group>
 
-						<p class="small text-muted">Cliccando su su Iscriviti, accetti le nostre <a href="#">Condizioni</a>. Scopri in che modo usiamo i tuoi dati nella nostra <a href="#">Normativa sui dati</a>.</p>
+						<i18n tag="p" class="small text-muted" path="register.agree1">
+							<a href="#" place="terms_link">{{ $t('register.agree2') }}</a>
+							<a href="#" place="privacy_link">{{ $t('register.agree3') }}</a>
+						</i18n>
 
 						<b-form-group>
-							<pg-button type="submit" variant="primary" block>Iscriviti</pg-button>
+							<pg-button type="submit" variant="primary" block>{{ $t('register.submit') }}</pg-button>
 						</b-form-group>
 
 						<p class="text-center">
-							Sei già registrato? <router-link :to="{ name: 'login', query: { redirect: redirect } }">Accedi</router-link>
+							<i18n path="register.login1">
+								<span place="link">
+									<router-link :to="{ name: 'login', query: { redirect: redirect } }">{{ $t('register.login2') }}</router-link>
+								</span>
+							</i18n>
 						</p>
 					</form>
 				</div>

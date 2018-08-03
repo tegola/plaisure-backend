@@ -17,9 +17,10 @@
 		width: 100vw;
 		box-shadow: 0 $border-width 0 rgba(#000, 0.08); // FIXME: Replace with var
 		background-clip: padding-box;
-		overflow: auto;
+		overflow-x: auto;
+		overflow-y: visible;
 		-webkit-overflow-scrolling: touch;
-		z-index: 2; // Stay above the content
+		z-index: 3; // Stay above the content AND above the selected list item
 		position: relative; // Stay above the content
 	}
 	.filter-button {

@@ -80,33 +80,35 @@ export default {
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-4 col-lg-2">
-					<h3 class="pg-footer-heading">Sale ed esercizi</h3>
+					<h3 class="pg-footer-heading">{{ $t('footer.venues.title') }}</h3>
 					<ul class="list-unstyled">
-						<li><router-link to="/venues/explore">Ricerca</router-link></li>
+						<li><router-link to="/venues/explore">{{ $t('footer.venues.search') }}</router-link></li>
 						<li v-for="preset in presets" :key="preset.city">
-							<router-link :to="preset.url">Esercizi a {{ preset.city }}</router-link>
+							<router-link :to="preset.url">{{ $t('footer.venues.in', { city: preset.city }) }}</router-link>
 						</li>
-						<li><router-link to="/promote">Promuovi la tua attivit&agrave;</router-link></li>
+						<li><router-link to="/promote">{{ $t('footer.venues.promote') }}</router-link></li>
 					</ul>
 				</div>
 				<div class="col-sm-4 col-lg-2">
-					<h3 class="pg-footer-heading">Azienda</h3>
+					<h3 class="pg-footer-heading">{{ $t('footer.company.title') }}</h3>
 					<ul class="list-unstyled">
-						<li><router-link to="/about">Chi siamo</router-link></li>
-						<li><router-link to="/about#contact">Contatti</router-link></li>
+						<li><router-link to="/about">{{ $t('footer.company.about') }}</router-link></li>
+						<li><router-link to="/about#contact">{{ $t('footer.company.contact') }}</router-link></li>
 					</ul>
 				</div>
 				<div class="col-sm-4 col-lg-2">
-					<h3 class="pg-footer-heading">Gioco responsabile</h3>
+					<h3 class="pg-footer-heading">{{ $t('footer.gaming.title') }}</h3>
 					<ul class="list-unstyled">
-						<li><router-link to="/play-responsibly#toofar">Gioca senza esagerare</router-link></li>
-						<li><router-link to="/play-responsibly#rules">Le regole</router-link></li>
-						<li><router-link to="/play-responsibly#myths">Miti e credenze</router-link></li>
-						<li><router-link to="/play-responsibly#help">Dove chiedere aiuto</router-link></li>
+						<li><router-link to="/play-responsibly#toofar">{{ $t('footer.gaming.responsibly') }}</router-link></li>
+						<li><router-link to="/play-responsibly#rules">{{ $t('footer.gaming.rules') }}</router-link></li>
+						<li><router-link to="/play-responsibly#myths">{{ $t('footer.gaming.myths') }}</router-link></li>
+						<li><router-link to="/play-responsibly#help">{{ $t('footer.gaming.help') }}</router-link></li>
 					</ul>
 				</div>
 				<div class="ml-lg-auto col-lg-5">
-					<p>Informati sulle probabilit&agrave; di vincita e sul regolamento di gioco sul sito <a href="https://www.agenziadoganemonopoli.gov.it">agenziadoganemonopoli.gov.it</a>.</p>
+					<i18n tag="p" path="footer.info">
+						<a href="https://www.agenziadoganemonopoli.gov.it">agenziadoganemonopoli.gov.it</a>
+					</i18n>
 					<ul class="list-inline pg-footer-aams-logo-list">
 						<li class="list-inline-item mb-3">
 							<a href="https://www.agenziadoganemonopoli.gov.it/">
@@ -120,7 +122,10 @@ export default {
 						</li>
 						<li class="list-inline-item mb-3">
 							<span class="badge pg-footer-age-badge" aria-hidden="true">18+</span>
-							<span class="pg-footer-age-text">Il gioco &egrave; vietato<br>ai minori di 18 anni</span>
+							<i18n class="pg-footer-age-text" path="footer.rating">
+								<br place="break">
+								<span place="age">18</span>
+							</i18n>
 						</li>
 					</ul>
 				</div>
@@ -128,8 +133,8 @@ export default {
 			<div class="text-center mt-3">
 				<pg-logo :text="false" class="pg-footer-logo" />
 				<p class="mb-0">
-					Copyright {{ year }} {{ COMPANY_NAME }}<br>
-					P. IVA {{ COMPANY_VAT_NUMBER }}
+					{{ $t('footer.copyright', { year, company: COMPANY_NAME }) }}<br>
+					{{ $t('footer.vat', { number: COMPANY_VAT_NUMBER }) }}
 				</p>
 			</div>
 			<div class="row"></div>
