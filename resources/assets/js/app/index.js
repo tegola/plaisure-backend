@@ -2,6 +2,9 @@
 import 'core-js/es6/set'; // For vue-match-media
 import 'core-js/fn/array/from'; // For vue-match-media
 
+// Constants
+import { APP_NAME } from 'prontogioco/constants';
+
 // Setup Vue and plugins
 import Vue from 'vue';
 import VueMatchMedia from 'vue-match-media/dist';
@@ -10,6 +13,7 @@ Vue.use(VueMatchMedia);
 
 // Setup Axios, Google Maps and Analytics
 import './plugins/axios';
+import './plugins/meta';
 import './plugins/maps';
 import './plugins/analytics';
 
@@ -57,6 +61,15 @@ new Vue({
 
 	data: {
 		hasGeolocation: navigator.geolocation ? true : false
+	},
+
+	meta() {
+		return {
+			titleTemplate: (titleChunk) => titleChunk ? `${titleChunk} - ${APP_NAME}` : APP_NAME,
+			htmlAttrs: {
+				lang: i18n.locale
+			}
+		};
 	},
 
 	computed: {

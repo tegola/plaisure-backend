@@ -12,11 +12,8 @@
 	<body>
 		<div id="app">
 			@include('admin.components.navbar')
-
 			@yield('content')
 		</div>
-
-		@include('scripts')
 		<script src="{{ mix('js/admin.js') }}"></script>
 	</body>
 </html>

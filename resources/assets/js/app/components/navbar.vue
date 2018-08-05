@@ -44,7 +44,7 @@ export default {
 		placeholder: {
 			type: String,
 			default() {
-				return this.$t('navbar.search');
+				return this.$t('components.navbar.search');
 			}
 		},
 		query: {
@@ -172,10 +172,10 @@ export default {
 							<pg-icon icon="user" />
 							{{ user.name }}
 						</template>
-						<b-dropdown-item :to="{ name: 'user.venues' }" active-class="" exact-active-class="">{{ venues.length ? $t('navbar.dropdown.venues') : $t('navbar.dropdown.add') }}</b-dropdown-item>
-						<b-dropdown-item :to="{ name: 'user.edit' }" active-class="" exact-active-class="">{{ $t('navbar.dropdown.edit') }}</b-dropdown-item>
+						<b-dropdown-item :to="{ name: 'user.venues' }" active-class="" exact-active-class="">{{ venues.length ? $t('components.navbar.dropdown.venues') : $t('components.navbar.dropdown.add') }}</b-dropdown-item>
+						<b-dropdown-item :to="{ name: 'user.edit' }" active-class="" exact-active-class="">{{ $t('components.navbar.dropdown.edit') }}</b-dropdown-item>
 						<b-dropdown-divider />
-						<b-dropdown-item-button @click="logout">{{ $t('navbar.dropdown.logout') }}</b-dropdown-item-button>
+						<b-dropdown-item-button @click="logout">{{ $t('components.navbar.dropdown.logout') }}</b-dropdown-item-button>
 					</b-nav-item-dropdown>
 				</b-navbar-nav>
 			</div>

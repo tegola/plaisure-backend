@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
-import headful from 'prontogioco/app/plugins/headful';
 
 Vue.use(VueRouter);
 
@@ -22,14 +21,6 @@ const router = new VueRouter({
 			};
 		}
 	}
-});
-
-// Set page title from meta data
-router.afterEach(to => {
-	const metaTitle = to.meta.title || null;
-	const title = typeof metaTitle === 'function' ? metaTitle(to) : metaTitle;
-
-	headful({ title });
 });
 
 export default router;

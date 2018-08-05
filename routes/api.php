@@ -29,8 +29,9 @@ Route::group(['namespace' => 'Site'], function() {
 	Route::group(['middleware' => 'auth:api'], function() {
 		Route::get ('/venues/add',            'Venues\FormController@create');
 		Route::post('/venues',                'Venues\FormController@store');
-		Route::get ('/venues/{venue}',        'Venues\DetailController@detail');
 		Route::get ('/venues/{venue}/edit',   'Venues\FormController@edit');
 		Route::post('/venues/{venue}',        'Venues\FormController@update');
 	});
+	// Venue detail
+	Route::get ('/venues/{venue}',        'Venues\DetailController@detail');
 });

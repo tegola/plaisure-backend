@@ -80,36 +80,36 @@ export default {
 
 		<div class="container my-5">
 			<div class="text-center mb-5">
-				<h2>{{ $t('login.title') }}</h2>
-				<p class="lead text-muted">{{ $t('login.intro', { name: APP_NAME }) }}</p>
+				<h2>{{ $t('pages.login.title') }}</h2>
+				<p class="lead text-muted">{{ $t('pages.login.intro', { name: APP_NAME }) }}</p>
 			</div>
 
 			<div class="row">
 				<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 					<form @submit.prevent="submit">
 						<b-form-group
-							:label="$t('login.email')"
+							:label="$t('pages.login.email')"
 							:state="!$v.model.email.$error"
-							:invalid-feedback="$t('login.email_error')">
+							:invalid-feedback="$t('pages.login.email_error')">
 							<b-input type="email" v-model="model.email" autofocus />
 						</b-form-group>
 
 						<b-form-group
-							:label="$t('login.password')"
+							:label="$t('pages.login.password')"
 							:state="!$v.model.password.$error"
-							:invalid-feedback="$t('login.password_error')">
+							:invalid-feedback="$t('pages.login.password_error')">
 							<b-input type="password" v-model="model.password" />
 						</b-form-group>
 
 						<b-form-group>
-							<pg-button type="submit" variant="primary" block>{{ $t('login.submit') }}</pg-button>
+							<pg-button type="submit" variant="primary" block>{{ $t('pages.login.submit') }}</pg-button>
 						</b-form-group>
 
 						<p class="text-center">
-							<router-link to="/password/reset">{{ $t('login.forgot') }}</router-link><br>
-							<i18n path="login.register1">
+							<router-link to="/password/reset">{{ $t('pages.login.forgot') }}</router-link><br>
+							<i18n path="pages.login.register1">
 								<span place="link">
-									<router-link :to="{ name: 'register', query: { redirect: redirect } }">{{ $t('login.register2') }}</router-link>
+									<router-link :to="{ name: 'register', query: { redirect: redirect } }">{{ $t('pages.login.register2') }}</router-link>
 								</span>
 							</i18n>
 						</p>

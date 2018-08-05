@@ -85,47 +85,47 @@ export default {
 
 		<div class="container my-5">
 			<div class="text-center mb-5">
-				<h2>{{ $t('register.title', { name: APP_NAME }) }}</h2>
-				<p class="lead text-muted">{{ $t('register.intro') }}</p>
+				<h2>{{ $t('pages.register.title', { name: APP_NAME }) }}</h2>
+				<p class="lead text-muted">{{ $t('pages.register.intro') }}</p>
 			</div>
 
 			<div class="row">
 				<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 					<form @submit.prevent="submit">
 						<b-form-group
-							:label="$t('register.name')"
+							:label="$t('pages.register.name')"
 							:state="!$v.model.email.$error"
-							:invalid-feedback="$t('register.name_error')">
+							:invalid-feedback="$t('pages.register.name_error')">
 							<b-input type="text" v-model="model.name" autofocus />
 						</b-form-group>
 
 						<b-form-group
-							:label="$t('register.email')"
+							:label="$t('pages.register.email')"
 							:state="!$v.model.email.$error"
-							:invalid-feedback="$t('register.email_error')">
+							:invalid-feedback="$t('pages.register.email_error')">
 							<b-input type="email" v-model="model.email" />
 						</b-form-group>
 
 						<b-form-group
-							:label="$t('register.password')"
+							:label="$t('pages.register.password')"
 							:state="!$v.model.password.$error"
-							:invalid-feedback="$t('register.password_error')">
+							:invalid-feedback="$t('pages.register.password_error')">
 							<b-input type="password" v-model="model.password" />
 						</b-form-group>
 
-						<i18n tag="p" class="small text-muted" path="register.agree1">
-							<a href="#" place="terms_link">{{ $t('register.agree2') }}</a>
-							<a href="#" place="privacy_link">{{ $t('register.agree3') }}</a>
+						<i18n tag="p" class="small text-muted" path="pages.register.agree1">
+							<a href="#" place="terms_link">{{ $t('pages.register.agree2') }}</a>
+							<a href="#" place="privacy_link">{{ $t('pages.register.agree3') }}</a>
 						</i18n>
 
 						<b-form-group>
-							<pg-button type="submit" variant="primary" block>{{ $t('register.submit') }}</pg-button>
+							<pg-button type="submit" variant="primary" block>{{ $t('pages.register.submit') }}</pg-button>
 						</b-form-group>
 
 						<p class="text-center">
-							<i18n path="register.login1">
+							<i18n path="pages.register.login1">
 								<span place="link">
-									<router-link :to="{ name: 'login', query: { redirect: redirect } }">{{ $t('register.login2') }}</router-link>
+									<router-link :to="{ name: 'login', query: { redirect: redirect } }">{{ $t('pages.register.login2') }}</router-link>
 								</span>
 							</i18n>
 						</p>

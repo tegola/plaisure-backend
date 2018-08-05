@@ -13,7 +13,6 @@ import PgFilterButton from './filter-button';
 import PgFilterButtonItem from './filter-button-item';
 import PgVenueListItem from './list-item';
 
-import headful from 'prontogioco/app/plugins/headful';
 import { DEFAULT_COORDS, SEARCH_RADIUSES } from 'prontogioco/constants';
 
 export default {
@@ -117,6 +116,12 @@ export default {
 		},
 		showMap() {
 			return this.$mq.comfortable || this.currentView == 'map';
+		}
+	},
+
+	meta() {
+		return {
+			title: this.query
 		}
 	},
 
@@ -393,11 +398,6 @@ export default {
 			// Update URL
 			this.$router.replace({
 				query: this.searchParams
-			});
-
-			// Update title
-			headful({
-				title: this.query
 			});
 		},
 

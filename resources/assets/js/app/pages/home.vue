@@ -40,7 +40,6 @@ export default {
 		PgPlaceTextbox,
 		PgMap
 	},
-
 	data() {
 		return {
 			query: null,

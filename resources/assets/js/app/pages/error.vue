@@ -1,6 +1,4 @@
 <script>
-import headful from 'prontogioco/app/plugins/headful';
-
 export default {
 	name: 'PgErrorPage',
 
@@ -11,14 +9,16 @@ export default {
 		},
 		message: {
 			type: String,
-			default: 'Pagina non trovata'
+			default: function() {
+				return this.$t('pages.error.not_found')
+			}
 		}
 	},
 
-	mounted() {
-		headful({
+	meta() {
+		return {
 			title: this.message
-		});
+		}
 	}
 }
 </script>

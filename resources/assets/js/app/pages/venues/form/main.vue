@@ -22,7 +22,6 @@ import PgVenueFormJackpotsPane from './jackpots-pane';
 
 import validations from './validations';
 
-import headful from 'prontogioco/app/plugins/headful';
 import constants from 'prontogioco/constants';
 
 export default {
@@ -77,15 +76,13 @@ export default {
 		},
 	},
 
-	validations,
-
-	watch: {
-		venue() {
-			headful({
-				title: this.venue && this.venue.id ? 'Modifica attività' : 'Aggiungi attività'
-			});
+	meta() {
+		return {
+			title: this.venue && this.venue.id ? 'Modifica attività' : 'Aggiungi attività'
 		}
 	},
+
+	validations,
 
 	methods: {
 		loadData() {

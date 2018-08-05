@@ -9,9 +9,17 @@
 			<div class="pg-lightbox__header">
 				<div class="pg-lightbox__title-container">
 					<h4 class="pg-lightbox__title">{{ title }}</h4>
-					<p class="pg-lightbox__subtitle" v-html="subtitle"></p>
+					<p class="pg-lightbox__subtitle">
+						{{ counter }}
+						<template v-if="caption">&ndash; {{ caption }}</template>
+					</p>
 				</div>
-				<button type="button" class="pg-lightbox__close" @click="close" title="Chiudi" aria-label="Chiudi">
+				<button
+					type="button"
+					class="pg-lightbox__close"
+					:title="$t('components.lightbox.close')"
+					:aria-label="$t('components.lightbox.close')"
+					@click="close">
 					<pg-icon icon="close" class="pg-lightbox__close-icon" />
 				</button>
 			</div>
@@ -20,10 +28,22 @@
 				<div v-for="image in images" class="pg-lightbox__slide">
 					<img :src="image.url" class="pg-lightbox__image">
 				</div>
-				<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__prev-arrow" @click="prev" title="Precedente" aria-label="Precedente">
+				<button
+					v-if="showArrows"
+					type="button"
+					class="pg-lightbox__arrow pg-lightbox__prev-arrow"
+					:title="$t('components.lightbox.previous')"
+					:aria-label="$t('components.lightbox.previous')"
+					@click="prev">
 					<pg-icon icon="chevron-left" class="pg-lightbox__arrow-icon" />
 				</button>
-				<button v-if="showArrows" type="button" class="pg-lightbox__arrow pg-lightbox__next-arrow" @click="next" title="Seguente" aria-label="Seguente">
+				<button
+					v-if="showArrows"
+					type="button"
+					class="pg-lightbox__arrow pg-lightbox__next-arrow"
+					:title="$t('components.lightbox.next')"
+					:aria-label="$t('components.lightbox.next')"
+					@click="next">
 					<pg-icon icon="chevron-right" class="pg-lightbox__arrow-icon" />
 				</button>
 			</div>
@@ -33,6 +53,7 @@
 					class="pg-lightbox__thumbnail"
 					:style="thumbnailStyle(image)"
 					:class="thumbnailClass(image)"
+					:title="image.caption"
 					@click.stop="select(index)">
 				</div>
 			</div>
@@ -80,15 +101,14 @@ export default {
 	},
 
 	computed: {
-		subtitle() {
-			const currentImage = this.images[this.mutableIndex];
-
-			return [
-				this.mutableIndex + 1,
-				'di',
-				this.images.length,
-				currentImage.caption ? `&ndash; ${currentImage.caption}` : ''
-			].join(' ');
+		counter() {
+			return this.$t('components.lightbox.counter', {
+				current: this.mutableIndex + 1,
+				total: this.images.length
+			})
+		},
+		caption() {
+			return this.images[this.mutableIndex].caption;
 		},
 		showArrows() {
 			return this.arrows && this.images.length > 1;
@@ -163,11 +183,11 @@ export default {
 		// Update current index on cell change
 		this.flickity.on('select', () => {
 			this.mutableIndex = this.flickity.selectedIndex;
-			
-			if (!this.showThumbnails) return;
 
-			const thumb = this.$refs.thumbnails.childNodes[this.mutableIndex];
-			thumb.scrollIntoView();
+			if (this.showThumbnails) {
+				const thumb = this.$refs.thumbnails.childNodes[this.mutableIndex];
+				thumb.scrollIntoView();
+			}
 		});
 
 		// Focus
