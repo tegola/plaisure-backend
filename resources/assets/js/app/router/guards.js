@@ -5,7 +5,7 @@ const isAuthenticated = () => {
 
 /**
  * Redirect to login if needed.
- * 
+ *
  * @param  {Route}    to
  * @param  {Route}    from
  * @param  {Function} next
@@ -26,7 +26,7 @@ export const requireAuth = (to, from, next) => {
 
 /**
  * Go to home page if already authenticated.
- * 
+ *
  * @param  {Route}    to
  * @param  {Route}    from
  * @param  {Function} next

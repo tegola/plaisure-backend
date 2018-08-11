@@ -1,10 +1,10 @@
 /**
  * Human-readable distance formatter;
- * 
+ *
  * - More tha 10km -> '15km'
  * - More than 1km -> '1.5km'
  * - Less than 1km -> '150m'
- * 
+ *
  * @param {number} distance
  * @returns {string}
  */

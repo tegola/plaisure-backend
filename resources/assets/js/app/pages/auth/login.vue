@@ -31,7 +31,13 @@ export default {
 				email: '',
 				password: ''
 			}
-		}
+		};
+	},
+
+	meta() {
+		return {
+			title: this.$t('pages.login.meta_title')
+		};
 	},
 
 	validations: {
@@ -44,6 +50,10 @@ export default {
 				required
 			}
 		}
+	},
+
+	created() {
+		this.APP_NAME = APP_NAME;
 	},
 
 	methods: {
@@ -59,19 +69,15 @@ export default {
 			this.$store.dispatch('user/login', this.model)
 				.then(() => {
 					// Go to the next page
-					this.$router.push(this.redirect)
+					this.$router.push(this.redirect);
 				}).catch(error => {
 					console.log('error', error);
 				}).then(() => {
 					this.loading = false;
 				});
 		}
-	},
-
-	created() {
-		this.APP_NAME = APP_NAME
 	}
-}
+};
 </script>
 
 <template>
@@ -91,14 +97,14 @@ export default {
 							:label="$t('pages.login.email')"
 							:state="!$v.model.email.$error"
 							:invalid-feedback="$t('pages.login.email_error')">
-							<b-input type="email" v-model="model.email" autofocus />
+							<b-input v-model="model.email" type="email" autofocus />
 						</b-form-group>
 
 						<b-form-group
 							:label="$t('pages.login.password')"
 							:state="!$v.model.password.$error"
 							:invalid-feedback="$t('pages.login.password_error')">
-							<b-input type="password" v-model="model.password" />
+							<b-input v-model="model.password" type="password" />
 						</b-form-group>
 
 						<b-form-group>

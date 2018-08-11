@@ -18,6 +18,14 @@ export default {
 			counter: '{current} of {total}'
 		},
 
+		pane: {
+			loading: 'Loading'
+		},
+
+		modal: {
+			cancel: 'Cancel'
+		},
+
 		footer: {
 			venues: {
 				title: 'Venues',
@@ -46,7 +54,31 @@ export default {
 
 	// Pages ------------------------------------------------------------------
 	pages: {
+		home: {
+			title: 'Search game rooms nearby, find the highest jackpots and&nbsp;win!',
+			subtitle: 'Over 5000 venues available!',
+			search: 'Search',
+			city_placeholder: 'Type your city name',
+			location_placeholder: 'Near you',
+			location: 'Use your current location',
+			location_error: "We couldn't find your location",
+			submit: 'Search',
+			explore: {
+				intro: 'Feeling lucky?',
+				title: 'Explore venues nearby'
+			},
+			promote: {
+				intro: "It's your daily job?",
+				title: 'Promote your venue'
+			},
+			play_responsibly: {
+				intro: 'Be careful',
+				title: 'Play responsibly'
+			}
+		},
+
 		login: {
+			meta_title: 'Sign in',
 			title: 'Sign in',
 			intro: 'Type your e-mail and password to sign in to {name}',
 			email: 'E-mail address',
@@ -60,6 +92,7 @@ export default {
 		},
 
 		register: {
+			meta_title: 'Register',
 			title: 'Register to {name}',
 			intro: 'You will be able to claim your venue or publish a new one',
 			name: 'Name',
@@ -76,7 +109,7 @@ export default {
 			login2: 'Sign in'
 		},
 
-		detail: {
+		venue_detail: {
 			subtitle: '{category} in {city}',
 			gallery: {
 				add: 'Add photo',
@@ -107,7 +140,7 @@ export default {
 				pos: 'POS',
 				private_parking: 'Private parking spots',
 				restaurant: 'Restaurant',
-				security: 'Secuiryt',
+				security: 'Security',
 				smoking_area: 'Smoking area',
 				wifi: 'Wi-Fi'
 			},
@@ -143,6 +176,7 @@ export default {
 		},
 
 		about: {
+			meta_title: 'About & Contact',
 			company: {
 				title: 'About {name}',
 				paragraph1: "{name} è una start-up che combina le capacità tecnologiche di web e di design da un lato, e l'esperienza nel settore gioco a livello italiano e mondiale dall'altro.",  // FIXME
@@ -158,6 +192,10 @@ export default {
 				venues: 'To add a new venue or claim an existing one:',
 				report: 'To report an issue:'
 			}
+		},
+
+		play_responsibly: {
+			meta_title: 'Play responsibly'
 		},
 
 		error: {

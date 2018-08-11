@@ -1,5 +1,4 @@
 <script>
-import { stringify } from 'qs';
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
 import singularOrPlural from 'prontogioco/utilities/singular-or-plural';
@@ -38,7 +37,7 @@ export default {
 		const queryParams = this.$route.query;
 
 		// Prepare map center
-		let mapCenter = _extend({}, DEFAULT_COORDS)
+		let mapCenter = _extend({}, DEFAULT_COORDS);
 		if (['c_lat', 'c_lng'].every(key => key in queryParams)) {
 			mapCenter = {
 				lat: parseFloat(queryParams.c_lat),
@@ -54,7 +53,7 @@ export default {
 				east: parseFloat(queryParams.ne_lng),
 				south: parseFloat(queryParams.sw_lat),
 				west: parseFloat(queryParams.sw_lng)
-			}
+			};
 		}
 
 		// Prepare default search params
@@ -122,7 +121,12 @@ export default {
 	meta() {
 		return {
 			title: this.query
-		}
+		};
+	},
+
+	mounted() {
+		// Load initial data then search
+		this.loadData().then(this.search);
 	},
 
 	methods: {
@@ -257,7 +261,7 @@ export default {
 				return this.categories.find(item => {
 					return item.id == ids[0];
 				}).name;
-			} 
+			}
 
 			// More than one categories
 			if (ids.length > 1) {
@@ -422,11 +426,6 @@ export default {
 			// Select/deselect
 			this.selectedVenueId = this.selectedVenueId != venue.id ? venue.id : null;
 		}
-	},
-
-	mounted() {
-		// Load initial data then search
-		this.loadData().then(this.search);
 	}
 };
 </script>
@@ -434,22 +433,22 @@ export default {
 <template>
 	<div class="pg-explore-page">
 		<pg-navbar
-			fluid
-			slim
-			variant="dark"
 			:placeholder="placeholder"
 			:query="query"
 			:auto-submit="false"
+			fluid
+			slim
+			variant="dark"
 			@place-changed="onPlaceChanged">
 			<template slot="right">
 				<pg-button
+					v-if="$root.hasGeolocation"
+					:loading="locating"
+					:icon="userLocation ? 'location' : 'location-outline'"
 					variant="naked"
 					class="navbar__location-btn"
 					title="Usa la tua posizione"
 					aria-label="Usa la tua posizione"
-					:loading="locating"
-					:icon="userLocation ? 'location' : 'location-outline'"
-					v-if="$root.hasGeolocation"
 					@click="findUserLocation"
 				/>
 			</template>
@@ -458,22 +457,27 @@ export default {
 		<!-- Filters -->
 		<div class="filters">
 			<div class="d-flex">
-				<a v-if="$mq.constrained" class="filter-button filters__toggle-button" href="#" :title="showMap ? 'Mostra lista' : 'Mostra mappa'" @click="currentView = currentView == 'map' ? 'list' : 'map'">
+				<a
+					v-if="$mq.constrained"
+					:title="showMap ? 'Mostra lista' : 'Mostra mappa'"
+					class="filter-button filters__toggle-button"
+					href="#"
+					@click="currentView = currentView == 'map' ? 'list' : 'map'">
 					<pg-icon :icon="showMap ? 'list' : 'map'" />
 				</a>
-				<pg-filter-button label="Distanza" :text="radiusFilterText()" @close="onFilterClose" v-if="showRadiusFilter">
+				<pg-filter-button v-if="showRadiusFilter" :text="radiusFilterText()" label="Distanza" @close="onFilterClose">
 					<pg-pane class="filter-button-pane">
 						<pg-filter-button-item
 							v-for="radius in radiuses"
-							icon="bullet"
 							:key="radius"
 							:checked="isFilterItemSelected('radius', radius)"
+							icon="bullet"
 							@click="onRadiusSelect(radius)">
 							{{ radius }} km
 						</pg-filter-button-item>
 					</pg-pane>
 				</pg-filter-button>
-				<pg-filter-button label="Tipo" :text="categoryFilterText()" @close="onFilterClose">
+				<pg-filter-button :text="categoryFilterText()" label="Tipo" @close="onFilterClose">
 					<pg-pane class="filter-button-pane">
 						<pg-filter-button-item
 							v-for="category in categories"
@@ -505,9 +509,9 @@ export default {
 		</div>
 
 		<div class="wrapper">
-			<div class="venue-list px-0 col col-md-7 col-lg-6 col-xl-5" v-if="showList">
+			<div v-if="showList" class="venue-list px-0 col col-md-7 col-lg-6 col-xl-5">
 				<!-- Loader -->
-				<div v-if="loading" class="list-group-item venue-list-placeholder-item text-muted" v-cloak>
+				<div v-if="loading" v-cloak class="list-group-item venue-list-placeholder-item text-muted">
 					<pg-icon icon="circle-outline-notch" spinning />
 					<h4 class="mb-0">Caricamento&hellip;</h4>
 				</div>
@@ -521,7 +525,6 @@ export default {
 
 					<!-- Venue list -->
 					<pg-venue-list-item
-						v-if="venues.length"
 						v-for="venue in venues"
 						:venue="venue"
 						:highlighted="highlightedVenueId == venue.id"
@@ -529,8 +532,8 @@ export default {
 						:key="venue.id"
 						@mouseover="highlight(venue)"
 						@mouseout="highlight()"
-						@click="select(venue)">
-					</pg-venue-list-item>
+						@click="select(venue)"
+					/>
 
 					<!-- Limited results -->
 					<div v-if="hasMorePages" class="list-group-item text-muted text-center border-0 mt-0 mb-5">
@@ -540,12 +543,20 @@ export default {
 				</template>
 			</div>
 
-			<pg-map v-if="showMap" class="map" ref="map" :center="mapCenter" :zoom="13" :bounds="mapBounds" :options="mapOptions" @bounds_changed="onMapBoundsChange">
+			<pg-map
+				v-if="showMap"
+				ref="map"
+				:center="mapCenter"
+				:zoom="13"
+				:bounds="mapBounds"
+				:options="mapOptions"
+				class="map"
+				@bounds_changed="onMapBoundsChange">
 				<pg-map-marker v-if="userLocation" :position="userLocation" icon="/img/map/pin-user.svg" title="La tua posizione" />
 				<pg-map-marker v-for="(venue, index) in venues" :key="venue.id" :position="venue.coords" :icon="mapMarkerIcon(venue, index)" @click="select(venue)">
 					<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">
 						<div class="map-infowindow">
-							<img class="map-infowindow-icon" :src="`/img/avatars/${venueFirstCategoryMachineName(venue)}.svg`">
+							<img :src="`/img/avatars/${venueFirstCategoryMachineName(venue)}.svg`" class="map-infowindow-icon">
 							<div>
 								<h5 class="mb-0 font-weight-bold">
 									<router-link :to="`/venues/${venue.id}`">{{ venue.name }}</router-link>
@@ -564,7 +575,7 @@ export default {
 							class="btn map-btn map-refresh-btn"
 							aria-label="Cerca in questa zona"
 							@click="onSearchBoundsClick">
-							<pg-icon icon="refresh"></pg-icon>
+							<pg-icon icon="refresh" />
 						</button>
 						<b-tooltip
 							target="desktop-refresh-btn"
@@ -574,7 +585,7 @@ export default {
 							Cerca in questa zona
 						</b-tooltip>
 					</template>
-					<div class="container-fluid map-floating-controls" v-if="$mq.constrained && mapNeedsRefresh" v-cloak>
+					<div v-if="$mq.constrained && mapNeedsRefresh" v-cloak class="container-fluid map-floating-controls">
 						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">Cerca qui</button>
 					</div>
 				</template>

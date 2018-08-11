@@ -1,19 +1,3 @@
-<template>
-	<div class="pg-pane">
-		<template v-if="!loading">
-			<div class="pg-pane__inner" @scroll="calcShadows" ref="inner" @DOMSubtreeModified="calcShadows">
-				<slot></slot>
-			</div>
-			<div class="pg-pane__top-shadow" :style="topShadowStyles"></div>
-			<div class="pg-pane__bottom-shadow" :style="bottomShadowStyles"></div>
-		</template>
-		<div v-if="loading" class="pg-pane__loader">
-			<pg-icon icon="circle-outline-notch" spinning />
-			Caricamento&hellip;
-		</div>
-	</div>
-</template>
-
 <script>
 import PgIcon from './icon';
 import _throttle from 'lodash/throttle';
@@ -26,8 +10,14 @@ export default {
 	},
 
 	props: {
-		loading: Boolean,
-		shadow: String // top, bottom, both
+		loading: {
+			type: Boolean,
+			default: false
+		},
+		shadow: {
+			type: String,
+			default: null // top, bottom, both
+		}
 	},
 
 	data() {
@@ -47,7 +37,7 @@ export default {
 			return {
 				opacity: this.showBottomShadow ? 1 : 0
 			};
-		},
+		}
 	},
 
 	methods: {
@@ -65,3 +55,19 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<div class="pg-pane">
+		<template v-if="!loading">
+			<div ref="inner" class="pg-pane__inner" @scroll="calcShadows" @DOMSubtreeModified="calcShadows">
+				<slot />
+			</div>
+			<div :style="topShadowStyles" class="pg-pane__top-shadow" />
+			<div :style="bottomShadowStyles" class="pg-pane__bottom-shadow" />
+		</template>
+		<div v-if="loading" class="pg-pane__loader">
+			<pg-icon icon="circle-outline-notch" spinning />
+			{{ $t('components.pane.loading') }}&hellip;
+		</div>
+	</div>
+</template>

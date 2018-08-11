@@ -14,20 +14,14 @@ export default [
 		name: 'login',
 		component: () => import('prontogioco/app/pages/auth/login'),
 		props: route => ({ redirect: route.query.redirect }),
-		beforeEnter: redirectIfAuthenticated,
-		meta: {
-			title: 'Accedi'
-		}
+		beforeEnter: redirectIfAuthenticated
 	},
 	{
 		path: '/register',
 		name: 'register',
 		component: () => import('prontogioco/app/pages/auth/register'),
 		props: route => ({ redirect: route.query.redirect }),
-		beforeEnter: redirectIfAuthenticated,
-		meta: {
-			title: 'Registrati'
-		}
+		beforeEnter: redirectIfAuthenticated
 	},
 
 	// User -------------------------------------------------------------------
@@ -37,7 +31,7 @@ export default [
 		component: () => import('prontogioco/app/pages/user/form'),
 		meta: {
 			title: 'Modifica i tuoi dati'
-		},
+		}
 	},
 	{
 		path: '/user/venues',
@@ -45,7 +39,7 @@ export default [
 		component: () => import('prontogioco/app/pages/user/venues'),
 		meta: {
 			title: 'Gestisci le tue attività'
-		},
+		}
 	},
 
 	// Explore ----------------------------------------------------------------
@@ -98,25 +92,19 @@ export default [
 	{
 		path: '/about',
 		name: 'about',
-		component: () => import('prontogioco/app/pages/about'),
-		meta: {
-			title: 'Chi siamo'
-		}
+		component: () => import('prontogioco/app/pages/about')
 	},
 
 	// Play responsibly -------------------------------------------------------
 	{
 		path: '/play-responsibly',
 		name: 'playResponsibly',
-		component: () => import('prontogioco/app/pages/play-responsibly'),
-		meta: {
-			title: 'Gioca responsabilmente'
-		}
+		component: () => import('prontogioco/app/pages/play-responsibly')
 	},
 
 	// Catch all --------------------------------------------------------------
 	{
-	    path: '*',
-	    component: () => import('prontogioco/app/pages/error')
+		path: '*',
+		component: () => import('prontogioco/app/pages/error')
 	}
-]
+];

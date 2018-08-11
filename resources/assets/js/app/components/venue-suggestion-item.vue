@@ -1,10 +1,3 @@
-<template>
-	<a class="dropdown-item" href="#">
-		<div class="text-truncate" :title="item.name">{{ item.name }}</div>
-		<div v-if="metadata" class="text-truncate text-muted" :title="metadata">{{ metadata }}</div>
-	</a>
-</template>
-
 <script>
 export default {
 	props: {
@@ -27,3 +20,10 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<a class="dropdown-item" href="#">
+		<div :title="item.name" class="text-truncate">{{ item.name }}</div>
+		<div v-if="metadata" :title="metadata" class="text-truncate text-muted">{{ metadata }}</div>
+	</a>
+</template>

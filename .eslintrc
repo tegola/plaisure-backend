@@ -10,23 +10,26 @@
         "google": true // Google maps
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:vue/recommended"
+        "plugin:vue/recommended",
+        "eslint:recommended"
     ],
     "plugins": ["vue"],
     "parserOptions": {
+        "parser": "babel-eslint",
         "sourceType": "module"
     },
     "rules": {
         "indent": ["error", "tab", {
             "SwitchCase": 1
         }],
-        "linebreak-style": ["error", "unix"],
         "no-console": "off",
+        "semi": ["error", "always"],
         "quotes": ["error", "single", {
             "avoidEscape": true
         }],
-        "semi": ["error", "always"],
-        "comma-dangle": ["error", "never"]
+        "comma-dangle": ["error", "never"],
+        "no-trailing-spaces": "error",
+        "vue/html-indent": ["error", "tab"],
+        "vue/max-attributes-per-line": "off"
     }
 }

@@ -1,20 +1,15 @@
-<template>
-	<div class="pg-image-frame" :style="styles">
-		<div :style="sizerStyles"></div>
-		<div class="pg-image-frame__content" v-if="$slots.default">
-			<slot></slot>
-		</div>
-	</div>
-</template>
-
 <script>
 export default {
 	name: 'PgImageFrame',
 
 	props: {
-		src: String,
+		src: {
+			type: String,
+			default: ''
+		},
 		ratio: {
 			type: String,
+			default: '3:2',
 			validator: value => value.match(/^(\d+):(\d+)$/)
 		}
 	},
@@ -22,8 +17,8 @@ export default {
 	computed: {
 		styles() {
 			return {
-				backgroundImage: this.src ? `url(${this.src})` : null,
-			}
+				backgroundImage: this.src ? `url(${this.src})` : null
+			};
 		},
 
 		sizerStyles() {
@@ -32,8 +27,17 @@ export default {
 
 			return {
 				paddingTop: `${padding}%`
-			}
+			};
 		}
 	}
 };
 </script>
+
+<template>
+	<div :style="styles" class="pg-image-frame">
+		<div :style="sizerStyles" />
+		<div v-if="$slots.default" class="pg-image-frame__content">
+			<slot />
+		</div>
+	</div>
+</template>

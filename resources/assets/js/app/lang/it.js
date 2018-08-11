@@ -18,6 +18,14 @@ export default {
 			counter: '{current} di {total}'
 		},
 
+		pane: {
+			loading: 'Caricamento'
+		},
+
+		modal: {
+			cancel: 'Annulla'
+		},
+
 		footer: {
 			venues: {
 				title: 'Sale ed esercizi',
@@ -46,7 +54,31 @@ export default {
 
 	// Pages ------------------------------------------------------------------
 	pages: {
+		home: {
+			title: 'Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!',
+			subtitle: 'Più di 5000 sale tra cui&nbsp;scegliere!',
+			search: 'Cerca',
+			city_placeholder: 'Scrivi la tua città',
+			location_placeholder: 'Vicino a te',
+			location: 'Usa la tua posizione',
+			location_error: 'Non è stato possibile trovare la tua posizione',
+			submit: 'Cerca',
+			explore: {
+				intro: 'Ti senti fortunato?',
+				title: 'Esplora la tua zona'
+			},
+			promote: {
+				intro: 'Sei nel campo?',
+				title: 'Promuovi la tua attività'
+			},
+			play_responsibly: {
+				intro: 'Non esagerare',
+				title: 'Gioca responsabilmente'
+			}
+		},
+
 		login: {
+			meta_title: 'Accedi',
 			title: 'Accedi',
 			intro: 'Inserisci e-mail e password per accedere a {name}',
 			email: 'Indirizzo e-mail',
@@ -60,6 +92,7 @@ export default {
 		},
 
 		register: {
+			meta_title: 'Iscriviti',
 			title: 'Iscriviti a {name}',
 			intro: 'Potrai così registrare o modificare la tua attività.',
 			name: 'Nome',
@@ -76,7 +109,7 @@ export default {
 			login2: 'Accedi'
 		},
 
-		detail: {
+		venue_detail: {
 			subtitle: '{category} a {city}',
 			gallery: {
 				add: 'Aggiungi foto',
@@ -143,6 +176,7 @@ export default {
 		},
 
 		about: {
+			meta_title: 'Informazioni e contatti',
 			company: {
 				title: "Che cos'è {name}",
 				paragraph1: "{name} è una start-up che combina le capacità tecnologiche di web e di design da un lato, e l'esperienza nel settore gioco a livello italiano e mondiale dall'altro.",
@@ -158,6 +192,10 @@ export default {
 				venues: "Per aggiungere o rivendicare un'attività:",
 				report: 'Per segnalare un errore:'
 			}
+		},
+
+		play_responsibly: {
+			meta_title: 'Gioca senza esagerare'
 		},
 
 		error: {

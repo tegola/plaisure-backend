@@ -50,7 +50,7 @@ export default {
 			},
 			set(value) {
 				switch (value) {
-					case 'closed': 
+					case 'closed':
 						this.mutableValue = [];
 						break;
 
@@ -63,10 +63,10 @@ export default {
 						break;
 
 					case 'always':
-						this.mutableValue = ['00:00', '24:00']
+						this.mutableValue = ['00:00', '24:00'];
 				}
 
-				this.$emit('input', this.mutableValue)
+				this.$emit('input', this.mutableValue);
 			}
 		},
 
@@ -106,7 +106,7 @@ export default {
 			</b-select>
 		</b-form-group>
 
-		<div class="form-row" v-if="showControls">
+		<div v-if="showControls" class="form-row">
 			<b-form-group
 				:label="showSecondaryControls ? 'Mattina (dalle/alle)' : 'Dalle/alle'"
 				class="col-sm-6">
@@ -114,12 +114,12 @@ export default {
 					<b-select
 						:value="value[0]"
 						@change="onTimeChange(0, $event)">
-						<option v-for="option in options">{{ option }}</option>
+						<option v-for="(option, index) in options" :key="index">{{ option }}</option>
 					</b-select>
 					<b-select
 						:value="value[1]"
 						@change="onTimeChange(1, $event)">
-						<option v-for="option in options">{{ option }}</option>
+						<option v-for="(option, index) in options" :key="index">{{ option }}</option>
 					</b-select>
 				</b-input-group>
 			</b-form-group>
@@ -131,12 +131,12 @@ export default {
 					<b-select
 						:value="value[2]"
 						@change="onTimeChange(2, $event)">
-						<option v-for="option in options">{{ option }}</option>
+						<option v-for="(option, index) in options" :key="index">{{ option }}</option>
 					</b-select>
 					<b-select
 						:value="value[3]"
 						@change="onTimeChange(3, $event)">
-						<option v-for="option in options">{{ option }}</option>
+						<option v-for="(option, index) in options" :key="index">{{ option }}</option>
 					</b-select>
 				</b-input-group>
 			</b-form-group>

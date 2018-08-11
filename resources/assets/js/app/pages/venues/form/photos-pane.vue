@@ -16,7 +16,7 @@ export default {
 		PgConfirmModal,
 		PgUploader
 	},
-	
+
 	props: {
 		photos: {
 			type: Array,
@@ -28,12 +28,12 @@ export default {
 		return {
 			mutablePhotos: this.photos,
 			uploaderHeaders: {
-				'X-CSRF-TOKEN': pg.csrfToken
+				// 'X-CSRF-TOKEN': pg.csrfToken
 			},
 			uploaderFiles: [],
 			confirmDeleteOpen: false,
 			currentPhoto: null
-		}
+		};
 	},
 
 	watch: {
@@ -55,8 +55,8 @@ export default {
 
 				// Upload successful
 				if (newFile.success !== oldFile.success) {
-					this.mutablePhotos.push(newFile.response)
-					this.$emit('update:photos', this.mutablePhotos)
+					this.mutablePhotos.push(newFile.response);
+					this.$emit('update:photos', this.mutablePhotos);
 					this.$refs.uploader.remove(newFile);
 				}
 			}
@@ -79,12 +79,12 @@ export default {
 			this.$emit('update:photos', this.mutablePhotos);
 		}
 	}
-}
+};
 </script>
 
 <template>
 	<div>
-		<div class="row" :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }">
+		<div :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }" class="row">
 			<!-- Current photos -->
 			<div v-for="photo in mutablePhotos" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
 				<a :href="photo.resized_url" target="_blank">
@@ -100,7 +100,7 @@ export default {
 						<span v-if="file.error" class="text-danger small"><strong>Errore</strong><br>{{ file.error }}</span>
 						<template v-else>
 							Caricamento
-							<b-progress class="w-75 my-2" style="height: 2px" :value="parseFloat(file.progress)" />
+							<b-progress :value="parseFloat(file.progress)" class="w-75 my-2" style="height: 2px" />
 							{{ file.progress }}%
 						</template>
 					</div>
@@ -111,14 +111,14 @@ export default {
 			<!-- Uploader -->
 			<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
 				<pg-uploader
-					class="embed-responsive embed-responsive-1by1 rounded"
 					ref="uploader"
-					accept="image/*"
-					multiple
 					:drop="true"
-					post-action="/files"
 					:headers="uploaderHeaders"
 					v-model="uploaderFiles"
+					class="embed-responsive embed-responsive-1by1 rounded"
+					accept="image/*"
+					multiple
+					post-action="/files"
 					@input-file="onUploaderFileInput">
 					<a class="embed-responsive-item text-primary border d-flex flex-column align-items-center justify-content-center">
 						<pg-icon icon="plus" />

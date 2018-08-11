@@ -4,7 +4,7 @@ import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import BCheckbox from 'bootstrap-vue/es/components/form-checkbox/form-checkbox';
 import BCheckboxGroup from 'bootstrap-vue/es/components/form-checkbox/form-checkbox-group';
 
-import formGroupProps from './form-group-props'
+import formGroupProps from './form-group-props';
 
 export default {
 	name: 'PgVenueFormCategoriesPane',
@@ -40,9 +40,9 @@ export default {
 	computed: {
 		$v() {
 			return this.$parent.$v.venue;
-		},
+		}
 	}
-}
+};
 </script>
 
 <template>
@@ -59,70 +59,70 @@ export default {
 		</b-form-group>
 
 		<b-form-group
-			label="N. macchine VLT"
 			v-bind="formGroupProps"
 			:state="!$v.vlt_machine_count.$error"
+			label="N. macchine VLT"
 			invalid-feedback="Valore non valido.">
 			<div class="form-row">
 				<div class="col-md-3 col-lg-2">
-					<b-input type="number" v-model.number="venue.vlt_machine_count" min="0" />
+					<b-input v-model.number="venue.vlt_machine_count" type="number" min="0" />
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
-			label="N. macchine AWP"
 			v-bind="formGroupProps"
 			:state="!$v.awp_machine_count.$error"
+			label="N. macchine AWP"
 			invalid-feedback="Valore non valido.">
 			<div class="form-row">
 				<div class="col-md-3 col-lg-2">
-					<b-input type="number" v-model.number="venue.awp_machine_count" min="0" />
+					<b-input v-model.number="venue.awp_machine_count" type="number" min="0" />
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
-			label="Posti a sedere"
 			v-bind="formGroupProps"
 			:state="!$v.seating_capacity.$error"
+			label="Posti a sedere"
 			invalid-feedback="Valore non valido.">
 			<div class="form-row">
 				<div class="col-md-3 col-lg-2">
-					<b-input type="number" v-model.number="venue.seating_capacity" min="0" />
+					<b-input v-model.number="venue.seating_capacity" type="number" min="0" />
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
-			label="Posti auto"
 			v-bind="formGroupProps"
 			:state="!$v.parking_capacity.$error"
+			label="Posti auto"
 			invalid-feedback="Valore non valido.">
 			<div class="form-row">
 				<div class="col-md-3 col-lg-2">
-					<b-input type="number" v-model.number="venue.parking_capacity" min="0" />
+					<b-input v-model.number="venue.parking_capacity" type="number" min="0" />
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
+			v-bind="formGroupProps"
 			label="Piattaforme VLT"
-			label-class="pt-0"
-			v-bind="formGroupProps">
+			label-class="pt-0">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-checkbox-group v-model="venue.vlt_platform_ids" stacked>
-						<b-checkbox v-for="item in vltPlatforms" :value="item.id" :key="item.id">{{ item.name}}</b-checkbox>
+						<b-checkbox v-for="item in vltPlatforms" :value="item.id" :key="item.id">{{ item.name }}</b-checkbox>
 					</b-checkbox-group>
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
+			v-bind="formGroupProps"
 			label="Comodità"
-			label-class="pt-0"
-			v-bind="formGroupProps">
+			label-class="pt-0">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<div><b-checkbox v-model="venue.amenities.atm">Totem Bancomat</b-checkbox></div>
@@ -139,13 +139,13 @@ export default {
 		</b-form-group>
 
 		<b-form-group
+			v-bind="formGroupProps"
 			label="Piattaforme Pay Per View"
-			label-class="pt-0"
-			v-bind="formGroupProps">
+			label-class="pt-0">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-checkbox-group v-model="venue.pay_per_view_platform_ids" stacked>
-						<b-checkbox v-for="item in payPerViewPlatforms" :value="item.id" :key="item.id">{{ item.name}}</b-checkbox>
+						<b-checkbox v-for="item in payPerViewPlatforms" :value="item.id" :key="item.id">{{ item.name }}</b-checkbox>
 					</b-checkbox-group>
 				</div>
 			</div>

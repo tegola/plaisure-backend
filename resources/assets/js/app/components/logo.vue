@@ -16,19 +16,19 @@ export default {
 	computed: {
 		viewBox() {
 			if (this.text && this.symbol) {
-				return '0 0 196 42'
+				return '0 0 196 42';
 			} else if (!this.text) {
 				return '0 0 29 42';
 			} else if (!this.symbol) {
-				return '40 10 155 20'
+				return '40 10 155 20';
 			}
 		}
 	}
-}
+};
 </script>
 
 <template>
-	<svg xmlns="http://www.w3.org/2000/svg" :viewBox="viewBox" class="pg-logo">
+	<svg :viewBox="viewBox" xmlns="http://www.w3.org/2000/svg" class="pg-logo">
 		<defs>
 			<linearGradient id="pg-logo-shadow-gradient" x1="0%" y1="50%" y2="50%">
 				<stop stop-color="#144F12" offset="0%"/>

@@ -1,21 +1,30 @@
 <script>
 import BButton from 'bootstrap-vue/es/components/button/button';
-import PgIcon from 'prontogioco/app/components/icon'
+import PgIcon from 'prontogioco/app/components/icon';
 
 export default {
 	name: 'PgButton',
-
-	inheritAttrs: false,
 
 	components: {
 		BButton,
 		PgIcon
 	},
 
+	inheritAttrs: false,
+
 	props: {
-		disabled: Boolean,
-		loading: Boolean,
-		icon: String
+		disabled: {
+			type: Boolean,
+			default: false
+		},
+		loading: {
+			type: Boolean,
+			default: false
+		},
+		icon: {
+			type: String,
+			default: ''
+		}
 	},
 
 	computed: {
@@ -23,16 +32,16 @@ export default {
 			return this.disabled || this.loading;
 		}
 	}
-}
+};
 </script>
 
 <template>
-	<b-button v-bind="$attrs" v-on="$listeners" :disabled="isDisabled">
+	<b-button v-bind="$attrs" :disabled="isDisabled" v-on="$listeners">
 		<pg-icon
 			v-if="icon || loading"
 			:icon="loading ? 'circle-outline-notch' : icon"
 			:spinning="loading"
 		/>
-		<slot></slot>
+		<slot />
 	</b-button>
 </template>

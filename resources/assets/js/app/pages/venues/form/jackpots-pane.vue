@@ -3,7 +3,7 @@ import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import BInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
 
-import formGroupProps from './form-group-props'
+import formGroupProps from './form-group-props';
 
 export default {
 	name: 'PgVenueFormJackpotsPane',
@@ -32,7 +32,7 @@ export default {
 			return this.$parent.$v.venue;
 		}
 	}
-}
+};
 </script>
 
 <template>
@@ -44,15 +44,15 @@ export default {
 			invalid-feedback="Inserisci nu numero valido.">
 			<div class="form-row">
 				<div class="col-md col-lg-5">
-					<b-input placeholder="Nome" v-model="venue.jackpots[n].label" />
+					<b-input v-model="venue.jackpots[n].label" placeholder="Nome" />
 				</div>
 				<div class="col-md col-lg-4">
 					<b-input-group prepend="€">
 						<b-input
+							v-model.number="venue.jackpots[n].value"
 							type="number"
 							class="text-right"
 							placeholder="Valore"
-							v-model.number="venue.jackpots[n].value"
 							min="0"
 							step="0.01"
 						/>

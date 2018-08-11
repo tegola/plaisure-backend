@@ -1,15 +1,15 @@
 <template>
-	<pg-popup :visible.sync="popupVisible" placement="bottom-start" append-to-body @close="onPopupClose" popup-class="filter-button-popup">
-		<div class="filter-button" :class="{ 'filter-button--open': popupVisible }" @click="popupVisible = !popupVisible">
+	<pg-popup :visible.sync="popupVisible" placement="bottom-start" append-to-body popup-class="filter-button-popup" @close="onPopupClose">
+		<div :class="{ 'filter-button--open': popupVisible }" class="filter-button" @click="popupVisible = !popupVisible">
 			<div>
 				<span class="filter-button__label">{{ label }}</span>
 				<pg-icon icon="chevron-down" class="filter-button__arrow" />
 			</div>
-			<div class="filter-button__text" v-if="text">{{ text }}</div>
-			<div class="filter-button__text filter-button__placeholder" v-if="!text">{{ placeholder }}</div>
+			<div v-if="text" class="filter-button__text">{{ text }}</div>
+			<div v-if="!text" class="filter-button__text filter-button__placeholder">{{ placeholder }}</div>
 		</div>
 		<template slot="popup">
-			<slot></slot>
+			<slot />
 		</template>
 	</pg-popup>
 </template>
@@ -29,7 +29,10 @@ export default {
 			type: String,
 			required: true
 		},
-		placeholder: String,
+		placeholder: {
+			type: String,
+			default: ''
+		},
 		text: {
 			type: String,
 			default: ''
@@ -38,7 +41,7 @@ export default {
 
 	data() {
 		return {
-			popupVisible: false,
+			popupVisible: false
 		};
 	},
 

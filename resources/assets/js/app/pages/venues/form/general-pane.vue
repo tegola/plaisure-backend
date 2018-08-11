@@ -15,7 +15,7 @@ import {
 	Marker as PgMapMarker,
 	InfoWindow as PgMapInfoWindow
 } from 'vue2-google-maps';
-import formGroupProps from './form-group-props'
+import formGroupProps from './form-group-props';
 import { DEFAULT_COORDS } from 'prontogioco/constants';
 
 export default {
@@ -66,7 +66,7 @@ export default {
 			mapCenter = {
 				lat: coords.lat,
 				lng: coords.lng
-			}
+			};
 		} else {
 			mapCenter = DEFAULT_COORDS;
 		}
@@ -133,14 +133,14 @@ export default {
 				address.street,
 				address.number,
 				address.postcode,
-				address.city, 
+				address.city,
 				address.province
 			].join(', ');
 
 			this.findingMarkerLocation = true;
 
 			geocode(addressString, (error, results) => {
-				this.findingMarkerLocation = false
+				this.findingMarkerLocation = false;
 
 				if (error) return;
 
@@ -164,18 +164,18 @@ export default {
 			this.$emit('update:coords', {
 				lat: markerCoords.lat(),
 				lng: markerCoords.lng()
-			})
+			});
 		}
 	}
-}
+};
 </script>
 
 <template>
 	<div>
 		<b-form-group
-			label="Nome"
 			v-bind="formGroupProps"
 			:state="!$v.name.$error"
+			label="Nome"
 			invalid-feedback="Inserisci il nome della tua attività.">
 			<div class="form-row">
 				<div class="col-lg-9">
@@ -185,21 +185,21 @@ export default {
 		</b-form-group>
 
 		<b-form-group
-			label="Concessionario"
-			v-bind="formGroupProps">
+			v-bind="formGroupProps"
+			label="Concessionario">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-select v-model="venue.concessionaire_id">
 						<option :value="null">Nessuno</option>
-						<option v-for="item in concessionaires" :value="item.id">{{ item.name }}</option>
+						<option v-for="item in concessionaires" :value="item.id" :key="item.id">{{ item.name }}</option>
 					</b-select>
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
-			label="Descrizione"
-			v-bind="formGroupProps">
+			v-bind="formGroupProps"
+			label="Descrizione">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-textarea v-model="venue.description" rows="2" />
@@ -208,37 +208,37 @@ export default {
 		</b-form-group>
 
 		<b-form-group
-			label="Dimensioni"
 			v-bind="formGroupProps"
 			:state="!$v.surface_size.$error"
+			label="Dimensioni"
 			invalid-feedback="Inserisci le dimensioni.">
 			<div class="form-row">
 				<div class="col-5 col-md-4 col-lg-3 col-xl-2">
 					<b-input-group append="mq.">
-						<b-input type="number" v-model.number="venue.surface_size" min="1" />
+						<b-input v-model.number="venue.surface_size" type="number" min="1" />
 					</b-input-group>
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
-			label="Categoria"
-			label-class="pt-0"
 			v-bind="formGroupProps"
 			:state="!$v.category_ids.$error"
+			label="Categoria"
+			label-class="pt-0"
 			invalid-feedback="Scegli almeno una categoria.">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-checkbox-group v-model="venue.category_ids" stacked>
-						<b-checkbox v-for="category in categories" :value="category.id" :key="category.id">{{ category.name}}</b-checkbox>
+						<b-checkbox v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</b-checkbox>
 					</b-checkbox-group>
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
-			label="Indirizzo"
-			v-bind="formGroupProps">
+			v-bind="formGroupProps"
+			label="Indirizzo">
 			<div class="form-row">
 				<div class="col-9 col-lg-6">
 					<b-input v-model="mutableAddress.street" placeholder="Via" />
@@ -249,8 +249,8 @@ export default {
 			</div>
 		</b-form-group>
 		<b-form-group
-			label="CIttà"
-			v-bind="formGroupProps">
+			v-bind="formGroupProps"
+			label="Città">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-input v-model="mutableAddress.city" />
@@ -258,9 +258,9 @@ export default {
 			</div>
 		</b-form-group>
 		<b-form-group
-			label="CAP e provincia"
 			v-bind="formGroupProps"
 			:state="!$v.address.$error"
+			label="CAP e provincia"
 			invalid-feedback="Inserisci tutti i dati dell'indirizzo.">
 			<div class="form-row">
 				<div class="col-3 col-lg-3">
@@ -273,18 +273,18 @@ export default {
 		</b-form-group>
 
 		<b-form-group
-			label="Posizione esatta"
-			v-bind="formGroupProps">
+			v-bind="formGroupProps"
+			label="Posizione esatta">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<div class="embed-responsive embed-responsive-3by2 rounded">
-						<pg-map class="embed-responsive-item" :center="mapCenter" :zoom="mapZoom">
+						<pg-map :center="mapCenter" :zoom="mapZoom" class="embed-responsive-item">
 							<pg-map-marker
 								v-if="markerPosition"
 								:position="markerPosition"
 								:draggable="canDragMarker"
-								@dragend="onMarkerDragEnd">
-							</pg-map-marker>
+								@dragend="onMarkerDragEnd"
+							/>
 						</pg-map>
 					</div>
 				</div>

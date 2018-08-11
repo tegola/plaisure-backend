@@ -44,7 +44,10 @@ export default {
 	mixins: [validationMixin],
 
 	props: {
-		venueId: [String, Number]
+		venueId: {
+			type: [String, Number],
+			default: null
+		}
 	},
 
 	data() {
@@ -67,22 +70,30 @@ export default {
 			venue: null,
 			venueBackup: null,
 			transition: ''
-		}
+		};
 	},
 
 	computed: {
 		isSaved() {
 			return _isEqual(this.venue, this.venueBackup);
-		},
+		}
 	},
 
 	meta() {
 		return {
 			title: this.venue && this.venue.id ? 'Modifica attività' : 'Aggiungi attività'
-		}
+		};
 	},
 
 	validations,
+
+	beforeCreate() {
+		_extend(this, constants);
+	},
+
+	mounted() {
+		this.loadData();
+	},
 
 	methods: {
 		loadData() {
@@ -105,15 +116,15 @@ export default {
 						category_ids: data.venue.categories.map(category => category.id),
 						pay_per_view_platform_ids: data.venue.pay_per_view_platforms.map(platform => platform.id),
 						vlt_platform_ids: data.venue.vlt_platforms.map(platform => platform.id)
-					})
+					});
 
 					this.venue = _cloneDeep(venue);
 					this.venueBackup = _cloneDeep(venue);
 
 					setTimeout(() => {
 						this.loading = false;
-					}, 500)
-				})
+					}, 500);
+				});
 		},
 
 		selectPane(newPane) {
@@ -149,7 +160,7 @@ export default {
 
 			// Prepare url
 			let url = '/venues';
-			if (this.venueId) url += `/${this.venueId}`
+			if (this.venueId) url += `/${this.venueId}`;
 
 			this.$axios.post(url, this.venue)
 				.then(() => {
@@ -157,25 +168,17 @@ export default {
 					this.venueBackup = _cloneDeep(this.venue);
 				}).catch(() => {}).then(() => {
 					this.saving = false;
-				})
+				});
 		}
-	},
-
-	beforeCreate() {
-		_extend(this, constants);
-	},
-
-	mounted() {
-		this.loadData()
 	}
-}
+};
 </script>
 
 <template>
 	<div>
 		<pg-navbar variant="dark" />
 
-		<div class="container d-flex text-muted text-center" style="height: 50vh" v-if="loading">
+		<div v-if="loading" class="container d-flex text-muted text-center" style="height: 50vh">
 			<div class="m-auto">
 				<pg-icon icon="circle-outline-notch" spinning />
 				<h5 class="m-0">{{ venueId ? 'Carica la tua attività' : 'Preparo una nuova attività' }}&hellip;</h5>
@@ -184,14 +187,14 @@ export default {
 
 		<div v-if="!loading && venue">
 			<!-- Small screen menu -->
-			<div class="sticky-top" v-if="$mq.constrained">
+			<div v-if="$mq.constrained" class="sticky-top">
 				<div class="navbar navbar-light navbar-expand">
 					<div class="container">
 						<h2 class="h4 mb-0">{{ venueId ? 'Modifica' : 'Aggiungi' }} attività</h2>
 						<pg-button
-							variant="primary"
 							:disabled="isSaved"
 							:loading="saving"
+							variant="primary"
 							@click="submit">
 							{{ venueId ? 'Salva' : 'Aggiungi' }}
 						</pg-button>
@@ -220,33 +223,33 @@ export default {
 							<div class="card">
 								<div class="card-body">
 									<h2 class="h4 mb-0">{{ venueId ? 'Modifica' : 'Aggiungi' }} attività</h2>
-									<p class="mb-0 text-muted" v-if="venueId">
+									<p v-if="venueId" class="mb-0 text-muted">
 										<router-link :to="`/venues/${venueId}`" title="Apri pagina">{{ venue.name || '(nessun nome)' }}</router-link>
 									</p>
 								</div>
 								<b-list-group flush>
 									<b-list-group-item
-										href="#"
 										v-for="pane in panes"
 										:key="pane.value"
 										:active="selectedPane == pane.value"
+										href="#"
 										@click="selectPane(pane)">
 										<strong>{{ pane.title }}</strong>
 									</b-list-group-item>
 								</b-list-group>
 							</div>
 							<pg-button
+								:disabled="isSaved"
+								:loading="saving"
 								block
 								class="mt-3"
 								variant="primary"
-								:disabled="isSaved"
-								:loading="saving"
 								@click="submit">
 								{{ venueId ? 'Salva' : 'Aggiungi' }}
 							</pg-button>
 						</template>
 					</div>
-					<div class="col-md-9" ref="paneContainer">
+					<div ref="paneContainer" class="col-md-9">
 						<div class="position-relative">
 							<h4>{{ panes.find(pane => selectedPane == pane.value).title }}</h4>
 							<transition :name="transition" @enter="onPaneSwitch">
@@ -265,8 +268,8 @@ export default {
 								<pg-venue-form-services-pane
 									v-if ="selectedPane == 'services'"
 									:venue="venue"
-									:vltPlatforms="vltPlatforms"
-									:payPerViewPlatforms="payPerViewPlatforms"
+									:vlt-platforms="vltPlatforms"
+									:pay-per-view-platforms="payPerViewPlatforms"
 								/>
 							</transition>
 							<transition :name="transition" @enter="onPaneSwitch">

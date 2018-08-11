@@ -1,20 +1,24 @@
 <template>
-	<div class="list-group-item venue-list-item" :class="classes" @mouseover="onMouseOver" @mouseout="onMouseOut" @click="onClick">
+	<div :class="classes" class="list-group-item venue-list-item" @mouseover="onMouseOver" @mouseout="onMouseOut" @click="onClick">
 		<div class="row align-items-center">
 			<div class="col-3 pr-0">
 				<div class="embed-responsive embed-responsive-4by3">
-					<div v-if="photo" class="embed-responsive-item venue-list-item-photo" :style="`background-image: url(${photo.resized_url})`"></div>
+					<div
+						v-if="photo"
+						:style="`background-image: url(${photo.resized_url})`"
+						class="embed-responsive-item venue-list-item-photo"
+					/>
 					<div v-else class="embed-responsive-item venue-list-item-photo">
-						<img class="venue-list-item-icon" :src="`/img/avatars/${firstCategoryMachineName}.svg`">
+						<img :src="`/img/avatars/${firstCategoryMachineName}.svg`" class="venue-list-item-icon">
 					</div>
 				</div>
 			</div>
 			<div class="col-9">
 				<div class="d-flex w-100 justify-content-between">
 					<h5 class="mb-0 font-weight-bold">
-						<router-link class="text-inherit" :to="`/venues/${venue.id}`">{{ venue.name }}</router-link>
+						<router-link :to="`/venues/${venue.id}`" class="text-inherit">{{ venue.name }}</router-link>
 					</h5>
-					<div class="text-muted ml-3 text-nowrap" v-if="venue.distance">
+					<div v-if="venue.distance" class="text-muted ml-3 text-nowrap">
 						{{ venue.distance | formatDistance }}<br>
 					</div>
 				</div>
@@ -29,17 +33,23 @@
 import formatDistance from 'prontogioco/utilities/format-distance';
 
 export default {
+	filters: {
+		formatDistance: formatDistance
+	},
+
 	props: {
 		venue: {
 			type: Object,
 			required: true
 		},
-		highlighted: Boolean,
-		selected: Boolean
-	},
-
-	filters: {
-		formatDistance: formatDistance
+		highlighted: {
+			type: Boolean,
+			default: false
+		},
+		selected: {
+			type: Boolean,
+			default: false
+		}
 	},
 
 	computed: {

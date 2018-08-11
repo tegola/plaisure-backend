@@ -1,29 +1,20 @@
-<template>
-	<div :is="element">
-		<slot></slot>
-
-		<div v-show="visible" ref="popup" :class="popupClasses" tabindex="0" @keyup.esc.stop="close">
-			<div tabindex="0" @focus.stop="onFirstElFocus" ref="firstEl"></div>
-			<slot name="popup">{{ content }}</slot>
-			<div tabindex="0" @focus.stop="onLastElFocus" ref="lastEl"></div>
-		</div>
-	</div>
-</template>
-
 <script>
 // FIXME: Aggiustare la gestione del focus come con dialog.vue (ciclo del focus, ripristino alla chiusura, ecc.)
 // FIXME: Fare in modo che funzioni con v-if (quindi inizializzare solo quando è effettivamente visibile)
 import Popper from 'popper.js';
 
 export default {
-	name: 'pg-popup',
+	name: 'PgPopup',
 
 	props: {
 		element: {
 			type: String,
 			default: 'span'
 		},
-		popupClass: String,
+		popupClass: {
+			type: String,
+			default: ''
+		},
 		visible: {
 			type: Boolean,
 			default: false
@@ -40,7 +31,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		content: String
+		content: {
+			type: String,
+			default: ''
+		}
 	},
 
 	data() {
@@ -65,6 +59,25 @@ export default {
 			this.$nextTick(() => {
 				this.visible ? this.onOpen() : this.onClose();
 			});
+		}
+	},
+
+	mounted() {
+		if (typeof document !== 'undefined') {
+			document.addEventListener('click', this.onClickOut);
+		}
+
+		this.$nextTick(this.initPopper);
+	},
+
+	destroyed() {
+		if (typeof document !== 'undefined') {
+			document.removeEventListener('click', this.onClickOut);
+		}
+
+		if (this.popper) {
+			this.popper.destroy();
+			this.popper = null;
 		}
 	},
 
@@ -158,26 +171,19 @@ export default {
 
 			// Close the popup
 			this.close();
-		},
-	},
-
-	mounted() {
-		if (typeof document !== 'undefined') {
-			document.addEventListener('click', this.onClickOut);
-		}
-
-		this.$nextTick(this.initPopper);
-	},
-
-	destroyed() {
-		if (typeof document !== 'undefined') {
-			document.removeEventListener('click', this.onClickOut);
-		}
-
-		if (this.popper) {
-			this.popper.destroy();
-			this.popper = null;
 		}
 	}
 };
 </script>
+
+<template>
+	<div :is="element">
+		<slot />
+
+		<div v-show="visible" ref="popup" :class="popupClasses" tabindex="0" @keyup.esc.stop="close">
+			<div ref="firstEl" tabindex="0" @focus.stop="onFirstElFocus" />
+			<slot name="popup">{{ content }}</slot>
+			<div ref="lastEl" tabindex="0" @focus.stop="onLastElFocus" />
+		</div>
+	</div>
+</template>

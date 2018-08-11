@@ -10,7 +10,7 @@ export default {
 		message: {
 			type: String,
 			default: function() {
-				return this.$t('pages.error.not_found')
+				return this.$t('pages.error.not_found');
 			}
 		}
 	},
@@ -18,9 +18,9 @@ export default {
 	meta() {
 		return {
 			title: this.message
-		}
+		};
 	}
-}
+};
 </script>
 
 <template>

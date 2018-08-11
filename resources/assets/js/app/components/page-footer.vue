@@ -60,7 +60,7 @@ export default {
 				city: preset.query,
 				url: '/venues/explore?' + stringify(preset)
 			}))
-		}
+		};
 	},
 
 	computed: {
@@ -72,7 +72,7 @@ export default {
 	beforeCreate() {
 		_extend(this, constants);
 	}
-}
+};
 </script>
 
 <template>
@@ -137,7 +137,6 @@ export default {
 					{{ $t('components.footer.vat', { number: COMPANY_VAT_NUMBER }) }}
 				</p>
 			</div>
-			<div class="row"></div>
 		</div>
 	</footer>
 </template>

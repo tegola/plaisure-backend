@@ -1,18 +1,3 @@
-<template>
-	<autocomplete
-		ref="input"
-		v-bind="$attrs"
-		v-model="place"
-		:select-first-on-enter="selectFirstOnEnter"
-		@place_changed="onPlaceChanged"
-		@focus.native="onFocus"
-		@blur.native="onBlur"
-		@input.native="onInput"
-		@keydown.native.esc="onEscKey"
-		@keydown.native.enter="onEnterKey">
-	</autocomplete>
-</template>
-
 <script>
 import { Autocomplete } from 'vue2-google-maps';
 
@@ -66,3 +51,18 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<autocomplete
+		ref="input"
+		v-bind="$attrs"
+		v-model="place"
+		:select-first-on-enter="selectFirstOnEnter"
+		@place_changed="onPlaceChanged"
+		@focus.native="onFocus"
+		@blur.native="onBlur"
+		@input.native="onInput"
+		@keydown.native.esc="onEscKey"
+		@keydown.native.enter="onEnterKey"
+	/>
+</template>

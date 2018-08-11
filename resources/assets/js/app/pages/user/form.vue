@@ -27,7 +27,7 @@ export default {
 			loading: false,
 			appName: APP_NAME,
 			model: {}
-		}
+		};
 	},
 
 	computed: {
@@ -43,7 +43,7 @@ export default {
 				new_password: '',
 				new_password_confirmation: '',
 				send_newsletter: newUser.send_newsletter
-			}
+			};
 		}
 	},
 
@@ -88,54 +88,54 @@ export default {
 				});
 		}
 	}
-}
+};
 </script>
 
 <template>
 	<div>
 		<pg-navbar variant="dark" />
 
-		<div class="container my-5" v-if="user">
+		<div v-if="user" class="container my-5">
 			<div class="row">
 				<div class="col-md-8 col-lg-6 mx-auto">
 					<h2>Modifica i tuoi dati</h2>
 					<form method="post" @submit.prevent="submit">
 						<b-form-group
-							label="Nome e cognome"
 							:state="!$v.model.name.$error"
+							label="Nome e cognome"
 							invalid-feedback="Inserisci nome e cognome.">
-							<b-input type="text" v-model="model.name" />
+							<b-input v-model="model.name" type="text" />
 						</b-form-group>
 						<b-form-group
 							label="E-mail">
-							<b-input type="email" v-model="model.email" disabled />
+							<b-input v-model="model.email" type="email" disabled />
 						</b-form-group>
 						<b-form-group
-							label="Codice iscrizione AAMS"
 							:state="!$v.model.aams_subject_enrollment_code.$error"
+							label="Codice iscrizione AAMS"
 							invalid-feedback="Inserisci il tuo codice di iscrizione AAMS."
 							description="Necessario per inserire la tua attività.">
-							<b-input type="text" v-model="model.aams_subject_enrollment_code" />
+							<b-input v-model="model.aams_subject_enrollment_code" type="text" />
 						</b-form-group>
 						<b-form-group
-							label="Nuova password"
 							:state="!$v.model.new_password.$error"
+							label="Nuova password"
 							invalid-feedback="Inserisci almeno 8 caratteri tra lettere e numeri"
 							description="Almeno 8 caratteri tra lettere e numeri">
-							<b-input type="password" v-model="model.new_password" />
+							<b-input v-model="model.new_password" type="password" />
 						</b-form-group>
 						<b-form-group
-							label="Nuova password"
 							:state="!$v.model.new_password_confirmation.$error"
+							label="Nuova password"
 							invalid-feedback="Le password non combaciano.">
-							<b-input type="password" v-model="model.new_password_confirmation" />
+							<b-input v-model="model.new_password_confirmation" type="password" />
 						</b-form-group>
 						<b-form-group>
 							<b-checkbox v-model="model.send_newsletter">Voglio ricevere la newsletter di {{ appName }}</b-checkbox>
 						</b-form-group>
 						<b-form-group class="mt-3">
 							<div class="d-flex justify-content-md-end">
-								<pg-button type="submit" variant="primary" :block="$mq.constrained" :loading="loading">Salva</pg-button>
+								<pg-button :block="$mq.constrained" :loading="loading" type="submit" variant="primary">Salva</pg-button>
 							</div>
 						</b-form-group>
 					</form>

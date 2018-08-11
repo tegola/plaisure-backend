@@ -1,9 +1,3 @@
-<template>
-	<svg :class="svgClass">
-		<use v-bind="useProps"></use>
-	</svg>
-</template>
-
 <script>
 export default {
 	name: 'PgIcon',
@@ -15,9 +9,13 @@ export default {
 		},
 		size: {
 			type: String,
+			default: null,
 			validator: value => ['2x', '3x'].indexOf(value) !== -1
 		},
-		spinning: Boolean
+		spinning: {
+			type: Boolean,
+			default: false
+		}
 	},
 
 	computed: {
@@ -37,3 +35,9 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<svg :class="svgClass">
+		<use v-bind="useProps" />
+	</svg>
+</template>

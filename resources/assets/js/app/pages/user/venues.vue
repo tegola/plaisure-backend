@@ -20,7 +20,7 @@ export default {
 			return venue.categories[0].name;
 		}
 	}
-}
+};
 </script>
 
 <template>
@@ -30,17 +30,24 @@ export default {
 		<div class="container my-5">
 			<div class="d-flex justify-content-between align-items-center">
 				<h2>Gestisci le tue attività</h2>
-				<pg-button variant="primary" icon="plus" :to="{ name: 'venues.add' }">Aggiungi</pg-button>
+				<pg-button :to="{ name: 'venues.add' }" variant="primary" icon="plus">Aggiungi</pg-button>
 			</div>
 			<hr>
 
 			<div class="row">
-				<div class="col-md-6 col-xl-4 mb-4" v-for="venue in venues">
+				<div v-for="venue in venues" :key="venue.id" class="col-md-6 col-xl-4 mb-4">
 					<router-link :to="{ name: 'venues.edit', params: { venueId: venue.id } }" class="h-100">
 						<div class="card h-100 flex-row">
-							<div v-if="venue.photos && venue.photos[0]" class="embed-responsive embed-responsive-2by3" :style="{ background: `url(${venue.photos[0].thumbnail_url})`, backgroundSize: 'cover', backgroundPosition: 'center center', width: '160px' }">
-							</div>
-							<div v-else class="embed-responsive embed-responsive-2by3 bg-light d-flex justify-content-center align-items-center" style="width: 160px;"></div>
+							<div
+								v-if="venue.photos && venue.photos[0]"
+								:style="{ background: `url(${venue.photos[0].thumbnail_url})`, backgroundSize: 'cover', backgroundPosition: 'center center', width: '160px' }"
+								class="embed-responsive embed-responsive-2by3"
+							/>
+							<div
+								v-else
+								class="embed-responsive embed-responsive-2by3 bg-light d-flex justify-content-center align-items-center"
+								style="width: 160px;"
+							/>
 
 							<div class="card-body d-flex flex-column justify-content-center">
 								<h4 class="card-title font-weight-bold">{{ venue.name }}</h4>

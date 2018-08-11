@@ -1,6 +1,6 @@
 /**
  * Get the singular or plural name depending on the count value.
- * 
+ *
  * @param {number} count
  * @param {string} singular
  * @param {string} plural

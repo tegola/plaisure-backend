@@ -32,7 +32,13 @@ export default {
 				email: '',
 				password: ''
 			}
-		}
+		};
+	},
+
+	meta() {
+		return {
+			title: this.$t('pages.register.meta_title')
+		};
 	},
 
 	validations: {
@@ -51,6 +57,10 @@ export default {
 		}
 	},
 
+	created() {
+		this.APP_NAME = APP_NAME;
+	},
+
 	methods: {
 		submit() {
 			// Validate
@@ -64,19 +74,15 @@ export default {
 			this.$store.dispatch('user/register', this.model)
 				.then(() => {
 					// Go to the next page
-					this.$router.push(this.redirect)
+					this.$router.push(this.redirect);
 				}).catch(error => {
 					console.log('error', error);
 				}).then(() => {
 					this.loading = false;
 				});
 		}
-	},
-
-	created() {
-		this.APP_NAME = APP_NAME
 	}
-}
+};
 </script>
 
 <template>
@@ -96,21 +102,21 @@ export default {
 							:label="$t('pages.register.name')"
 							:state="!$v.model.email.$error"
 							:invalid-feedback="$t('pages.register.name_error')">
-							<b-input type="text" v-model="model.name" autofocus />
+							<b-input v-model="model.name" type="text" autofocus />
 						</b-form-group>
 
 						<b-form-group
 							:label="$t('pages.register.email')"
 							:state="!$v.model.email.$error"
 							:invalid-feedback="$t('pages.register.email_error')">
-							<b-input type="email" v-model="model.email" />
+							<b-input v-model="model.email" type="email" />
 						</b-form-group>
 
 						<b-form-group
 							:label="$t('pages.register.password')"
 							:state="!$v.model.password.$error"
 							:invalid-feedback="$t('pages.register.password_error')">
-							<b-input type="password" v-model="model.password" />
+							<b-input v-model="model.password" type="password" />
 						</b-form-group>
 
 						<i18n tag="p" class="small text-muted" path="pages.register.agree1">

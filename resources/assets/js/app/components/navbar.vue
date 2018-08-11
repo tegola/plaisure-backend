@@ -53,7 +53,7 @@ export default {
 		},
 		center: {
 			type: Object,
-			default: null,
+			default: () => null
 		},
 		autoSubmit: {
 			type: Boolean,
@@ -66,12 +66,6 @@ export default {
 			mutableQuery: this.query,
 			mutableCenter: this.center
 		};
-	},
-
-	watch: {
-		query() {
-			this.mutableQuery = this.query;
-		}
 	},
 
 	computed: {
@@ -93,6 +87,16 @@ export default {
 			const center = this.mutableCenter;
 			return center && center.lng ? center.lng : null;
 		}
+	},
+
+	watch: {
+		query() {
+			this.mutableQuery = this.query;
+		}
+	},
+
+	beforeCreate() {
+		_extend(this, constants);
 	},
 
 	methods: {
@@ -126,46 +130,42 @@ export default {
 
 		logout() {
 			this.$store.dispatch('user/logout')
-				.then(response => {
+				.then(() => {
 					this.$router.push({ name: 'home' });
-				})
+				});
 		}
-	},
-
-	beforeCreate() {
-		_extend(this, constants);
 	}
 };
 </script>
 
 <template>
-	<nav class="navbar navbar-expand" :class="classes">
-		<div :class="this.fluid ? 'container-fluid' : 'container'">
-			<router-link class="navbar-brand" to="/" :aria-label="APP_NAME">
+	<nav :class="classes" class="navbar navbar-expand">
+		<div :class="fluid ? 'container-fluid' : 'container'">
+			<router-link :aria-label="APP_NAME" class="navbar-brand" to="/">
 				<pg-logo :text="showLogoText" :class="['navbar__logo', !showLogoText ? 'navbar__logo--no-text' : '']" />
 			</router-link>
 
-			<div class="navbar__divider"></div>
+			<div class="navbar__divider" />
 
-			<form class="navbar__search" action="/venues/explore" ref="form">
-				<input type="hidden" name="c_lat" :value="lat">
-				<input type="hidden" name="c_lng" :value="lng">
+			<form ref="form" class="navbar__search" action="/venues/explore">
+				<input :value="lat" type="hidden" name="c_lat">
+				<input :value="lng" type="hidden" name="c_lng">
 
 				<span class="navbar__search-icon-container">
 					<pg-icon icon="search" class="navbar__search-icon" />
 				</span>
 				<pg-place-textbox
-					class="form-control form-control-lg navbar__search-textbox"
-					name="query"
 					:placeholder="placeholder"
 					:place="mutableQuery"
 					:options="{ types: ['geocode'] }"
-					@place-changed="onPlaceChanged">
-				</pg-place-textbox>
+					class="form-control form-control-lg navbar__search-textbox"
+					name="query"
+					@place-changed="onPlaceChanged"
+				/>
 			</form>
 
 			<div class="ml-auto d-flex">
-				<slot name="right"></slot>
+				<slot name="right" />
 				<b-navbar-nav v-if="user">
 					<b-nav-item-dropdown right>
 						<template slot="button-content">

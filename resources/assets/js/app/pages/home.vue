@@ -6,7 +6,6 @@ import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
 import { Map as PgMap } from 'vue2-google-maps';
 import { DEFAULT_COORDS } from 'prontogioco/constants';
 
-const placeholder = 'Inserisci la tua città...';
 const mapOptions = {
 	disableDefaultUI: true,
 	scrollwheel: false,
@@ -43,7 +42,7 @@ export default {
 	data() {
 		return {
 			query: null,
-			placeholder: placeholder,
+			placeholder: this.$t('pages.home.city_placeholder'),
 			placeTextboxOptions: {
 				types: ['geocode'] // Limit search to cities, addresses, etc.
 			},
@@ -87,6 +86,21 @@ export default {
 		}
 	},
 
+	mounted() {
+		// If no location is set, find a generic one using IP info
+		geocoder.geocodeByIp((error, location) => {
+			if (!location || !location.latitude || !location.longitude || !location.city) return;
+
+			this.query = location.city;
+
+			_extend(this.searchParams, {
+				query: location.city,
+				c_lat: location.latitude,
+				c_lng: location.longitude
+			});
+		});
+	},
+
 	methods: {
 		findUserLocation() {
 			this.locating = true;
@@ -112,7 +126,7 @@ export default {
 
 			// Update view
 			this.query = null;
-			this.placeholder = '(Vicino a te)';
+			this.placeholder = ['(', this.$t('pages.home.location_placeholder'), ')'].join('');
 
 			// Find city name
 			geocoder.reverse(latitude, longitude, (error, location) => {
@@ -132,13 +146,13 @@ export default {
 		onUserLocationNotFound() {
 			this.locating = false;
 			this.userLocationFound = false;
-			alert('Non è stato possibile trovare la tua posizione.');
+			alert(this.$t('pages.home.location_error'));
 		},
 
 		onPlaceChanged(place) {
 			// Reset user location indicator
 			this.userLocationFound = false;
-			this.placeholder = placeholder;
+			this.placeholder = this.$t('pages.home.city_placeholder');
 
 			// Reset search
 			if (!place) {
@@ -174,165 +188,150 @@ export default {
 				query: this.searchParams
 			});
 		}
-	},
-
-	mounted() {
-		// If no location is set, find a generic one using IP info
-		geocoder.geocodeByIp((error, location) => {
-			if (!location || !location.latitude || !location.longitude || !location.city) return;
-
-			this.query = location.city;
-
-			_extend(this.searchParams, {
-				query: location.city,
-				c_lat: location.latitude,
-				c_lng: location.longitude
-			})
-		});
 	}
 };
 </script>
 
 <template>
-<div class="pg-home-page">
-	<!-- <pg-navbar variant="dark" /> -->
-	<div class="hero">
-		<pg-map class="map" v-bind="mapProps" />
-		<!--
-		<nav class="navbar navbar-transparent navbar-expand-md">
-			<div class="container justify-content-center">
-				<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
-					LOGO QUI
-				</a>
-				<div>
-					@if (Auth::guest())
-						<a class="btn btn-inverse-neutral" href="{{ url('/login') }}">Accedi</a>
-						<a class="btn btn-primary" href="{{ url('/register') }}">Iscriviti</a>
-					@else
-						<span class="dropdown">
-							<button class="btn btn-secondary dropdown-toggle" type="button" id="navbar-user-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</button>
-							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-user-button">
-								<a class="dropdown-item" href="{{ route('site.user') }}">
-									<strong>
-										{{ Auth::user()->name }}
-										{{ Gate::allows('administer') ? '(amministratore)' : '' }}
-									</strong><br>
-									<span class="text-muted">Visualizza il tuo profilo</span>
-								</a>
-								@if(Gate::allows('administer'))
-									<a class="dropdown-item" href="{{ route('admin.home') }}">
-										Vai all'amministrazione
+	<div class="pg-home-page">
+		<!-- <pg-navbar variant="dark" /> -->
+		<div class="hero">
+			<pg-map v-bind="mapProps" class="map" />
+			<!--
+			<nav class="navbar navbar-transparent navbar-expand-md">
+				<div class="container justify-content-center">
+					<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
+						LOGO QUI
+					</a>
+					<div>
+						@if (Auth::guest())
+							<a class="btn btn-inverse-neutral" href="{{ url('/login') }}">Accedi</a>
+							<a class="btn btn-primary" href="{{ url('/register') }}">Iscriviti</a>
+						@else
+							<span class="dropdown">
+								<button class="btn btn-secondary dropdown-toggle" type="button" id="navbar-user-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</button>
+								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-user-button">
+									<a class="dropdown-item" href="{{ route('site.user') }}">
+										<strong>
+											{{ Auth::user()->name }}
+											{{ Gate::allows('administer') ? '(amministratore)' : '' }}
+										</strong><br>
+										<span class="text-muted">Visualizza il tuo profilo</span>
 									</a>
-								@endif
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('navbar-user-logout-form').submit();">Esci</a>
-								<form id="navbar-user-logout-form" action="{{ url('/logout') }}" method="POST" hidden>
-									{{ csrf_field() }}
-								</form>
-							</div>
-						</span>
-					@endif
-				</div>
-			</div>
-		</nav>
-		-->
-
-		<div class="container hero-content">
-			<div class="text-center">
-				<pg-logo class="logo" />
-				<div class="row">
-					<div class="col-lg-8 mx-lg-auto">
-						<h1>Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!</h1>
-						<p>Più di 5000 sale tra cui&nbsp;scegliere!</p>
+									@if(Gate::allows('administer'))
+										<a class="dropdown-item" href="{{ route('admin.home') }}">
+											Vai all'amministrazione
+										</a>
+									@endif
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('navbar-user-logout-form').submit();">Esci</a>
+									<form id="navbar-user-logout-form" action="{{ url('/logout') }}" method="POST" hidden>
+										{{ csrf_field() }}
+									</form>
+								</div>
+							</span>
+						@endif
 					</div>
 				</div>
-			</div>
+			</nav>
+			-->
 
-			<div class="row">
-				<div class="col-lg-8 mx-lg-auto">
-					<div class="form-row">
-						<div class="col-sm-8">
-							<div class="form-group position-relative">
-								<label class="sr-only">Cerca</label>
-								<pg-place-textbox
-									class="form-control form-control-lg search-form-control search-query-control"
-									autofocus
-									:placeholder="placeholder"
-									:place="query"
-									:value="query"
-									:options="placeTextboxOptions"
-									@place-changed="onPlaceChanged"
-								/>
-								<div
-									v-if="hasGeolocation"
-									class="search-locate-btn-wrapper"
-									v-b-tooltip
-									title="Usa la tua posizione">
-									<pg-button
-										size="lg"
-										variant="naked"
-										class="search-locate-btn"
-										:icon="userLocationFound ? 'location' : 'location-outline'"
-										tabindex="-1"
-										:loading="locating"
-										:disabled="userLocationFound"
-										@click="findUserLocation"
+			<div class="container hero-content">
+				<div class="text-center">
+					<pg-logo class="logo" />
+					<div class="row">
+						<div class="col-lg-8 mx-lg-auto">
+							<h1 v-html="$t('pages.home.title')" />
+							<p v-html="$t('pages.home.subtitle')" />
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-8 mx-lg-auto">
+						<div class="form-row">
+							<div class="col-sm-8">
+								<div class="form-group position-relative">
+									<label class="sr-only">{{ $t('pages.home.search') }}</label>
+									<pg-place-textbox
+										:placeholder="placeholder"
+										:place="query"
+										:value="query"
+										:options="placeTextboxOptions"
+										class="form-control form-control-lg search-form-control search-query-control"
+										autofocus
+										@place-changed="onPlaceChanged"
 									/>
+									<div
+										v-b-tooltip
+										v-if="hasGeolocation"
+										:title="$t('pages.home.location')"
+										class="search-locate-btn-wrapper">
+										<pg-button
+											:icon="userLocationFound ? 'location' : 'location-outline'"
+											:loading="locating"
+											:disabled="userLocationFound"
+											size="lg"
+											variant="naked"
+											class="search-locate-btn"
+											tabindex="-1"
+											@click="findUserLocation"
+										/>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-group">
+									<pg-button
+										:disabled="!canSubmit"
+										block
+										variant="accent"
+										size="lg"
+										class="search-submit-btn"
+										icon="search"
+										@click="submit">
+										{{ $t('pages.home.submit') }}
+									</pg-button>
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<pg-button
-									block
-									variant="accent"
-									size="lg"
-									class="search-submit-btn"
-									:disabled="!canSubmit"
-									icon="search"
-									@click="submit">
-									Cerca
-								</pg-button>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="container text-center my-md-5 py-5">
-		<div class="row justify-content-stretch">
-			<div class="mb-3 mb-md-0 col-md">
-				<router-link class="card h-100" to="/venues/explore">
-					<div class="card-body">
-						<div><img src="/img/home/map.svg"></div>
-						<p class="card-text">Ti senti avventuroso?</p>
-						<h4 class="card-title">Esplora la tua zona</h4>
-					</div>
-				</router-link>
-			</div>
-			<div class="mb-3 mb-md-0 col-md">
-				<router-link class="card h-100" to="/promote">
-					<div class="card-body">
-						<div><img src="/img/home/venue.svg"></div>
-						<p class="card-text">Sei nel campo?</p>
-						<h4 class="card-title">Promuovi la tua attivit&agrave;</h4>
-					</div>
-				</router-link>
-			</div>
-			<div class="mb-3 mb-md-0 col-md">
-				<router-link class="card h-100" to="/play-responsibly">
-					<div class="card-body">
-						<div><img src="/img/home/machine.svg"></div>
-						<p class="card-text">Non esagerare</p>
-						<h4 class="card-title">Gioca responsabilmente</h4>
-					</div>
-				</router-link>
+		<div class="container text-center my-md-5 py-5">
+			<div class="row justify-content-stretch">
+				<div class="mb-3 mb-md-0 col-md">
+					<router-link class="card h-100" to="/venues/explore">
+						<div class="card-body">
+							<div><img src="/img/home/map.svg"></div>
+							<p class="card-text">{{ $t('pages.home.explore.intro') }}</p>
+							<h4 class="card-title">{{ $t('pages.home.explore.title') }}</h4>
+						</div>
+					</router-link>
+				</div>
+				<div class="mb-3 mb-md-0 col-md">
+					<router-link class="card h-100" to="/promote">
+						<div class="card-body">
+							<div><img src="/img/home/venue.svg"></div>
+							<p class="card-text">{{ $t('pages.home.promote.intro') }}</p>
+							<h4 class="card-title">{{ $t('pages.home.promote.title') }}</h4>
+						</div>
+					</router-link>
+				</div>
+				<div class="mb-3 mb-md-0 col-md">
+					<router-link class="card h-100" to="/play-responsibly">
+						<div class="card-body">
+							<div><img src="/img/home/machine.svg"></div>
+							<p class="card-text">{{ $t('pages.home.play_responsibly.intro') }}</p>
+							<h4 class="card-title">{{ $t('pages.home.play_responsibly.title') }}</h4>
+						</div>
+					</router-link>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<pg-page-footer />
-</div>
+		<pg-page-footer />
+	</div>
 </template>

@@ -1,7 +1,7 @@
 <template>
-	<div class="filter-button-item" @click="onClick" @mouseenter="onHover" tabindex="0">
+	<div class="filter-button-item" tabindex="0" @click="onClick" @mouseenter="onHover">
 		<div class="filter-button-item__icon-cell">
-			<pg-icon class="filter-button-item__icon" :icon="icon" v-if="checked" />
+			<pg-icon v-if="checked" :icon="icon" class="filter-button-item__icon" />
 		</div>
 		<div class="filter-button-item__text-cell">
 			<slot>{{ label }}</slot>
@@ -22,8 +22,14 @@ export default {
 			type: String,
 			default: 'checkmark'
 		},
-		checked: Boolean,
-		label: String
+		checked: {
+			type: Boolean,
+			default: false
+		},
+		label: {
+			type: String,
+			default: ''
+		}
 	},
 
 	methods: {

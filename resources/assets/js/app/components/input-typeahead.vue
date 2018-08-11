@@ -1,31 +1,3 @@
-<template>
-	<div class="dropdown">
-		<input
-			ref="input"
-			type="text"
-			:class="inputClass"
-			:value="value"
-			autocomplete="off"
-			v-bind="$attrs"
-			@keydown.down="onDownPress"
-			@keydown.up="onUpPress"
-			@keydown.esc="onEscPress"
-			@keydown.enter="onEnterPress"
-			@input="onInput"
-			@focus="onFocus"
-			@blur="onBlur">
-		<div v-if="open && items.length" class="dropdown-menu w-100 show">
-			<component v-for="(item, index) in items" :key="item.id"
-				:is="itemComponent"
-				:item="item"
-				:class="itemClass(index)"
-				@mouseover.native="onMouseOver"
-				@mousedown.native="onMouseDown(index)">
-			</component>
-		</div>
-	</div>
-</template>
-
 <script>
 export default {
 	name: 'PgInputTypeahead',
@@ -33,15 +5,21 @@ export default {
 	inheritAttrs: false,
 
 	props: {
-		inputClass: String,
-		value: [String, Number],
+		inputClass: {
+			type: String,
+			default: ''
+		},
+		value: {
+			type: [String, Number],
+			default: ''
+		},
 		itemComponent: {
 			type: String,
 			required: true
 		},
 		suggestions: {
 			type: Array,
-			default: []
+			default: () => []
 		}
 	},
 
@@ -53,15 +31,15 @@ export default {
 		};
 	},
 
-	watch: {
-		items() {
-			this.current = -1;
-		}
-	},
-
 	computed: {
 		items() {
 			return this.suggestions;
+		}
+	},
+
+	watch: {
+		items() {
+			this.current = -1;
 		}
 	},
 
@@ -133,12 +111,40 @@ export default {
 			this.select();
 		},
 
-		select(event) {
+		select() {
 			if (this.current === -1) return;
 
 			this.open = false;
 			this.$emit('select', this.items[this.current]);
-		},
+		}
 	}
 };
 </script>
+
+<template>
+	<div class="dropdown">
+		<input
+			ref="input"
+			:class="inputClass"
+			:value="value"
+			v-bind="$attrs"
+			type="text"
+			autocomplete="off"
+			@keydown.down="onDownPress"
+			@keydown.up="onUpPress"
+			@keydown.esc="onEscPress"
+			@keydown.enter="onEnterPress"
+			@input="onInput"
+			@focus="onFocus"
+			@blur="onBlur">
+		<div v-if="open && items.length" class="dropdown-menu w-100 show">
+			<component v-for="(item, index) in items" :key="item.id"
+				:is="itemComponent"
+				:item="item"
+				:class="itemClass(index)"
+				@mouseover.native="onMouseOver"
+				@mousedown.native="onMouseDown(index)"
+			/>
+		</div>
+	</div>
+</template>

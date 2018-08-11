@@ -34,7 +34,7 @@ export default {
 
 		setVenues: (state, venues = []) => {
 			state.venues = venues;
-		},
+		}
 	},
 
 	getters: {

@@ -4,18 +4,26 @@ import BModal from 'bootstrap-vue/es/components/modal/modal';
 export default {
 	name: 'PgConfirmModal',
 
-	inheritAttrs: false,
-
 	components: {
 		BModal
 	},
 
+	inheritAttrs: false,
+
 	props: {
-		value: Boolean,
-		variant: String,
+		value: {
+			type: Boolean,
+			default: false
+		},
+		variant: {
+			type: String,
+			default: ''
+		},
 		cancelTitle: {
 			type: String,
-			default: 'Annulla'
+			default: function() {
+				return this.$t('components.modal.cancel');
+			}
 		}
 	},
 
@@ -25,26 +33,28 @@ export default {
 				return this.value;
 			},
 			set(val) {
-				this.$emit('input', val)
+				this.$emit('input', val);
 			}
 		}
 	}
-}
+};
 </script>
 
 <template>
 	<b-modal
+		:header-text-variant="variant"
+		:ok-variant="variant"
+		:cancel-title="cancelTitle"
+		v-bind="$attrs"
 		v-model="open"
 		lazy
 		centered
 		hide-header-close
-		:header-text-variant="variant"
-		:ok-variant="variant"
 		cancel-variant="light"
-		:cancel-title="cancelTitle"
-		v-bind="$attrs"
 		v-on="$listeners">
-		<p class="lead mb-0" v-if="$slots.message" ><slot name="message"></slot></p>
-		<slot></slot>
+		<p v-if="$slots.message" class="lead mb-0">
+			<slot name="message" />
+		</p>
+		<slot />
 	</b-modal>
 </template>

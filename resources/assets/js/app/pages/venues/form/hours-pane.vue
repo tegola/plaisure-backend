@@ -3,7 +3,7 @@ import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 
 import PgVenueFormHourFieldset from './hour-fieldset';
 
-import formGroupProps from './form-group-props'
+import formGroupProps from './form-group-props';
 
 export default {
 	name: 'PgVenueFormGeneralPane',
@@ -50,10 +50,10 @@ export default {
 		onHourRowInput(index, value) {
 			this.mutableHours = this.mutableHours.slice(0);
 			this.mutableHours[index] = value;
-			this.$emit('update:hours', this.mutableHours)
+			this.$emit('update:hours', this.mutableHours);
 		}
 	}
-}
+};
 </script>
 
 <template>
@@ -68,8 +68,8 @@ export default {
 					<pg-venue-form-hour-fieldset
 						:label="day.name"
 						:value="hours[day.index]"
-						@input="onHourRowInput(day.index, $event)">
-					</pg-venue-form-hour-fieldset>
+						@input="onHourRowInput(day.index, $event)"
+					/>
 				</div>
 			</div>
 		</b-form-group>

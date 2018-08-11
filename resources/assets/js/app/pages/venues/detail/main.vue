@@ -4,7 +4,7 @@ import _extend from 'lodash/extend';
 import constants from 'prontogioco/constants';
 
 import PgLightbox from 'prontogioco/app/components/lightbox';
-import PgVenueDetailPageContactCard from './contact-card'
+import PgVenueDetailPageContactCard from './contact-card';
 
 export default {
 	name: 'PgVenueDetailPage',
@@ -14,20 +14,20 @@ export default {
 		PgVenueDetailPageContactCard
 	},
 
-	props: {
-		venueId: {
-			type: [String, Number],
-			required: true
-		}
-	},
-
 	filters: {
 		formatCurrency(number) {
 			return number.toLocaleString(undefined, {
 				style: 'currency',
 				currency: 'EUR',
 				minimumFractionDigits: 2
-			})
+			});
+		}
+	},
+
+	props: {
+		venueId: {
+			type: [String, Number],
+			required: true
 		}
 	},
 
@@ -37,20 +37,38 @@ export default {
 			lightboxIndex: 0,
 			lightboxOpen: false,
 			hoursExpanded: false
-		}
+		};
 	},
 
-	meta() {	
-		return {
-			title: this.venue ? `${this.venue.name} - ${this.subtitle}` : '',
-			meta: [
-				{
-					vmid: 'description',
-					name: 'description',
-					content: this.venue ? this.venue.description : null	
-				}
-			]
-		};
+	meta() {
+		const venue = this.venue;
+		const structuredData = this.$store.state.venueDetail.structuredData;
+		let metadata = {};
+
+		if (venue) {
+			// Title
+			metadata.title = `${venue.name} - ${this.subtitle}`;
+
+			// Description
+			if (venue.description) {
+				metadata.meta = [
+					{
+						vmid: 'description',
+						name: 'description',
+						content: venue.description
+					}
+				];
+			}
+		}
+
+		// Structured data
+		if (structuredData) {
+			metadata.script = [
+				{ type: 'application/ld+json', innerHTML: JSON.stringify(structuredData) }
+			];
+		}
+
+		return metadata;
 	},
 
 	computed: {
@@ -58,12 +76,6 @@ export default {
 			'venue',
 			'nearbyVenues'
 		]),
-
-		structuredData() {
-			const data = this.$store.state.venueDetail.structuredData;
-
-			return data ? JSON.stringify(data) : null;
-		},
 
 		...mapGetters('venueDetail', [
 			'isOpen',
@@ -77,7 +89,7 @@ export default {
 			const city = this.venue.address.city;
 
 			if (categories.length) {
-				return this.$t('pages.detail.subtitle', {
+				return this.$t('pages.venue_detail.subtitle', {
 					category: this.$t(`db.categories.${categories[0].machine_name}`),
 					city
 				});
@@ -97,6 +109,14 @@ export default {
 				thumbnail_url: file.thumbnail_url
 			}));
 		}
+	},
+
+	beforeCreate() {
+		_extend(this, constants);
+	},
+
+	mounted() {
+		this.loadData();
 	},
 
 	methods: {
@@ -122,24 +142,13 @@ export default {
 		prepareEmailLink(address, subject) {
 			return `mailto:${address}?subject=${encodeURIComponent(subject)}`;
 		}
-	},
-
-	beforeCreate() {
-		_extend(this, constants);
-	},
-
-	mounted() {
-		this.loadData()
 	}
-}
+};
 </script>
 
 <template>
 	<div class="pg-venue-detail-page">
 		<pg-navbar variant="dark" />
-
-		<!-- Structured data -->
-		<script type="application/ld+json" v-if="structuredData">{{ structuredData }}</script>
 
 		<!-- FIXME: Mostrare un loader mentre si caricano i dati -->
 		<template v-if="!loading && venue">
@@ -147,13 +156,13 @@ export default {
 			<div class="header">
 				<div class="container">
 					<!-- Gallery -->
-					<div class="header-gallery" ref="gallery">
+					<div ref="gallery" class="header-gallery">
 						<div class="header-gallery-bg">
-							<div class="header-photo header-photo-placeholder" v-for="i in 6"></div>
+							<div v-for="i in 6" :key="i" class="header-photo header-photo-placeholder" />
 						</div>
-						<router-link to="/promote" class="header-photo header-photo-add" v-if="!venue.has_owner">
+						<router-link v-if="!venue.has_owner" to="/promote" class="header-photo header-photo-add">
 							<pg-icon icon="plus" />
-							{{ $t('pages.detail.gallery.add') }}
+							{{ $t('pages.venue_detail.gallery.add') }}
 						</router-link>
 						<template v-for="(file, index) in venue.photos">
 							<a v-if="index < 10" :href="file.resized_url" class="header-photo" @click.prevent="showLightbox(index)">
@@ -164,7 +173,7 @@ export default {
 								<div class="embed-responsive embed-responsive-1by1 header-photo-img" :style="'background-image: url(' + file.thumbnail_url + ')'">
 									<div class="header-photo-zoom">
 										<pg-icon icon="search" class="mb-1" />
-										{{ $t('pages.detail.gallery.all') }}
+										{{ $t('pages.venue_detail.gallery.all') }}
 									</div>
 								</div>
 							</a>
@@ -175,9 +184,9 @@ export default {
 					<h2 class="header-title">{{ venue.name }}</h2>
 					<ul class="list-inline header-subtitle">
 						<li class="list-inline-item">{{ subtitle }}</li>
-						<li class="list-inline-item" v-if="venue.business_hours.length">
-							<span class="text-success" v-if="isOpen">{{ $t('pages.detail.card.open_now') }}</span>
-							<strong class="text-danger" v-else>{{ $t('pages.detail.card.closed_now') }}</strong>
+						<li v-if="venue.business_hours.length" class="list-inline-item">
+							<span v-if="isOpen" class="text-success">{{ $t('pages.venue_detail.card.open_now') }}</span>
+							<strong v-else class="text-danger">{{ $t('pages.venue_detail.card.closed_now') }}</strong>
 						</li>
 					</ul>
 				</div>
@@ -193,13 +202,13 @@ export default {
 						<!-- Jackpots -->
 						<template v-if="!venue.has_owner || hasJackpots">
 							<div class="row my-5 pt-2">
-								<div class="col-md-4" v-for="(jackpot, index) in venue.jackpots">
+								<div v-for="(jackpot, index) in venue.jackpots" :key="index" class="col-md-4">
 									<div :class="['jackpot', index < 3 ? 'mb-3 mb-md-0' : null]">
-										<img class="jackpot-icon" :src="`/img/detail/jackpot-${index}.svg`">
+										<img :src="`/img/detail/jackpot-${index}.svg`" class="jackpot-icon">
 										<div>
 											<div class="jackpot-name">{{ jackpot.label && jackpot.value ? jackpot.label : `Jackpot ${index}` }}</div>
 											<div class="jackpot-value">{{ jackpot.value | formatCurrency }}</div>
-											<div v-if="!venue.has_owner"><router-link to="/promote">{{ $t('pages.detail.common.edit') }}</router-link></div>
+											<div v-if="!venue.has_owner"><router-link to="/promote">{{ $t('pages.venue_detail.common.edit') }}</router-link></div>
 										</div>
 									</div>
 								</div>
@@ -210,7 +219,7 @@ export default {
 						<!-- Description -->
 						<template v-if="venue.description">
 							<div class="my-5">
-								<h4>{{ $t('pages.detail.description') }}</h4>
+								<h4>{{ $t('pages.venue_detail.description') }}</h4>
 								<p>{{ venue.description }}</p>
 							</div>
 							<hr>
@@ -219,46 +228,46 @@ export default {
 						<!-- Details -->
 						<div class="my-5">
 							<h4>
-								{{ $t('pages.detail.details.title') }}
-								<router-link v-if="!venue.has_owner" to="/promote" class="small ml-2">{{ $t('pages.detail.common.edit') }}</router-link>
+								{{ $t('pages.venue_detail.details.title') }}
+								<router-link v-if="!venue.has_owner" to="/promote" class="small ml-2">{{ $t('pages.venue_detail.common.edit') }}</router-link>
 							</h4>
 							<div class="row">
 								<div class="col-md">
 									<ul class="list-unstyled mb-0 mb-md-3">
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.concessionaire') }}:
+											{{ $t('pages.venue_detail.details.concessionaire') }}:
 											<strong v-if="venue.concessionaire">{{ venue.concessionaire.name }}</strong>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.surface_size') }}:
+											{{ $t('pages.venue_detail.details.surface_size') }}:
 											<strong v-if="venue.surface_size">{{ venue.surface_size }} mq.</strong>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.vlt_machine_count') }}:
+											{{ $t('pages.venue_detail.details.vlt_machine_count') }}:
 											<strong v-if="venue.vlt_machine_count">{{ venue.vlt_machine_count }}</strong>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.vlt_platforms') }}:
+											{{ $t('pages.venue_detail.details.vlt_platforms') }}:
 											<strong v-if="venue.vlt_platforms.length">{{ vltPlatformNames }}</strong>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.awp_machine_count') }}:
+											{{ $t('pages.venue_detail.details.awp_machine_count') }}:
 											<strong v-if="venue.awp_machine_count">{{ venue.awp_machine_count }}</strong>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.arcade_roulette') }}:
-											<strong v-if="venue.arcade_roulette" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.details.arcade_roulette') }}:
+											<strong v-if="venue.arcade_roulette" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.online_casino') }}:
+											{{ $t('pages.venue_detail.details.online_casino') }}:
 											<a v-if="venue.urls.online_casino" :href="venue.urls.online_casino" target="_blank">{{ venue.urls.online_casino }}</a>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 									</ul>
 								</div>
@@ -266,35 +275,35 @@ export default {
 									<ul class="list-unstyled">
 										<template v-if="isInCategory('betting_agency')">
 											<li class="detail-list-item">
-												{{ $t('pages.detail.details.sports_betting') }}:
-												<strong v-if="venue.sports_betting" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-												<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+												{{ $t('pages.venue_detail.details.sports_betting') }}:
+												<strong v-if="venue.sports_betting" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+												<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 											</li>
 											<li class="detail-list-item">
-												{{ $t('pages.detail.details.virtual_betting') }}:
-												<strong v-if="venue.virtual_betting" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-												<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+												{{ $t('pages.venue_detail.details.virtual_betting') }}:
+												<strong v-if="venue.virtual_betting" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+												<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 											</li>
 											<li class="detail-list-item">
-												{{ $t('pages.detail.details.horse_betting') }}:
-												<strong v-if="venue.horse_betting" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-												<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+												{{ $t('pages.venue_detail.details.horse_betting') }}:
+												<strong v-if="venue.horse_betting" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+												<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 											</li>
 										</template>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.parking_capacity') }}:
+											{{ $t('pages.venue_detail.details.parking_capacity') }}:
 											<strong v-if="venue.parking_capacity">{{ venue.parking_capacity }}</strong>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.details.pay_per_view_platforms') }}:
+											{{ $t('pages.venue_detail.details.pay_per_view_platforms') }}:
 											<strong v-if="venue.pay_per_view_platforms.length">{{ payPerViewPlatformNames }}</strong>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
-										<li class="detail-list-item" v-if="isInCategory('betting_agency')">
-											{{ $t('pages.detail.details.seating_capacity') }}:
+										<li v-if="isInCategory('betting_agency')" class="detail-list-item">
+											{{ $t('pages.venue_detail.details.seating_capacity') }}:
 											<strong v-if="venue.seating_capacity">{{ venue.seating_capacity }}</strong>
-											<span v-else class="text-muted">{{ $t('pages.detail.common.unknown') }}</span>
+											<span v-else class="text-muted">{{ $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 									</ul>
 								</div>
@@ -306,60 +315,60 @@ export default {
 						<!-- Amenities -->
 						<div class="my-5">
 							<h4>
-								{{ $t('pages.detail.amenities.title') }}
-								<router-link v-if="!venue.has_owner" to="/promote" class="small ml-2">{{ $t('pages.detail.common.edit') }}</router-link>
+								{{ $t('pages.venue_detail.amenities.title') }}
+								<router-link v-if="!venue.has_owner" to="/promote" class="small ml-2">{{ $t('pages.venue_detail.common.edit') }}</router-link>
 							</h4>
 							<div class="row">
 								<div class="col-md">
 									<ul class="list-unstyled mb-0 mb-md-3">
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.atm') }}:
-											<strong v-if="venue.amenities.atm" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.atm') }}:
+											<strong v-if="venue.amenities.atm" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.bar') }}:
-											<strong v-if="venue.amenities.bar" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.bar') }}:
+											<strong v-if="venue.amenities.bar" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.pay_per_view') }}:
-											<strong v-if="venue.amenities.pay_per_view" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.pay_per_view') }}:
+											<strong v-if="venue.amenities.pay_per_view" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.pos') }}:
-											<strong v-if="venue.amenities.pos" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.pos') }}:
+											<strong v-if="venue.amenities.pos" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.private_parking') }}:
-											<strong v-if="venue.amenities.private_parking" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.private_parking') }}:
+											<strong v-if="venue.amenities.private_parking" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 									</ul>
 								</div>
 								<div class="col-md">
 									<ul class="list-unstyled">
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.restaurant') }}:
-											<strong v-if="venue.amenities.restaurant" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.restaurant') }}:
+											<strong v-if="venue.amenities.restaurant" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.security') }}:
-											<strong v-if="venue.amenities.security" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.security') }}:
+											<strong v-if="venue.amenities.security" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.smoking_area') }}:
-											<strong v-if="venue.amenities.smoking_area" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.smoking_area') }}:
+											<strong v-if="venue.amenities.smoking_area" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 										<li class="detail-list-item">
-											{{ $t('pages.detail.amenities.wifi') }}:
-											<strong v-if="venue.amenities.wifi" class="text-success">{{ $t('pages.detail.common.yes') }}</strong>
-											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.detail.common.no') : $t('pages.detail.common.unknown') }}</span>
+											{{ $t('pages.venue_detail.amenities.wifi') }}:
+											<strong v-if="venue.amenities.wifi" class="text-success">{{ $t('pages.venue_detail.common.yes') }}</strong>
+											<span v-else class="text-muted">{{ venue.has_owner ? $t('pages.venue_detail.common.no') : $t('pages.venue_detail.common.unknown') }}</span>
 										</li>
 									</ul>
 								</div>
@@ -369,9 +378,9 @@ export default {
 						<!-- Promote -->
 						<div class="card bg-light my-4 text-center">
 							<div class="card-body">
-								<h4 class="card-title">{{ $t('pages.detail.claim.title') }}</h4>
-								<p class="card-text">{{ $t('pages.detail.claim.intro') }} <router-link to="/promote">{{ $t('pages.detail.claim.more') }}&hellip;</router-link></p>
-								<p class="card-text"><a class="btn btn-primary" :href="prepareEmailLink(EMAIL_VENUES, $t('pages.detail.claim.subject', { name: venue.name, id: venue.id }))">{{ $t('pages.detail.claim.action') }}</a></p>
+								<h4 class="card-title">{{ $t('pages.venue_detail.claim.title') }}</h4>
+								<p class="card-text">{{ $t('pages.venue_detail.claim.intro') }} <router-link to="/promote">{{ $t('pages.venue_detail.claim.more') }}&hellip;</router-link></p>
+								<p class="card-text"><a :href="prepareEmailLink(EMAIL_VENUES, $t('pages.venue_detail.claim.subject', { name: venue.name, id: venue.id }))" class="btn btn-primary">{{ $t('pages.venue_detail.claim.action') }}</a></p>
 							</div>
 						</div>
 					</div>
@@ -381,11 +390,11 @@ export default {
 						<pg-venue-detail-page-contact-card class="d-none d-lg-block" />
 
 						<!-- Nearby venues -->
-						<div class="my-5" v-if="nearbyVenues.length">
-							<h5 class="mb-3">{{ $t('pages.detail.nearby') }}</h5>
+						<div v-if="nearbyVenues.length" class="my-5">
+							<h5 class="mb-3">{{ $t('pages.venue_detail.nearby') }}</h5>
 							<ul class="list-unstyled">
-								<li class="d-flex align-items-start" v-for="nearbyVenue in nearbyVenues">
-									<img class="mr-3" :src="`/img/map/pin-normal-${nearbyVenue.categories[0].machine_name || 'collapsed'}.svg`">
+								<li v-for="nearbyVenue in nearbyVenues" :key="nearbyVenue.id" class="d-flex align-items-start">
+									<img :src="`/img/map/pin-normal-${nearbyVenue.categories[0].machine_name || 'collapsed'}.svg`" class="mr-3">
 									<p>
 										<strong><router-link :to="`/venues/${nearbyVenue.id}`">{{ nearbyVenue.name }}</router-link></strong><br>
 										<span class="initialism text-muted">{{ $t(`db.categories.${nearbyVenue.categories[0].machine_name}`) }}</span><br>
@@ -397,9 +406,9 @@ export default {
 
 						<!-- Report -->
 						<div class="my-4">
-							<h5>{{ $t('pages.detail.issues.title') }}</h5>
-							<i18n tag="p" path="pages.detail.issues.intro">
-								<a place="report" :href="prepareEmailLink(EMAIL_REPORT, $t('pages.detail.issues.subject', { name: venue.name, id: venue.id }))">{{ $t('pages.detail.issues.report') }}</a>
+							<h5>{{ $t('pages.venue_detail.issues.title') }}</h5>
+							<i18n tag="p" path="pages.venue_detail.issues.intro">
+								<a :href="prepareEmailLink(EMAIL_REPORT, $t('pages.venue_detail.issues.subject', { name: venue.name, id: venue.id }))" place="report">{{ $t('pages.venue_detail.issues.report') }}</a>
 							</i18n>
 						</div>
 					</div>
@@ -413,8 +422,8 @@ export default {
 				:index="lightboxIndex"
 				:arrows="$mq.comfortable"
 				:thumbnails="$mq.comfortable"
-				@close="closeLightbox">
-			</pg-lightbox>
+				@close="closeLightbox"
+			/>
 		</template>
 
 		<pg-page-footer />
