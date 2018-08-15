@@ -175,22 +175,22 @@ export default {
 		<b-form-group
 			v-bind="formGroupProps"
 			:state="!$v.name.$error"
-			label="Nome"
-			invalid-feedback="Inserisci il nome della tua attività.">
+			:label="$t('pages.venue_form.general.name')"
+			:invalid-feedback="$t('pages.venue_form.general.name_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-model="venue.name" placeholder="Es.: Casinò Las Vegas" />
+					<b-input v-model="venue.name" :placeholder="$t('pages.venue_form.general.name_placeholder')" />
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
 			v-bind="formGroupProps"
-			label="Concessionario">
+			:label="$t('pages.venue_form.general.concessionaire')">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-select v-model="venue.concessionaire_id">
-						<option :value="null">Nessuno</option>
+						<option :value="null">{{ $t('pages.venue_form.general.concessionaire_none') }}</option>
 						<option v-for="item in concessionaires" :value="item.id" :key="item.id">{{ item.name }}</option>
 					</b-select>
 				</div>
@@ -199,7 +199,7 @@ export default {
 
 		<b-form-group
 			v-bind="formGroupProps"
-			label="Descrizione">
+			:label="$t('pages.venue_form.general.description')">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-textarea v-model="venue.description" rows="2" />
@@ -210,11 +210,11 @@ export default {
 		<b-form-group
 			v-bind="formGroupProps"
 			:state="!$v.surface_size.$error"
-			label="Dimensioni"
-			invalid-feedback="Inserisci le dimensioni.">
+			:label="$t('pages.venue_form.general.surface_size')"
+			:invalid-feedback="$t('pages.venue_form.general.surface_size_error')">
 			<div class="form-row">
 				<div class="col-5 col-md-4 col-lg-3 col-xl-2">
-					<b-input-group append="mq.">
+					<b-input-group :append="$t('pages.venue_form.general.surface_size_unit')">
 						<b-input v-model.number="venue.surface_size" type="number" min="1" />
 					</b-input-group>
 				</div>
@@ -224,13 +224,13 @@ export default {
 		<b-form-group
 			v-bind="formGroupProps"
 			:state="!$v.category_ids.$error"
-			label="Categoria"
-			label-class="pt-0"
-			invalid-feedback="Scegli almeno una categoria.">
+			:label="$t('pages.venue_form.general.category')"
+			:invalid-feedback="$t('pages.venue_form.general.category_error')"
+			label-class="pt-0">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-checkbox-group v-model="venue.category_ids" stacked>
-						<b-checkbox v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</b-checkbox>
+						<b-checkbox v-for="category in categories" :value="category.id" :key="category.id">{{ $t(`db.categories.${category.machine_name}`) }}</b-checkbox>
 					</b-checkbox-group>
 				</div>
 			</div>
@@ -238,19 +238,19 @@ export default {
 
 		<b-form-group
 			v-bind="formGroupProps"
-			label="Indirizzo">
+			:label="$t('pages.venue_form.general.address')">
 			<div class="form-row">
 				<div class="col-9 col-lg-6">
-					<b-input v-model="mutableAddress.street" placeholder="Via" />
+					<b-input v-model="mutableAddress.street" :placeholder="$t('pages.venue_form.general.address_placeholder1')" />
 				</div>
 				<div class="col-3 col-lg-3">
-					<b-input v-model="mutableAddress.number" placeholder="N. civico" />
+					<b-input v-model="mutableAddress.number" :placeholder="$t('pages.venue_form.general.address_placeholder2')" />
 				</div>
 			</div>
 		</b-form-group>
 		<b-form-group
 			v-bind="formGroupProps"
-			label="Città">
+			:label="$t('pages.venue_form.general.city')">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-input v-model="mutableAddress.city" />
@@ -260,21 +260,21 @@ export default {
 		<b-form-group
 			v-bind="formGroupProps"
 			:state="!$v.address.$error"
-			label="CAP e provincia"
-			invalid-feedback="Inserisci tutti i dati dell'indirizzo.">
+			:label="$t('pages.venue_form.general.zipcode_province')"
+			:invalid-feedback="$t('pages.venue_form.general.address_error')">
 			<div class="form-row">
 				<div class="col-3 col-lg-3">
-					<b-input v-model="mutableAddress.postcode" placeholder="CAP" />
+					<b-input v-model="mutableAddress.postcode" :placeholder="$t('pages.venue_form.general.zipcode_placeholder')" />
 				</div>
 				<div class="col-9 col-lg-6">
-					<b-input v-model="mutableAddress.province" placeholder="Provincia" />
+					<b-input v-model="mutableAddress.province" :placeholder="$t('pages.venue_form.general.province_placeholder')" />
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
 			v-bind="formGroupProps"
-			label="Posizione esatta">
+			:label="$t('pages.venue_form.general.location')">
 			<div class="form-row">
 				<div class="col-lg-9">
 					<div class="embed-responsive embed-responsive-3by2 rounded">
@@ -290,8 +290,8 @@ export default {
 				</div>
 			</div>
 			<b-form-text tag="span">
-				<template v-if="findingMarkerLocation">Cerco&hellip;</template>
-				<template v-else-if="canDragMarker">Trascina per riposizionare</template>
+				<template v-if="findingMarkerLocation">{{ $t('pages.venue_form.general.location_searching') }}&hellip;</template>
+				<template v-else-if="canDragMarker">{{ $t('pages.venue_form.general.location_hint') }}</template>
 			</b-form-text>
 		</b-form-group>
 	</div>

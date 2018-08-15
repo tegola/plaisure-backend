@@ -5,6 +5,21 @@ import constants from 'prontogioco/constants';
 
 import PgLightbox from 'prontogioco/app/components/lightbox';
 import PgVenueDetailPageContactCard from './contact-card';
+import store from 'prontogioco/app/store';
+
+const handleRoute = function(to, from, next) {
+	store.dispatch('venueDetail/load', to.params.venueId)
+		.then(() => {
+			next();
+		})
+		.catch(() => {
+			next({
+				name: 'error',
+				params: [to.path],
+				replace: true
+			});
+		});
+};
 
 export default {
 	name: 'PgVenueDetailPage',
@@ -26,7 +41,7 @@ export default {
 
 	props: {
 		venueId: {
-			type: [String, Number],
+			type: String,
 			required: true
 		}
 	},
@@ -111,21 +126,15 @@ export default {
 		}
 	},
 
+	beforeRouteEnter: handleRoute,
+
+	beforeRouteUpdate: handleRoute,
+
 	beforeCreate() {
 		_extend(this, constants);
 	},
 
-	mounted() {
-		this.loadData();
-	},
-
 	methods: {
-		loadData() {
-			// FIXME: Manca il loader
-			// this.loading = true;
-			this.$store.dispatch('venueDetail/load', this.venueId);
-		},
-
 		isInCategory(categoryMachineName) {
 			return this.venue.categories.find(category => category.machine_name == categoryMachineName) ? true : false;
 		},
@@ -165,12 +174,14 @@ export default {
 							{{ $t('pages.venue_detail.gallery.add') }}
 						</router-link>
 						<template v-for="(file, index) in venue.photos">
-							<a v-if="index < 10" :href="file.resized_url" class="header-photo" @click.prevent="showLightbox(index)">
-								<div class="embed-responsive embed-responsive-1by1 header-photo-img" :style="'background-image: url(' + file.thumbnail_url + ')'">
-								</div>
+							<a v-if="index < 10" :href="file.resized_url" :key="index" class="header-photo" @click.prevent="showLightbox(index)">
+								<div
+									:style="'background-image: url(' + file.thumbnail_url + ')'"
+									class="embed-responsive embed-responsive-1by1 header-photo-img"
+								/>
 							</a>
-							<a v-if="index == 10" :href="file.resized_url" class="header-photo" @click.prevent="showLightbox(index)">
-								<div class="embed-responsive embed-responsive-1by1 header-photo-img" :style="'background-image: url(' + file.thumbnail_url + ')'">
+							<a v-if="index == 10" :href="file.resized_url" :key="index" class="header-photo" @click.prevent="showLightbox(index)">
+								<div :style="'background-image: url(' + file.thumbnail_url + ')'" class="embed-responsive embed-responsive-1by1 header-photo-img">
 									<div class="header-photo-zoom">
 										<pg-icon icon="search" class="mb-1" />
 										{{ $t('pages.venue_detail.gallery.all') }}

@@ -9,7 +9,10 @@ export default {
 	},
 
 	props: {
-		place: String,
+		place: {
+			type: String,
+			default: null
+		},
 		selectFirstOnEnter: {
 			type: Boolean,
 			default: true

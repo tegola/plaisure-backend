@@ -24,11 +24,11 @@
 @import "~bootstrap/scss/pagination";
 @import "~bootstrap/scss/badge";
 @import "~bootstrap/scss/jumbotron";
-// @import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/alert";
 @import "~bootstrap/scss/progress";
 // @import "~bootstrap/scss/media";
 @import "~bootstrap/scss/list-group";
-// @import "~bootstrap/scss/close";
+@import "~bootstrap/scss/close";
 @import "~bootstrap/scss/modal";
 @import "~bootstrap/scss/tooltip";
 // @import "~bootstrap/scss/popover";
@@ -56,6 +56,7 @@
 @import "components/navbar";
 @import "components/pane";
 @import "components/typeahead";
+@import "components/offline-alert";
 
 // Utility classes
 @import "utilities/embed";

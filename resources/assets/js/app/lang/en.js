@@ -1,4 +1,28 @@
 export default {
+	// Common -----------------------------------------------------------------
+	common: {
+		weekdays: {
+			monday: 'Monday',
+			tuesday: 'Tuesday',
+			wednesday: 'Wednesday',
+			thursday: 'Thursday',
+			friday: 'Friday',
+			saturday: 'Saturday',
+			sunday: 'Sunday'
+		},
+		status: {
+			offline_warning: "Attention: you're not connected to the internet!",
+			error: 'Error',
+			loading: 'Loading'
+		},
+		actions: {
+			cancel: 'Cancel',
+			save: 'Save',
+			delete: 'Delete',
+			remove: 'Remove'
+		}
+	},
+
 	// Components -------------------------------------------------------------
 	components: {
 		navbar: {
@@ -109,6 +133,35 @@ export default {
 			login2: 'Sign in'
 		},
 
+		explore: {
+			loading: 'Loading',
+			view: {
+				list: 'Show list',
+				map: 'Show map'
+			},
+			filters: {
+				select: 'Selected',
+				all: 'All',
+				selected: 'No selection | 1 selected | {count} selected',
+				category_label: 'Type',
+				radius_label: 'Distance',
+				amenity_label: 'Amenities'
+			},
+			placeholder: {
+				location: 'Near you',
+				in_map: 'Inside map bounds'
+			},
+			location: 'Use your current location',
+			location_error: "We couldn't find your location",
+			results: 'No venues found | 1 result | {count} results',
+			limited_results: 'Results have been limited. Search a specific area to get more details.',
+			search_area: 'Search this area',
+			no_items: {
+				title: 'No venues found',
+				subtitle: 'Move to a different area or change search filters.'
+			}
+		},
+
 		venue_detail: {
 			subtitle: '{category} in {city}',
 			gallery: {
@@ -175,6 +228,104 @@ export default {
 			}
 		},
 
+		venue_form: {
+			title: {
+				add: 'Add venue',
+				edit: 'Edit venue'
+			},
+			loading: 'Loading',
+			save: 'Save',
+			general: {
+				title: 'General info',
+				name: 'Name',
+				name_placeholder: 'Ex.: Casinò Las Vegas',
+				name_error: 'Type the venue name.',
+				concessionaire: 'Concessionaire',
+				concessionaire_none: 'None',
+				description: 'Description',
+				surface_size: 'Surface size',
+				surface_size_unit: 'm²',
+				surface_size_error: "Insert the venue's surface size",
+				category: 'Category',
+				category_error: 'Pick at least a category.',
+				address: 'Address',
+				address_placeholder1: 'Street',
+				address_placeholder2: 'Street number',
+				address_error: 'Fill in all address data',
+				city: 'City',
+				zipcode_province: 'Zip code & province',
+				zipcode_placeholder: 'Zip code',
+				province_placeholder: 'Province',
+				location: 'Location',
+				location_searching: 'Searching',
+				location_hint: 'Drag to reposition'
+			},
+			services: {
+				title: 'Services',
+				invalid_value: 'Invalid value.',
+				sports_betting: 'Sports betting',
+				virtual_betting: 'Virtual betting',
+				horse_betting: 'Horse betting',
+				arcade_roulette: 'Arcade roulette',
+				vlt_machine_count: 'VLC machines',
+				awp_machine_count: 'AWP machines',
+				seating_capacity: 'Seatings',
+				parking_capacity: 'Parking spots',
+				vlt_platforms: 'VLT platforms',
+				amenities: {
+					title: 'Amenities',
+					atm: 'ATM',
+					bar: 'Bar',
+					pay_per_view: 'Pay Per View',
+					pos: 'POS',
+					private_parking: 'Private parking spots',
+					restaurant: 'Restaurant',
+					security: 'Security',
+					smoking_area: 'Smoking area',
+					wifi: 'Wi-Fi'
+				},
+				pay_per_view_platforms: 'Pay Per View'
+			},
+			contacts: {
+				title: 'Contacts',
+				phone: 'Phone',
+				email: 'E-mail',
+				email_placeholder: 'Ex.: name@gmail.com',
+				email_error: 'Type a valid e-mail address..',
+				url_placeholder: 'https://',
+				url_error: "Type a valid URL, starting with 'http://' or 'https://'.",
+				site: 'Website URL',
+				online_casino: 'Online casinò',
+				facebook: 'Facebook page'
+			},
+			hours: {
+				title: 'Business hours',
+				always: 'Always open (24h)',
+				full: 'All day',
+				split: 'Split hours',
+				closed: 'Closed',
+				from_to: 'From/to',
+				morning: 'Morning (from/to)',
+				afternoon: 'Afternoon (from/to)'
+			},
+			photos: {
+				title: 'Photos',
+				upload: 'Upload photo',
+				remove: {
+					title: 'Remove photo',
+					intro: "You're about to {action}. It will be actually removed from the gallery once you save this venue data.",
+					intro_action: 'remove this photo'
+				}
+			},
+			jackpots: {
+				title: 'Jackpots',
+				name: 'Jackpot {number}',
+				name_placeholder: 'Name',
+				amount_placeholder: 'Amount',
+				amount_error: 'Type a valid amount.'
+			}
+		},
+
 		about: {
 			meta_title: 'About & Contact',
 			company: {
@@ -199,7 +350,8 @@ export default {
 		},
 
 		error: {
-			not_found: 'Page not found'
+			not_found: 'Page not found',
+			server_error: 'Server error'
 		}
 	},
 

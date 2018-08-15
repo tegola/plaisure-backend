@@ -99,16 +99,16 @@ export default {
 	<div>
 		<b-form-group :class="showControls ? 'mb-2' : 'mb-0'">
 			<b-select v-model="mode">
-				<option value="always">Sempre aperto (24h)</option>
-				<option value="full">Orario continuato</option>
-				<option value="split">Orario spezzato</option>
-				<option value="closed">Chiuso</option>
+				<option value="always">{{ $t('pages.venue_form.hours.always') }}</option>
+				<option value="full">{{ $t('pages.venue_form.hours.full') }}</option>
+				<option value="split">{{ $t('pages.venue_form.hours.split') }}</option>
+				<option value="closed">{{ $t('pages.venue_form.hours.closed') }}</option>
 			</b-select>
 		</b-form-group>
 
 		<div v-if="showControls" class="form-row">
 			<b-form-group
-				:label="showSecondaryControls ? 'Mattina (dalle/alle)' : 'Dalle/alle'"
+				:label="showSecondaryControls ? $t('pages.venue_form.hours.morning') : $t('pages.venue_form.hours.from_to')"
 				class="col-sm-6">
 				<b-input-group>
 					<b-select
@@ -125,7 +125,7 @@ export default {
 			</b-form-group>
 			<b-form-group
 				v-if="showSecondaryControls"
-				label="Pomeriggio (dalle/alle)"
+				:label="$t('pages.venue_form.hours.afternoon')"
 				class="col-sm-6">
 				<b-input-group>
 					<b-select

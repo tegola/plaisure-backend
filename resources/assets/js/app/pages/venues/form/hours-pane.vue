@@ -29,13 +29,13 @@ export default {
 			formGroupProps,
 			mutableHours: this.hours,
 			days: [
-				{ index: 1, name: 'Lunedì' },
-				{ index: 2, name: 'Martedì' },
-				{ index: 3, name: 'Mercoledì' },
-				{ index: 4, name: 'Giovedì' },
-				{ index: 5, name: 'Venerdì' },
-				{ index: 6, name: 'Sabato' },
-				{ index: 0, name: 'Domenica' }
+				{ index: 1, name: this.$t('common.weekdays.monday') },
+				{ index: 2, name: this.$t('common.weekdays.tuesday') },
+				{ index: 3, name: this.$t('common.weekdays.wednesday') },
+				{ index: 4, name: this.$t('common.weekdays.thursday') },
+				{ index: 5, name: this.$t('common.weekdays.friday') },
+				{ index: 6, name: this.$t('common.weekdays.saturday') },
+				{ index: 0, name: this.$t('common.weekdays.sunday') }
 			]
 		};
 	},

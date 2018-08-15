@@ -38,21 +38,21 @@ export default {
 <template>
 	<div>
 		<b-form-group v-for="n in 3" :key="n"
-			:label="`Jackpot ${n}`"
+			:label="$t('pages.venue_form.jackpots.name', { number: n })"
 			v-bind="formGroupProps"
 			:state="!$v.contacts.email.$error"
-			invalid-feedback="Inserisci nu numero valido.">
+			:invalid-feedback="$t('pages.venue_form.jackpots.amount_error')">
 			<div class="form-row">
 				<div class="col-md col-lg-5">
-					<b-input v-model="venue.jackpots[n].label" placeholder="Nome" />
+					<b-input v-model="venue.jackpots[n].label" :placeholder="$t('pages.venue_form.jackpots.name_placeholder')" />
 				</div>
 				<div class="col-md col-lg-4">
 					<b-input-group prepend="€">
 						<b-input
 							v-model.number="venue.jackpots[n].value"
+							:placeholder="$t('pages.venue_form.jackpots.amount_placeholder')"
 							type="number"
 							class="text-right"
-							placeholder="Valore"
 							min="0"
 							step="0.01"
 						/>

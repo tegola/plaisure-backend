@@ -64,7 +64,7 @@ export default {
 
 			return this.venue.categories
 				.slice(0, 2)
-				.map(category => category.name)
+				.map(category => this.$t(`db.categories.${category.machine_name}`))
 				.join(', ');
 		},
 		firstCategoryMachineName() {

@@ -27,7 +27,7 @@ if (!mix.inProduction()) {
 mix.setPublicPath('public')
 	.autoload({
 		jquery: ['$', 'jQuery'], // Bootstrap
-		'popper.js': 'Popper', // Bootstrap
+		'popper.js': 'Popper' // Bootstrap
 	})
 	.babelConfig({
 		plugins: [

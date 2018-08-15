@@ -74,7 +74,7 @@ class FormController extends Controller
 				'vlt_platforms'
 			]);
 
-		$categories = VenueCategory::select('id', 'name')->get();
+		$categories = VenueCategory::select('id', 'machine_name', 'name')->get();
 		$concessionaires = Concessionaire::select('id', 'name')->get();
 		$vltPlatforms = VltPlatform::select('id', 'name')->get();
 		$payPerViewPlatforms = PayPerViewPlatform::select('id', 'name')->get();

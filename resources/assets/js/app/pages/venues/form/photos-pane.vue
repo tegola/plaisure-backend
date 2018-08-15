@@ -90,22 +90,22 @@ export default {
 				<a :href="photo.resized_url" target="_blank">
 					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" class="rounded" />
 				</a>
-				<b-button size="sm" variant="danger" block class="mt-2" @click="deletePhoto(photo)">Elimina</b-button>
+				<b-button size="sm" variant="danger" block class="mt-2" @click="deletePhoto(photo)">{{ $t('common.actions.delete') }}</b-button>
 			</div>
 
 			<!-- Current uploads -->
 			<div v-for="file in uploaderFiles" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
 				<div class="embed-responsive embed-responsive-1by1 rounded border">
 					<div class="embed-responsive-item d-flex flex-column align-items-center justify-content-center text-center">
-						<span v-if="file.error" class="text-danger small"><strong>Errore</strong><br>{{ file.error }}</span>
+						<span v-if="file.error" class="text-danger small"><strong>{{ $t('common.status.error') }}</strong><br>{{ file.error }}</span>
 						<template v-else>
-							Caricamento
+							{{ $t('common.status.loading') }}
 							<b-progress :value="parseFloat(file.progress)" class="w-75 my-2" style="height: 2px" />
 							{{ file.progress }}%
 						</template>
 					</div>
 				</div>
-				<b-button v-if="file.error" size="sm" variant="danger" block class="mt-2" @click="$refs.uploader.remove(file)">Rimuovi</b-button>
+				<b-button v-if="file.error" size="sm" variant="danger" block class="mt-2" @click="$refs.uploader.remove(file)">{{ $t('common.actions.remove') }}</b-button>
 			</div>
 
 			<!-- Uploader -->
@@ -122,17 +122,21 @@ export default {
 					@input-file="onUploaderFileInput">
 					<a class="embed-responsive-item text-primary border d-flex flex-column align-items-center justify-content-center">
 						<pg-icon icon="plus" />
-						Carica foto
+						{{ $t('pages.venue_form.photos.upload') }}
 					</a>
 				</pg-uploader>
 			</div>
 		</div>
 
 		<pg-confirm-modal v-model="confirmDeleteOpen"
+			:title="$t('pages.venue_form.photos.remove.title')"
+			:cancel-title="$t('common.actions.cancel')"
+			:ok-title="$t('common.actions.remove')"
 			variant="danger"
-			title="Rimuovi foto"
-			ok-title="Rimuovi"
 			@ok="confirmDeletePhoto">
+			<i18n tag="p" class="lead" path="pages.venue_form.photos.remove.intro">
+				<strong class="text-danger" place="action">{{ $t('pages.venue_form.photos.remove.intro_action') }}</strong>
+			</i18n>
 			<p class="lead">Stai per <strong class="text-danger">rimuovere questa foto</strong>. Essa verrà effettivamente eliminata dalla galleria una volta salvati i dati dell'attività.</p>
 			<img v-if="currentPhoto" :src="currentPhoto.thumbnail_url" class="img-fluid rounded">
 		</pg-confirm-modal>

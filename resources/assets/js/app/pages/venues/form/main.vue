@@ -51,18 +51,25 @@ export default {
 	},
 
 	data() {
+		const panes = [
+			'general',
+			'services',
+			'contacts',
+			'hours',
+			'photos',
+			'jackpots'
+		].map(name => {
+			return {
+				value: name,
+				title: this.$t(`pages.venue_form.${name}.title`)
+			};
+		});
+
 		return {
 			loading: false,
 			saving: false,
-			panes: [
-				{ value: 'general', title: 'Generale' },
-				{ value: 'services', title: 'Servizi' },
-				{ value: 'contacts', title: 'Contatti' },
-				{ value: 'hours', title: 'Orari' },
-				{ value: 'photos', title: 'Foto' },
-				{ value: 'jackpots', title: 'Jackpot' }
-			],
-			selectedPane: 'general',
+			panes,
+			selectedPane: panes[0].value,
 			categories: [],
 			concessionaires: [],
 			vltPlatforms: [],

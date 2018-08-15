@@ -4,6 +4,7 @@
  ✔ Convertire login in componenti vue @done (18-07-09 21:49)
  ✔ ripristinare structured data, titolo e descrizione nella vista dettaglio @done (18-07-21 16:21)
  ✔ Aggiustare il bordo destro della card contatti nel dettaglio sala @done (18-07-21 16:40)
+ ☐ Il geocoder che punta a google maps dà errori CORS
  ☐ Login: sbagliando i dati (utente non trovato) si vene ridirezionati alla home
  ☐ Login: sbagliando i dati (credenziali non corrette) non viene mostrato l'errore
  ☐ Form: mostrare errore in caso di caricamento errato

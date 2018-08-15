@@ -197,44 +197,6 @@ export default {
 		<!-- <pg-navbar variant="dark" /> -->
 		<div class="hero">
 			<pg-map v-bind="mapProps" class="map" />
-			<!--
-			<nav class="navbar navbar-transparent navbar-expand-md">
-				<div class="container justify-content-center">
-					<a class="navbar-brand" href="{{ route('site.home') }}" aria-label="{{ config('app.name') }}">
-						LOGO QUI
-					</a>
-					<div>
-						@if (Auth::guest())
-							<a class="btn btn-inverse-neutral" href="{{ url('/login') }}">Accedi</a>
-							<a class="btn btn-primary" href="{{ url('/register') }}">Iscriviti</a>
-						@else
-							<span class="dropdown">
-								<button class="btn btn-secondary dropdown-toggle" type="button" id="navbar-user-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</button>
-								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-user-button">
-									<a class="dropdown-item" href="{{ route('site.user') }}">
-										<strong>
-											{{ Auth::user()->name }}
-											{{ Gate::allows('administer') ? '(amministratore)' : '' }}
-										</strong><br>
-										<span class="text-muted">Visualizza il tuo profilo</span>
-									</a>
-									@if(Gate::allows('administer'))
-										<a class="dropdown-item" href="{{ route('admin.home') }}">
-											Vai all'amministrazione
-										</a>
-									@endif
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('navbar-user-logout-form').submit();">Esci</a>
-									<form id="navbar-user-logout-form" action="{{ url('/logout') }}" method="POST" hidden>
-										{{ csrf_field() }}
-									</form>
-								</div>
-							</span>
-						@endif
-					</div>
-				</div>
-			</nav>
-			-->
 
 			<div class="container hero-content">
 				<div class="text-center">

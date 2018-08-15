@@ -148,14 +148,17 @@ export default {
 	actions: {
 		load: ({ commit }, venueId) => {
 			// this.loading = true;
-			axios.get(`/venues/${venueId}`)
-				.then(({ data }) => {
-					commit('setVenue', data.venue);
-					commit('setNearbyVenues', data.nearbyVenues);
-					commit('setStructuredData', data.structuredData);
-				}).catch(() => {}).then(() => {
-					// this.loading = false;
-				});
+			const request = axios.get(`/venues/${venueId}`);
+
+			request.then(({ data }) => {
+				commit('setVenue', data.venue);
+				commit('setNearbyVenues', data.nearbyVenues);
+				commit('setStructuredData', data.structuredData);
+			}).catch(() => {}).then(() => {
+				// this.loading = false;
+			});
+
+			return request;
 		}
 	}
 };

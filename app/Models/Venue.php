@@ -14,8 +14,6 @@ use Hashids\Hashids;
 
 class Venue extends Model
 {
-	const SURFACE_TO_MACHINE_MULTIPLIER = 0.15;
-
 	const MACHINE_TYPE_A  = 1;
 	const MACHINE_TYPE_B  = 2;
 	const MACHINE_TYPE_AB = 3;
@@ -234,20 +232,6 @@ class Venue extends Model
 	}
 
 	/**
-	 * Build an address array, useful for dividing it in multiple lines.
-	 * 
-	 * @return array
-	 */
-	public function addressComponents()
-	{
-		return [
-			$this->address_street . ' ' . $this->address_number,
-			$this->address_city,
-			$this->address_postcode . ' ' . $this->address_province
-		];
-	}
-
-	/**
 	 * Determine if this venue has a owner without exposing the owner id.
 	 * 
 	 * @return boolean
@@ -255,16 +239,6 @@ class Venue extends Model
 	public function getHasOwnerAttribute()
 	{
 	    return $this->owner_id ? true : false;
-	}
-
-	/**
-	 * Get the estimated number of machines based on surface size.
-	 *
-	 * @return integer  The estimated number
-	 */
-	public function getEstimatedMachineCountAttribute()
-	{
-		return $this->surface_size ? round($this->surface_size * self::SURFACE_TO_MACHINE_MULTIPLIER) : 0;
 	}
 
 	/**
@@ -286,36 +260,6 @@ class Venue extends Model
 	{
 		// return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
 		return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city }";
-	}
-
-	/**
-	 * Get the distance in readable format.
-	 *
-	 * 0.8123 becomes 800 m
-	 * 1.2455 becomes 1.2 km
-	 * 10.245 becomes 10 km
-	 *
-	 * @return string Distance in meters or kilometers
-	 */
-	// FIXME: Move to a Helper
-	public function getFormattedDistanceAttribute()
-	{
-		if (!$this->distance) return;
-		if ($this->distance > 10) return round($this->distance) . ' km';
-		if ($this->distance > 1) return round($this->distance, 1) . ' km';
-		if ($this->distance < 1) return round($this->distance * 100) . ' m';
-	}
-
-	/**
-	 * Get the machine name for the first venue category.
-	 * 
-	 * @return string
-	 */
-	public function getFirstCategoryMachineNameAttribute()
-	{
-		$categories = $this->categories();
-
-		return $categories->count() ? $categories->first()->machine_name : '';
 	}
 
 	/**

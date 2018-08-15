@@ -166,7 +166,7 @@ export default {
 			</div>
 
 			<div ref="display" class="pg-lightbox__display" @click.stop>
-				<div v-for="image in images" class="pg-lightbox__slide">
+				<div v-for="(image, index) in images" :key="index" class="pg-lightbox__slide">
 					<img :src="image.url" class="pg-lightbox__image">
 				</div>
 				<button
@@ -191,6 +191,7 @@ export default {
 
 			<div v-if="showThumbnails" ref="thumbnails" class="pg-lightbox__thumbnail-list">
 				<div v-for="(image, index) in images"
+					:key="index"
 					:style="thumbnailStyle(image)"
 					:class="thumbnailClass(image)"
 					:title="image.caption"

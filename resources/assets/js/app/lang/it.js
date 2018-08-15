@@ -1,4 +1,28 @@
 export default {
+	// Common -----------------------------------------------------------------
+	common: {
+		weekdays: {
+			monday: 'Lunedì',
+			tuesday: 'Martedì',
+			wednesday: 'Mercoledì',
+			thursday: 'Giovedì',
+			friday: 'Venerdì',
+			saturday: 'Sabato',
+			sunday: 'Domenica'
+		},
+		status: {
+			offline_warning: 'Attenzione: non sei connesso a internet!',
+			error: 'Error',
+			loading: 'Caricamento'
+		},
+		actions: {
+			cancel: 'Annulla',
+			save: 'Salva',
+			delete: 'Elimina',
+			remove: 'Rimuovi'
+		}
+	},
+
 	// Components -------------------------------------------------------------
 	components: {
 		navbar: {
@@ -61,7 +85,7 @@ export default {
 			city_placeholder: 'Scrivi la tua città',
 			location_placeholder: 'Vicino a te',
 			location: 'Usa la tua posizione',
-			location_error: 'Non è stato possibile trovare la tua posizione',
+			location_error: 'Non è stato possibile trovare la tua posizione.',
 			submit: 'Cerca',
 			explore: {
 				intro: 'Ti senti fortunato?',
@@ -107,6 +131,35 @@ export default {
 			submit: 'Iscriviti',
 			login1: 'Sei già registrato? {link}',
 			login2: 'Accedi'
+		},
+
+		explore: {
+			loading: 'Caricamento',
+			view: {
+				list: 'Mostra lista',
+				map: 'Mostra mappa'
+			},
+			filters: {
+				select: 'Scegli',
+				all: 'Tutti',
+				selected: 'Nessuna selezione | 1 selezionato | {count} selezionati',
+				category_label: 'Tipo',
+				radius_label: 'Distanza',
+				amenity_label: 'Servizi disponibili'
+			},
+			placeholder: {
+				location: 'Vicino a te',
+				in_map: "All'interno della mappa"
+			},
+			location: 'Usa la tua posizione',
+			location_error: 'Non è stato possibile trovare la tua posizione.',
+			results: 'Nessuna attività trovata | 1 risultato | {count} risultati',
+			limited_results: 'Il numero di risultati è stato limitato automaticamente. Cerca una zona specifica per visualizzare più dettagli.',
+			search_area: 'Cerca in questa zona',
+			no_items: {
+				title: 'Nessuna attività trovata',
+				subtitle: 'Cerca in un altra zona o modifica i criteri ricerca.'
+			}
 		},
 
 		venue_detail: {
@@ -175,6 +228,104 @@ export default {
 			}
 		},
 
+		venue_form: {
+			title: {
+				add: 'Aggiungi attività',
+				edit: 'Modifica attività'
+			},
+			loading: 'Caricamento',
+			save: 'Salva',
+			general: {
+				title: 'Generale',
+				name: 'Nome',
+				name_placeholder: 'Es.: Casinò Las Vegas',
+				name_error: 'Inserisci il nome della tua attività.',
+				concessionaire: 'Concessionario',
+				concessionaire_none: 'Nessuno',
+				description: 'Descrizione',
+				surface_size: 'Dimensioni',
+				surface_size_unit: 'mq.',
+				surface_size_error: 'Inserisci le dimensioni.',
+				category: 'Categoria',
+				category_error: 'Scegli almeno una categoria.',
+				address: 'Indirizzo',
+				address_placeholder1: 'Via',
+				address_placeholder2: 'Numero civico',
+				address_error: "Inserisci tutti i dati dell'indirizzo.",
+				city: 'Città',
+				zipcode_province: 'CAP e provincia',
+				zipcode_placeholder: 'CAP',
+				province_placeholder: 'Provincia',
+				location: 'Posizione esatta',
+				location_searching: 'Cerco',
+				location_hint: 'Trascina per riposizionare'
+			},
+			services: {
+				title: 'Servizi',
+				invalid_value: 'Valore non valido.',
+				sports_betting: 'Scommesse sportive',
+				virtual_betting: 'Scommesse virtuali',
+				horse_betting: 'Scommesse ippiche',
+				arcade_roulette: 'Roulette arcade',
+				vlt_machine_count: 'N. macchine VLT',
+				awp_machine_count: 'N. macchine AWP',
+				seating_capacity: 'Posti a sedere',
+				parking_capacity: 'Posti auto',
+				vlt_platforms: 'Piattaforme VLT',
+				amenities: {
+					title: 'Comodità',
+					atm: 'Totem Bancomat',
+					bar: 'Bar',
+					pay_per_view: 'Pay per view',
+					pos: 'POS',
+					private_parking: 'Parcheggio privato',
+					restaurant: 'Ristorante',
+					security: 'Security',
+					smoking_area: 'Area fumatori',
+					wifi: 'Wi-Fi'
+				},
+				pay_per_view_platforms: 'Piattaforme Pay Per View'
+			},
+			contacts: {
+				title: 'Contatti',
+				phone: 'Telefono',
+				email: 'E-mail',
+				email_placeholder: 'Es.: nome@gmail.com',
+				email_error: 'Inserisci un indirizzo e-mail valido.',
+				url_placeholder: 'https://',
+				url_error: "Inserisci un URL valido, che inizi con 'http://' o 'https://'.",
+				site: 'Sito web',
+				online_casino: 'Casinò online',
+				facebook: 'Pagina Facebook'
+			},
+			hours: {
+				title: 'Orari',
+				always: 'Sempre aperto (24h)',
+				full: 'Orario continuato',
+				split: 'Orario spezzato',
+				closed: 'Chiuso',
+				from_to: 'Dalle/alle',
+				morning: 'Mattina (dalle/alle)',
+				afternoon: 'Pomeriggio (dalle/alle)'
+			},
+			photos: {
+				title: 'Foto',
+				upload: 'Carica foto',
+				remove: {
+					title: 'Rimuovi photo',
+					intro: "Stai per {action}. Essa verrà effettivamente eliminata dalla galleria una volta salvati i dati dell'attività.",
+					intro_action: 'rimuovere questa foto'
+				}
+			},
+			jackpots: {
+				title: 'Jackpot',
+				name: 'Jackpot {number}',
+				name_placeholder: 'Nome',
+				amount_placeholder: 'Valore',
+				amount_error: 'Inserisci un numero valido.'
+			}
+		},
+
 		about: {
 			meta_title: 'Informazioni e contatti',
 			company: {
@@ -199,7 +350,8 @@ export default {
 		},
 
 		error: {
-			not_found: 'Pagina non trovata'
+			not_found: 'Pagina non trovata',
+			server_error: 'Errore del server'
 		}
 	},
 

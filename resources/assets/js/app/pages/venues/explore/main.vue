@@ -1,7 +1,6 @@
 <script>
 import _extend from 'lodash/extend';
 import _debounce from 'lodash/debounce';
-import singularOrPlural from 'prontogioco/utilities/singular-or-plural';
 
 import { Map as PgMap, Marker as PgMapMarker, InfoWindow as PgMapInfoWindow } from 'vue2-google-maps';
 import BTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
@@ -27,10 +26,6 @@ export default {
 		PgFilterButton,
 		PgFilterButtonItem,
 		PgVenueListItem
-	},
-
-	filters: {
-		singularOrPlural
 	},
 
 	data() {
@@ -91,7 +86,7 @@ export default {
 				streetViewControl: false,
 				zoomControl: this.$mq.comfortable,
 				zoomControlOptions: {
-					position: 1 //google.maps.ControlPosition.TOP_LEFT
+					position: 1 // google.maps.ControlPosition.TOP_LEFT
 				},
 				styles: [
 					{ // Hide points of interest
@@ -213,7 +208,7 @@ export default {
 				lng: longitude
 			};
 			this.query = '';
-			this.placeholder = '(Vicino a te)';
+			this.placeholder = ['(', this.$t('pages.explore.placeholder.location '), ')'].join('');
 
 			// Move map center, but disable map bounds tracking first
 			this.mapBoundsEventEnabled = false;
@@ -242,7 +237,7 @@ export default {
 		onUserLocationNotFound() {
 			this.locating = false;
 			this.userLocation = null;
-			alert('Non è stato possibile trovare la tua posizione.');
+			alert(this.$t('pages.home.location_error'));
 		},
 
 		// Filters ------------------------------------------------------------
@@ -254,7 +249,7 @@ export default {
 			let ids = this.searchParams.categories;
 
 			// All categories
-			if (ids.length == this.categories.length) return 'Tutti';
+			if (ids.length == this.categories.length) return this.$tc('pages.explore.filters.all');
 
 			// One category
 			if (ids.length == 1) {
@@ -263,9 +258,11 @@ export default {
 				}).name;
 			}
 
-			// More than one categories
+			// More than one category
 			if (ids.length > 1) {
-				return `${ids.length} selezionati`;
+				return this.$tc('pages.explore.filters.selected', ids.length, {
+					count: ids.length
+				});
 			}
 		},
 
@@ -280,10 +277,9 @@ export default {
 					return item.machine_name == machineNames[0];
 				}).name;
 			} else {
-				return [
-					machineNames.length,
-					this.$options.filters.singularOrPlural(machineNames.length, 'selezionato', 'selezionati')
-				].join(' ');
+				return this.$tc('pages.explore.filters.selected', machineNames.length, {
+					count: machineNames.length
+				})
 			}
 		},
 		*/
@@ -368,7 +364,7 @@ export default {
 			// Update view
 			this.mapNeedsRefresh = false;
 			this.query = null;
-			this.placeholder = "(All'interno della mappa)";
+			this.placeholder = ['(', this.$t('pages.explore.placeholder.in_map '), ')'].join('');
 
 			// Update search params
 			const c = this.mapBounds.getCenter();
@@ -459,13 +455,13 @@ export default {
 			<div class="d-flex">
 				<a
 					v-if="$mq.constrained"
-					:title="showMap ? 'Mostra lista' : 'Mostra mappa'"
+					:title="showMap ? $t('pages.explore.view.list') : $t('pages.explore.view.map')"
 					class="filter-button filters__toggle-button"
 					href="#"
 					@click="currentView = currentView == 'map' ? 'list' : 'map'">
 					<pg-icon :icon="showMap ? 'list' : 'map'" />
 				</a>
-				<pg-filter-button v-if="showRadiusFilter" :text="radiusFilterText()" label="Distanza" @close="onFilterClose">
+				<pg-filter-button v-if="showRadiusFilter" :text="radiusFilterText()" :label="$t('pages.explore.filters.radius_label')" @close="onFilterClose">
 					<pg-pane class="filter-button-pane">
 						<pg-filter-button-item
 							v-for="radius in radiuses"
@@ -477,7 +473,7 @@ export default {
 						</pg-filter-button-item>
 					</pg-pane>
 				</pg-filter-button>
-				<pg-filter-button :text="categoryFilterText()" label="Tipo" @close="onFilterClose">
+				<pg-filter-button :text="categoryFilterText()" :label="$t('pages.explore.filters.category_label')" @close="onFilterClose">
 					<pg-pane class="filter-button-pane">
 						<pg-filter-button-item
 							v-for="category in categories"
@@ -489,7 +485,7 @@ export default {
 					</pg-pane>
 				</pg-filter-button>
 				<!--
-				<pg-filter-button label="Servizi disponibili" :text="amenitiesFilterText()" placeholder="Scegli..."  @close="onFilterClose">
+				<pg-filter-button label="Servizi disponibili" :text="amenitiesFilterText()" :placeholder="$t('pages.explore.filters.select')..."  @close="onFilterClose">
 					<pg-pane class="filter-button-pane">
 						<pg-filter-button-item
 							v-for="amenity in amenities"
@@ -503,8 +499,11 @@ export default {
 				-->
 			</div>
 			<div v-if="venues.length" class="text-muted px-3 align-self-center text-nowrap">
-				{{ venues.length }}<template v-if="hasMorePages">+</template>
-				{{ venues.length | singularOrPlural('risultato', 'risultati') }}
+				{{
+					$tc('pages.explore.results', venues.length, {
+						count: hasMorePages ? `${venues.length}+` : venues.length
+					})
+				}}
 			</div>
 		</div>
 
@@ -513,14 +512,14 @@ export default {
 				<!-- Loader -->
 				<div v-if="loading" v-cloak class="list-group-item venue-list-placeholder-item text-muted">
 					<pg-icon icon="circle-outline-notch" spinning />
-					<h4 class="mb-0">Caricamento&hellip;</h4>
+					<h4 class="mb-0">{{ $t('pages.explore.loading') }}&hellip;</h4>
 				</div>
 				<template v-else v-cloak>
 					<!-- Empty list -->
 					<div v-if="!venues.length" class="list-group-item venue-list-placeholder-item text-muted">
 						<pg-icon icon="search" class="pg-icon--3x" />
-						<h4 class="mt-3">Nessuna attività trovata</h4>
-						<p>Cerca in un altra zona o modifica i criteri di rcerca.</p>
+						<h4 class="mt-3">{{ $t('pages.explore.no_items.title') }}</h4>
+						<p>{{ $t('pages.explore.no_items.subtitle') }}</p>
 					</div>
 
 					<!-- Venue list -->
@@ -538,7 +537,7 @@ export default {
 					<!-- Limited results -->
 					<div v-if="hasMorePages" class="list-group-item text-muted text-center border-0 mt-0 mb-5">
 						<div class="h1">&hellip;</div>
-						<p>Il numero di risultati è stato limitato automaticamente. Cerca una zona specifica per visualizzare più dettagli.</p>
+						<p>{{ $t('pages.explore.limited_results') }}</p>
 					</div>
 				</template>
 			</div>
@@ -572,8 +571,8 @@ export default {
 					<template v-if="$mq.comfortable && mapNeedsRefresh">
 						<button
 							id="desktop-refresh-btn"
+							:aria-label="$t('pages.explore.limited_results')"
 							class="btn map-btn map-refresh-btn"
-							aria-label="Cerca in questa zona"
 							@click="onSearchBoundsClick">
 							<pg-icon icon="refresh" />
 						</button>
@@ -582,11 +581,11 @@ export default {
 							placement="right"
 							triggers=""
 							show>
-							Cerca in questa zona
+							{{ $t('pages.explore.limited_results') }}
 						</b-tooltip>
 					</template>
 					<div v-if="$mq.constrained && mapNeedsRefresh" v-cloak class="container-fluid map-floating-controls">
-						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">Cerca qui</button>
+						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">{{ $t('pages.explore.limited_results') }}</button>
 					</div>
 				</template>
 			</pg-map>

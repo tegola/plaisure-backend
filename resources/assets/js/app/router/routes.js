@@ -105,6 +105,7 @@ export default [
 	// Catch all --------------------------------------------------------------
 	{
 		path: '*',
+		name: 'error',
 		component: () => import('prontogioco/app/pages/error')
 	}
 ];

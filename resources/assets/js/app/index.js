@@ -60,7 +60,7 @@ new Vue({
 	},
 
 	data: {
-		hasGeolocation: navigator.geolocation ? true : false
+		hasGeolocation: Boolean(navigator.geolocation)
 	},
 
 	meta() {
