@@ -1,11 +1,13 @@
 <script>
 import { mapState } from 'vuex';
+import PgNoItems from 'prontogioco/app/components/no-items';
 import PgButton from 'prontogioco/app/components/button';
 
 export default {
 	name: 'PgUserVenuesPage',
 
 	components: {
+		PgNoItems,
 		PgButton
 	},
 
@@ -13,11 +15,17 @@ export default {
 		...mapState('user', ['venues'])
 	},
 
+	meta() {
+		return {
+			title: this.$t('pages.user_venues.meta_title')
+		};
+	},
+
 	methods: {
 		venueCategoryString(venue) {
 			if (!venue.categories || !venue.categories.length) return null;
 
-			return venue.categories[0].name;
+			return this.$t(`db.categories.${venue.categories[0].machine_name}`);
 		}
 	}
 };
@@ -29,12 +37,16 @@ export default {
 
 		<div class="container my-5">
 			<div class="d-flex justify-content-between align-items-center">
-				<h2>Gestisci le tue attività</h2>
-				<pg-button :to="{ name: 'venues.add' }" variant="primary" icon="plus">Aggiungi</pg-button>
+				<h2>{{ this.$t('pages.user_venues.title') }}</h2>
+				<pg-button
+					:to="{ name: 'venues.add' }"
+					variant="primary"
+					icon="plus">
+					{{ this.$t('common.actions.add') }}
+				</pg-button>
 			</div>
-			<hr>
 
-			<div class="row">
+			<div v-if="venues.length" class="row mt-5">
 				<div v-for="venue in venues" :key="venue.id" class="col-md-6 col-xl-4 mb-4">
 					<router-link :to="{ name: 'venues.edit', params: { venueId: venue.id } }" class="h-100">
 						<div class="card h-100 flex-row">
@@ -57,22 +69,15 @@ export default {
 						</div>
 					</router-link>
 				</div>
-
-				<!--
-				<div class="col-md-6 col-xl-4">
-					<router-link :to="{ name: 'venues.add' }" class="d-block h-100">
-						<div class="card h-100 flex-row">
-							<div class="embed-responsive embed-responsive-2by3 bg-light d-flex justify-content-center align-items-center" style="width: 160px;">
-								<pg-icon icon="plus"></pg-icon>
-							</div>
-							<div class="card-body d-flex flex-column justify-content-center align-items-center">
-								<h4 class="card-text">Aggiungi un'altra attività</h4>
-							</div>
-						</div>
-					</router-link>
-				</div>
-				-->
 			</div>
+
+			<pg-no-items v-if="!venues.length" :title="$t('pages.user_venues.no_items.title')" class="py-5 my-5">
+				<i18n path="pages.user_venues.no_items.message">
+					<router-link :to="{ name: 'venues.add' }" place="action">
+						<strong>{{ $t('pages.user_venues.no_items.message_action') }}</strong>
+					</router-link>
+				</i18n>
+			</pg-no-items>
 		</div>
 
 		<pg-page-footer />

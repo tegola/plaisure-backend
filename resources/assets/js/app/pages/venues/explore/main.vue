@@ -115,7 +115,7 @@ export default {
 
 	meta() {
 		return {
-			title: this.query
+			title: this.query || this.$t('pages.explore.meta_title')
 		};
 	},
 
@@ -512,7 +512,7 @@ export default {
 				<!-- Loader -->
 				<div v-if="loading" v-cloak class="list-group-item venue-list-placeholder-item text-muted">
 					<pg-icon icon="circle-outline-notch" spinning />
-					<h4 class="mb-0">{{ $t('pages.explore.loading') }}&hellip;</h4>
+					<h4 class="mb-0">{{ $t('common.status.loading') }}&hellip;</h4>
 				</div>
 				<template v-else v-cloak>
 					<!-- Empty list -->

@@ -203,7 +203,7 @@ export default {
 							:loading="saving"
 							variant="primary"
 							@click="submit">
-							{{ venueId ? 'Salva' : 'Aggiungi' }}
+							{{ venueId ? $t('common.actions.save') : $t('common.actions.add') }}
 						</pg-button>
 					</div>
 				</div>
@@ -252,7 +252,7 @@ export default {
 								class="mt-3"
 								variant="primary"
 								@click="submit">
-								{{ venueId ? 'Salva' : 'Aggiungi' }}
+								{{ venueId ? $t('common.actions.save') : $t('common.actions.add') }}
 							</pg-button>
 						</template>
 					</div>

@@ -22,7 +22,7 @@ export default {
 		cancelTitle: {
 			type: String,
 			default: function() {
-				return this.$t('components.modal.cancel');
+				return this.$t('common.actions.cancel');
 			}
 		}
 	},

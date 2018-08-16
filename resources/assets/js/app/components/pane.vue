@@ -67,7 +67,7 @@ export default {
 		</template>
 		<div v-if="loading" class="pg-pane__loader">
 			<pg-icon icon="circle-outline-notch" spinning />
-			{{ $t('components.pane.loading') }}&hellip;
+			{{ $t('common.status.loading') }}&hellip;
 		</div>
 	</div>
 </template>

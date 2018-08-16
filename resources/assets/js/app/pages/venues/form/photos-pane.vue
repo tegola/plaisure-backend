@@ -130,7 +130,6 @@ export default {
 
 		<pg-confirm-modal v-model="confirmDeleteOpen"
 			:title="$t('pages.venue_form.photos.remove.title')"
-			:cancel-title="$t('common.actions.cancel')"
 			:ok-title="$t('common.actions.remove')"
 			variant="danger"
 			@ok="confirmDeletePhoto">

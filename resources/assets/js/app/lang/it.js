@@ -16,6 +16,7 @@ export default {
 			loading: 'Caricamento'
 		},
 		actions: {
+			add: 'Aggiungi',
 			cancel: 'Annulla',
 			save: 'Salva',
 			delete: 'Elimina',
@@ -42,12 +43,8 @@ export default {
 			counter: '{current} di {total}'
 		},
 
-		pane: {
-			loading: 'Caricamento'
-		},
-
-		modal: {
-			cancel: 'Annulla'
+		no_items: {
+			title: 'Nessun elemento trovato'
 		},
 
 		footer: {
@@ -134,7 +131,7 @@ export default {
 		},
 
 		explore: {
-			loading: 'Caricamento',
+			meta_title: 'Esplora',
 			view: {
 				list: 'Mostra lista',
 				map: 'Mostra mappa'
@@ -233,8 +230,6 @@ export default {
 				add: 'Aggiungi attività',
 				edit: 'Modifica attività'
 			},
-			loading: 'Caricamento',
-			save: 'Salva',
 			general: {
 				title: 'Generale',
 				name: 'Nome',
@@ -324,6 +319,46 @@ export default {
 				amount_placeholder: 'Valore',
 				amount_error: 'Inserisci un numero valido.'
 			}
+		},
+
+		user_venues: {
+			meta_title: 'Gestisci le tue attività',
+			title: 'Gestisci le tue attività',
+			no_items: {
+				title: 'Nessuna attività trovata',
+				message: 'Non hai ancora aggiunto la/le tua/e attività. {action} per farlo subito!',
+				message_action: 'Clicca qui'
+			}
+		},
+
+		promote: {
+			meta_title: 'Promuovi la tua attività',
+			hero: {
+				title: 'Promuovi la tua attività, è gratis!',
+				paragraph: "Sei il proprietario di un'attività inerente al mondo del gioco e vuoi promuoverla? La tua attività è già presente su {name} e vorresti ampliare le informazioni fornite ai visitatori? In entrambi i casi, {strong}",
+				paragraph_strong: 'sei nel posto giusto!'
+			},
+			example: {
+				paragraph1: "Aggiungendo o rivendicando un'attività ti permetterà di arrivare a futuri clienti inserendo le informazioni basilari come gli orari di apertura, foto, numero e tipologia di macchine, benefit, descrizione della tua sala ed altro ancora.",
+				paragraph2: "Qui puoi vedere l'aspetto della pagina di una sala d'esempio con informazioni aggiuntive, come foto {1}, jackpot personalizzati {2}, dettagli e servizi {3} e contatti {4}.",
+				paragraph3: 'Più informazioni la tua pagina offre, più potenziali clienti potrebbero essere interessati a frequentare la tua sala. Ad esempio, specificare gli orari di apertura permette a chi fa una vita notturna di sapere se la sala è aperta anche in orari meno canonici.',
+				paragraph4: '{name} viene consultato dai giocatori che vogliono decidere dove passare il proprio tempo libero, e questi potrebbero scegliere proprio la tua sala!'
+			},
+			cost: {
+				title: 'Quanto costa?',
+				paragraph1: 'Assolutamente nulla! {name} offre diversi livelli di personalizzazione: {strong}; non spenderai niente, a parte pochi minuti del tuo tempo.',
+				paragraph1_strong: "aggiungere un'attività o rivendicarla per inserire le informazioni essenziali è assolutamente gratuito",
+				paragraph2: 'Se invece desideri evidenziare la tua attività e farla trovare più facilmente di quelle dei tuoi concorrenti, {contact} per provare uno dei nostri piani premium a prezzi di lancio molto vantaggiosi.',
+				paragraph2_contact: 'scrivici'
+			},
+			start: {
+				title: 'Che aspetti? Inizia subito!',
+				paragraph1: 'Se sei ancora indeciso, non dovresti esserlo. Aggiungere o rivendicare la tua attività porterà soltanto benefici. Il nostro staff si occuperà di tutto il necessario per aggiornare i dati, e in futuro potrai anche modificarli in autonomia!',
+				paragraph2: "Se hai già trovato la tua attività su {name}, fai click su “{strong1}” nella pagina con i dettagli dell'attività per contattarci. Altrimenti scrivi all'indirizzo {email} ricordandoti di specificare il nome dell'attività e l'indirizzo. {strong2}",
+				paragraph2_strong1: 'Rivendica attività',
+				paragraph2_strong2: 'In entrambi i casi sarai ricontattato prima possibile dal nostro staff.'
+			},
+			contact: 'Contattaci'
 		},
 
 		about: {

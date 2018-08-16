@@ -29,6 +29,7 @@ export default [
 		path: '/user/edit',
 		name: 'user.edit',
 		component: () => import('prontogioco/app/pages/user/form'),
+		beforeEnter: requireAuth,
 		meta: {
 			title: 'Modifica i tuoi dati'
 		}
@@ -37,19 +38,14 @@ export default [
 		path: '/user/venues',
 		name: 'user.venues',
 		component: () => import('prontogioco/app/pages/user/venues'),
-		meta: {
-			title: 'Gestisci le tue attività'
-		}
+		beforeEnter: requireAuth
 	},
 
 	// Explore ----------------------------------------------------------------
 	{
 		path: '/venues/explore',
 		name: 'venues.explore',
-		component: () => import('prontogioco/app/pages/venues/explore'),
-		meta: {
-			title: 'Ricerca'
-		}
+		component: () => import('prontogioco/app/pages/venues/explore')
 	},
 
 	// Add venue --------------------------------------------------------------
@@ -82,10 +78,7 @@ export default [
 	{
 		path: '/promote',
 		name: 'promote',
-		component: () => import('prontogioco/app/pages/promote'),
-		meta: {
-			title: 'Promuovi la tua attività, è gratis!'
-		}
+		component: () => import('prontogioco/app/pages/promote')
 	},
 
 	// About ------------------------------------------------------------------
