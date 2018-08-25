@@ -35,15 +35,20 @@ export default {
 	},
 
 	watch: {
-		user(newUser) {
-			this.model = {
-				name: newUser.name,
-				email: newUser.email,
-				aams_subject_enrollment_code: newUser.aams_subject_enrollment_code,
-				new_password: '',
-				new_password_confirmation: '',
-				send_newsletter: newUser.send_newsletter
-			};
+		user: {
+			immediate: true,
+			handler() {
+				if (!this.user) return;
+
+				this.model = {
+					name: this.user.name,
+					email: this.user.email,
+					aams_subject_enrollment_code: this.user.aams_subject_enrollment_code,
+					new_password: '',
+					new_password_confirmation: '',
+					send_newsletter: this.user.send_newsletter
+				};
+			}
 		}
 	},
 

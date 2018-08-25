@@ -335,7 +335,7 @@ export default {
 			meta_title: 'Promote your venue',
 			hero: {
 				title: "Promote your venue, it's free!",
-				paragraph: "You're the owner of a game-related business looking for new ways to promote it? Your venue is already listed on {name} and would like to show more information to visitors? In both cases, {strong}",
+				paragraph: "You're the owner of a game-related business looking for new ways to promote it? Your venue is already listed on {name} and you would like to show more information to visitors? In both cases, {strong}",
 				paragraph_strong: "you're in the right place!"
 			},
 			example: {
