@@ -20,7 +20,8 @@ export default {
 			cancel: 'Annulla',
 			save: 'Salva',
 			delete: 'Elimina',
-			remove: 'Rimuovi'
+			remove: 'Rimuovi',
+			select: 'Scegli'
 		}
 	},
 
@@ -137,7 +138,6 @@ export default {
 				map: 'Mostra mappa'
 			},
 			filters: {
-				select: 'Scegli',
 				all: 'Tutti',
 				selected: 'Nessuna selezione | 1 selezionato | {count} selezionati',
 				category_label: 'Tipo',
@@ -396,6 +396,17 @@ export default {
 			betting_agency: 'Agenzia scommesse',
 			bingo: 'Bingo',
 			vlt: 'Sala slot VLT'
+		},
+		amenities: {
+			atm: 'Totem Bancomat',
+			bar: 'Bar',
+			pay_per_view: 'Pay per view',
+			pos: 'POS',
+			private_parking: 'Parcheggio privato',
+			restaurant: 'Ristorante',
+			security: 'Servizio di sicurezza',
+			smoking_area: 'Area fumatori',
+			wifi: 'Wi-Fi'
 		}
 	}
 };

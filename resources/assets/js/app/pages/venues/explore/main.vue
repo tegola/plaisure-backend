@@ -7,9 +7,9 @@ import BTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
 
 import PgButton from 'prontogioco/app/components/button';
 import PgPane from 'prontogioco/app/components/pane';
-import PgFilterButton from './filter-button';
-import PgFilterButtonItem from './filter-button-item';
 import PgVenueListItem from './list-item';
+import PgFilterButton from './filter-button';
+
 
 import { DEFAULT_COORDS, SEARCH_RADIUSES } from 'prontogioco/constants';
 
@@ -23,9 +23,8 @@ export default {
 		BTooltip,
 		PgButton,
 		PgPane,
-		PgFilterButton,
-		PgFilterButtonItem,
-		PgVenueListItem
+		PgVenueListItem,
+		PgFilterButton
 	},
 
 	data() {
@@ -57,10 +56,25 @@ export default {
 			categories: []
 		}, queryParams);
 
+		// Cleanup search params
+		searchParams.categories = searchParams.categories
+			.map(category => parseInt(category))
+			.filter((category, index, arr) => arr.indexOf(category) === index);
+
+		searchParams.radius = parseInt(searchParams.radius);
+
+		// Prepare filter options
+		const radiusOptions = SEARCH_RADIUSES.map(radius => ({
+			value: radius,
+			label: `${radius} km`
+		}));
+
 		return {
-			radiuses: SEARCH_RADIUSES,
 			categories: [],
-			// amenities: [],
+
+			radiusOptions,
+			categoryOptions: [],
+			// amenityOptions: [],
 
 			loading: false,
 			locating: false,
@@ -131,7 +145,16 @@ export default {
 			return this.$axios.get('/venues/explore/data').then(response => {
 				// Fill data
 				this.categories = response.data.categories;
-				// this.amenities = response.data.amenities;
+				this.categoryOptions = response.data.categories.map(category => ({
+					value: category.id,
+					label: this.$t(`db.categories.${category.machine_name}`)
+				}));
+				/*
+				this.amenityOptions = response.data.amenities.map(amenity => ({
+					value: amenity.machine_name,
+					label: this.$t(`db.amenities.${amenity.machine_name}`)
+				}));
+				*/
 
 				// Fill categories in search params
 				if (!this.searchParams.categories.length) {
@@ -241,92 +264,22 @@ export default {
 		},
 
 		// Filters ------------------------------------------------------------
-		radiusFilterText() {
-			return `${this.searchParams.radius} km`;
-		},
-
-		categoryFilterText() {
-			let ids = this.searchParams.categories;
-
-			// All categories
-			if (ids.length == this.categories.length) return this.$tc('pages.explore.filters.all');
-
-			// One category
-			if (ids.length == 1) {
-				return this.categories.find(item => {
-					return item.id == ids[0];
-				}).name;
-			}
-
-			// More than one category
-			if (ids.length > 1) {
-				return this.$tc('pages.explore.filters.selected', ids.length, {
-					count: ids.length
-				});
-			}
-		},
-
-		/*
-		amenitiesFilterText() {
-			const machineNames = this.searchParams.amenities;
-
-			if (!machineNames.length) return null;
-
-			if (machineNames.length == 1) {
-				return this.amenities.find(item => {
-					return item.machine_name == machineNames[0];
-				}).name;
-			} else {
-				return this.$tc('pages.explore.filters.selected', machineNames.length, {
-					count: machineNames.length
-				})
-			}
-		},
-		*/
-
-		isFilterItemSelected(type, key) {
-			switch (type) {
-				case 'radius': return this.searchParams.radius && this.searchParams.radius == key;
-				case 'category': return this.searchParams.categories && this.searchParams.categories.indexOf(key) !== -1;
-				// case 'amenity': return this.searchParams.amenities.indexOf(key) !== -1;
-			}
-		},
-
-		onRadiusSelect(radius) {
-			this.searchParams.radius = radius;
-			this.$forceUpdate();
-		},
-
-		onCategorySelect(category) {
-			const ids = this.searchParams.categories;
-			const index = ids.indexOf(category.id);
-			const allIds = this.categories.map(category => category.id);
-
-			if (index !== -1) {
-				ids.splice(index, 1);
-				if (!ids.length) ids.push(...allIds); // Never empty
-			} else {
-				ids.push(category.id);
-			}
-		},
-
-		/*
-		onAmenitySelect(amenity) {
-			const names = this.searchParams.amenities;
-			const index = names.indexOf(amenity.machine_name);
-
-			if (index !== -1) {
-				names.splice(index, 1);
-			} else {
-				names.push(amenity.machine_name);
-			}
-		},
-		*/
-
-		onFilterClose() {
-			// TODO: Determine whether a reload is needed
+		onRadiusChange(value) {
+			this.searchParams.radius = value;
 			this.search();
 		},
+
+		onCategoryChange(value) {
+			this.searchParams.categories = value.length ? value : this.categories.map(category => category.id);
+			this.search();
+		},
+
+		/*
+		onAmenityChange(value) {
+			this.searchParams.amenities = value.length ? value : this.amenities.map(amenity => amenity.id);
+			this.search();
+		},
+		*/
 
 		// Map ----------------------------------------------------------------
 		onMapBoundsChange: _debounce(function(bounds) { // Fat arrow functions do not work with debounce
@@ -432,8 +385,6 @@ export default {
 			:placeholder="placeholder"
 			:query="query"
 			:auto-submit="false"
-			fluid
-			slim
 			variant="dark"
 			@place-changed="onPlaceChanged">
 			<template slot="right">
@@ -451,51 +402,38 @@ export default {
 		</pg-navbar>
 
 		<!-- Filters -->
-		<div class="filters">
+		<div class="navbar filter-navbar">
 			<div class="d-flex">
-				<a
+				<pg-button
 					v-if="$mq.constrained"
 					:title="showMap ? $t('pages.explore.view.list') : $t('pages.explore.view.map')"
-					class="filter-button filters__toggle-button"
-					href="#"
+					variant="link"
+					class="filter-button filter-button--toggle"
 					@click="currentView = currentView == 'map' ? 'list' : 'map'">
 					<pg-icon :icon="showMap ? 'list' : 'map'" />
-				</a>
-				<pg-filter-button v-if="showRadiusFilter" :text="radiusFilterText()" :label="$t('pages.explore.filters.radius_label')" @close="onFilterClose">
-					<pg-pane class="filter-button-pane">
-						<pg-filter-button-item
-							v-for="radius in radiuses"
-							:key="radius"
-							:checked="isFilterItemSelected('radius', radius)"
-							icon="bullet"
-							@click="onRadiusSelect(radius)">
-							{{ radius }} km
-						</pg-filter-button-item>
-					</pg-pane>
-				</pg-filter-button>
-				<pg-filter-button :text="categoryFilterText()" :label="$t('pages.explore.filters.category_label')" @close="onFilterClose">
-					<pg-pane class="filter-button-pane">
-						<pg-filter-button-item
-							v-for="category in categories"
-							:key="category.id"
-							:checked="isFilterItemSelected('category', category.id)"
-							@click="onCategorySelect(category)">
-							{{ category.name }}
-						</pg-filter-button-item>
-					</pg-pane>
-				</pg-filter-button>
+				</pg-button>
+				<pg-filter-button
+					v-if="showRadiusFilter"
+					:value="searchParams.radius"
+					:options="radiusOptions"
+					:label="$t('pages.explore.filters.radius_label')"
+					@change="onRadiusChange"
+				/>
+				<pg-filter-button
+					:value="searchParams.categories"
+					:options="categoryOptions"
+					:label="$t('pages.explore.filters.category_label')"
+					multiple
+					@change="onCategoryChange"
+				/>
 				<!--
-				<pg-filter-button label="Servizi disponibili" :text="amenitiesFilterText()" :placeholder="$t('pages.explore.filters.select')..."  @close="onFilterClose">
-					<pg-pane class="filter-button-pane">
-						<pg-filter-button-item
-							v-for="amenity in amenities"
-							:key="amenity.machine_name"
-							:checked="isFilterItemSelected('amenity', amenity.machine_name)"
-							@click="onAmenitySelect(amenity)">
-							{{ amenity.name }}
-						</pg-filter-button-item>
-					</pg-pane>
-				</pg-filter-button>
+				<pg-filter-button
+					:value="searchParams.amenities"
+					:options="amenityOptions"
+					:label="$t('pages.explore.filters.amenity_label')"
+					multiple
+					@change="onAmenityChange"
+				/>
 				-->
 			</div>
 			<div v-if="venues.length" class="text-muted px-3 align-self-center text-nowrap">
@@ -571,7 +509,7 @@ export default {
 					<template v-if="$mq.comfortable && mapNeedsRefresh">
 						<button
 							id="desktop-refresh-btn"
-							:aria-label="$t('pages.explore.limited_results')"
+							:aria-label="$t('pages.explore.search_area')"
 							class="btn map-btn map-refresh-btn"
 							@click="onSearchBoundsClick">
 							<pg-icon icon="refresh" />
@@ -581,11 +519,11 @@ export default {
 							placement="right"
 							triggers=""
 							show>
-							{{ $t('pages.explore.limited_results') }}
+							{{ $t('pages.explore.search_area') }}
 						</b-tooltip>
 					</template>
 					<div v-if="$mq.constrained && mapNeedsRefresh" v-cloak class="container-fluid map-floating-controls">
-						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">{{ $t('pages.explore.limited_results') }}</button>
+						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">{{ $t('pages.explore.search_area') }}</button>
 					</div>
 				</template>
 			</pg-map>

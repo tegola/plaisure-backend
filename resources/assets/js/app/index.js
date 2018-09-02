@@ -11,6 +11,7 @@ import i18n from './lang';
 import mq from './plugins/match-media';
 
 import BTooltipDirective from 'bootstrap-vue/es/directives/tooltip/tooltip';
+import BScrollspyDirective from 'bootstrap-vue/es/directives/scrollspy/scrollspy';
 
 import PgLogo from 'prontogioco/app/components/logo';
 import PgNavbar from 'prontogioco/app/components/navbar';
@@ -22,6 +23,7 @@ import { APP_NAME } from 'prontogioco/constants';
 
 // Register common directives
 Vue.directive('b-tooltip', BTooltipDirective);
+Vue.directive('b-scrollspy', BScrollspyDirective);
 
 // Register common components
 Vue.component('pg-logo', PgLogo);

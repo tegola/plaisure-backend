@@ -1,7 +1,3 @@
-.navbar {
-	align-items: stretch;
-}
-
 // Logo
 .navbar__logo {
 	display: block;
@@ -11,33 +7,12 @@
 	.navbar-brand:active & {
 		opacity: 0.85;
 	}
-
-	@include media-breakpoint-down(sm) {
-		// Hide logo without using display:none, which would also hide the
-		// gradient used by the color logo
-		&:not(.navbar__logo--no-text) {
-			width: 0 !important; // Override navbar-slim
-			height: 0 !important; // Override navbar-slim
-		}
-	}
 }
 .navbar__logo--no-symbol {
 	width: 155px;
 }
 .navbar__logo--no-text {
 	width: 29px;
-
-	// Hide logo without using display:none, which would also hide the
-	// gradient used by the color logo
-	@include media-breakpoint-up(md) {
-		width: 0 !important; // Override navbar-slim
-		height: 0 !important; // Override navbar-slim
-	}
-}
-
-.navbar__divider {
-	width: $border-width;
-	height: 100%;
 }
 
 // Search
@@ -92,25 +67,6 @@
 	outline: none;
 }
 
-// Slim variant
-.navbar-slim {
-	padding-top: $navbar-slim-padding-y;
-	padding-bottom: $navbar-slim-padding-y;
-
-	.navbar__logo {
-		width: 160px;
-		height: 34px;
-	}
-	.navbar__logo--no-symbol {
-		width: 125px;
-		height: 34px
-	}
-	.navbar__logo--no-text {
-		width: 24px;
-		height: 34px;
-	}
-}
-
 // Transparent style
 .navbar-transparent {
 	border-bottom: $border-width solid rgba($black, 0.05);
@@ -126,11 +82,8 @@
 // Light style
 .navbar-light {
 	background-color: $white;
-	box-shadow: 0 $border-width 0 rgba($black, 0.08);
+	// box-shadow: 0 $border-width 0 rgba($black, 0.08);
 
-	.navbar__divider {
-		background-color: rgba($black, 0.05);
-	}
 	.navbar__search-icon-container {
 		color: rgba($black, 0.5);
 	}
@@ -160,10 +113,6 @@
 	}
 	.pg-logo-foreground {
 		fill: $white;
-	}
-
-	.navbar__divider {
-		background-color: rgba($white, 0.1);
 	}
 
 	.navbar__search-icon-container {

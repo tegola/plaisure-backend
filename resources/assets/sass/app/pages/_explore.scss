@@ -10,20 +10,26 @@
 	}
 
 	// Filters
-	.filters {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		width: 100vw;
+	.filter-navbar {
+		padding: 0;
+		flex-wrap: nowrap;
 		box-shadow: 0 $border-width 0 rgba(#000, 0.08); // FIXME: Replace with var
-		background-clip: padding-box;
-		overflow-x: auto;
-		overflow-y: visible;
-		-webkit-overflow-scrolling: touch;
+		// overflow-x: auto;
+		// overflow-y: visible;
+		// -webkit-overflow-scrolling: touch;
 		z-index: 3; // Stay above the content AND above the selected list item
 		position: relative; // Stay above the content
 	}
+
 	.filter-button {
+		// Override bootstrap button
+		color: inherit;
+		text-decoration: none;
+		font-weight: $font-weight-light;
+		border-radius: 0;
+		transition: none;
+		border: 0;
+
 		position: relative;
 		padding: 0.85rem 1rem;
 		line-height: 1;
@@ -61,10 +67,7 @@
 		margin-top: 0.125rem;
 		font-size: $font-size-lg;
 	}
-	.filter-button__placeholder {
-		color: $text-muted;
-	}
-	.filter-button--open {
+	.dropdown.show > .filter-button {
 		color: $white;
 		background-color: $palette-green-500;
 
@@ -79,50 +82,18 @@
 			color: inherit;
 		}
 	}
+	.filter-button--toggle {
+		color: $primary;
+	}
 
-	.filter-button-popup {
-		z-index: $zindex-dropdown;
-		outline: none;
-	}
-	.filter-button-pane {
-		background-color: $dropdown-bg;
-		border-radius: $border-radius;
-		min-width: $dropdown-min-width;
-		padding: $dropdown-padding-y 0;
-		background-clip: padding-box;
-		border: $dropdown-border-width solid $dropdown-border-color;
-		box-shadow: $dropdown-box-shadow;
-	}
-	.filter-button-item {
-		display: flex;
-		padding: 0.5rem 1.75rem 0.5rem 1rem;
-		align-items: center;
-		cursor: default;
-		user-select: none;
-	}
-	.filter-button-item__icon-cell {
+	.filter-button-menu__icon {
 		width: $icon-size-base;
 		color: $palette-green-500;
 		margin-right: 0.75rem;
 	}
-	.filter-button-item__text-cell {
+	.filter-button-menu__text {
 		flex: 1;
 		font-size: $font-size-md;
-	}
-	.filter-button-item {
-		&:hover,
-		&:focus {
-			outline: none;
-			background-color: $palette-green-100;
-			color: $palette-dark-green-500;
-		}
-	}
-
-	.filters__toggle-button {
-		outline: none !important;
-		background-color: transparent;
-		border-radius: 0;
-		color: $palette-green-500;
 	}
 
 	// Venue list

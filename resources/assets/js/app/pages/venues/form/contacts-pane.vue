@@ -36,7 +36,9 @@ export default {
 </script>
 
 <template>
-	<div>
+	<div class="my-5">
+		<h4>{{ $t('pages.venue_form.contacts.title') }}</h4>
+		<hr>
 		<b-form-group
 			v-bind="formGroupProps"
 			:label="$t('pages.venue_form.contacts.phone')">

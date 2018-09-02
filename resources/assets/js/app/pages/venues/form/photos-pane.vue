@@ -83,7 +83,9 @@ export default {
 </script>
 
 <template>
-	<div>
+	<div class="my-5">
+		<h4>{{ $t('pages.venue_form.photos.title') }}</h4>
+		<hr>
 		<div :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }" class="row">
 			<!-- Current photos -->
 			<div v-for="photo in mutablePhotos" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
@@ -136,7 +138,6 @@ export default {
 			<i18n tag="p" class="lead" path="pages.venue_form.photos.remove.intro">
 				<strong class="text-danger" place="action">{{ $t('pages.venue_form.photos.remove.intro_action') }}</strong>
 			</i18n>
-			<p class="lead">Stai per <strong class="text-danger">rimuovere questa foto</strong>. Essa verrà effettivamente eliminata dalla galleria una volta salvati i dati dell'attività.</p>
 			<img v-if="currentPhoto" :src="currentPhoto.thumbnail_url" class="img-fluid rounded">
 		</pg-confirm-modal>
 	</div>

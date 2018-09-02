@@ -16,15 +16,15 @@ class ExploreController extends Controller
 	/*
 	private function amenities() {
 		return collect([
-			['field' => 'amenity_atm',             'machine_name' => 'atm',             'name' => 'Totem Bancomat'],
-			['field' => 'amenity_bar',             'machine_name' => 'bar',             'name' => 'Bar'],
-			['field' => 'amenity_pay_per_view',    'machine_name' => 'pay_per_view',    'name' => 'Pay per view'],
-			['field' => 'amenity_pos',             'machine_name' => 'pos',             'name' => 'POS'],
-			['field' => 'amenity_private_parking', 'machine_name' => 'private_parking', 'name' => 'Parcheggio privato'],
-			['field' => 'amenity_restaurant',      'machine_name' => 'restaurant',      'name' => 'Ristorante'],
-			['field' => 'amenity_security',        'machine_name' => 'security',        'name' => 'Servizio di sicurezza'],
-			['field' => 'amenity_smoking_area',    'machine_name' => 'smoking_area',    'name' => 'Area fumatori'],
-			['field' => 'amenity_wifi',            'machine_name' => 'wifi',            'name' => 'Wi-Fi']
+			['field' => 'amenity_atm',             'machine_name' => 'atm'],
+			['field' => 'amenity_bar',             'machine_name' => 'bar'],
+			['field' => 'amenity_pay_per_view',    'machine_name' => 'pay_per_view'],
+			['field' => 'amenity_pos',             'machine_name' => 'pos'],
+			['field' => 'amenity_private_parking', 'machine_name' => 'private_parking'],
+			['field' => 'amenity_restaurant',      'machine_name' => 'restaurant'],
+			['field' => 'amenity_security',        'machine_name' => 'security'],
+			['field' => 'amenity_smoking_area',    'machine_name' => 'smoking_area'],
+			['field' => 'amenity_wifi',            'machine_name' => 'wifi']
 		]);
 	}
 	*/
@@ -39,7 +39,7 @@ class ExploreController extends Controller
 		$categories = VenueCategory::all();
 		// $amenities = $this->amenities()->all();
 		
-		return compact('categories');
+		return compact('categories'/*, 'amenities'*/);
 
 	}
 
@@ -90,7 +90,6 @@ class ExploreController extends Controller
 
 		// Filter by category
 		if ($categoryIds) {
-			// var_export($categoryIds);
 			$venues->whereHas('categories', function($query) use ($categoryIds) {
 				$query->whereIn('id', $categoryIds);
 			});

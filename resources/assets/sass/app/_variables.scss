@@ -86,8 +86,8 @@ $colors: map-merge((
   "gray-dark":  $gray-800
 ), $colors);
 
-$primary:       $palette-blue-500;
-$secondary:     $palette-green-500;
+$primary:       $palette-green-500;
+$secondary:     $palette-blue-500;
 $accent:        $palette-fuchsia-500;
 $neutral:       $gray-700;
 $success:       $green;
@@ -189,8 +189,10 @@ $icon-size-base: 1.425rem; // ~20px
 $icon-size-sm: 1.15rem; // ~15px
 
 // Dropdowns
-$dropdown-border-color: rgba($black, .08);
-$dropdown-box-shadow:   0 .33rem 1rem rgba($black, 0.05);
+$dropdown-border-color:   rgba($black, .08);
+$dropdown-box-shadow:     0 .33rem 1rem rgba($black, 0.05);
+
+$dropdown-link-hover-bg:  $palette-green-100;
 
 // Navbar
 $navbar-slim-padding-y: map-get($spacers, 1);

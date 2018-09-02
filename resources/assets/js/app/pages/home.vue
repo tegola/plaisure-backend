@@ -2,6 +2,7 @@
 import _extend from 'lodash/extend';
 import * as geocoder from 'prontogioco/utilities/geocoder';
 import PgButton from 'prontogioco/app/components/button';
+import PgNavbar from 'prontogioco/app/components/navbar';
 import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
 import { Map as PgMap } from 'vue2-google-maps';
 import { DEFAULT_COORDS } from 'prontogioco/constants';
@@ -36,6 +37,7 @@ export default {
 
 	components: {
 		PgButton,
+		PgNavbar,
 		PgPlaceTextbox,
 		PgMap
 	},
@@ -194,7 +196,7 @@ export default {
 
 <template>
 	<div class="pg-home-page">
-		<!-- <pg-navbar variant="dark" /> -->
+		<pg-navbar />
 		<div class="hero">
 			<pg-map v-bind="mapProps" class="map" />
 

@@ -46,7 +46,9 @@ export default {
 </script>
 
 <template>
-	<div>
+	<div class="my-5">
+		<h4>{{ $t('pages.venue_form.services.title') }}</h4>
+		<hr>
 		<b-form-group v-bind="formGroupProps">
 			<div class="form-row">
 				<div class="col-lg-9">

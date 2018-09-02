@@ -57,7 +57,9 @@ export default {
 </script>
 
 <template>
-	<div>
+	<div class="my-5">
+		<h4>{{ $t('pages.venue_form.hours.title') }}</h4>
+		<hr>
 		<b-form-group
 			v-for="day in days"
 			:key="day.index"

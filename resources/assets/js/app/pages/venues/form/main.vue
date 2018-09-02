@@ -4,8 +4,6 @@ import _extend from 'lodash/extend';
 import _isEqual from 'lodash/isEqual';
 import { validationMixin } from 'vuelidate';
 
-import anime from 'animejs';
-
 import BNav from 'bootstrap-vue/es/components/nav/nav';
 import BNavItem from 'bootstrap-vue/es/components/nav/nav-item';
 
@@ -51,32 +49,24 @@ export default {
 	},
 
 	data() {
-		const panes = [
-			'general',
-			'services',
-			'contacts',
-			'hours',
-			'photos',
-			'jackpots'
-		].map(name => {
-			return {
-				value: name,
-				title: this.$t(`pages.venue_form.${name}.title`)
-			};
-		});
-
 		return {
 			loading: false,
+			error: false,
 			saving: false,
-			panes,
-			selectedPane: panes[0].value,
+			panes: [
+				'general',
+				'services',
+				'contacts',
+				'hours',
+				'photos',
+				'jackpots'
+			],
 			categories: [],
 			concessionaires: [],
 			vltPlatforms: [],
 			payPerViewPlatforms: [],
 			venue: null,
-			venueBackup: null,
-			transition: ''
+			venueBackup: null
 		};
 	},
 
@@ -88,7 +78,7 @@ export default {
 
 	meta() {
 		return {
-			title: this.venue && this.venue.id ? 'Modifica attività' : 'Aggiungi attività'
+			title: this.venue && this.venue.id ? this.$t('pages.venue_form.title.edit') : this.$t('pages.venue_form.title.add')
 		};
 	},
 
@@ -110,6 +100,7 @@ export default {
 				this.venueId ? `/${this.venueId}/edit` : '/add'
 			].join('');
 
+			// this.error = false;
 			this.loading = true;
 
 			this.$axios.get(url)
@@ -131,29 +122,20 @@ export default {
 					setTimeout(() => {
 						this.loading = false;
 					}, 500);
+				})
+				.catch(() => {
+					this.error = true;
 				});
 		},
 
-		selectPane(newPane) {
-			const newIndex = this.panes.indexOf(newPane);
-			const oldIndex = this.panes.indexOf(this.panes.find(pane => pane.value === this.selectedPane));
-			const isComfortable = this.$mq.comfortable;
-			const direction = newIndex > oldIndex ? (isComfortable ? 'up' : 'left') : (isComfortable ? 'down' : 'right');
+		scrollIntoView(e) {
+			const href = e.target.getAttribute('href');
+			const el = href ? document.querySelector(href) : null;
+			const offset = this.$refs.sectionNavWrapper.offsetHeight;
 
-			this.transition = `slide-${direction}`;
+			e.preventDefault();
 
-			this.$nextTick(() => {
-				this.selectedPane = newPane.value;
-			});
-		},
-
-		onPaneSwitch(el) {
-			anime({
-				targets: this.$refs.paneContainer,
-				minHeight: el.getBoundingClientRect().height,
-				easing: 'easeInOutQuad',
-				duration: 200
-			});
+			if (el) window.scroll(0, el.offsetTop + offset);
 		},
 
 		submit() {
@@ -182,131 +164,82 @@ export default {
 </script>
 
 <template>
-	<div>
+	<div class="pg-venue-form-page">
 		<pg-navbar variant="dark" />
 
-		<div v-if="loading" class="container d-flex text-muted text-center" style="height: 50vh">
+		<div v-if="loading || error" class="container d-flex text-muted text-center" style="height: 50vh">
 			<div class="m-auto">
-				<pg-icon icon="circle-outline-notch" spinning />
-				<h5 class="m-0">{{ venueId ? 'Carica la tua attività' : 'Preparo una nuova attività' }}&hellip;</h5>
+				<template v-if="loading">
+					<pg-icon icon="circle-outline-notch" spinning />
+					<h5 class="m-0">{{ $t('common.status.loading') }}&hellip;</h5>
+				</template>
+				<h4 v-if="error" class="text-danger mb-0">C'è stato un errore nel caricamento dei dati</h4>
 			</div>
 		</div>
 
 		<div v-if="!loading && venue">
-			<!-- Small screen menu -->
-			<div v-if="$mq.constrained" class="sticky-top">
-				<div class="navbar navbar-light navbar-expand">
+			<div class="sticky-top">
+				<div class="navbar navbar-light navbar-expand-lg">
 					<div class="container">
-						<h2 class="h4 mb-0">{{ venueId ? 'Modifica' : 'Aggiungi' }} attività</h2>
+						<h2 class="h4 mb-0">{{ venueId ? $t('pages.venue_form.title.edit') : $t('pages.venue_form.title.add') }}</h2>
 						<pg-button
 							:disabled="isSaved"
 							:loading="saving"
 							variant="primary"
 							@click="submit">
-							{{ venueId ? $t('common.actions.save') : $t('common.actions.add') }}
+							{{ $t('common.actions.save') }}
 						</pg-button>
 					</div>
 				</div>
-				<div class="navbar navbar-light navbar-expand-sm" style="overflow: auto;">
+				<div ref="sectionNavWrapper" class="section-nav-wrapper">
 					<div class="container">
-						<b-nav pills class="flex-nowrap">
+						<b-nav v-b-scrollspy="113" class="section-nav">
 							<b-nav-item
 								v-for="pane in panes"
-								:key="pane.value"
-								:active="selectedPane == pane.value"
-								@click="selectPane(pane)">
-								{{ pane.title }}
+								:key="pane"
+								:href="`#${pane}`"
+								@click="scrollIntoView">
+								{{ $t(`pages.venue_form.${pane}.title`) }}
 							</b-nav-item>
 						</b-nav>
 					</div>
 				</div>
 			</div>
 
-			<div class="container py-3 py-md-5" style="overflow: hidden">
+			<div class="container">
 				<div class="row">
-					<div class="col-md-3">
-						<!-- Big screen menu -->
-						<template v-if="$mq.comfortable">
-							<div class="card">
-								<div class="card-body">
-									<h2 class="h4 mb-0">{{ venueId ? 'Modifica' : 'Aggiungi' }} attività</h2>
-									<p v-if="venueId" class="mb-0 text-muted">
-										<router-link :to="`/venues/${venueId}`" title="Apri pagina">{{ venue.name || '(nessun nome)' }}</router-link>
-									</p>
-								</div>
-								<b-list-group flush>
-									<b-list-group-item
-										v-for="pane in panes"
-										:key="pane.value"
-										:active="selectedPane == pane.value"
-										href="#"
-										@click="selectPane(pane)">
-										<strong>{{ pane.title }}</strong>
-									</b-list-group-item>
-								</b-list-group>
-							</div>
-							<pg-button
-								:disabled="isSaved"
-								:loading="saving"
-								block
-								class="mt-3"
-								variant="primary"
-								@click="submit">
-								{{ venueId ? $t('common.actions.save') : $t('common.actions.add') }}
-							</pg-button>
-						</template>
-					</div>
-					<div ref="paneContainer" class="col-md-9">
-						<div class="position-relative">
-							<h4>{{ panes.find(pane => selectedPane == pane.value).title }}</h4>
-							<transition :name="transition" @enter="onPaneSwitch">
-								<keep-alive>
-									<pg-venue-form-general-pane
-										v-if ="selectedPane == 'general'"
-										:venue="venue"
-										:concessionaires="concessionaires"
-										:categories="categories"
-										:address.sync="venue.address"
-										:coords.sync="venue.coords"
-									/>
-								</keep-alive>
-							</transition>
-							<transition :name="transition" @enter="onPaneSwitch">
-								<pg-venue-form-services-pane
-									v-if ="selectedPane == 'services'"
-									:venue="venue"
-									:vlt-platforms="vltPlatforms"
-									:pay-per-view-platforms="payPerViewPlatforms"
-								/>
-							</transition>
-							<transition :name="transition" @enter="onPaneSwitch">
-								<pg-venue-form-contacts-pane
-									v-if ="selectedPane == 'contacts'"
-									:venue="venue"
-								/>
-							</transition>
-							<transition :name="transition" @enter="onPaneSwitch">
-								<pg-venue-form-hours-pane
-									v-if ="selectedPane == 'hours'"
-									:venue="venue"
-									:hours.sync="venue.business_hours"
-								/>
-							</transition>
-							<transition :name="transition" @enter="onPaneSwitch">
-								<keep-alive>
-									<pg-venue-form-photos-pane
-										v-if ="selectedPane == 'photos'"
-										:photos.sync="venue.photos"
-									/>
-								</keep-alive>
-							</transition>
-							<transition :name="transition" @enter="onPaneSwitch">
-								<pg-venue-form-jackpots-pane
-									v-if ="selectedPane == 'jackpots'"
-									:venue="venue"
-								/>
-							</transition>
-						</div>
+					<div class="col-lg-9 mx-lg-auto">
+						<pg-venue-form-general-pane
+							id="general"
+							:venue="venue"
+							:concessionaires="concessionaires"
+							:categories="categories"
+							:address.sync="venue.address"
+							:coords.sync="venue.coords"
+						/>
+						<pg-venue-form-services-pane
+							id="services"
+							:venue="venue"
+							:vlt-platforms="vltPlatforms"
+							:pay-per-view-platforms="payPerViewPlatforms"
+						/>
+						<pg-venue-form-contacts-pane
+							id="contacts"
+							:venue="venue"
+						/>
+						<pg-venue-form-hours-pane
+							id="hours"
+							:venue="venue"
+							:hours.sync="venue.business_hours"
+						/>
+						<pg-venue-form-photos-pane
+							id="photos"
+							:photos.sync="venue.photos"
+						/>
+						<pg-venue-form-jackpots-pane
+							id="jackpots"
+							:venue="venue"
+						/>
 					</div>
 				</div>
 			</div>

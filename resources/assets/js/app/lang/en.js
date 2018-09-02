@@ -20,7 +20,8 @@ export default {
 			cancel: 'Cancel',
 			save: 'Save',
 			delete: 'Delete',
-			remove: 'Remove'
+			remove: 'Remove',
+			select: 'Select'
 		}
 	},
 
@@ -82,7 +83,7 @@ export default {
 			city_placeholder: 'Type your city name',
 			location_placeholder: 'Near you',
 			location: 'Use your current location',
-			location_error: "We couldn't find your location",
+			location_error: "We couldn't find your location.",
 			submit: 'Search',
 			explore: {
 				intro: 'Feeling lucky?',
@@ -137,7 +138,6 @@ export default {
 				map: 'Show map'
 			},
 			filters: {
-				select: 'Selected',
 				all: 'All',
 				selected: 'No selection | 1 selected | {count} selected',
 				category_label: 'Type',
@@ -149,7 +149,7 @@ export default {
 				in_map: 'Inside map bounds'
 			},
 			location: 'Use your current location',
-			location_error: "We couldn't find your location",
+			location_error: "We couldn't find your location.",
 			results: 'No venues found | 1 result | {count} results',
 			limited_results: 'Results have been limited. Search a specific area to get more details.',
 			search_area: 'Search this area',
@@ -233,7 +233,7 @@ export default {
 			general: {
 				title: 'General info',
 				name: 'Name',
-				name_placeholder: 'Ex.: Casinò Las Vegas',
+				name_placeholder: 'Ex.: Las Vegas Casinò',
 				name_error: 'Type the venue name.',
 				concessionaire: 'Concessionaire',
 				concessionaire_none: 'None',
@@ -396,6 +396,17 @@ export default {
 			betting_agency: 'Betting Agency',
 			bingo: 'Bingo',
 			vlt: 'VLT Games Room'
+		},
+		amenities: {
+			atm: 'ATM',
+			bar: 'Bar',
+			pay_per_view: 'Pay Per View',
+			pos: 'POS',
+			private_parking: 'Private parking spots',
+			restaurant: 'Restaurant',
+			security: 'Security',
+			smoking_area: 'Smoking area',
+			wifi: 'Wi-Fi'
 		}
 	}
 };

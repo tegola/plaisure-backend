@@ -171,7 +171,9 @@ export default {
 </script>
 
 <template>
-	<div>
+	<div class="my-5">
+		<h4>{{ $t('pages.venue_form.general.title') }}</h4>
+		<hr>
 		<b-form-group
 			v-bind="formGroupProps"
 			:state="!$v.name.$error"

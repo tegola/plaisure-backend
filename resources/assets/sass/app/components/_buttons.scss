@@ -1,10 +1,5 @@
 .btn {
-	text-transform: uppercase;
 	cursor: pointer;
-
-	letter-spacing: 0.15em;
-	// font-size: $font-size-sm;
-	// line-height: 1.2rem; // Align to ex-button height
 
 	.icon {
 		width: $icon-size-base;
@@ -23,10 +18,6 @@
 	}
 }
 .btn-lg {
-	letter-spacing: 0.08em;
-	// font-size: $font-size-base;
-	// line-height: $line-height-base * 1.25;
-
 	.pg-icon {
 		vertical-align: -0.25rem;
 	}

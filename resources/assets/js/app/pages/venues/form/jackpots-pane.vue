@@ -36,7 +36,9 @@ export default {
 </script>
 
 <template>
-	<div>
+	<div class="my-5">
+		<h4>{{ $t('pages.venue_form.jackpots.title') }}</h4>
+		<hr>
 		<b-form-group v-for="n in 3" :key="n"
 			:label="$t('pages.venue_form.jackpots.name', { number: n })"
 			v-bind="formGroupProps"
