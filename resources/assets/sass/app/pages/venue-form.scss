@@ -1,6 +1,15 @@
 .pg-venue-form-page {
+	.secondary-nav {
+		position: sticky;
+		top: 0;
+		z-index: $zindex-dropdown - 1; // Keep it below dropdowns
+		background-color: $white;
+		border-bottom: 1px solid rgba($black, 0.08);
+	}
+	.title-wrapper {
+		padding: $navbar-padding-y 0;
+	}
 	.section-nav-wrapper {
-		background-color: white;
 		overflow: auto;
 		padding-top: 0;
 		padding-bottom: 0;

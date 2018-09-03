@@ -178,9 +178,9 @@ export default {
 		</div>
 
 		<div v-if="!loading && venue">
-			<div class="sticky-top">
-				<div class="navbar navbar-light navbar-expand-lg">
-					<div class="container">
+			<div class="secondary-nav">
+				<div class="title-wrapper">
+					<div class="container d-flex align-items-center justify-content-between">
 						<h2 class="h4 mb-0">{{ venueId ? $t('pages.venue_form.title.edit') : $t('pages.venue_form.title.add') }}</h2>
 						<pg-button
 							:disabled="isSaved"
