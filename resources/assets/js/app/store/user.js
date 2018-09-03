@@ -59,7 +59,7 @@ export default {
 
 		login: ({ dispatch, commit }, { email, password }) => {
 			return axios.post('/auth/login', { email, password }).then(response => {
-				if (response.error) throw new Error(response.error);
+				if (response.data.error) throw new Error(response.data.error);
 
 				commit('setTokens', {
 					accessToken: response.data.access_token,

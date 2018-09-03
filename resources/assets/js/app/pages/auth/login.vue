@@ -27,6 +27,7 @@ export default {
 	data() {
 		return {
 			loading: false,
+			error: false,
 			model: {
 				email: '',
 				password: ''
@@ -70,8 +71,8 @@ export default {
 				.then(() => {
 					// Go to the next page
 					this.$router.push(this.redirect);
-				}).catch(error => {
-					console.log('error', error);
+				}).catch(() => {
+					this.error = true;
 				}).then(() => {
 					this.loading = false;
 				});
@@ -93,22 +94,29 @@ export default {
 			<div class="row">
 				<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 					<form @submit.prevent="submit">
+						<p v-if="error" class="lead text-danger text-center">{{ $t('pages.login.submit_error') }}</p>
 						<b-form-group
 							:label="$t('pages.login.email')"
 							:state="!$v.model.email.$error"
 							:invalid-feedback="$t('pages.login.email_error')">
-							<b-input v-model="model.email" type="email" autofocus />
+							<b-input v-model="model.email" :disabled="loading" type="email" autofocus />
 						</b-form-group>
 
 						<b-form-group
 							:label="$t('pages.login.password')"
 							:state="!$v.model.password.$error"
 							:invalid-feedback="$t('pages.login.password_error')">
-							<b-input v-model="model.password" type="password" />
+							<b-input v-model="model.password" :disabled="loading" type="password" />
 						</b-form-group>
 
 						<b-form-group>
-							<pg-button type="submit" variant="primary" block>{{ $t('pages.login.submit') }}</pg-button>
+							<pg-button
+								:loading="loading"
+								type="submit"
+								variant="primary"
+								block>
+								{{ $t('pages.login.submit') }}
+							</pg-button>
 						</b-form-group>
 
 						<p class="text-center">

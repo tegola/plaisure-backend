@@ -108,6 +108,7 @@ export default {
 			password: 'Password',
 			password_error: 'Type your password.',
 			submit: 'Sign in',
+			submit_error: 'Incorrect e-mail or password.',
 			forgot: 'Forgot password?',
 			register1: 'Not registered yet? {link}',
 			register2: 'Register now!'

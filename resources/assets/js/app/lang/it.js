@@ -108,6 +108,7 @@ export default {
 			password: 'Password',
 			password_error: 'Inserisci la password.',
 			submit: 'Accedi',
+			submit_error: 'E-mail e password errate.',
 			forgot: 'Password dimenticata?',
 			register1: 'Non sei ancora iscritto? {link}',
 			register2: 'Fallo subito!'

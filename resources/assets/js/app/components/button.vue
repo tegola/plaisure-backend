@@ -42,6 +42,6 @@ export default {
 			:icon="loading ? 'circle-outline-notch' : icon"
 			:spinning="loading"
 		/>
-		<slot />
+		<slot v-if="!loading" />
 	</b-button>
 </template>
