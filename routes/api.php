@@ -13,13 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/auth/register', 'AuthController@register');
-Route::post('/auth/login',    'AuthController@login');
-Route::post('/auth/refresh',  'AuthController@refresh');
-Route::post('/auth/logout',   'AuthController@logout');
+// Authorization
+Route::post('/auth/register',        'AuthController@register');
+Route::post('/auth/login',           'AuthController@login');
+Route::post('/auth/refresh',         'AuthController@refresh');
+Route::post('/auth/logout',          'Auth\LoginController@logout');
+Route::post('/auth/password/forgot', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::post('/auth/password/reset',  'Auth\ResetPasswordController@reset');
 
-Route::get ('/user',          'UserController@user');
-Route::post('/user',          'userController@update');
+// User data
+Route::get ('/user',                 'UserController@user');
+Route::post('/user',                 'userController@update');
 
 Route::group(['namespace' => 'Site'], function() {
 	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');

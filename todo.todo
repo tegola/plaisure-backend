@@ -8,11 +8,13 @@
  ✔ Login: sbagliando i dati (credenziali non corrette) non viene mostrato l'errore @done (18-09-03 22:17)
  ✔ Form: mostrare errore in caso di caricamento errato @done (18-08-29 20:02)
  ✔ Aggiustare i menu nella pagina explore @done (18-09-02 20:02)
+ ☐ Rimuovere AuthController in favore di Auth\LoginController e Auth\RegisterController
  ☐ Edit sala: focus all'elemento giusto quando c'è errore
  ✔ Edit sala: Il menu utente appare sotto alla navbar secondaria @done (18-09-03 22:53)
  ☐ Edit sala: drag della mappa più che del marker
  ☐ Importante: rimuovere il geocoder in home page, che ora è a pagamento (e dà errori CORS) e a noi non serve granché
  ☐ Pagine di recupero password
+ ☐ Email di benvenuto all'utente dopo la registrazione
  ☐ Aggiungere i link a terms of service e privacy policy (footer e registrazione utente)
  ☐ Spostare le icone svg (views/site/components/vectors.blade.php) in javascript
  ☐ Spostare i css nelle pagine

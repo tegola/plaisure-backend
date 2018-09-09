@@ -123,13 +123,35 @@ export default {
 			email: 'Indirizzo e-mail',
 			email_error: 'Inserisci il tuo indirizzo e-mail.',
 			password: 'Password',
-			password_error: 'Scegli una password.',
+			password_error: 'Scegli una password (minimo 8 caratteri).',
 			agree1: 'Cliccando su Iscriviti accetti le nostre {terms_link}. Scopri in che modo usiamo i tuoi dati nella nostra {privacy_link}.',
 			agree2: 'Condizioni',
 			agree3: 'Normativa sui dati',
 			submit: 'Iscriviti',
 			login1: 'Sei già registrato? {link}',
 			login2: 'Accedi'
+		},
+
+		forgot_password: {
+			title: 'Reimposta password',
+			intro: 'Inserisci il tuo indirizzo e-mail per ricevere un link per reimpostare la tua password.',
+			email: 'Indirizzo e-mail',
+			email_error: 'Inserisci il tuo indirizzo e-mail.',
+			submit: 'Invia link',
+			submit_success: 'Fatto! Se questo indirizzo e-mail esiste nei nostri archivi riceverai un messaggio contenente un link per reimpostare la tua password.'
+		},
+
+		reset_password: {
+			title: 'Reimposta password',
+			intro: 'Scegli la tua nuova password.',
+			email: 'Indirizzo e-mail',
+			email_error: 'Inserisci il tuo indirizzo e-mail.',
+			password: 'Password',
+			password_error: 'Scegli una password (minimo 8 caratteri).',
+			password_confirmation: 'Ripeti password',
+			password_confirmation_error: 'Le password non coincidono.',
+			submit: 'Reimposta password',
+			submit_error: 'Non è stato possibile reimpostare la tua password. Prova di nuovo.'
 		},
 
 		explore: {

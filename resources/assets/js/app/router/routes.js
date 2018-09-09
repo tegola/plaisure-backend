@@ -24,6 +24,21 @@ export default [
 		beforeEnter: redirectIfAuthenticated
 	},
 
+	// Password reset
+	{
+		path: '/password/forgot',
+		name: 'password.forgot',
+		component: () => import('prontogioco/app/pages/auth/password/forgot'),
+		beforeEnter: redirectIfAuthenticated
+	},
+	{
+		path: '/password/reset/:email/:token',
+		name: 'password.reset',
+		component: () => import('prontogioco/app/pages/auth/password/reset'),
+		props: true,
+		beforeEnter: redirectIfAuthenticated
+	},
+
 	// User -------------------------------------------------------------------
 	{
 		path: '/user/edit',

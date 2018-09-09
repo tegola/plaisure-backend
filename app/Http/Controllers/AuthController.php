@@ -10,18 +10,6 @@ use App\Models\User;
 class AuthController extends Controller
 {
 	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-	    $this
-	    	->middleware('auth:api')
-	    	->except('register', 'login', 'refresh');
-	}
-
-	/**
 	 * Register a new user.
 	 * 
 	 * @param  Request $request
@@ -112,16 +100,5 @@ class AuthController extends Controller
 		]);
 
 		return json_decode($response->getBody(), true);
-	}
-
-	/**
-	 * Revoke access token, i.e.: logout.
-	 * 
-	 * @return \Illuminate\Http\Response
-	 */
-	public function logout(Request $request) {
-		$request->user()->token()->revoke();
-
-		return response(null, 200);
 	}
 }

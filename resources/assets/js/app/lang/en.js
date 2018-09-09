@@ -123,13 +123,35 @@ export default {
 			email: 'E-mail address',
 			email_error: 'Type your e-email address.',
 			password: 'Password',
-			password_error: 'Choose a password.',
+			password_error: 'Choose a password (8 characters minimum).',
 			agree1: 'Clicking on Register you agree to our {terms_link}. Find out how we use your data by reading our {privacy_link}.',
 			agree2: 'Terms of Service',
 			agree3: 'Privacy policy',
 			submit: 'Register',
 			login1: 'Already registered? {link}',
 			login2: 'Sign in'
+		},
+
+		forgot_password: {
+			title: 'Reset password',
+			intro: 'Insert your e-mail address to receive a link to reset your password.',
+			email: 'E-mail address',
+			email_error: 'Type your e-email address.',
+			submit: 'Send link',
+			submit_success: 'Done! If this e-mail address is a valid account you will get a message with a link to reset your password.'
+		},
+
+		reset_password: {
+			title: 'Reset password',
+			intro: 'Set a new password for your account.',
+			email: 'E-mail address',
+			email_error: 'Type your e-email address.',
+			password: 'Password',
+			password_error: 'Choose a password (8 characters minimum).',
+			password_confirmation: 'Repeat password',
+			password_confirmation_error: "Passwords don't match.",
+			submit: 'Reset password',
+			submit_error: "Your password couldn't be reset. Please try again."
 		},
 
 		explore: {
