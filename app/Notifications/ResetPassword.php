@@ -43,12 +43,11 @@ class ResetPassword extends Notification
 		$message = new MailMessage();
 
 		$message
-			->subject('Reset your password')
-			->greeting("Hello {$notifiable->name},")
-			->salutation('pippo!')
-			->line('You are receiving this email because we received a password reset request for your account.')
-			->action('Reset password', url("/password/reset/{$notifiable->email}/{$this->token}"))
-			->line('If you did not request a password reset, no further action is required.');
+			->subject(__('emails.reset_password.subject'))
+			->greeting(__('emails.common.greeting_name', ['name' => $notifiable->name]))
+			->line(__('emails.reset_password.intro'))
+			->action(__('emails.reset_password.action'), url("/password/reset/{$notifiable->email}/{$this->token}"))
+			->line(__('emails.reset_password.outro'));
 
 		return $message;
 	}

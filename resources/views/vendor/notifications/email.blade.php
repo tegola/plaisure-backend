@@ -84,22 +84,20 @@ $style = [
                                     <td style="{{ $fontFamily }} {{ $style['email-body_cell'] }}">
                                         <!-- Greeting -->
                                         <h1 style="{{ $style['header-1'] }}">
-                                            @if (! empty($greeting))
+                                            @if (!empty($greeting))
                                                 {{ $greeting }}
                                             @else
                                                 @if ($level == 'error')
-                                                    Whoops!
+                                                    {{ __('emails.common.greeting_error') }}
                                                 @else
-                                                    Hello!
+                                                    {{ __('emails.common.greeting_success') }}
                                                 @endif
                                             @endif
                                         </h1>
 
                                         <!-- Intro -->
                                         @foreach ($introLines as $line)
-                                            <p style="{{ $style['paragraph'] }}">
-                                                {{ $line }}
-                                            </p>
+                                            <p style="{{ $style['paragraph'] }}">{{ $line }}</p>
                                         @endforeach
 
                                         <!-- Action Button -->
@@ -133,14 +131,17 @@ $style = [
 
                                         <!-- Outro -->
                                         @foreach ($outroLines as $line)
-                                            <p style="{{ $style['paragraph'] }}">
-                                                {{ $line }}
-                                            </p>
+                                            <p style="{{ $style['paragraph'] }}">{{ $line }}</p>
                                         @endforeach
 
                                         <!-- Salutation -->
                                         <p style="{{ $style['paragraph'] }}">
-                                            Regards,<br>{{ config('app.name') }}
+                                            @if (!empty($salutation))
+                                                {{ $salutation }}
+                                            @else
+                                                {{ __('emails.common.salutation') }},<br>
+                                                {{ __('emails.common.salutation_name', ['name' => config('app.name')]) }}
+                                            @endif
                                         </p>
 
                                         <!-- Sub Copy -->
@@ -148,15 +149,10 @@ $style = [
                                             <table style="{{ $style['body_sub'] }}">
                                                 <tr>
                                                     <td style="{{ $fontFamily }}">
-                                                        <p style="{{ $style['paragraph-sub'] }}">
-                                                            If you’re having trouble clicking the "{{ $actionText }}" button,
-                                                            copy and paste the URL below into your web browser:
-                                                        </p>
+                                                        <p style="{{ $style['paragraph-sub'] }}">{{ __('emails.common.trouble', ['action' => $actionText]) }}</p>
 
                                                         <p style="{{ $style['paragraph-sub'] }}">
-                                                            <a style="{{ $style['anchor'] }}" href="{{ $actionUrl }}" target="_blank">
-                                                                {{ $actionUrl }}
-                                                            </a>
+                                                            <a style="{{ $style['anchor'] }}" href="{{ $actionUrl }}" target="_blank">{{ $actionUrl }}</a>
                                                         </p>
                                                     </td>
                                                 </tr>
@@ -177,7 +173,7 @@ $style = [
                                         <p style="{{ $style['paragraph-sub'] }}">
                                             &copy; {{ date('Y') }}
                                             <a style="{{ $style['anchor'] }}" href="{{ url('/') }}" target="_blank">{{ config('app.name') }}</a>.
-                                            All rights reserved.
+                                            {{ __('emails.common.rights') }}
                                         </p>
                                     </td>
                                 </tr>

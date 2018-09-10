@@ -8,6 +8,7 @@
  ✔ Login: sbagliando i dati (credenziali non corrette) non viene mostrato l'errore @done (18-09-03 22:17)
  ✔ Form: mostrare errore in caso di caricamento errato @done (18-08-29 20:02)
  ✔ Aggiustare i menu nella pagina explore @done (18-09-02 20:02)
+ ☐ Personalizzare l'email di recupero password
  ☐ Rimuovere AuthController in favore di Auth\LoginController e Auth\RegisterController
  ☐ Edit sala: focus all'elemento giusto quando c'è errore
  ✔ Edit sala: Il menu utente appare sotto alla navbar secondaria @done (18-09-03 22:53)
