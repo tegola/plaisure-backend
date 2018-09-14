@@ -609,4 +609,15 @@ class Venue extends Model
 				]);
 		});
 	}
+
+	/**
+	 * Venues that are still without an owner.
+	 * 
+	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
+	 * @return Illuminate\Database\Query\Builder          Modified query builder
+	 */
+	public function scopeUnclaimed($query)
+	{
+		return $query->whereNull('owner_id');
+	}
 }

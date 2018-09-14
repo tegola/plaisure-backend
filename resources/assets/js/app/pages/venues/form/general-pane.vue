@@ -1,5 +1,4 @@
 <script>
-import { geocode } from 'prontogioco/utilities/geocoder';
 import _throttle from 'lodash/throttle';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
@@ -120,7 +119,7 @@ export default {
 
 	methods: {
 		findMarkerLocation: _throttle(function() {
-			const address = this.mutableAddress;
+			let address = this.mutableAddress;
 
 			if (!address.street ||
 				!address.number ||
@@ -129,7 +128,7 @@ export default {
 				!address.province
 			) return;
 
-			const addressString = [
+			address = [
 				address.street,
 				address.number,
 				address.postcode,
@@ -139,17 +138,16 @@ export default {
 
 			this.findingMarkerLocation = true;
 
-			geocode(addressString, (error, results) => {
+			if (!this.geocoder) this.geocoder = new google.maps.Geocoder();
+
+			this.geocoder.geocode({ address }, (results, status) => {
 				this.findingMarkerLocation = false;
 
-				if (error) return;
-
-				const lat = results[0].latitude;
-				const lng = results[0].longitude;
+				if (status != 'OK') return;
 
 				const coords = {
-					lat: lat,
-					lng: lng
+					lat: results[0].geometry.location.lat(),
+					lng: results[0].geometry.location.lng()
 				};
 
 				this.mapZoom = 15;

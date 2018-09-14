@@ -155,4 +155,4 @@ function format(result) {
 	return extractedObj;
 }
 
-export { geocode, geocodeByIp, reverse };
+export { geocode, geocodeByIp, reverse, format };
