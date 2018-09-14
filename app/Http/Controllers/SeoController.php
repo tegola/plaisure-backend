@@ -32,13 +32,13 @@ class SeoController extends Controller
 	 */
 	public function sitemap()
 	{
-		$sitemap = App::make("sitemap");
+		$sitemap = App::make('sitemap');
 
 		// Set cache duration in minutes
 		$sitemap->setCache('laravel.sitemap', 60);
 
 		// Build if not cached
-		if ($sitemap->isCached()) {
+		if (!$sitemap->isCached()) {
 			// Home page
 			$sitemap->add(url('/'), null, '1.0', 'weekly');
 
@@ -55,7 +55,7 @@ class SeoController extends Controller
 		}
 
 		// Generate XML
-		return $sitemap->render('xml', null);
+		return $sitemap->render('xml');
 	}
 
 	/**

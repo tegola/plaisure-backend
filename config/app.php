@@ -22,7 +22,7 @@ return [
     |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
-    | services your application utilizes. Set this in your ".env" file.
+    | services the application utilizes. Set this in your ".env" file.
     |
     */
 
@@ -155,7 +155,6 @@ return [
          * Third-party Service Providers
          */
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
-        Roumen\Sitemap\SitemapServiceProvider::class,
 
         /*
          * Application Service Providers...
