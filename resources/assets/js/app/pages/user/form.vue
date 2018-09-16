@@ -85,7 +85,7 @@ export default {
 
 			this.$store.dispatch('user/update', this.model)
 				.then(() => {
-					alert('dati salvati');
+					this.$router.push({ name: 'user' });
 				}).catch(error => {
 					console.log('error', error);
 				}).then(() => {

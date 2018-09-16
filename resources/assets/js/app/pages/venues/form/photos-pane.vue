@@ -1,10 +1,10 @@
 <script>
 import BButton from 'bootstrap-vue/es/components/button/button';
 import BProgress from 'bootstrap-vue/es/components/progress/progress';
+import VueUploader from 'vue-upload-component'; // FIXME: Make custom component
 
 import PgImageFrame from 'prontogioco/app/components/image-frame';
 import PgConfirmModal from 'prontogioco/app/components/confirm-modal';
-import PgUploader from 'vue-upload-component';
 
 export default {
 	name: 'PgVenueFormPhotosPane',
@@ -14,7 +14,7 @@ export default {
 		BButton,
 		PgImageFrame,
 		PgConfirmModal,
-		PgUploader
+		VueUploader
 	},
 
 	props: {
@@ -27,13 +27,22 @@ export default {
 	data() {
 		return {
 			mutablePhotos: this.photos,
-			uploaderHeaders: {
-				// 'X-CSRF-TOKEN': pg.csrfToken
-			},
 			uploaderFiles: [],
+			photoItemClass: 'col-6 col-md-4 col-xl-3 mb-3',
 			confirmDeleteOpen: false,
 			currentPhoto: null
 		};
+	},
+
+	computed: {
+		uploaderHeaders() {
+			const accessToken = this.$store.state.user.accessToken;
+
+			return {
+				'Authorization': `Bearer ${accessToken}`,
+				'X-Requested-With': 'XMLHttpRequest'
+			};
+		}
 	},
 
 	watch: {
@@ -88,7 +97,7 @@ export default {
 		<hr>
 		<div :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }" class="row">
 			<!-- Current photos -->
-			<div v-for="photo in mutablePhotos" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+			<div v-for="photo in mutablePhotos" :class="photoItemClass">
 				<a :href="photo.resized_url" target="_blank">
 					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" class="rounded" />
 				</a>
@@ -96,7 +105,7 @@ export default {
 			</div>
 
 			<!-- Current uploads -->
-			<div v-for="file in uploaderFiles" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+			<div v-for="file in uploaderFiles" :class="photoItemClass">
 				<div class="embed-responsive embed-responsive-1by1 rounded border">
 					<div class="embed-responsive-item d-flex flex-column align-items-center justify-content-center text-center">
 						<span v-if="file.error" class="text-danger small"><strong>{{ $t('common.status.error') }}</strong><br>{{ file.error }}</span>
@@ -111,8 +120,8 @@ export default {
 			</div>
 
 			<!-- Uploader -->
-			<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
-				<pg-uploader
+			<div :class="photoItemClass">
+				<vue-uploader
 					ref="uploader"
 					:drop="true"
 					:headers="uploaderHeaders"
@@ -120,13 +129,13 @@ export default {
 					class="embed-responsive embed-responsive-1by1 rounded"
 					accept="image/*"
 					multiple
-					post-action="/files"
+					post-action="/api/files"
 					@input-file="onUploaderFileInput">
 					<a class="embed-responsive-item text-primary border d-flex flex-column align-items-center justify-content-center">
 						<pg-icon icon="plus" />
 						{{ $t('pages.venue_form.photos.upload') }}
 					</a>
-				</pg-uploader>
+				</vue-uploader>
 			</div>
 		</div>
 

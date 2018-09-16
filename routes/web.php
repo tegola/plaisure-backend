@@ -50,12 +50,6 @@ Route::group([
 	Route::get('/users', 'Users\ListController@index')->name('admin.users.index');
 });
 
-// File upload/download/view --------------------------------------------------
-Route::group(['prefix' => '/files', 'middleware' => ['auth']], function() {
-	Route::post('/',                     'FileController@upload')->name('files.store');
-	Route::get('/{file}/{size}/{token}', 'FileController@view')  ->name('files.show');
-});
-
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
 Route::get ('/venues/{id}',  'SeoController@redirectToHashed')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits

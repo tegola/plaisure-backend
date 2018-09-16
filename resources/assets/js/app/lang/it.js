@@ -28,13 +28,7 @@ export default {
 	// Components -------------------------------------------------------------
 	components: {
 		navbar: {
-			search: 'Cerca vicino a...',
-			dropdown: {
-				venues: 'Le tue attività',
-				add: 'Aggiungi la tua attività',
-				edit: 'Modifica i tuoi dati',
-				logout: 'Esci'
-			}
+			search: 'Cerca vicino a...'
 		},
 
 		lightbox: {
@@ -344,9 +338,14 @@ export default {
 			}
 		},
 
-		user_venues: {
-			meta_title: 'Gestisci le tue attività',
-			title: 'Gestisci le tue attività',
+		user: {
+			meta_title: 'Gestione utente',
+			title: 'Ciao {name}!',
+			actions: {
+				add_venue: 'Aggiungi attività',
+				edit_profile: 'Modifica i tuoi dati',
+				logout: 'Esci'
+			},
 			no_items: {
 				title: 'Nessuna attività trovata',
 				message: 'Non hai ancora aggiunto la/le tua/e attività. {action} per farlo subito!',

@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+// File upload and view/download
+Route::post('/files',                      'FileController@upload');
+Route::get('/files/{file}/{size}/{token}', 'FileController@view')->name('files.show');
+
 // Authorization
 Route::post('/auth/register',        'AuthController@register');
 Route::post('/auth/login',           'AuthController@login');

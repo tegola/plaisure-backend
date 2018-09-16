@@ -4,7 +4,7 @@ import PgNoItems from 'prontogioco/app/components/no-items';
 import PgButton from 'prontogioco/app/components/button';
 
 export default {
-	name: 'PgUserVenuesPage',
+	name: 'PgUserPage',
 
 	components: {
 		PgNoItems,
@@ -12,12 +12,12 @@ export default {
 	},
 
 	computed: {
-		...mapState('user', ['venues'])
+		...mapState('user', ['user', 'venues'])
 	},
 
 	meta() {
 		return {
-			title: this.$t('pages.user_venues.meta_title')
+			title: this.$t('pages.user.meta_title')
 		};
 	},
 
@@ -26,24 +26,32 @@ export default {
 			if (!venue.categories || !venue.categories.length) return null;
 
 			return this.$t(`db.categories.${venue.categories[0].machine_name}`);
+		},
+
+		logout() {
+			this.$store.dispatch('user/logout')
+				.then(() => {
+					this.$router.push({ name: 'home' });
+				});
 		}
 	}
 };
 </script>
 
 <template>
-	<div>
+	<div class="pg-user-page">
 		<pg-navbar variant="dark" />
 
 		<div class="container my-5">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2>{{ this.$t('pages.user_venues.title') }}</h2>
-				<pg-button
-					:to="{ name: 'venues.add' }"
-					variant="primary"
-					icon="plus">
-					{{ this.$t('common.actions.add') }}
-				</pg-button>
+			<div class="d-flex justify-items-between">
+				<div>
+					<h3>{{ $t('pages.user.title', { name: user.name }) }}</h3>
+				</div>
+				<div class="ml-auto">
+					<pg-button to="/venues/add" variant="primary" icon="plus" class="mr-3">{{ $t('pages.user.actions.add_venue') }}</pg-button>
+					<pg-button to="/user/edit">{{ $t('pages.user.actions.edit_profile') }}</pg-button>
+					<pg-button @click="logout">{{ $t('pages.user.actions.logout') }}</pg-button>
+				</div>
 			</div>
 
 			<div v-if="venues.length" class="row mt-5">
@@ -71,15 +79,14 @@ export default {
 				</div>
 			</div>
 
-			<pg-no-items v-if="!venues.length" :title="$t('pages.user_venues.no_items.title')" class="py-5 my-5">
-				<i18n path="pages.user_venues.no_items.message">
+			<pg-no-items v-if="!venues.length" :title="$t('pages.user.no_items.title')" class="py-5 my-5">
+				<i18n path="pages.user.no_items.message">
 					<router-link :to="{ name: 'venues.add' }" place="action">
-						<strong>{{ $t('pages.user_venues.no_items.message_action') }}</strong>
+						<strong>{{ $t('pages.user.no_items.message_action') }}</strong>
 					</router-link>
 				</i18n>
 			</pg-no-items>
 		</div>
-
 		<pg-page-footer />
 	</div>
 </template>

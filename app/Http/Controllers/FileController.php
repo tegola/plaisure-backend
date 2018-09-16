@@ -12,6 +12,16 @@ use Validator;
 class FileController extends Controller
 {
 	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('auth:api')->only('upload');
+	}
+
+	/**
 	 * Upload a new file.
 	 *
 	 * @param Request $request
@@ -47,8 +57,8 @@ class FileController extends Controller
 	/**
 	 * View/download a file.
 	 *
-	 * @param File $file
 	 * @param Request $request
+	 * @param File $file
 	 * @param string $size The size from File's size constants
 	 * @param string $token The file token (for security reasons)
 	 * @return \Illuminate\Http\Response

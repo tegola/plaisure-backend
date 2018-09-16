@@ -28,13 +28,7 @@ export default {
 	// Components -------------------------------------------------------------
 	components: {
 		navbar: {
-			search: 'Search...',
-			dropdown: {
-				venues: 'Your venues',
-				add: 'Add your venue',
-				edit: 'Edit your profile',
-				logout: 'Logout'
-			}
+			search: 'Search...'
 		},
 
 		lightbox: {
@@ -344,9 +338,14 @@ export default {
 			}
 		},
 
-		user_venues: {
-			meta_title: 'Manage your venues',
-			title: 'Manage your venues',
+		user: {
+			meta_title: 'User profile',
+			title: 'Hello {name}!',
+			actions: {
+				add_venue: 'Add a venue',
+				edit_profile: 'Edit your profile',
+				logout: 'Logout'
+			},
 			no_items: {
 				title: 'No venues found',
 				message: "You haven't added your venue(s) yet. {action} to start now!",

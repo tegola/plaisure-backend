@@ -3,10 +3,7 @@ import { mapState } from 'vuex';
 import _extend from 'lodash/extend';
 
 import BNavbarNav from 'bootstrap-vue/es/components/navbar/navbar-nav';
-import BNavItemDropdown from 'bootstrap-vue/es/components/nav/nav-item-dropdown';
-import BDropdownItem from 'bootstrap-vue/es/components/dropdown/dropdown-item';
-import BDropdownItemButton from 'bootstrap-vue/es/components/dropdown/dropdown-item-button';
-import BDropdownDivider from 'bootstrap-vue/es/components/dropdown/dropdown-divider';
+import BNavItem from 'bootstrap-vue/es/components/nav/nav-item';
 
 import PgLogo from './logo';
 import PgIcon from './icon';
@@ -19,10 +16,7 @@ export default {
 
 	components: {
 		BNavbarNav,
-		BNavItemDropdown,
-		BDropdownItem,
-		BDropdownItemButton,
-		BDropdownDivider,
+		BNavItem,
 		PgLogo,
 		PgIcon,
 		PgPlaceTextbox
@@ -61,7 +55,7 @@ export default {
 	},
 
 	computed: {
-		...mapState('user', ['user', 'venues']),
+		...mapState('user', ['user']),
 		showLogoText() {
 			return this.$mq.comfortable;
 		},
@@ -112,13 +106,6 @@ export default {
 			}
 
 			this.$emit('place-changed', place);
-		},
-
-		logout() {
-			this.$store.dispatch('user/logout')
-				.then(() => {
-					this.$router.push({ name: 'home' });
-				});
 		}
 	}
 };
@@ -150,16 +137,10 @@ export default {
 		<div class="ml-auto d-flex">
 			<slot name="right" />
 			<b-navbar-nav v-if="user">
-				<b-nav-item-dropdown right>
-					<template slot="button-content">
-						<pg-icon icon="user" />
-						{{ user.name }}
-					</template>
-					<b-dropdown-item :to="{ name: 'user.venues' }" active-class="" exact-active-class="">{{ venues.length ? $t('components.navbar.dropdown.venues') : $t('components.navbar.dropdown.add') }}</b-dropdown-item>
-					<b-dropdown-item :to="{ name: 'user.edit' }" active-class="" exact-active-class="">{{ $t('components.navbar.dropdown.edit') }}</b-dropdown-item>
-					<b-dropdown-divider />
-					<b-dropdown-item-button @click="logout">{{ $t('components.navbar.dropdown.logout') }}</b-dropdown-item-button>
-				</b-nav-item-dropdown>
+				<b-nav-item :to="{ name: 'user' }" exact>
+					<pg-icon icon="user" />
+					{{ user.name }}
+				</b-nav-item>
 			</b-navbar-nav>
 		</div>
 	</nav>

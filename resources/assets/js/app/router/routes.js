@@ -41,6 +41,12 @@ export default [
 
 	// User -------------------------------------------------------------------
 	{
+		path: '/user',
+		name: 'user',
+		component: () => import('prontogioco/app/pages/user/main'),
+		beforeEnter: requireAuth
+	},
+	{
 		path: '/user/edit',
 		name: 'user.edit',
 		component: () => import('prontogioco/app/pages/user/form'),
@@ -48,12 +54,6 @@ export default [
 		meta: {
 			title: 'Modifica i tuoi dati'
 		}
-	},
-	{
-		path: '/user/venues',
-		name: 'user.venues',
-		component: () => import('prontogioco/app/pages/user/venues'),
-		beforeEnter: requireAuth
 	},
 
 	// Explore ----------------------------------------------------------------
