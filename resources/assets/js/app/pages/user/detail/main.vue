@@ -2,13 +2,15 @@
 import { mapState } from 'vuex';
 import PgNoItems from 'prontogioco/app/components/no-items';
 import PgButton from 'prontogioco/app/components/button';
+import Item from './item';
 
 export default {
-	name: 'PgUserPage',
+	name: 'PgUserDetailPage',
 
 	components: {
 		PgNoItems,
-		PgButton
+		PgButton,
+		Item
 	},
 
 	computed: {
@@ -22,12 +24,6 @@ export default {
 	},
 
 	methods: {
-		venueCategoryString(venue) {
-			if (!venue.categories || !venue.categories.length) return null;
-
-			return this.$t(`db.categories.${venue.categories[0].machine_name}`);
-		},
-
 		logout() {
 			this.$store.dispatch('user/logout')
 				.then(() => {
@@ -42,7 +38,7 @@ export default {
 	<div class="pg-user-page">
 		<pg-navbar variant="dark" />
 
-		<div class="container my-5">
+		<div v-if="user" class="container my-5">
 			<div class="d-flex justify-items-between">
 				<div>
 					<h3>{{ $t('pages.user.title', { name: user.name }) }}</h3>
@@ -56,26 +52,7 @@ export default {
 
 			<div v-if="venues.length" class="row mt-5">
 				<div v-for="venue in venues" :key="venue.id" class="col-md-6 col-xl-4 mb-4">
-					<router-link :to="{ name: 'venues.edit', params: { venueId: venue.id } }" class="h-100">
-						<div class="card h-100 flex-row">
-							<div
-								v-if="venue.photos && venue.photos[0]"
-								:style="{ background: `url(${venue.photos[0].thumbnail_url})`, backgroundSize: 'cover', backgroundPosition: 'center center', width: '160px' }"
-								class="embed-responsive embed-responsive-2by3"
-							/>
-							<div
-								v-else
-								class="embed-responsive embed-responsive-2by3 bg-light d-flex justify-content-center align-items-center"
-								style="width: 160px;"
-							/>
-
-							<div class="card-body d-flex flex-column justify-content-center">
-								<h4 class="card-title font-weight-bold">{{ venue.name }}</h4>
-								<div class="card-subtitle mb-2 text-muted initialism">{{ venueCategoryString(venue) }}</div>
-								<p class="card-text">{{ venue.address.short }}</p>
-							</div>
-						</div>
-					</router-link>
+					<item :venue="venue" />
 				</div>
 			</div>
 
@@ -87,6 +64,7 @@ export default {
 				</i18n>
 			</pg-no-items>
 		</div>
+
 		<pg-page-footer />
 	</div>
 </template>

@@ -17,6 +17,7 @@ export default {
 		},
 		actions: {
 			add: 'Aggiungi',
+			edit: 'Modifica',
 			cancel: 'Annulla',
 			save: 'Salva',
 			delete: 'Elimina',

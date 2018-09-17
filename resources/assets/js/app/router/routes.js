@@ -43,7 +43,7 @@ export default [
 	{
 		path: '/user',
 		name: 'user',
-		component: () => import('prontogioco/app/pages/user/main'),
+		component: () => import('prontogioco/app/pages/user/detail'),
 		beforeEnter: requireAuth
 	},
 	{
