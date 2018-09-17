@@ -59,14 +59,28 @@ class UserController extends Controller
 
 		// Validate fields
 		$request->validate([
-			'name' => 'required|string|max:255',
+			'name'                         => 'required|string|max:255',
+			'legal_name'                   => 'required_with:address_street,address_city,address_postcode,address_region,address_country,vat_number|string',
+			'address_street'               =>  $this->requiredLegalFieldsExcept('address_street') .'|string',
+			'address_city'                 =>  $this->requiredLegalFieldsExcept('address_city') .'|string',
+			'address_postcode'             =>  $this->requiredLegalFieldsExcept('address_postcode') .'|string',
+			'address_region'               =>  $this->requiredLegalFieldsExcept('address_region') .'|string',
+			'address_country'              =>  $this->requiredLegalFieldsExcept('address_country') .'|string',
+			'vat_number'                   =>  $this->requiredLegalFieldsExcept('vat_number') .'|string|max:20',
 			'aams_subject_enrollment_code' => 'required|string|max:255',
-			'new_password' => 'nullable|string|min:8|confirmed',
-			'send_newsletter' => 'boolean'
+			'new_password'                 => 'nullable|string|min:8|confirmed',
+			'send_newsletter'              => 'boolean'
 		]);
 
 		// Save user data
 		$user->name = $request->input('name');
+		$user->legal_name = $request->input('legal_name');
+		$user->address_street = $request->input('address_street');
+		$user->address_city = $request->input('address_city');
+		$user->address_postcode = $request->input('address_postcode');
+		$user->address_region = $request->input('address_region');
+		$user->address_country = $request->input('address_country');
+		$user->vat_number = $request->input('vat_number');
 		$user->aams_subject_enrollment_code = $request->input('aams_subject_enrollment_code');
 		$user->send_newsletter = $request->input('send_newsletter');
 
@@ -82,5 +96,29 @@ class UserController extends Controller
 		return [
 			'user' => $request->user()
 		];
+	}
+
+	/**
+	 * Prepare the legal fields required_with validation rule.
+	 * 
+	 * @param  string $name The field to exclude
+	 * @return string "required_with:field1,field2,..."
+	 */
+	private function requiredLegalFieldsExcept($name) {
+		$fields = [
+			'legal_name',
+			'address_street',
+			'address_city',
+			'address_postcode',
+			'address_region',
+			'address_country',
+			'vat_number'
+		];
+
+		$filtered = array_filter($fields, function($field) use ($name) {
+			return $field != $name;
+		});
+
+		return 'required_with:'. implode(',', $filtered);
 	}
 }

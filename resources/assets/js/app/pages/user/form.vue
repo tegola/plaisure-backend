@@ -1,7 +1,7 @@
 <script>
 import { mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
-import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
+import { required, requiredIf, email, minLength, sameAs } from 'vuelidate/lib/validators';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
@@ -31,7 +31,21 @@ export default {
 	},
 
 	computed: {
-		...mapState('user', ['user'])
+		...mapState('user', ['user']),
+
+		hasAnyLegalField() {
+			const m = this.model;
+
+			return Boolean(
+				m.legal_name ||
+				m.address_street ||
+				m.address_city ||
+				m.address_postcode ||
+				m.address_region ||
+				m.address_country ||
+				m.vat_number
+			);
+		}
 	},
 
 	watch: {
@@ -43,6 +57,13 @@ export default {
 				this.model = {
 					name: this.user.name,
 					email: this.user.email,
+					legal_name: this.user.legal_name,
+					address_street: this.user.address_street,
+					address_city: this.user.address_city,
+					address_postcode: this.user.address_postcode,
+					address_region: this.user.address_region,
+					address_country: this.user.address_country,
+					vat_number: this.user.vat_number,
 					aams_subject_enrollment_code: this.user.aams_subject_enrollment_code,
 					new_password: '',
 					new_password_confirmation: '',
@@ -60,6 +81,27 @@ export default {
 			email: {
 				required,
 				email
+			},
+			legal_name: {
+				required: requiredIf(function() { return this.hasAnyLegalField; })
+			},
+			address_street: {
+				required: requiredIf(function() { return this.hasAnyLegalField; })
+			},
+			address_city: {
+				required: requiredIf(function() { return this.hasAnyLegalField; })
+			},
+			address_postcode: {
+				required: requiredIf(function() { return this.hasAnyLegalField; })
+			},
+			address_region: {
+				required: requiredIf(function() { return this.hasAnyLegalField; })
+			},
+			address_country: {
+				required: requiredIf(function() { return this.hasAnyLegalField; })
+			},
+			vat_number: {
+				required: requiredIf(function() { return this.hasAnyLegalField; })
 			},
 			aams_subject_enrollment_code: {
 				required
@@ -122,6 +164,54 @@ export default {
 							description="Necessario per inserire la tua attività.">
 							<b-input v-model="model.aams_subject_enrollment_code" type="text" />
 						</b-form-group>
+
+						<b-form-group
+							:state="!$v.model.legal_name.$error"
+							label="Denominazione legale dell'azienda"
+							invalid-feedback="Inserisci la denominazione legale dell'azienda.">
+							<b-input v-model="model.legal_name" type="text" />
+						</b-form-group>
+
+						<p>Indirizzo</p>
+						<b-form-group
+							:state="!$v.model.address_street.$error"
+							label="Indirizzo"
+							invalid-feedback="Inserisci l'indirizzo">
+							<b-input v-model="model.address_street" type="text" />
+						</b-form-group>
+						<b-form-group
+							:state="!$v.model.address_city.$error"
+							label="Città"
+							invalid-feedback="Inserisci la città.">
+							<b-input v-model="model.address_city" type="text" />
+						</b-form-group>
+						<b-form-group
+							:state="!$v.model.address_postcode.$error"
+							label="CAP"
+							invalid-feedback="Inserisci il CAP.">
+							<b-input v-model="model.address_postcode" type="text" />
+						</b-form-group>
+						<b-form-group
+							:state="!$v.model.address_region.$error"
+							label="Provincia"
+							invalid-feedback="Inserisci la provincia.">
+							<b-input v-model="model.address_region" type="text" />
+						</b-form-group>
+						<b-form-group
+							:state="!$v.model.address_country.$error"
+							label="Paese"
+							invalid-feedback="Inserisci il paese">
+							<b-input v-model="model.address_country" type="text" />
+						</b-form-group>
+
+						<b-form-group
+							:state="!$v.model.vat_number.$error"
+							label="Partita IVA"
+							invalid-feedback="Inserisci la partita IVA.">
+							<b-input v-model="model.vat_number" type="text" />
+						</b-form-group>
+
+						<p>Cambio password</p>
 						<b-form-group
 							:state="!$v.model.new_password.$error"
 							label="Nuova password"
