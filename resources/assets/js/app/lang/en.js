@@ -301,7 +301,7 @@ export default {
 			},
 			contacts: {
 				title: 'Contacts',
-				phone: 'Phone',
+				phone: 'Phone number',
 				email: 'E-mail',
 				email_placeholder: 'Ex.: name@gmail.com',
 				email_error: 'Type a valid e-mail address..',

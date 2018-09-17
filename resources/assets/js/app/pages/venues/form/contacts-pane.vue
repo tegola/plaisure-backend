@@ -1,4 +1,6 @@
 <script>
+import autoHttps from 'prontogioco/app/directives/auto-https';
+
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import BInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
@@ -12,6 +14,10 @@ export default {
 		BFormGroup,
 		BInput,
 		BInputGroup
+	},
+
+	directives: {
+		autoHttps
 	},
 
 	props: {
@@ -90,7 +96,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-model="venue.urls.site" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
+					<b-input v-auto-https v-model="venue.urls.site" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
 				</div>
 			</div>
 		</b-form-group>
@@ -102,7 +108,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-model="venue.urls.online_casino" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
+					<b-input v-auto-https v-model="venue.urls.online_casino" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
 				</div>
 			</div>
 		</b-form-group>
@@ -114,7 +120,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-model="venue.urls.facebook" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
+					<b-input v-auto-https v-model="venue.urls.facebook" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
 				</div>
 			</div>
 		</b-form-group>
