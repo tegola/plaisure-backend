@@ -67,7 +67,6 @@ class UserController extends Controller
 			'address_region'               =>  $this->requiredLegalFieldsExcept('address_region') .'|string',
 			'address_country'              =>  $this->requiredLegalFieldsExcept('address_country') .'|string',
 			'vat_number'                   =>  $this->requiredLegalFieldsExcept('vat_number') .'|string|max:20',
-			'aams_subject_enrollment_code' => 'required|string|max:255',
 			'new_password'                 => 'nullable|string|min:8|confirmed',
 			'send_newsletter'              => 'boolean'
 		]);
@@ -81,7 +80,6 @@ class UserController extends Controller
 		$user->address_region = $request->input('address_region');
 		$user->address_country = $request->input('address_country');
 		$user->vat_number = $request->input('vat_number');
-		$user->aams_subject_enrollment_code = $request->input('aams_subject_enrollment_code');
 		$user->send_newsletter = $request->input('send_newsletter');
 
 		// Save new password

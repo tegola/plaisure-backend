@@ -13,7 +13,9 @@ export default {
 		status: {
 			offline_warning: "Attention: you're not connected to the internet!",
 			error: 'Error',
-			loading: 'Loading'
+			loading: 'Loading',
+			invalid_form: 'There are errors in the form. Please review your entry.',
+			save_error: 'There was an error while trying saving data. Please try again.'
 		},
 		actions: {
 			add: 'Add',
@@ -351,6 +353,43 @@ export default {
 				title: 'No venues found',
 				message: "You haven't added your venue(s) yet. {action} to start now!",
 				message_action: 'Click here'
+			}
+		},
+
+		user_form: {
+			meta_title: 'Edit your profile',
+			title: 'Edit your profile',
+			general: {
+				name: 'First and last name',
+				name_error: 'Please type your first and last name.',
+				email: 'E-mail address',
+				newsletter: 'Keep me informed with new features and deals'
+			},
+			billing: {
+				title: 'Billing',
+				legal_name: 'Legal name',
+				legal_name_error: 'Please type your company legal name.',
+				address: 'Address',
+				address_error: 'Please type the address.',
+				postcode: 'Postal code',
+				postcode_error: 'Please type the postal code.',
+				city: 'City',
+				city_error: 'Please type the city name.',
+				region: 'Region',
+				region_error: 'Please type the region.',
+				country: 'Country',
+				country_error: 'Please type the country name.',
+				vat_number: 'VAT number',
+				vat_number_error: 'Please type the VAT number.'
+			},
+			password: {
+				title: 'Pick new password',
+				intro: 'Type a new password below to change it, leave the two fields empty to keep it unchanged.',
+				password: 'New password',
+				password_hint: 'At least 8 chars, letters and numbers',
+				password_error: 'Please type at least 8 chars, letters and numbers.',
+				password_confirmation: 'Repeat password',
+				password_confirmation_error: "Passwords don't match."
 			}
 		},
 

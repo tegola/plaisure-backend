@@ -13,7 +13,9 @@ export default {
 		status: {
 			offline_warning: 'Attenzione: non sei connesso a internet!',
 			error: 'Error',
-			loading: 'Caricamento'
+			loading: 'Caricamento',
+			invalid_form: 'Ci sono degli errori nel modulo. Controlla i dati inseriti.',
+			save_error: 'È avvenuto un errore nel tentativo di salvare i dati. Prova di nuovo.'
 		},
 		actions: {
 			add: 'Aggiungi',
@@ -351,6 +353,43 @@ export default {
 				title: 'Nessuna attività trovata',
 				message: 'Non hai ancora aggiunto la/le tua/e attività. {action} per farlo subito!',
 				message_action: 'Clicca qui'
+			}
+		},
+
+		user_form: {
+			meta_title: 'Modifica i tuoi dati',
+			title: 'Modifica i tuoi dati',
+			general: {
+				name: 'Nome e cognome',
+				name_error: 'Inserisci nome e cognome.',
+				email: 'Indirizzo e-mail',
+				newsletter: 'Voglio essere informato sulle nuove offerte e funzionalità'
+			},
+			billing: {
+				title: 'Fatturazione',
+				legal_name: "Denominazione legale dell'azienda",
+				legal_name_error: "Inserisci la denominazione legale dell'azienda.",
+				address: 'Via e numero civico',
+				address_error: 'Inserisci la via e il numero civico.',
+				postcode: 'CAP',
+				postcode_error: 'Inserisci il CAP.',
+				city: 'Città',
+				city_error: 'Inserisci la città.',
+				region: 'Provincia',
+				region_error: 'Inserisci la provincia.',
+				country: 'Paese',
+				country_error: 'Inserisci il paese.',
+				vat_number: 'Partita IVA',
+				vat_number_error: 'Inserisci la partita IVA.'
+			},
+			password: {
+				title: 'Nuova password',
+				intro: 'Scrivi una nuova password e ripetila per cambiarla, lascia i due campi vuoti per tenere la password corrente.',
+				password: 'Nuova password',
+				password_hint: 'Almeno 8 caratteri tra lettere e numeri',
+				password_error: 'Inserisci almeno 8 caratteri tra lettere e numeri.',
+				password_confirmation: 'Ripeti password',
+				password_confirmation_error: 'Le password non coincidono.'
 			}
 		},
 

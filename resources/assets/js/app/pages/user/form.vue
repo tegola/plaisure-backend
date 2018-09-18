@@ -8,8 +8,6 @@ import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import BCheckbox from 'bootstrap-vue/es/components/form-checkbox/form-checkbox';
 import PgButton from 'prontogioco/app/components/button';
 
-import { APP_NAME } from 'prontogioco/constants';
-
 export default {
 	name: 'PgUserFormPage',
 
@@ -25,7 +23,6 @@ export default {
 	data() {
 		return {
 			loading: false,
-			appName: APP_NAME,
 			model: {}
 		};
 	},
@@ -48,6 +45,12 @@ export default {
 		}
 	},
 
+	meta() {
+		return {
+			title: this.$t('pages.user_form.meta_title')
+		};
+	},
+
 	watch: {
 		user: {
 			immediate: true,
@@ -57,6 +60,7 @@ export default {
 				this.model = {
 					name: this.user.name,
 					email: this.user.email,
+					send_newsletter: this.user.send_newsletter,
 					legal_name: this.user.legal_name,
 					address_street: this.user.address_street,
 					address_city: this.user.address_city,
@@ -64,10 +68,8 @@ export default {
 					address_region: this.user.address_region,
 					address_country: this.user.address_country,
 					vat_number: this.user.vat_number,
-					aams_subject_enrollment_code: this.user.aams_subject_enrollment_code,
 					new_password: '',
-					new_password_confirmation: '',
-					send_newsletter: this.user.send_newsletter
+					new_password_confirmation: ''
 				};
 			}
 		}
@@ -103,9 +105,6 @@ export default {
 			vat_number: {
 				required: requiredIf(function() { return this.hasAnyLegalField; })
 			},
-			aams_subject_enrollment_code: {
-				required
-			},
 			new_password: {
 				minLength: minLength(8)
 			},
@@ -120,16 +119,19 @@ export default {
 			// Validate
 			this.$v.$touch();
 
-			// Stop on validation errors
-			if (this.$v.$error) return;
+			// Scroll to error on validation
+			if (this.$v.$error) {
+				alert(this.$t('common.status.invalid_form'));
+				return;
+			}
 
 			this.loading = true;
 
 			this.$store.dispatch('user/update', this.model)
 				.then(() => {
 					this.$router.push({ name: 'user' });
-				}).catch(error => {
-					console.log('error', error);
+				}).catch(() => {
+					alert(this.$t('common.status.save_error'));
 				}).then(() => {
 					this.loading = false;
 				});
@@ -144,94 +146,99 @@ export default {
 
 		<div v-if="user" class="container my-5">
 			<div class="row">
-				<div class="col-md-8 col-lg-6 mx-auto">
-					<h2>Modifica i tuoi dati</h2>
-					<form method="post" @submit.prevent="submit">
+				<div class="col-lg-8 mx-auto">
+					<h3>{{ $t('pages.user_form.title') }}</h3>
+					<hr>
+
+					<form method="post" class="mt-4" @submit.prevent="submit">
 						<b-form-group
 							:state="!$v.model.name.$error"
-							label="Nome e cognome"
-							invalid-feedback="Inserisci nome e cognome.">
+							:label="$t('pages.user_form.general.name')"
+							:invalid-feedback="$t('pages.user_form.general.name_error')">
 							<b-input v-model="model.name" type="text" />
 						</b-form-group>
 						<b-form-group
-							label="E-mail">
+							:label="$t('pages.user_form.general.email')">
 							<b-input v-model="model.email" type="email" disabled />
 						</b-form-group>
-						<b-form-group
-							:state="!$v.model.aams_subject_enrollment_code.$error"
-							label="Codice iscrizione AAMS"
-							invalid-feedback="Inserisci il tuo codice di iscrizione AAMS."
-							description="Necessario per inserire la tua attività.">
-							<b-input v-model="model.aams_subject_enrollment_code" type="text" />
+						<b-form-group>
+							<b-checkbox v-model="model.send_newsletter">{{ $t('pages.user_form.general.newsletter') }}</b-checkbox>
 						</b-form-group>
 
+						<h5 class="mt-5 font-weight-bold">{{ $t('pages.user_form.billing.title') }}</h5>
 						<b-form-group
 							:state="!$v.model.legal_name.$error"
-							label="Denominazione legale dell'azienda"
-							invalid-feedback="Inserisci la denominazione legale dell'azienda.">
+							:label="$t('pages.user_form.billing.legal_name')"
+							:invalid-feedback="$t('pages.user_form.billing.legal_name_error')">
 							<b-input v-model="model.legal_name" type="text" />
 						</b-form-group>
-
-						<p>Indirizzo</p>
 						<b-form-group
 							:state="!$v.model.address_street.$error"
-							label="Indirizzo"
-							invalid-feedback="Inserisci l'indirizzo">
+							:label="$t('pages.user_form.billing.address')"
+							:invalid-feedback="$t('pages.user_form.billing.address_error')">
 							<b-input v-model="model.address_street" type="text" />
 						</b-form-group>
-						<b-form-group
-							:state="!$v.model.address_city.$error"
-							label="Città"
-							invalid-feedback="Inserisci la città.">
-							<b-input v-model="model.address_city" type="text" />
-						</b-form-group>
-						<b-form-group
-							:state="!$v.model.address_postcode.$error"
-							label="CAP"
-							invalid-feedback="Inserisci il CAP.">
-							<b-input v-model="model.address_postcode" type="text" />
-						</b-form-group>
-						<b-form-group
-							:state="!$v.model.address_region.$error"
-							label="Provincia"
-							invalid-feedback="Inserisci la provincia.">
-							<b-input v-model="model.address_region" type="text" />
-						</b-form-group>
-						<b-form-group
-							:state="!$v.model.address_country.$error"
-							label="Paese"
-							invalid-feedback="Inserisci il paese">
-							<b-input v-model="model.address_country" type="text" />
-						</b-form-group>
-
+						<div class="row">
+							<div class="col-sm-4">
+								<b-form-group
+									:state="!$v.model.address_postcode.$error"
+									:label="$t('pages.user_form.billing.postcode')"
+									:invalid-feedback="$t('pages.user_form.billing.postcode_error')">
+									<b-input v-model="model.address_postcode" type="text" />
+								</b-form-group>
+							</div>
+							<div class="col-sm-8">
+								<b-form-group
+									:state="!$v.model.address_city.$error"
+									:label="$t('pages.user_form.billing.city')"
+									:invalid-feedback="$t('pages.user_form.billing.city_error')">
+									<b-input v-model="model.address_city" type="text" />
+								</b-form-group>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm">
+								<b-form-group
+									:state="!$v.model.address_region.$error"
+									:label="$t('pages.user_form.billing.region')"
+									:invalid-feedback="$t('pages.user_form.billing.region_error')">
+									<b-input v-model="model.address_region" type="text" />
+								</b-form-group>
+							</div>
+							<div class="col-sm">
+								<b-form-group
+									:state="!$v.model.address_country.$error"
+									:label="$t('pages.user_form.billing.country')"
+									:invalid-feedback="$t('pages.user_form.billing.country_error')">
+									<b-input v-model="model.address_country" type="text" />
+								</b-form-group>
+							</div>
+						</div>
 						<b-form-group
 							:state="!$v.model.vat_number.$error"
-							label="Partita IVA"
-							invalid-feedback="Inserisci la partita IVA.">
+							:label="$t('pages.user_form.billing.vat_number')"
+							:invalid-feedback="$t('pages.user_form.billing.vat_number_error')">
 							<b-input v-model="model.vat_number" type="text" />
 						</b-form-group>
 
-						<p>Cambio password</p>
+						<h5 class="mt-5 font-weight-bold">{{ $t('pages.user_form.password.title') }}</h5>
+						<p>{{ $t('pages.user_form.password.intro') }}</p>
 						<b-form-group
 							:state="!$v.model.new_password.$error"
-							label="Nuova password"
-							invalid-feedback="Inserisci almeno 8 caratteri tra lettere e numeri"
-							description="Almeno 8 caratteri tra lettere e numeri">
+							:label="$t('pages.user_form.password.password')"
+							:invalid-feedback="$t('pages.user_form.password.password_error')"
+							:description="$t('pages.user_form.password.password_hint')">
 							<b-input v-model="model.new_password" type="password" />
 						</b-form-group>
 						<b-form-group
 							:state="!$v.model.new_password_confirmation.$error"
-							label="Nuova password"
-							invalid-feedback="Le password non combaciano.">
+							:label="$t('pages.user_form.password.password_confirmation')"
+							:invalid-feedback="$t('pages.user_form.password.password_confirmation_error')">
 							<b-input v-model="model.new_password_confirmation" type="password" />
 						</b-form-group>
-						<b-form-group>
-							<b-checkbox v-model="model.send_newsletter">Voglio ricevere la newsletter di {{ appName }}</b-checkbox>
-						</b-form-group>
-						<b-form-group class="mt-3">
-							<div class="d-flex justify-content-md-end">
-								<pg-button :block="$mq.constrained" :loading="loading" type="submit" variant="primary">Salva</pg-button>
-							</div>
+						<b-form-group class="mt-3 text-right">
+							<pg-button :block="$mq.constrained" :to="{ name: 'user' }">{{ $t('common.actions.cancel') }}</pg-button>
+							<pg-button :block="$mq.constrained" :loading="loading" type="submit" variant="primary">{{ $t('common.actions.save') }}</pg-button>
 						</b-form-group>
 					</form>
 				</div>
