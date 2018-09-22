@@ -33,12 +33,14 @@ class UserController extends Controller
 			->with([
 				'photos' => function($query) {
 					$query->first();
-				}
+				},
+				'plan'
 			])
 			->get()
 			->transformWith(new VenueTransformer())
 			->includeCategories()
-			->includePhotos();
+			->includePhotos()
+			->includePlan();
 
 		return [
 			'user' => $user,
@@ -60,7 +62,7 @@ class UserController extends Controller
 		// Validate fields
 		$request->validate([
 			'name'                         => 'required|string|max:255',
-			'legal_name'                   => 'required_with:address_street,address_city,address_postcode,address_region,address_country,vat_number|string',
+			'legal_name'                   =>  $this->requiredLegalFieldsExcept('legal_name') .'|string',
 			'address_street'               =>  $this->requiredLegalFieldsExcept('address_street') .'|string',
 			'address_city'                 =>  $this->requiredLegalFieldsExcept('address_city') .'|string',
 			'address_postcode'             =>  $this->requiredLegalFieldsExcept('address_postcode') .'|string',

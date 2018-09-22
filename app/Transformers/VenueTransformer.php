@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use App\Models\Venue;
+use App\Models\VenuePlan;
 use App\Models\VenueCategory;
 use App\Models\VltPlatform;
 use App\Models\PayPerViewPlatform;
@@ -26,7 +27,8 @@ class VenueTransformer extends TransformerAbstract
 		'photos',
 		'photo_ids',
 		'vlt_platforms',
-		'vlt_platform_ids'
+		'vlt_platform_ids',
+		'plan'
 	];
 
 	/**
@@ -204,7 +206,7 @@ class VenueTransformer extends TransformerAbstract
 	 * Include category ids.
 	 *
 	 * @param Venue $venue
-	 * @return \League\Fractal\Resource\Collection
+	 * @return \League\Fractal\Resource\Item
 	 */
 	public function includeCategoryIds(Venue $venue)
 	{
@@ -230,7 +232,7 @@ class VenueTransformer extends TransformerAbstract
 	 * Include pay per view platform ids.
 	 *
 	 * @param Venue $venue
-	 * @return \League\Fractal\Resource\Collection
+	 * @return \League\Fractal\Resource\Item
 	 */
 	public function includePayPerViewPlatformIds(Venue $venue)
 	{
@@ -254,7 +256,7 @@ class VenueTransformer extends TransformerAbstract
 	 * Include photo ids.
 	 *
 	 * @param Venue $venue
-	 * @return \League\Fractal\Resource\Collection
+	 * @return \League\Fractal\Resource\Item
 	 */
 	public function includePhotoIds(Venue $venue)
 	{
@@ -280,12 +282,27 @@ class VenueTransformer extends TransformerAbstract
 	 * Include VLT platform ids.
 	 *
 	 * @param Venue $venue
-	 * @return \League\Fractal\Resource\Collection
+	 * @return \League\Fractal\Resource\Item
 	 */
 	public function includeVltPlatformIds(Venue $venue)
 	{
 		return $this->item($venue->vltPlatforms, function(Collection $vltPlatforms) {
 			return $vltPlatforms->pluck('id')->all();
 		});
+	}
+
+	/**
+	 * Include plan.
+	 * 
+	 * @param  Venue  $venue
+	 * @return \League\Fractal\Resource\Item
+	 */
+	public function includePlan(Venue $venue)
+	{
+		if ($venue->plan) {
+			return $this->item($venue->plan, function(VenuePlan $venuePlan) {		
+				return $venuePlan->only('name', 'machine_name', 'config');
+			});
+		}
 	}
 }
