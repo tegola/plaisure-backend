@@ -16,9 +16,9 @@
 		margin-top: map-get($spacers, 5);
 		margin-bottom: map-get($spacers, 5);
 
-		.pg-logo-text,
-		.pg-logo-symbol,
-		.pg-logo-shadow {
+		.pg-logo__text,
+		.pg-logo__symbol,
+		.pg-logo__shadow {
 			fill: $palette-dark-green-500;
 		}
 

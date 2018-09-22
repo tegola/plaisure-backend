@@ -1,13 +1,13 @@
-.pg-logo-text {
+.pg-logo__text {
 	fill: $palette-dark-green-500;
 }
-.pg-logo-symbol {
-	fill: url('#pg-logo-symbol-gradient');
+.pg-logo__symbol {
+	fill: url('#pg-logo__symbol-gradient');
 }
-.pg-logo-shadow {
-	fill: url('#pg-logo-shadow-gradient');
+.pg-logo__shadow {
+	fill: url('#pg-logo__shadow-gradient');
 	fill-opacity: .1;
 }
-.pg-logo-badge {
+.pg-logo__badge {
 	fill: $palette-dark-green-400;
 }

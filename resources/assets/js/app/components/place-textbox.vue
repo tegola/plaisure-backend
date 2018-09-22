@@ -25,6 +25,8 @@ export default {
 		},
 
 		onFocus(e) {
+			this.$emit('focus', e);
+
 			if (this.place) e.target.select();
 		},
 

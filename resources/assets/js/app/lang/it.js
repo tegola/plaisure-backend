@@ -31,7 +31,13 @@ export default {
 	// Components -------------------------------------------------------------
 	components: {
 		navbar: {
-			search: 'Cerca vicino a...'
+			search: 'Cerca vicino a...',
+			home: 'Home',
+			login: 'Accedi',
+			register: 'Iscriviti',
+			promote: 'Promuovi la tua attività',
+			company: 'Azienda e contatti',
+			responsible: 'Gioco responsabile'
 		},
 
 		lightbox: {

@@ -1,18 +1,39 @@
-// Logo
+.navbar {
+	z-index: $zindex-fixed + 1;
+	transition:
+		background-color $navbar-transition-duration,
+		color $navbar-transition-duration;
+}
+.navbar-brand {
+	display: flex;
+	align-items: center;
+}
+
+// Brand + logo + arrow
+.navbar-brand:active {
+	opacity: 0.85;
+}
 .navbar__logo {
 	display: block;
 	width: 196px;
 	height: 42px;
-
-	.navbar-brand:active & {
-		opacity: 0.85;
-	}
 }
 .navbar__logo--no-symbol {
 	width: 155px;
 }
 .navbar__logo--no-text {
 	width: 29px;
+}
+.navbar__logo-arrow {
+	vertical-align: middle;
+	margin-left: 0.25rem;
+	width: 16px;
+	height: 16px;
+	transition: transform $navbar-transition-duration;
+
+	.navbar--drawer-open & {
+		transform: rotate(180deg);
+	}
 }
 
 // Search
@@ -67,15 +88,67 @@
 	outline: none;
 }
 
-// Transparent style
-.navbar-transparent {
-	border-bottom: $border-width solid rgba($black, 0.05);
-	color: $palette-dark-green-500;
+// Drawer
+.navbar__drawer {
+	padding-top: 64px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: $zindex-fixed;
+	background-color: rgba($palette-dark-green-500, 0.75);
+	overflow: auto;
+	-webkit-backdrop-filter: blur(20px);
+}
+.navbar__drawer-nav {
+	background-color: #fff;
+	padding-top: $spacer / 2;
+	padding-bottom: $spacer / 2;
 
-	.pg-logo-text,
-	.pg-logo-symbol,
-	.pg-logo-shadow {
-		fill: red;
+	.nav-item {
+		font-size: $font-size-lg;
+		color: #000;
+		position: relative;
+	}
+	.nav-item + .nav-item::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: $nav-link-padding-x;
+		right: 0;
+		height: 1px;
+		background-color: rgba($palette-dark-green-100, 0.5);
+		pointer-events: none;
+	}
+	.nav-link {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		color: $palette-dark-green-400;
+
+		&.active {
+			color: $primary;
+		}
+	}
+}
+.navbar__drawer {
+	&.v-enter-active,
+	&.v-leave-active {
+		transition: $navbar-transition-duration ease-in-out;
+
+		.navbar__drawer-nav {
+			transition: $navbar-transition-duration ease-in-out;
+		}
+	}
+
+	&.v-enter,
+	&.v-leave-to {
+		opacity: 0;
+
+		.navbar__drawer-nav {
+			transform: translateY(-100%);
+		}
 	}
 }
 
@@ -83,6 +156,10 @@
 .navbar-light {
 	background-color: $white;
 	// box-shadow: 0 $border-width 0 rgba($black, 0.08);
+
+	.navbar__logo-arrow {
+		color: $palette-dark-green-200;
+	}
 
 	.navbar__search-icon-container {
 		color: rgba($black, 0.5);
@@ -108,10 +185,10 @@
 	background-color: $palette-dark-green-500;
 	color: $white;
 
-	.pg-logo-background {
+	.pg-logo__background {
 		display: none
 	}
-	.pg-logo-foreground {
+	.pg-logo__foreground {
 		fill: $white;
 	}
 

@@ -31,7 +31,13 @@ export default {
 	// Components -------------------------------------------------------------
 	components: {
 		navbar: {
-			search: 'Search...'
+			search: 'Search...',
+			home: 'Home',
+			login: 'Sign in',
+			register: 'Register',
+			promote: 'Promote your venue',
+			company: 'Company & Contact',
+			responsible: 'Responsible playing'
 		},
 
 		lightbox: {
