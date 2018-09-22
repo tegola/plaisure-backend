@@ -97,7 +97,7 @@
 	right: 0;
 	bottom: 0;
 	z-index: $zindex-fixed;
-	background-color: rgba($palette-dark-green-500, 0.75);
+	background-color: rgba($modal-backdrop-bg, $modal-backdrop-opacity);
 	overflow: auto;
 	-webkit-backdrop-filter: blur(20px);
 }

@@ -62,7 +62,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.contacts.email_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-model="venue.contacts.email" type="email" placeholder="Es.: nome@gmail.com"/>
+					<b-input v-model="venue.contacts.email" :placeholder="$t('pages.venue_form.contacts.email_placeholder' )" type="email" />
 				</div>
 			</div>
 		</b-form-group>
