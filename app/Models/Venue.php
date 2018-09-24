@@ -313,13 +313,17 @@ class Venue extends Model
 	}
 
 	/**
-	 * Plan this venue is on.
+	 * Plan this venue is on. Defaults to the free plan.
 	 * 
 	 * @return \App\Models\VenuePlan
 	 */
 	public function plan()
 	{
-		return $this->hasOne('App\Models\VenuePlan');
+		$freePlan = config('plans')[0];
+
+		return $this
+			->hasOne('App\Models\VenuePlan')
+			->withDefault($freePlan);
 	}
 
 	/**

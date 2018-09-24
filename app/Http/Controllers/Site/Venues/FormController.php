@@ -62,7 +62,8 @@ class FormController extends Controller
 			'categories',
 			'payPerViewPlatforms',
 			'photos',
-			'vltPlatforms'
+			'vltPlatforms',
+			'plan'
 		]);
 
 		$venue = fractal($venue, new VenueTransformer())
@@ -71,7 +72,8 @@ class FormController extends Controller
 				'categories',
 				'pay_per_view_platforms',
 				'photos',
-				'vlt_platforms'
+				'vlt_platforms',
+				'plan'
 			]);
 
 		$categories = VenueCategory::select('id', 'machine_name', 'name')->get();

@@ -33,8 +33,7 @@ class UserController extends Controller
 			->with([
 				'photos' => function($query) {
 					$query->first();
-				},
-				'plan'
+				}
 			])
 			->get()
 			->transformWith(new VenueTransformer())
