@@ -235,6 +235,7 @@ export default {
 						<pg-venue-form-photos-pane
 							id="photos"
 							:photos.sync="venue.photos"
+							:plan="venue.plan"
 						/>
 						<pg-venue-form-jackpots-pane
 							id="jackpots"

@@ -301,7 +301,14 @@ class VenueTransformer extends TransformerAbstract
 	{
 		if ($venue->plan) {
 			return $this->item($venue->plan, function(VenuePlan $venuePlan) {		
-				return $venuePlan->only('name', 'machine_name', 'config');
+				return $venuePlan->only(
+					'name',
+					'machine_name',
+					'price',
+					'distance_bonus',
+					'photo_limit',
+					'hide_nearby_venues'
+				);
 			});
 		}
 	}

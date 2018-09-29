@@ -331,6 +331,8 @@ export default {
 			},
 			photos: {
 				title: 'Foto',
+				intro: 'Per inerire più di {count} foto, {action}.',
+				intro_action: 'scegli un piano a pagamento',
 				upload: 'Carica foto',
 				remove: {
 					title: 'Rimuovi photo',

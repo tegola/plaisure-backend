@@ -520,15 +520,15 @@ class Venue extends Model
 		$lat = (float) $lat;
 		$lng = (float) $lng;
 		$radius = (double) $radius;
-		$lat_column = 'geo_latitude';
-		$lng_column = 'geo_longitude';
+		$latColumn = 'geo_latitude';
+		$lngColumn = 'geo_longitude';
 
 		return $query
 			->addSelect(DB::raw("($units * ACOS(COS(RADIANS($lat))
-							  * COS(RADIANS($lat_column))
-							  * COS(RADIANS($lng) - RADIANS($lng_column))
+							  * COS(RADIANS($latColumn))
+							  * COS(RADIANS($lng) - RADIANS($lngColumn))
 							  + SIN(RADIANS($lat))
-							  * SIN(RADIANS($lat_column)))) AS distance")
+							  * SIN(RADIANS($latColumn)))) AS distance")
 			)
 			->having('distance', '<=' ,$radius)
 			->orderBy('distance','asc');
@@ -550,23 +550,23 @@ class Venue extends Model
 		$units = ($units === "km") ? 6378.10 : 3963.17;
 		$lat = (float) $lat;
 		$lng = (float) $lng;
-		$lat_column = 'geo_latitude';
-		$lng_column = 'geo_longitude';
+		$latColumn = 'geo_latitude';
+		$lngColumn = 'geo_longitude';
 
 		// Join with venue_plans to get the distance bonus
 		$query->leftJoin('venue_plans', 'venues.id', 'venue_plans.venue_id');
 
 		// Add distance field
-		$distance_raw = "$units * ACOS(
-							COS(RADIANS($lat)) * COS(RADIANS($lat_column))
-							* COS(RADIANS($lng) - RADIANS($lng_column))
-							+ SIN(RADIANS($lat)) * SIN(RADIANS($lat_column))
+		$distanceRaw = "$units * ACOS(
+							COS(RADIANS($lat)) * COS(RADIANS($latColumn))
+							* COS(RADIANS($lng) - RADIANS($lngColumn))
+							+ SIN(RADIANS($lat)) * SIN(RADIANS($latColumn))
 						) AS distance";
-		$query->selectRaw($distance_raw);
+		$query->selectRaw($distanceRaw);
 
 		// Add distance_with_bonus field by looking at the plans' distance_bonus
-		$distance_with_bonus_raw = "(SELECT (distance - (distance / 100 * distance_bonus))) as distance_with_bonus";
-		$query->selectRaw($distance_with_bonus_raw);
+		$distanceWithBonusRaw = "(SELECT (distance - (distance / 100 * distance_bonus))) as distance_with_bonus";
+		$query->selectRaw($distanceWithBonusRaw);
 
 		// Sort by distance
 		$query->orderBy('distance_with_bonus', 'desc');
