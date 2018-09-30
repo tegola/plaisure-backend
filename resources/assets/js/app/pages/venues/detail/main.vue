@@ -87,6 +87,10 @@ export default {
 	},
 
 	computed: {
+		...mapState('user', {
+			userVenues: 'venues'
+		}),
+
 		...mapState('venueDetail', [
 			'venue',
 			'nearbyVenues'
@@ -123,6 +127,29 @@ export default {
 				url: file.resized_url,
 				thumbnail_url: file.thumbnail_url
 			}));
+		},
+
+		isMine() {
+			return this.userVenues.find(venue => venue.id === this.venue.id) ? true : false;
+		},
+
+		showEditAction() {
+			return this.isMine || !this.venue.has_owner;
+		},
+
+		editRoute() {
+			if (this.isMine) {
+				return {
+					name: 'venues.edit',
+					params: {
+						venueId: this.venue.id
+					}
+				};
+			} else {
+				return {
+					name: 'promote'
+				};
+			}
 		}
 	},
 
@@ -169,7 +196,7 @@ export default {
 						<div class="header-gallery-bg">
 							<div v-for="i in 6" :key="i" class="header-photo header-photo-placeholder" />
 						</div>
-						<router-link v-if="!venue.has_owner" to="/promote" class="header-photo header-photo-add">
+						<router-link v-if="showEditAction" :to="editRoute" class="header-photo header-photo-add">
 							<pg-icon icon="plus" />
 							{{ $t('pages.venue_detail.gallery.add') }}
 						</router-link>
@@ -208,7 +235,11 @@ export default {
 				<div class="row">
 					<div class="col-lg-8">
 						<!-- Contact card for small screens -->
-						<pg-venue-detail-page-contact-card class="d-lg-none" />
+						<pg-venue-detail-page-contact-card
+							:show-edit-action="showEditAction"
+							:edit-route="editRoute"
+							class="d-lg-none"
+						/>
 
 						<!-- Jackpots -->
 						<template v-if="!venue.has_owner || hasJackpots">
@@ -219,7 +250,7 @@ export default {
 										<div>
 											<div class="jackpot-name">{{ jackpot.label && jackpot.value ? jackpot.label : `Jackpot ${index}` }}</div>
 											<div class="jackpot-value">{{ jackpot.value | formatCurrency }}</div>
-											<div v-if="!venue.has_owner"><router-link to="/promote">{{ $t('pages.venue_detail.common.edit') }}</router-link></div>
+											<div v-if="showEditAction"><router-link :to="editRoute">{{ $t('pages.venue_detail.common.edit') }}</router-link></div>
 										</div>
 									</div>
 								</div>
@@ -240,7 +271,7 @@ export default {
 						<div class="my-5">
 							<h4>
 								{{ $t('pages.venue_detail.details.title') }}
-								<router-link v-if="!venue.has_owner" to="/promote" class="small ml-2">{{ $t('pages.venue_detail.common.edit') }}</router-link>
+								<router-link v-if="showEditAction" :to="editRoute" class="small ml-2">{{ $t('pages.venue_detail.common.edit') }}</router-link>
 							</h4>
 							<div class="row">
 								<div class="col-md">
@@ -327,7 +358,7 @@ export default {
 						<div class="my-5">
 							<h4>
 								{{ $t('pages.venue_detail.amenities.title') }}
-								<router-link v-if="!venue.has_owner" to="/promote" class="small ml-2">{{ $t('pages.venue_detail.common.edit') }}</router-link>
+								<router-link v-if="showEditAction" :to="editRoute" class="small ml-2">{{ $t('pages.venue_detail.common.edit') }}</router-link>
 							</h4>
 							<div class="row">
 								<div class="col-md">
@@ -387,10 +418,10 @@ export default {
 						</div>
 
 						<!-- Promote -->
-						<div class="card bg-light my-4 text-center">
+						<div v-if="!venue.has_owner" class="card bg-light my-4 text-center">
 							<div class="card-body">
 								<h4 class="card-title">{{ $t('pages.venue_detail.claim.title') }}</h4>
-								<p class="card-text">{{ $t('pages.venue_detail.claim.intro') }} <router-link to="/promote">{{ $t('pages.venue_detail.claim.more') }}&hellip;</router-link></p>
+								<p class="card-text">{{ $t('pages.venue_detail.claim.intro') }} <router-link :to="{ name: 'promote' }">{{ $t('pages.venue_detail.claim.more') }}&hellip;</router-link></p>
 								<p class="card-text"><a :href="prepareEmailLink(EMAIL_VENUES, $t('pages.venue_detail.claim.subject', { name: venue.name, id: venue.id }))" class="btn btn-primary">{{ $t('pages.venue_detail.claim.action') }}</a></p>
 							</div>
 						</div>
@@ -398,7 +429,11 @@ export default {
 					<div class="col-lg-4">
 
 						<!-- Contact card for big screens -->
-						<pg-venue-detail-page-contact-card class="d-none d-lg-block" />
+						<pg-venue-detail-page-contact-card
+							:show-edit-action="showEditAction"
+							:edit-route="editRoute"
+							class="d-none d-lg-block"
+						/>
 
 						<!-- Nearby venues -->
 						<div v-if="nearbyVenues.length" class="my-5">

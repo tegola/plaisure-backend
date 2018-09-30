@@ -10,6 +10,17 @@ export default {
 		PgMapMarker
 	},
 
+	props: {
+		showEditAction: {
+			type: Boolean,
+			default: false
+		},
+		editRoute: {
+			type: [String, Object],
+			default: null
+		}
+	},
+
 	data() {
 		return {
 			mapOptions: {
@@ -77,7 +88,7 @@ export default {
 		<div class="list-group list-group-flush">
 			<!-- Address -->
 			<div class="list-group-item contact-card-list-item">
-				<router-link v-if="!venue.has_owner" to="/promote" class="float-right">{{ $t('pages.venue_detail.common.edit') }}</router-link>
+				<router-link v-if="showEditAction" :to="editRoute" class="float-right">{{ $t('pages.venue_detail.common.edit') }}</router-link>
 
 				<pg-icon icon="directions" class="contact-card-list-item-icon" />
 				<div class="mb-2">
@@ -89,7 +100,7 @@ export default {
 
 			<!-- Business hours -->
 			<div class="list-group-item contact-card-list-item">
-				<router-link v-if="!venue.has_owner" to="/promote" class="float-right">{{ $t('pages.venue_detail.common.edit') }}</router-link>
+				<router-link v-if="showEditAction" :to="editRoute" class="float-right">{{ $t('pages.venue_detail.common.edit') }}</router-link>
 				<pg-icon :class="['contact-card-list-item-icon', venue.business_hours.length ? null : 'text-muted']" icon="clock-outline" />
 
 				<template v-if="venue.has_owner && venue.business_hours.length">
@@ -112,7 +123,7 @@ export default {
 
 			<!-- Contacts -->
 			<div class="list-group-item contact-card-list-item">
-				<router-link v-if="!venue.has_owner" to="/promote" class="float-right">{{ $t('pages.venue_detail.common.edit') }}</router-link>
+				<router-link v-if="showEditAction" :to="editRoute" class="float-right">{{ $t('pages.venue_detail.common.edit') }}</router-link>
 				<pg-icon :class="['contact-card-list-item-icon', hasContacts ? null : 'text-muted']" icon="phone" />
 
 				<ul v-if="hasContacts" class="list-unstyled mb-0">
@@ -126,11 +137,11 @@ export default {
 
 			<!-- URLs -->
 			<div class="list-group-item contact-card-list-item">
-				<router-link v-if="!venue.has_owner" to="/promote" class="float-right">{{ $t('pages.venue_detail.common.edit') }}</router-link>
+				<router-link v-if="showEditAction" :to="editRoute" class="float-right">{{ $t('pages.venue_detail.common.edit') }}</router-link>
 				<pg-icon :class="['contact-card-list-item-icon', hasUrls ? null : 'text-muted']" icon="globe" />
 				<ul v-if="hasUrls" class="list-unstyled mb-0">
 					<li v-if="venue.urls.site"><a :href="venue.urls.site" target="_blank">{{ readableSiteUrl }}</a></li>
-					<li v-if="venue.urls.facebook"><a :href="venue.urls.facebook" target="_blank">(Facebook)</a></li>
+					<li v-if="venue.urls.facebook"><a :href="venue.urls.facebook" target="_blank">Facebook</a></li>
 				</ul>
 				<p v-else class="mb-0 text-muted">{{ $t('pages.venue_detail.card.no_urls') }}</p>
 			</div>

@@ -99,7 +99,7 @@ export default {
 	<div class="my-5">
 		<h4>{{ $t('pages.venue_form.photos.title') }}</h4>
 		<i18n tag="p" path="pages.venue_form.photos.intro">
-			<span place="count">{{ plan.config.photo_limit }}</span>
+			<span place="count">{{ plan.photo_limit }}</span>
 			<a href="#" place="action"><strong>{{ $t('pages.venue_form.photos.intro_action') }}</strong></a>
 		</i18n>
 		<hr>
@@ -128,7 +128,7 @@ export default {
 			</div>
 
 			<!-- Uploader -->
-			<div v-if="plan.config.photo_limit < (mutablePhotos.length + uploaderFiles.length)" :class="photoItemClass">
+			<div v-if="plan.photo_limit > (mutablePhotos.length + uploaderFiles.length)" :class="photoItemClass">
 				<vue-uploader
 					ref="uploader"
 					:drop="true"

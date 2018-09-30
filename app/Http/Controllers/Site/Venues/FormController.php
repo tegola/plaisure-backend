@@ -182,6 +182,8 @@ class FormController extends Controller
 			'business_hours'            => 'required|array|size:7', // Array of 7 elements
 			// 'business_hours.*'          => 'nullable|string', // FIXME: Use a time pattern (up to 24:00)
 			// 'business_hours.*.hours'    => 'sometimes|between:2,4' // FIXME: Use a time pattern (up to 24:00)
+			
+			'photos'                    => "array|max:{$venue->plan->photo_limit}"
 		]);
 
 		DB::transaction(function() use($venue, $request) {

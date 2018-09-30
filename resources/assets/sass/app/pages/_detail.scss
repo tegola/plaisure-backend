@@ -4,7 +4,6 @@
 		background-color: $palette-green-100;
 		padding-top: $spacer;
 		padding-bottom: $spacer * 6; // Space for the contact card
-		text-align: center;
 	}
 	.header-gallery {
 		display: flex;
@@ -191,7 +190,6 @@
 	@include media-breakpoint-up(lg) {
 		.header {
 			padding-bottom: $spacer;
-			text-align: left;
 		}
 		.contact-card {
 			margin-top: -($spacer * 7.5);

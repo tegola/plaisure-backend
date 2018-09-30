@@ -11,6 +11,7 @@ import BListGroup from 'bootstrap-vue/es/components/list-group/list-group';
 import BListGroupItem from 'bootstrap-vue/es/components/list-group/list-group-item';
 
 import PgButton from 'prontogioco/app/components/button';
+import PgPlanBoardModal from 'prontogioco/app/components/plan-board-modal';
 import PgVenueFormGeneralPane from './general-pane';
 import PgVenueFormServicesPane from './services-pane';
 import PgVenueFormContactsPane from './contacts-pane';
@@ -31,6 +32,7 @@ export default {
 		BListGroup,
 		BListGroupItem,
 		PgButton,
+		PgPlanBoardModal,
 		PgVenueFormGeneralPane,
 		PgVenueFormServicesPane,
 		PgVenueFormContactsPane,
@@ -166,6 +168,8 @@ export default {
 <template>
 	<div class="pg-venue-form-page">
 		<pg-navbar variant="dark" />
+
+		<pg-plan-board-modal />
 
 		<div v-if="loading || error" class="container d-flex text-muted text-center" style="height: 50vh">
 			<div class="m-auto">
