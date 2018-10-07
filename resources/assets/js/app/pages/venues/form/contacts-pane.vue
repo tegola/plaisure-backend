@@ -1,5 +1,6 @@
 <script>
 import autoHttps from 'prontogioco/app/directives/auto-https';
+import _extend from 'lodash/extend';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
@@ -21,9 +22,9 @@ export default {
 	},
 
 	props: {
-		venue: {
-			type: Object,
-			required: true
+		venueId: {
+			type: [String, Number],
+			default: null
 		}
 	},
 
@@ -34,8 +35,40 @@ export default {
 	},
 
 	computed: {
+		storeName() {
+			return `venueForm/${this.venueId || 'new'}`;
+		},
+
+		venue() {
+			return this.$store.state[this.storeName].venue;
+		},
+
 		$v() {
 			return this.$parent.$v.venue;
+		}
+	},
+
+	methods: {
+		onContactInput (name, value) {
+			const contacts = _extend({}, this.venue.contacts, {
+				[name]: value
+			});
+
+			this.$store.commit(`${this.storeName}/setVenueField`, {
+				field: 'contacts',
+				value: contacts
+			});
+		},
+
+		onUrlInput (name, value) {
+			const urls = _extend({}, this.venue.urls, {
+				[name]: value
+			});
+
+			this.$store.commit(`${this.storeName}/setVenueField`, {
+				field: 'urls',
+				value: urls
+			});
 		}
 	}
 };
@@ -50,7 +83,11 @@ export default {
 			:label="$t('pages.venue_form.contacts.phone')">
 			<div class="form-row">
 				<div class="col-md-7 col-lg-5">
-					<b-input v-model="venue.contacts.phone" type="tel" />
+					<b-input
+						:value="venue.contacts.phone"
+						type="tel"
+						@input="onContactInput('tel', $event)"
+					/>
 				</div>
 			</div>
 		</b-form-group>
@@ -62,7 +99,12 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.contacts.email_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-model="venue.contacts.email" :placeholder="$t('pages.venue_form.contacts.email_placeholder' )" type="email" />
+					<b-input
+						:placeholder="$t('pages.venue_form.contacts.email_placeholder' )"
+						:value="venue.contacts.email"
+						type="email"
+						@input="onContactInput('email', $event)"
+					/>
 				</div>
 			</div>
 		</b-form-group>
@@ -72,7 +114,10 @@ export default {
 			label="Facebook Messenger">
 			<div class="form-row">
 				<div class="col-md-7 col-lg-5">
-					<b-input v-model="venue.contacts.facebook" />
+					<b-input
+						:value="venue.contacts.facebook"
+						@input="onContactInput('facebook', $event)"
+					/>
 				</div>
 			</div>
 		</b-form-group>
@@ -83,7 +128,10 @@ export default {
 			<div class="form-row">
 				<div class="col-md-7 col-lg-5">
 					<b-input-group prepend="@">
-						<b-input v-model="venue.contacts.twitter" />
+						<b-input
+							:value="venue.contacts.twitter"
+							@input="onContactInput('twitter', $event)"
+						/>
 					</b-input-group>
 				</div>
 			</div>
@@ -96,7 +144,13 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-auto-https v-model="venue.urls.site" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
+					<b-input
+						v-auto-https
+						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"
+						:value="venue.urls.site"
+						type="url"
+						@input="onUrlInput('site', $event)"
+					/>
 				</div>
 			</div>
 		</b-form-group>
@@ -108,7 +162,13 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-auto-https v-model="venue.urls.online_casino" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
+					<b-input
+						v-auto-https
+						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"
+						:value="venue.urls.online_casino"
+						type="url"
+						@input="onUrlInput('online_casino', $event)"
+					/>
 				</div>
 			</div>
 		</b-form-group>
@@ -120,7 +180,13 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-auto-https v-model="venue.urls.facebook" :placeholder="$t('pages.venue_form.contacts.url_placeholder')" type="url" />
+					<b-input
+						v-auto-https
+						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"
+						:value="venue.urls.facebook"
+						type="url"
+						@input="onUrlInput('facebook', $event)"
+					/>
 				</div>
 			</div>
 		</b-form-group>

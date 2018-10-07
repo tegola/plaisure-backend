@@ -1,17 +1,13 @@
 <script>
-import _cloneDeep from 'lodash/cloneDeep';
 import _extend from 'lodash/extend';
-import _isEqual from 'lodash/isEqual';
 import { validationMixin } from 'vuelidate';
 
 import BNav from 'bootstrap-vue/es/components/nav/nav';
 import BNavItem from 'bootstrap-vue/es/components/nav/nav-item';
-
 import BListGroup from 'bootstrap-vue/es/components/list-group/list-group';
 import BListGroupItem from 'bootstrap-vue/es/components/list-group/list-group-item';
 
 import PgButton from 'prontogioco/app/components/button';
-import PgPlanBoardModal from 'prontogioco/app/components/plan-board-modal';
 import PgVenueFormGeneralPane from './general-pane';
 import PgVenueFormServicesPane from './services-pane';
 import PgVenueFormContactsPane from './contacts-pane';
@@ -22,6 +18,7 @@ import PgVenueFormJackpotsPane from './jackpots-pane';
 import validations from './validations';
 
 import constants from 'prontogioco/constants';
+import venueFormStore from 'prontogioco/app/store/venue-form';
 
 export default {
 	name: 'PgVenueForm',
@@ -32,7 +29,6 @@ export default {
 		BListGroup,
 		BListGroupItem,
 		PgButton,
-		PgPlanBoardModal,
 		PgVenueFormGeneralPane,
 		PgVenueFormServicesPane,
 		PgVenueFormContactsPane,
@@ -62,19 +58,22 @@ export default {
 				'hours',
 				'photos',
 				'jackpots'
-			],
-			categories: [],
-			concessionaires: [],
-			vltPlatforms: [],
-			payPerViewPlatforms: [],
-			venue: null,
-			venueBackup: null
+			]
 		};
 	},
 
 	computed: {
+		storeName() {
+			return `venueForm/${this.venueId || 'new'}`;
+		},
+
+		venue() {
+			const state = this.$store.state[this.storeName];
+			return state ? state.venue : null;
+		},
+
 		isSaved() {
-			return _isEqual(this.venue, this.venueBackup);
+			return this.$store.getters[`${this.storeName}/isSaved`];
 		}
 	},
 
@@ -90,43 +89,30 @@ export default {
 		_extend(this, constants);
 	},
 
+	created() {
+		// Register store
+		if (!this.$store.state[this.storeName]) {
+			this.$store.registerModule(this.storeName, venueFormStore);
+			this.$store.commit(`${this.storeName}/setVenueId`, this.venueId);
+		}
+	},
+
 	mounted() {
-		this.loadData();
+		// Load venue if it isn't already loaded
+		if (!this.venue) this.loadData();
 	},
 
 	methods: {
 		loadData() {
-			// Prepare url
-			const url = [
-				'/venues',
-				this.venueId ? `/${this.venueId}/edit` : '/add'
-			].join('');
-
-			// this.error = false;
+			this.error = false;
 			this.loading = true;
 
-			this.$axios.get(url)
-				.then(({ data }) => {
-					this.concessionaires = data.concessionaires;
-					this.categories = data.categories;
-					this.payPerViewPlatforms = data.payPerViewPlatforms;
-					this.vltPlatforms = data.vltPlatforms;
-
-					const venue = _extend(data.venue, {
-						category_ids: data.venue.categories.map(category => category.id),
-						pay_per_view_platform_ids: data.venue.pay_per_view_platforms.map(platform => platform.id),
-						vlt_platform_ids: data.venue.vlt_platforms.map(platform => platform.id)
-					});
-
-					this.venue = _cloneDeep(venue);
-					this.venueBackup = _cloneDeep(venue);
-
-					setTimeout(() => {
-						this.loading = false;
-					}, 500);
-				})
+			this.$store.dispatch(`${this.storeName}/load`)
 				.catch(() => {
 					this.error = true;
+				})
+				.then(() => {
+					this.loading = false;
 				});
 		},
 
@@ -149,15 +135,12 @@ export default {
 
 			this.saving = true;
 
-			// Prepare url
-			let url = '/venues';
-			if (this.venueId) url += `/${this.venueId}`;
-
-			this.$axios.post(url, this.venue)
+			this.$store.dispatch(`${this.storeName}/save`)
 				.then(() => {
-					// Set model backup as saved
-					this.venueBackup = _cloneDeep(this.venue);
-				}).catch(() => {}).then(() => {
+					console.log('then in program');
+				})
+				.catch(() => {})
+				.then(() => {
 					this.saving = false;
 				});
 		}
@@ -168,8 +151,6 @@ export default {
 <template>
 	<div class="pg-venue-form-page">
 		<pg-navbar variant="dark" />
-
-		<pg-plan-board-modal />
 
 		<div v-if="loading || error" class="container d-flex text-muted text-center" style="height: 50vh">
 			<div class="m-auto">
@@ -213,37 +194,13 @@ export default {
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-9 mx-lg-auto">
-						<pg-venue-form-general-pane
-							id="general"
-							:venue="venue"
-							:concessionaires="concessionaires"
-							:categories="categories"
-							:address.sync="venue.address"
-							:coords.sync="venue.coords"
-						/>
-						<pg-venue-form-services-pane
-							id="services"
-							:venue="venue"
-							:vlt-platforms="vltPlatforms"
-							:pay-per-view-platforms="payPerViewPlatforms"
-						/>
-						<pg-venue-form-contacts-pane
-							id="contacts"
-							:venue="venue"
-						/>
-						<pg-venue-form-hours-pane
-							id="hours"
-							:venue="venue"
-							:hours.sync="venue.business_hours"
-						/>
-						<pg-venue-form-photos-pane
-							id="photos"
-							:photos.sync="venue.photos"
-							:plan="venue.plan"
-						/>
-						<pg-venue-form-jackpots-pane
-							id="jackpots"
-							:venue="venue"
+						<router-link :to="{ name: 'venues.selectPlan', params: { venueId: venueId }}">Plan</router-link>
+						<component
+							v-for="pane in panes"
+							:key="pane"
+							:is="`pg-venue-form-${pane}-pane`"
+							:id="pane"
+							:venue-id="venueId"
 						/>
 					</div>
 				</div>

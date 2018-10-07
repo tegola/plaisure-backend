@@ -107,7 +107,7 @@ class FormController extends Controller
 		$payPerViewPlatforms = PayPerViewPlatform::pluck('name', 'id')->all();
 
 		$daysOfWeek = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-		$plans = config('plans');
+		$subscriptions = config('subscriptions');
 
 		JavaScript::put(compact(
 			'venue',
@@ -120,7 +120,7 @@ class FormController extends Controller
 			'concessionaires',
 			'vltPlatforms',
 			'payPerViewPlatforms',
-			'plans'
+			'subscriptions'
 		));
 
 		return view('admin.venues.form', compact('venue', 'daysOfWeek'));

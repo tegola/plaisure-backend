@@ -4,9 +4,9 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use App\Models\Venue;
-use App\Models\VenuePlan;
-use App\Models\VenueCategory;
 use App\Models\VltPlatform;
+use App\Models\Subscription;
+use App\Models\VenueCategory;
 use App\Models\PayPerViewPlatform;
 use App\Transformers\FileTransformer;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,7 +28,7 @@ class VenueTransformer extends TransformerAbstract
 		'photo_ids',
 		'vlt_platforms',
 		'vlt_platform_ids',
-		'plan'
+		'subscription'
 	];
 
 	/**
@@ -292,24 +292,23 @@ class VenueTransformer extends TransformerAbstract
 	}
 
 	/**
-	 * Include plan.
+	 * Include subscription.
 	 * 
 	 * @param  Venue  $venue
 	 * @return \League\Fractal\Resource\Item
 	 */
-	public function includePlan(Venue $venue)
+	public function includeSubscription(Venue $venue)
 	{
-		if ($venue->plan) {
-			return $this->item($venue->plan, function(VenuePlan $venuePlan) {		
-				return $venuePlan->only(
-					'name',
-					'machine_name',
-					'price',
-					'distance_bonus',
-					'photo_limit',
-					'hide_nearby_venues'
-				);
-			});
-		}
+		return $this->item($venue->subscription, function(Subscription $subscription) {		
+			return $subscription->only(
+				'name',
+				'currency',
+				'price',
+				'distance_bonus',
+				'photo_limit',
+				'hide_nearby_venues',
+				'ends_at'
+			);
+		});
 	}
 }

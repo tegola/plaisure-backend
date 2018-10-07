@@ -1,4 +1,6 @@
 <script>
+import _extend from 'lodash/extend';
+
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import BCheckbox from 'bootstrap-vue/es/components/form-checkbox/form-checkbox';
@@ -7,7 +9,7 @@ import BCheckboxGroup from 'bootstrap-vue/es/components/form-checkbox/form-check
 import formGroupProps from './form-group-props';
 
 export default {
-	name: 'PgVenueFormCategoriesPane',
+	name: 'PgVenueFormServicesPane',
 
 	components: {
 		BFormGroup,
@@ -17,17 +19,9 @@ export default {
 	},
 
 	props: {
-		venue: {
-			type: Object,
-			required: true
-		},
-		vltPlatforms: {
-			type: Array,
-			default: () => []
-		},
-		payPerViewPlatforms: {
-			type: Array,
-			default: () => []
+		venueId: {
+			type: [String, Number],
+			default: null
 		}
 	},
 
@@ -38,6 +32,177 @@ export default {
 	},
 
 	computed: {
+		storeName() {
+			return `venueForm/${this.venueId || 'new'}`;
+		},
+
+		venue() {
+			return this.$store.state[this.storeName].venue;
+		},
+
+		vltPlatforms() {
+			return this.$store.state[this.storeName].vltPlatforms;
+		},
+
+		amenities() {
+			return Object.keys(this.venue.amenities);
+		},
+
+		payPerViewPlatforms() {
+			return this.$store.state[this.storeName].payPerViewPlatforms;
+		},
+
+		venueSportsBetting: {
+			get() {
+				return this.venue.sports_betting;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'sports_betting',
+					value
+				});
+			}
+		},
+
+		venueVirtualBetting: {
+			get() {
+				return this.venue.virtual_betting;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'virtual_betting',
+					value
+				});
+			}
+		},
+
+		venueHorseBetting: {
+			get() {
+				return this.venue.horse_betting;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'horse_betting',
+					value
+				});
+			}
+		},
+
+		venueArcadeRoulette: {
+			get() {
+				return this.venue.arcade_roulette;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'arcade_roulette',
+					value
+				});
+			}
+		},
+
+		venueVltMachineCount: {
+			get() {
+				return this.venue.vlt_machine_count;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'vlt_machine_count',
+					value
+				});
+			}
+		},
+
+		venueAwpMachineCount: {
+			get() {
+				return this.venue.awp_machine_count;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'awp_machine_count',
+					value
+				});
+			}
+		},
+
+		venueSeatingCapacity: {
+			get() {
+				return this.venue.seating_capacity;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'seating_capacity',
+					value
+				});
+			}
+		},
+
+		venueParkingCapacity: {
+			get() {
+				return this.venue.parking_capacity;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'parking_capacity',
+					value
+				});
+			}
+		},
+
+		venueVltPlatformIds: {
+			get() {
+				return this.venue.vlt_plaform_ids;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'vlt_plaform_ids',
+					value
+				});
+			}
+		},
+
+		venueAmenities: {
+			get() {
+				// Object to array of values
+				const obj = this.venue.amenities;
+				const arr = Object.keys(obj) // Get keys
+					.map(key => obj[key] === true ? key : null) // Convert object in array of field names
+					.filter(item => item !== null); // Remove null values
+
+				return arr;
+			},
+			set(value) {
+				// Array to object
+				const amenities = _extend({}, this.venue.amenities);
+
+				// Turn all to false
+				for (const key of Object.keys(amenities)) {
+					amenities[key] = false;
+				}
+
+				// Turn specified ones to true
+				value.forEach(name => {
+					amenities[name] = true;
+				});
+
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'amenities',
+					value: amenities
+				});
+			}
+		},
+
+		venuePayPerViewPlatformIds: {
+			get() {
+				return this.venue.pay_per_view_platform_ids;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'pay_per_view_platform_ids',
+					value
+				});
+			}
+		},
+
 		$v() {
 			return this.$parent.$v.venue;
 		}
@@ -52,10 +217,10 @@ export default {
 		<b-form-group v-bind="formGroupProps">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<div><b-checkbox v-model="venue.sports_betting">{{ $t('pages.venue_form.services.sports_betting') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.virtual_betting">{{ $t('pages.venue_form.services.virtual_betting') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.horse_betting">{{ $t('pages.venue_form.services.horse_betting') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.arcade_roulette">{{ $t('pages.venue_form.services.arcade_roulette') }}</b-checkbox></div>
+					<div><b-checkbox v-model="venueSportsBetting">{{ $t('pages.venue_form.services.sports_betting') }}</b-checkbox></div>
+					<div><b-checkbox v-model="venueVirtualBetting">{{ $t('pages.venue_form.services.virtual_betting') }}</b-checkbox></div>
+					<div><b-checkbox v-model="venueHorseBetting">{{ $t('pages.venue_form.services.horse_betting') }}</b-checkbox></div>
+					<div><b-checkbox v-model="venueArcadeRoulette">{{ $t('pages.venue_form.services.arcade_roulette') }}</b-checkbox></div>
 				</div>
 			</div>
 		</b-form-group>
@@ -67,7 +232,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.services.invalid_value')">
 			<div class="form-row">
 				<div class="col-md-3 col-lg-2">
-					<b-input v-model.number="venue.vlt_machine_count" type="number" min="0" />
+					<b-input v-model.number="venueVltMachineCount" type="number" min="0" />
 				</div>
 			</div>
 		</b-form-group>
@@ -79,7 +244,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.services.invalid_value')">
 			<div class="form-row">
 				<div class="col-md-3 col-lg-2">
-					<b-input v-model.number="venue.awp_machine_count" type="number" min="0" />
+					<b-input v-model.number="venueAwpMachineCount" type="number" min="0" />
 				</div>
 			</div>
 		</b-form-group>
@@ -91,7 +256,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.services.invalid_value')">
 			<div class="form-row">
 				<div class="col-md-3 col-lg-2">
-					<b-input v-model.number="venue.seating_capacity" type="number" min="0" />
+					<b-input v-model.number="venueSeatingCapacity" type="number" min="0" />
 				</div>
 			</div>
 		</b-form-group>
@@ -103,7 +268,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.services.invalid_value')">
 			<div class="form-row">
 				<div class="col-md-3 col-lg-2">
-					<b-input v-model.number="venue.parking_capacity" type="number" min="0" />
+					<b-input v-model.number="venueParkingCapacity" type="number" min="0" />
 				</div>
 			</div>
 		</b-form-group>
@@ -114,7 +279,7 @@ export default {
 			label-class="pt-0">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-checkbox-group v-model="venue.vlt_platform_ids" stacked>
+					<b-checkbox-group v-model="venueVltPlatformIds" stacked>
 						<b-checkbox v-for="item in vltPlatforms" :value="item.id" :key="item.id">{{ item.name }}</b-checkbox>
 					</b-checkbox-group>
 				</div>
@@ -127,15 +292,9 @@ export default {
 			label-class="pt-0">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<div><b-checkbox v-model="venue.amenities.atm">{{ $t('pages.venue_form.services.amenities.atm') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.amenities.bar">{{ $t('pages.venue_form.services.amenities.bar') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.amenities.pay_per_view">{{ $t('pages.venue_form.services.amenities.pay_per_view') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.amenities.pos">{{ $t('pages.venue_form.services.amenities.pos') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.amenities.private_parking">{{ $t('pages.venue_form.services.amenities.private_parking') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.amenities.restaurant">{{ $t('pages.venue_form.services.amenities.restaurant') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.amenities.security">{{ $t('pages.venue_form.services.amenities.security') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.amenities.smoking_area">{{ $t('pages.venue_form.services.amenities.smoking_area') }}</b-checkbox></div>
-					<div><b-checkbox v-model="venue.amenities.wifi">{{ $t('pages.venue_form.services.amenities.wifi') }}</b-checkbox></div>
+					<b-checkbox-group v-model="venueAmenities" stacked>
+						<b-checkbox v-for="item in amenities" :value="item" :key="item">{{ $t(`pages.venue_form.services.amenities.${item}`) }}</b-checkbox>
+					</b-checkbox-group>
 				</div>
 			</div>
 		</b-form-group>
@@ -146,7 +305,7 @@ export default {
 			label-class="pt-0">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-checkbox-group v-model="venue.pay_per_view_platform_ids" stacked>
+					<b-checkbox-group v-model="venuePayPerViewPlatformIds" stacked>
 						<b-checkbox v-for="item in payPerViewPlatforms" :value="item.id" :key="item.id">{{ item.name }}</b-checkbox>
 					</b-checkbox-group>
 				</div>

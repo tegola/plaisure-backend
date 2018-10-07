@@ -88,6 +88,13 @@ export default [
 		props: true,
 		beforeEnter: requireAuth
 	},
+	{
+		path: '/venues/:venueId/plan',
+		name: 'venues.selectPlan',
+		component: () => import('prontogioco/app/pages/venues/select-plan'),
+		props: true,
+		beforeEnter: requireAuth
+	},
 
 	// Promote ----------------------------------------------------------------
 	{

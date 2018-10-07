@@ -17,6 +17,9 @@
 		<script src="https://use.typekit.net/qwv3xzz.js"></script>
 		<script>try{Typekit.load({ async: true });}catch(e){}</script>
 
+		{{-- Stripe --}}
+		<script src="https://js.stripe.com/v3/"></script>
+
 		{{-- Styles --}}
 		<link rel="stylesheet" href="{{ mix('css/app.css') }}">
 

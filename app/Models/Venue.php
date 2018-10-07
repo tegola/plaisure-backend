@@ -273,6 +273,20 @@ class Venue extends Model
 	}
 
 	/**
+	 * Get the subscription for this venue. Defaults to the free plan data.
+	 *
+	 * @return \App\Models\Subscription
+	 */
+	public function subscription()
+	{
+		$subscriptions = config('subscriptions');
+
+		return $this
+			->hasOne('App\Models\Subscription')
+			->withDefault($subscriptions['default']);
+	}
+
+	/**
 	 * Concessionaire this venue is affiliate to.
 	 * 
 	 * @return \App\Models\Concessionaire
@@ -310,20 +324,6 @@ class Venue extends Model
 	public function payPerViewPlatforms()
 	{
 		return $this->belongsToMany('App\Models\PayPerViewPlatform');
-	}
-
-	/**
-	 * Plan this venue is on. Defaults to the free plan.
-	 * 
-	 * @return \App\Models\VenuePlan
-	 */
-	public function plan()
-	{
-		$freePlan = config('plans')[0];
-
-		return $this
-			->hasOne('App\Models\VenuePlan')
-			->withDefault($freePlan);
 	}
 
 	/**
@@ -553,8 +553,8 @@ class Venue extends Model
 		$latColumn = 'geo_latitude';
 		$lngColumn = 'geo_longitude';
 
-		// Join with venue_plans to get the distance bonus
-		$query->leftJoin('venue_plans', 'venues.id', 'venue_plans.venue_id');
+		// Join with subscriptions to get the distance bonus
+		$query->leftJoin('subscriptions', 'venues.id', 'subscriptions.venue_id');
 
 		// Add distance field
 		$distanceRaw = "$units * ACOS(
@@ -564,7 +564,7 @@ class Venue extends Model
 						) AS distance";
 		$query->selectRaw($distanceRaw);
 
-		// Add distance_with_bonus field by looking at the plans' distance_bonus
+		// Add distance_with_bonus field by looking at the subscription'a distance_bonus
 		$distanceWithBonusRaw = "(SELECT (distance - (distance / 100 * distance_bonus))) as distance_with_bonus";
 		$query->selectRaw($distanceWithBonusRaw);
 

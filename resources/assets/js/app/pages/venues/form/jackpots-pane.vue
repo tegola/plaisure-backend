@@ -1,4 +1,6 @@
 <script>
+import _extend from 'lodash/extend';
+
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import BInputGroup from 'bootstrap-vue/es/components/input-group/input-group';
@@ -15,9 +17,9 @@ export default {
 	},
 
 	props: {
-		venue: {
-			type: Object,
-			required: true
+		venueId: {
+			type: [String, Number],
+			default: null
 		}
 	},
 
@@ -28,8 +30,36 @@ export default {
 	},
 
 	computed: {
+		storeName() {
+			return `venueForm/${this.venueId || 'new'}`;
+		},
+
+		venue() {
+			return this.$store.state[this.storeName].venue;
+		},
+
+		venueJackpots: {
+			get() {
+				return this.venue.jackpots;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'jackpots',
+					value
+				});
+			}
+		},
+
 		$v() {
 			return this.$parent.$v.venue;
+		}
+	},
+
+	methods: {
+		onInput(type, number, value) {
+			const jackpots = _extend({}, this.venueJackpots);
+			jackpots[number][type] = type == 'value' ? parseInt(value) : value;
+			this.venueJackpots = jackpots;
 		}
 	}
 };
@@ -39,6 +69,7 @@ export default {
 	<div class="my-5">
 		<h4>{{ $t('pages.venue_form.jackpots.title') }}</h4>
 		<hr>
+		<!-- FIXME: Controllare la validazione e i messaggi di errore -->
 		<b-form-group v-for="n in 3" :key="n"
 			:label="$t('pages.venue_form.jackpots.name', { number: n })"
 			v-bind="formGroupProps"
@@ -46,17 +77,18 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.jackpots.amount_error')">
 			<div class="form-row">
 				<div class="col-md col-lg-5">
-					<b-input v-model="venue.jackpots[n].label" :placeholder="$t('pages.venue_form.jackpots.name_placeholder')" />
+					<b-input :placeholder="$t('pages.venue_form.jackpots.name_placeholder')" :value="venueJackpots[n].label" @input="onInput('label', n, $event)" />
 				</div>
 				<div class="col-md col-lg-4">
 					<b-input-group prepend="€">
 						<b-input
-							v-model.number="venue.jackpots[n].value"
 							:placeholder="$t('pages.venue_form.jackpots.amount_placeholder')"
+							:value="venueJackpots[n].value"
 							type="number"
 							class="text-right"
 							min="0"
 							step="0.01"
+							@input="onInput('value', n, $event)"
 						/>
 					</b-input-group>
 				</div>

@@ -2,11 +2,10 @@
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 
 import PgVenueFormHourFieldset from './hour-fieldset';
-
 import formGroupProps from './form-group-props';
 
 export default {
-	name: 'PgVenueFormGeneralPane',
+	name: 'PgVenueFormHoursPane',
 
 	components: {
 		BFormGroup,
@@ -14,20 +13,15 @@ export default {
 	},
 
 	props: {
-		venue: {
-			type: Object,
-			required: true
-		},
-		hours: {
-			type: Array,
-			required: true
+		venueId: {
+			type: [String, Number],
+			default: null
 		}
 	},
 
 	data() {
 		return {
 			formGroupProps,
-			mutableHours: this.hours,
 			days: [
 				{ index: 1, name: this.$t('common.weekdays.monday') },
 				{ index: 2, name: this.$t('common.weekdays.tuesday') },
@@ -40,17 +34,33 @@ export default {
 		};
 	},
 
-	watch: {
-		hours() {
-			this.mutableHours = this.hours;
+	computed: {
+		storeName() {
+			return `venueForm/${this.venueId || 'new'}`;
+		},
+
+		venue() {
+			return this.$store.state[this.storeName].venue;
+		},
+
+		venueHours: {
+			get() {
+				return this.venue.business_hours;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'business_hours',
+					value
+				});
+			}
 		}
 	},
 
 	methods: {
 		onHourRowInput(index, value) {
-			this.mutableHours = this.mutableHours.slice(0);
-			this.mutableHours[index] = value;
-			this.$emit('update:hours', this.mutableHours);
+			const hours = this.venueHours.slice(0);
+			hours[index] = value;
+			this.venueHours = hours;
 		}
 	}
 };
@@ -69,7 +79,7 @@ export default {
 				<div class="col-lg-9">
 					<pg-venue-form-hour-fieldset
 						:label="day.name"
-						:value="hours[day.index]"
+						:value="venueHours[day.index]"
 						@input="onHourRowInput(day.index, $event)"
 					/>
 				</div>

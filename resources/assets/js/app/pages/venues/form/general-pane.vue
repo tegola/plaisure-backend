@@ -1,5 +1,7 @@
 <script>
 import _throttle from 'lodash/throttle';
+import _extend from 'lodash/extend';
+import _isEqual from 'lodash/isEqual';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BFormText from 'bootstrap-vue/es/components/form/form-text';
@@ -35,57 +37,128 @@ export default {
 	},
 
 	props: {
-		venue: {
-			type: Object,
-			required: true
-		},
-		concessionaires: {
-			type: Array,
-			default: () => []
-		},
-		categories: {
-			type: Array,
-			default: () => []
-		},
-		address: {
-			type: Object,
-			required: true
-		},
-		coords: {
-			type: Object,
-			required: true
+		venueId: {
+			type: [String, Number],
+			default: null
 		}
 	},
 
 	data() {
-		const coords = this.coords;
-		let mapCenter;
-
-		if (coords.lat && coords.lng) {
-			mapCenter = {
-				lat: coords.lat,
-				lng: coords.lng
-			};
-		} else {
-			mapCenter = DEFAULT_COORDS;
-		}
-
 		return {
 			formGroupProps,
-			mutableAddress: this.address,
-			mapCenter: mapCenter,
-			mapZoom: coords.lat && coords.lng ? 15 : 5,
-			findingMarkerLocation: false
+			mapCenter: DEFAULT_COORDS,
+			mapZoom: 5,
+			searchingMarkerCoords: false
 		};
 	},
 
 	computed: {
+		storeName() {
+			return `venueForm/${this.venueId || 'new'}`;
+		},
+
+		venue() {
+			return this.$store.state[this.storeName].venue;
+		},
+
+		concessionaires() {
+			return this.$store.state[this.storeName].concessionaires;
+		},
+
+		categories() {
+			return this.$store.state[this.storeName].categories;
+		},
+
+		venueName: {
+			get() {
+				return this.venue.name;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'name',
+					value
+				});
+			}
+		},
+
+		venueConcessionaireId: {
+			get() {
+				return this.venue.concessionaire_id;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'concessionaire_id',
+					value
+				});
+			}
+		},
+
+		venueDescription: {
+			get() {
+				return this.venue.description;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'description',
+					value
+				});
+			}
+		},
+
+		venueSurfaceSize: {
+			get() {
+				return this.venue.surface_size;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'surface_size',
+					value
+				});
+			}
+		},
+
+		venueCategoryIds: {
+			get() {
+				return this.venue.category_ids;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'category_ids',
+					value
+				});
+			}
+		},
+
+		venueAddress: {
+			get() {
+				return this.venue.address;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'address',
+					value
+				});
+			}
+		},
+
+		venueCoords: {
+			get() {
+				return this.venue.coords;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'coords',
+					value
+				});
+			}
+		},
+
 		$v() {
 			return this.$parent.$v.venue;
 		},
 
 		markerPosition() {
-			const coords = this.coords;
+			const coords = this.venueCoords;
 
 			if (!coords.lat || !coords.lng) return null;
 
@@ -95,31 +168,42 @@ export default {
 			};
 		},
 
-		canDragMarker() {
-			const address = this.address;
+		showMap() {
+			const a = this.venueAddress;
+			return Boolean(a.street && a.number && a.postcode && a.city && a.province);
+		},
 
-			return address.street &&
-				address.number &&
-				address.postcode &&
-				address.city &&
-				address.province &&
-				!this.findingMarkerLocation ? true : false;
+		canDragMarker() {
+			return this.showMap && !this.searchingMarkerCoords;
 		}
 	},
 
 	watch: {
-		mutableAddress: {
-			deep: true,
-			handler: function() {
-				this.findMarkerLocation();
-				this.$emit('update:address', this.mutableAddress);
+		venueCoords: {
+			immediate: true,
+			handler() {
+				this.mapCenter = this.venueCoords;
+				this.markerCoords = this.venueCoords;
+				if (!_isEqual(this.venueCoords, DEFAULT_COORDS)) this.mapZoom = 15;
 			}
 		}
 	},
 
 	methods: {
-		findMarkerLocation: _throttle(function() {
-			let address = this.mutableAddress;
+		onAddressInput (field, value) {
+			// Save new address
+			const address = _extend({}, this.venueAddress, {
+				[field]: value
+			});
+
+			this.venueAddress = address;
+
+			// Find marker location
+			this.findMarkerCoords();
+		},
+
+		findMarkerCoords: _throttle(function() {
+			let address = this.venueAddress;
 
 			if (!address.street ||
 				!address.number ||
@@ -136,33 +220,34 @@ export default {
 				address.province
 			].join(', ');
 
-			this.findingMarkerLocation = true;
+			this.searchingMarkerCoords = true;
 
 			if (!this.geocoder) this.geocoder = new google.maps.Geocoder();
 
 			this.geocoder.geocode({ address }, (results, status) => {
-				this.findingMarkerLocation = false;
+				this.searchingMarkerCoords = false;
 
 				if (status != 'OK') return;
 
+				const location = results[0].geometry.location;
 				const coords = {
-					lat: results[0].geometry.location.lat(),
-					lng: results[0].geometry.location.lng()
+					lat: location.lat(),
+					lng: location.lng()
 				};
 
 				this.mapZoom = 15;
 				this.mapCenter = coords;
-				this.$emit('update:coords', coords);
+				this.venueCoords = coords;
 			});
 		}, 1000),
 
 		onMarkerDragEnd(location) {
 			const markerCoords = location.latLng;
 
-			this.$emit('update:coords', {
+			this.venueCoords = {
 				lat: markerCoords.lat(),
 				lng: markerCoords.lng()
-			});
+			};
 		}
 	}
 };
@@ -179,7 +264,7 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.general.name_error')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-model="venue.name" :placeholder="$t('pages.venue_form.general.name_placeholder')" />
+					<b-input v-model="venueName" :placeholder="$t('pages.venue_form.general.name_placeholder')" />
 				</div>
 			</div>
 		</b-form-group>
@@ -189,7 +274,7 @@ export default {
 			:label="$t('pages.venue_form.general.concessionaire')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-select v-model="venue.concessionaire_id">
+					<b-select v-model="venueConcessionaireId">
 						<option :value="null">{{ $t('pages.venue_form.general.concessionaire_none') }}</option>
 						<option v-for="item in concessionaires" :value="item.id" :key="item.id">{{ item.name }}</option>
 					</b-select>
@@ -202,7 +287,7 @@ export default {
 			:label="$t('pages.venue_form.general.description')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-textarea v-model="venue.description" rows="2" />
+					<b-textarea v-model="venueDescription" rows="2" />
 				</div>
 			</div>
 		</b-form-group>
@@ -215,7 +300,7 @@ export default {
 			<div class="form-row">
 				<div class="col-5 col-md-4 col-lg-3 col-xl-2">
 					<b-input-group :append="$t('pages.venue_form.general.surface_size_unit')">
-						<b-input v-model.number="venue.surface_size" type="number" min="1" />
+						<b-input v-model.number="venueSurfaceSize" type="number" min="1" />
 					</b-input-group>
 				</div>
 			</div>
@@ -229,7 +314,7 @@ export default {
 			label-class="pt-0">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-checkbox-group v-model="venue.category_ids" stacked>
+					<b-checkbox-group v-model="venueCategoryIds" stacked>
 						<b-checkbox v-for="category in categories" :value="category.id" :key="category.id">{{ $t(`db.categories.${category.machine_name}`) }}</b-checkbox>
 					</b-checkbox-group>
 				</div>
@@ -241,10 +326,10 @@ export default {
 			:label="$t('pages.venue_form.general.address')">
 			<div class="form-row">
 				<div class="col-9 col-lg-6">
-					<b-input v-model="mutableAddress.street" :placeholder="$t('pages.venue_form.general.address_placeholder1')" />
+					<b-input :placeholder="$t('pages.venue_form.general.address_placeholder1')" :value="venueAddress.street" @input="onAddressInput('street', $event)" />
 				</div>
 				<div class="col-3 col-lg-3">
-					<b-input v-model="mutableAddress.number" :placeholder="$t('pages.venue_form.general.address_placeholder2')" />
+					<b-input :placeholder="$t('pages.venue_form.general.address_placeholder2')" :value="venueAddress.number" @input="onAddressInput('number', $event)" />
 				</div>
 			</div>
 		</b-form-group>
@@ -253,7 +338,7 @@ export default {
 			:label="$t('pages.venue_form.general.city')">
 			<div class="form-row">
 				<div class="col-lg-9">
-					<b-input v-model="mutableAddress.city" />
+					<b-input :value="venueAddress.city" @input="onAddressInput('city', $event)" />
 				</div>
 			</div>
 		</b-form-group>
@@ -264,15 +349,16 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.general.address_error')">
 			<div class="form-row">
 				<div class="col-3 col-lg-3">
-					<b-input v-model="mutableAddress.postcode" :placeholder="$t('pages.venue_form.general.zipcode_placeholder')" />
+					<b-input :placeholder="$t('pages.venue_form.general.zipcode_placeholder')" :value="venueAddress.postcode" @input="onAddressInput('postcode', $event)" />
 				</div>
 				<div class="col-9 col-lg-6">
-					<b-input v-model="mutableAddress.province" :placeholder="$t('pages.venue_form.general.province_placeholder')" />
+					<b-input :placeholder="$t('pages.venue_form.general.province_placeholder')" :value="venueAddress.province" @input="onAddressInput('province', $event)" />
 				</div>
 			</div>
 		</b-form-group>
 
 		<b-form-group
+			v-if="showMap"
 			v-bind="formGroupProps"
 			:label="$t('pages.venue_form.general.location')">
 			<div class="form-row">
@@ -290,7 +376,7 @@ export default {
 				</div>
 			</div>
 			<b-form-text tag="span">
-				<template v-if="findingMarkerLocation">{{ $t('pages.venue_form.general.location_searching') }}&hellip;</template>
+				<template v-if="searchingMarkerCoords">{{ $t('pages.venue_form.general.location_searching') }}&hellip;</template>
 				<template v-else-if="canDragMarker">{{ $t('pages.venue_form.general.location_hint') }}</template>
 			</b-form-text>
 		</b-form-group>

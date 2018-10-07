@@ -63,17 +63,17 @@ class FormController extends Controller
 			'payPerViewPlatforms',
 			'photos',
 			'vltPlatforms',
-			'plan'
+			'subscription'
 		]);
 
 		$venue = fractal($venue, new VenueTransformer())
 			->parseIncludes([
 				'business_hours',
-				'categories',
-				'pay_per_view_platforms',
+				'category_ids',
+				'pay_per_view_platform_ids',
 				'photos',
-				'vlt_platforms',
-				'plan'
+				'vlt_platform_ids',
+				'subscription'
 			]);
 
 		$categories = VenueCategory::select('id', 'machine_name', 'name')->get();
@@ -183,7 +183,7 @@ class FormController extends Controller
 			// 'business_hours.*'          => 'nullable|string', // FIXME: Use a time pattern (up to 24:00)
 			// 'business_hours.*.hours'    => 'sometimes|between:2,4' // FIXME: Use a time pattern (up to 24:00)
 			
-			'photos'                    => "array|max:{$venue->plan->photo_limit}"
+			'photos'                    => "array|max:{$venue->subscription->photo_limit}"
 		]);
 
 		DB::transaction(function() use($venue, $request) {

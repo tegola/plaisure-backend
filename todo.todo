@@ -22,11 +22,13 @@
  ☐ Spostare i css nelle pagine
  ☐ Ottimizzare la pagina di ricerca per i cellulari
  ☐ Aggiustare gli spazi per il "notch" di iPhone X*
- ☐ Modifica dati utente. Non si possono nullare i campi di fatturazione se ci sono dei piani attivi.
+ ☐ Modifica dati utente. Non si possono nullare i campi di fatturazione se ci sono sottoscrizioni attive.
  ☐ Modifica dati utente: al salvataggio, aggiornare i dati sul sistema di billing.
  ☐ Modifica attività: spostare caricamento e salvataggio nello store
  ☐ Porting di Fractal a Laravel API Resources
  ☐ Edit sala: il link all'edit quando una sala non ha proprietario ma l'utente è già registrato deve rimandare alla richiesta del codice dell'AAMS
+ ☐ Disattivare i piani attivi all'eliminazione di una sala
+ ☐ Convertire amenities in una tabella a parte e restituirlo in javascript come un array
 
  ✔ Tutte le sale attuali devono avere la categoria "Sala VLT" @done (17-11-04 20:03)
  ✔ Mostrare le prime due categorie per ogni sala @done (17-11-04 20:03)

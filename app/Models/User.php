@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use Laravel\Cashier\Billable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable
 {
-	use HasApiTokens, Notifiable;
+	use HasApiTokens, Notifiable, Billable;
 
 	/**
 	 * The attributes that should be cast to native types.
@@ -52,6 +53,18 @@ class User extends Authenticatable
 	public function venues()
 	{
 		return $this->hasMany('App\Models\Venue', 'owner_id');
+	}
+
+	/**
+	 * Get all this user's subscriptions.
+	 *
+	 * @return [App\Models\Subscription]
+	 */
+	public function subscriptions()
+	{
+		return $this
+			->hasMany('App\Models\Subscription', $this->getForeignKey())
+			->orderBy('created_at', 'desc');
 	}
 
 	/**

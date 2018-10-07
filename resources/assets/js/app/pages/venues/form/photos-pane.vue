@@ -18,19 +18,14 @@ export default {
 	},
 
 	props: {
-		photos: {
-			type: Array,
-			default: () => []
-		},
-		plan: {
-			type: Object,
-			default: () => {}
+		venueId: {
+			type: [String, Number],
+			default: null
 		}
 	},
 
 	data() {
 		return {
-			mutablePhotos: this.photos,
 			uploaderFiles: [],
 			photoItemClass: 'col-6 col-md-4 col-xl-3 mb-3',
 			confirmDeleteOpen: false,
@@ -39,6 +34,30 @@ export default {
 	},
 
 	computed: {
+		storeName() {
+			return `venueForm/${this.venueId || 'new'}`;
+		},
+
+		venue() {
+			return this.$store.state[this.storeName].venue;
+		},
+
+		venuePhotos: {
+			get() {
+				return this.venue.photos;
+			},
+			set(value) {
+				this.$store.commit(`${this.storeName}/setVenueField`, {
+					field: 'photos',
+					value
+				});
+			}
+		},
+
+		subscription() {
+			return this.venue.subscription;
+		},
+
 		uploaderHeaders() {
 			const accessToken = this.$store.state.user.accessToken;
 
@@ -46,12 +65,6 @@ export default {
 				'Authorization': `Bearer ${accessToken}`,
 				'X-Requested-With': 'XMLHttpRequest'
 			};
-		}
-	},
-
-	watch: {
-		photos() {
-			this.mutablePhotos = this.photos;
 		}
 	},
 
@@ -68,8 +81,10 @@ export default {
 
 				// Upload successful
 				if (newFile.success !== oldFile.success) {
-					this.mutablePhotos.push(newFile.response);
-					this.$emit('update:photos', this.mutablePhotos);
+					const photos = this.venuePhotos.slice();
+					photos.push(newFile.response);
+					this.venuePhotos = photos;
+
 					this.$refs.uploader.remove(newFile);
 				}
 			}
@@ -88,8 +103,9 @@ export default {
 		},
 
 		confirmDeletePhoto() {
-			this.mutablePhotos.splice(this.mutablePhotos.indexOf(this.currentPhoto), 1);
-			this.$emit('update:photos', this.mutablePhotos);
+			const photos = this.venuePhotos.slice();
+			photos.splice(photos.indexOf(this.currentPhoto), 1);
+			this.venuePhotos = photos;
 		}
 	}
 };
@@ -99,13 +115,13 @@ export default {
 	<div class="my-5">
 		<h4>{{ $t('pages.venue_form.photos.title') }}</h4>
 		<i18n tag="p" path="pages.venue_form.photos.intro">
-			<span place="count">{{ plan.photo_limit }}</span>
+			<span place="count">{{ subscription.photo_limit }}</span>
 			<a href="#" place="action"><strong>{{ $t('pages.venue_form.photos.intro_action') }}</strong></a>
 		</i18n>
 		<hr>
 		<div :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }" class="row">
 			<!-- Current photos -->
-			<div v-for="photo in mutablePhotos" :class="photoItemClass">
+			<div v-for="photo in venuePhotos" :key="photo.id" :class="photoItemClass">
 				<a :href="photo.resized_url" target="_blank">
 					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" class="rounded" />
 				</a>
@@ -113,7 +129,7 @@ export default {
 			</div>
 
 			<!-- Current uploads -->
-			<div v-for="file in uploaderFiles" :class="photoItemClass">
+			<div v-for="(file, index) in uploaderFiles" :key="index" :class="photoItemClass">
 				<div class="embed-responsive embed-responsive-1by1 rounded border">
 					<div class="embed-responsive-item d-flex flex-column align-items-center justify-content-center text-center">
 						<span v-if="file.error" class="text-danger small"><strong>{{ $t('common.status.error') }}</strong><br>{{ file.error }}</span>
@@ -128,7 +144,7 @@ export default {
 			</div>
 
 			<!-- Uploader -->
-			<div v-if="plan.photo_limit > (mutablePhotos.length + uploaderFiles.length)" :class="photoItemClass">
+			<div v-if="subscription.photo_limit > (venuePhotos.length + uploaderFiles.length)" :class="photoItemClass">
 				<vue-uploader
 					ref="uploader"
 					:drop="true"
