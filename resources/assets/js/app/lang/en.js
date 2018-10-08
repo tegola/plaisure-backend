@@ -313,7 +313,7 @@ export default {
 				email: 'E-mail',
 				email_placeholder: 'Ex.: name@gmail.com',
 				email_error: 'Type a valid e-mail address..',
-				url_placeholder: 'https://',
+				url_placeholder: 'http://',
 				url_error: "Type a valid URL, starting with 'http://' or 'https://'.",
 				site: 'Website URL',
 				online_casino: 'Online casinò',

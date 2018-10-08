@@ -9,6 +9,7 @@ export default {
 		accessToken: storage.accessToken,
 		refreshToken: storage.refreshToken,
 		user: null,
+		coords: null,
 		venues: []
 	},
 
@@ -28,8 +29,12 @@ export default {
 			}
 		},
 
-		setUser: (state, user = null) => {
+		setUser: (state, user) => {
 			state.user = user;
+		},
+
+		setCoords: (state, coords) => {
+			state.coords = coords;
 		},
 
 		setVenues: (state, venues = []) => {
@@ -97,6 +102,24 @@ export default {
 		update: ({ commit }, formData) => {
 			return axios.post('/user', formData).then(response => {
 				commit('setUser', response.data.user);
+			});
+		},
+
+		findCoords: ({ commit }) => {
+			return new Promise((resolve, reject) => {
+				navigator.geolocation.getCurrentPosition(position => {
+					const coords = {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					};
+					commit('setCoords', coords);
+					resolve(coords);
+				},
+				reject,
+				{
+					timeout: 10 * 1000, // 10 secs
+					maximumAge: 5 * 60 * 1000 // last 5 minutes
+				});
 			});
 		}
 	}

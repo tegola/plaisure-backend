@@ -29,6 +29,10 @@ export default {
 			type: String,
 			default: 'light'
 		},
+		search: {
+			type: Boolean,
+			default: true
+		},
 		placeholder: {
 			type: String,
 			default() {
@@ -142,7 +146,7 @@ export default {
 				<pg-icon icon="chevron-down" class="navbar__logo-arrow" />
 			</div>
 
-			<form ref="form" class="navbar__search" action="/venues/explore">
+			<form v-if="search" ref="form" class="navbar__search" action="/venues/explore">
 				<input :value="lat" type="hidden" name="c_lat">
 				<input :value="lng" type="hidden" name="c_lng">
 

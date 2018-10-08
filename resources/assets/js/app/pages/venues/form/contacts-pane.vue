@@ -1,5 +1,5 @@
 <script>
-import autoHttps from 'prontogioco/app/directives/auto-https';
+import autoHttp from 'prontogioco/app/directives/auto-http';
 import _extend from 'lodash/extend';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
@@ -18,7 +18,7 @@ export default {
 	},
 
 	directives: {
-		autoHttps
+		autoHttp
 	},
 
 	props: {
@@ -145,7 +145,7 @@ export default {
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-input
-						v-auto-https
+						v-auto-http
 						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"
 						:value="venue.urls.site"
 						type="url"
@@ -163,7 +163,7 @@ export default {
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-input
-						v-auto-https
+						v-auto-http
 						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"
 						:value="venue.urls.online_casino"
 						type="url"
@@ -181,7 +181,7 @@ export default {
 			<div class="form-row">
 				<div class="col-lg-9">
 					<b-input
-						v-auto-https
+						v-auto-http
 						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"
 						:value="venue.urls.facebook"
 						type="url"

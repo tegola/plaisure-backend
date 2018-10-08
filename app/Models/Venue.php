@@ -242,27 +242,6 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the short address.
-	 *
-	 * @return string
-	 */
-	public function getShortAddressAttribute()
-	{
-		return "{$this->address_street} {$this->address_number}, {$this->address_city }";
-	}
-
-	/**
-	 * Get the long address.
-	 *
-	 * @return string
-	 */
-	public function getLongAddressAttribute()
-	{
-		// return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
-		return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city }";
-	}
-
-	/**
 	 * User that claimed this venue.
 	 * 
 	 * @return \App\Models\User

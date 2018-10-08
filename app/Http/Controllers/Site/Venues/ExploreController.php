@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Venue;
 use App\Models\VenueCategory;
 use App\Transformers\VenueTransformer;
-use App\Transformers\VenueCategoryTransformer;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use App;
 
 class ExploreController extends Controller

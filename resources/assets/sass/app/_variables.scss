@@ -125,35 +125,49 @@ $spacers: (
   5: ($spacer * 3)
 );
 
+// Grid
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1080px
+);
+
+$grid-gutter-width: 24px;
+
 
 // Typography
 //
 // Font, line-height, and color for body text, headings, and more.
 
-$font-family-sans-serif: "museo-sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-$font-size-root:         14px;
-$font-size-xs:           .7rem; // ~ 10px
-// $font-size-sm
-$font-size-md:           1.15rem; // ~16px
-// $font-size-lg
-$font-size-xl:           1.7rem; // ~24px
+$font-family-sans-serif: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-size-root:         16px;
+$font-size-xs:           .75rem; // 12px
+// $font-size-sm:        .875; // 14px
+$font-size-md:           1.125rem; // 18px
+// $font-size-lg:        1.25rem; // 20px
+$font-size-xl:           1.5rem; // 24px
 
-$font-weight-bold:       500;
+$font-weight-semibold:   400;
+$font-weight-bold:       600;
 
 $headings-font-weight:   300;
 // $headings-color:         $palette-dark-green-500;
+
+$display4-size:          3rem;
 
 $hr-border-color: rgba($black, .08);
 
 $list-inline-padding: $spacer;
 
 // Components
-$border-radius:    .3125rem;
-$border-radius-lg: .5rem;
-$border-radius-sm: .375rem;
+$border-radius:    .25rem;
+$border-radius-lg: .375rem;
+$border-radius-sm: .1875rem;
 
 // Buttons + forms
-
+$input-btn-padding-y:    .6rem;
+$input-btn-padding-x:    1rem;
 $input-btn-padding-y-lg: .8rem;
 $input-btn-padding-x-lg: 1.25rem;
 

@@ -54,12 +54,12 @@ function reverse(lat, lng, callback) {
 		if (data.status != 'OK' || !data.results) {
 			callback(new Error(data.error_message || errorMsg));
 		} else {
-			callback(null, format(data.results[0]));
+			callback(null, formatResult(data.results[0]));
 		}
 	});
 }
 
-function format(result) {
+function formatResult(result) {
 	const googleConfidenceLookup = {
 		ROOFTOP: 1,
 		RANGE_INTERPOLATED: 0.9,
@@ -155,4 +155,4 @@ function format(result) {
 	return extractedObj;
 }
 
-export { geocode, geocodeByIp, reverse, format };
+export { geocode, geocodeByIp, reverse, formatResult };

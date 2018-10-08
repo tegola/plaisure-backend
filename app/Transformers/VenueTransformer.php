@@ -71,9 +71,7 @@ class VenueTransformer extends TransformerAbstract
 				'postcode' => $venue->address_postcode,
 				'province' => $venue->address_province,
 				// 'region' => $venue->address_region,
-				// 'country' => $venue->address_country,
-				'short' => $venue->short_address,
-				'long' => $venue->long_address
+				// 'country' => $venue->address_country
 			],
 			'coords' => [
 				'lat' => $venue->geo_latitude,
@@ -117,7 +115,8 @@ class VenueTransformer extends TransformerAbstract
 				'wifi' => $venue->amenity_wifi
 			],
 			'distance' => $venue->distance,
-			'has_owner' => $venue->has_owner
+			'has_owner' => $venue->has_owner,
+			'created_at' => (string) $venue->created_at
 		];
 	}
 

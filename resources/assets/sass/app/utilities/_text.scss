@@ -1,3 +1,9 @@
+// Weight and italics
+.font-weight-semibold {
+	font-weight: $font-weight-semibold !important;
+}
+
+// Contextual colors
 .text-inherit {
 	& {
 		color: inherit;

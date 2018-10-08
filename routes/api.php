@@ -30,6 +30,10 @@ Route::get ('/user',                 'UserController@user');
 Route::post('/user',                 'userController@update');
 
 Route::group(['namespace' => 'Site'], function() {
+	// Home page
+	Route::get('/', 'MainController@data');
+	
+	// Explore
 	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');
 	Route::post('/venues/explore/search', 'Venues\ExploreController@search');
 
