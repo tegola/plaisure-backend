@@ -210,7 +210,7 @@ export default {
 										:place="query"
 										:value="query"
 										:options="placeTextboxOptions"
-										class="form-control pg-home-page__search-form-control pg-home-page__search-query-control"
+										class="form-control form-control-lg pg-home-page__search-form-control pg-home-page__search-query-control"
 										autofocus
 										@place-changed="onPlaceChanged"
 									/>
@@ -224,6 +224,7 @@ export default {
 											:loading="locating"
 											:disabled="useUserLocation ? true : false"
 											variant="naked"
+											size="lg"
 											class="pg-home-page__search-locate-btn"
 											tabindex="-1"
 											@click="findUserLocation"
@@ -235,6 +236,7 @@ export default {
 								<pg-button
 									:disabled="!canSubmit"
 									variant="accent"
+									size="lg"
 									class="pg-home-page__search-submit-btn"
 									@click="submit">
 									{{ $t('pages.home.submit') }}

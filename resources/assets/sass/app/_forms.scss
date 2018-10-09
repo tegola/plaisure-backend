@@ -5,3 +5,13 @@ input[type=number] {
 		margin: 0;
 	}
 }
+
+.form-control-lg {
+  font-size: $font-size-base;
+}
+
+select.form-control-lg {
+  &:not([size]):not([multiple]) {
+    height: $input-height-lg;
+  }
+}

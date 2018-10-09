@@ -1,26 +1,13 @@
 .btn {
 	cursor: pointer;
 
-	.icon {
+	.pg-icon {
 		width: $icon-size-base;
 		height: $icon-size-base;
 	}
 }
-.btn:not(.btn-sm),
-.btn:not(.btn-lg) {
-	padding-left: $input-btn-padding-x-lg;
-	padding-right: $input-btn-padding-x-lg;
-}
-.btn-sm {
-	.icon {
-		width: $icon-size-sm;
-		height: $icon-size-sm;
-	}
-}
 .btn-lg {
-	.pg-icon {
-		vertical-align: -0.25rem;
-	}
+	font-size: $font-size-base;
 }
 
 // Normal buttons

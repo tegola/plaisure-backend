@@ -150,11 +150,11 @@ export default {
 
 		venueVltPlatformIds: {
 			get() {
-				return this.venue.vlt_plaform_ids;
+				return this.venue.vlt_platform_ids;
 			},
 			set(value) {
 				this.$store.commit(`${this.storeName}/setVenueField`, {
-					field: 'vlt_plaform_ids',
+					field: 'vlt_platform_ids',
 					value
 				});
 			}
