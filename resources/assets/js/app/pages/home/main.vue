@@ -34,7 +34,8 @@ export default {
 				c_lng: null
 			},
 			categories: [],
-			venues: []
+			highlightedVenues: [],
+			newVenues: []
 		};
 	},
 
@@ -93,7 +94,8 @@ export default {
 		loadData() {
 			this.$axios.get('/').then(({ data }) => {
 				this.categories = data.categories;
-				this.venues = data.venues;
+				this.highlightedVenues = data.highlightedVenues;
+				this.newVenues = data.newVenues;
 			});
 		},
 
@@ -265,17 +267,23 @@ export default {
 			</div>
 
 			<div class="my-5">
-				<h5 class="font-weight-bold">In rilievo</h5>
-				<div class="row">
-					<div v-for="venue in venues" :key="venue.id" class="col-md-6 mb-4">
-						<pg-venue-item :venue="venue" />
+				<template v-if="highlightedVenues.length">
+					<h5 class="font-weight-bold">In rilievo</h5>
+					<div class="row">
+						<div v-for="venue in highlightedVenues" :key="venue.id" class="col-md-6 mb-4">
+							<pg-venue-item :venue="venue" />
+						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div v-for="venue in venues" :key="venue.id" class="col-md-4 col-xl-3 mb-4">
-						<pg-venue-item :venue="venue" />
+				</template>
+
+				<template v-if="newVenues.length">
+					<h5 class="font-weight-bold">Novità</h5>
+					<div class="row">
+						<div v-for="venue in newVenues" :key="venue.id" class="col-6 col-md-4 col-xl-3 mb-4">
+							<pg-venue-item :venue="venue" />
+						</div>
 					</div>
-				</div>
+				</template>
 			</div>
 		</div>
 
@@ -290,7 +298,7 @@ export default {
 						<h3 class="display-4">Mettiti in gioco</h3>
 						<p clas="h4">Registra la tua attività o reclama la gestione di un’attività già presente. È veloce, e soprattutto è gratis!</p>
 						<p>
-							<pg-button variant="primary">Registrati come gestore</pg-button>
+							<pg-button :to="{ name: 'register' }" variant="primary">Registrati come gestore</pg-button>
 						</p>
 					</div>
 				</div>

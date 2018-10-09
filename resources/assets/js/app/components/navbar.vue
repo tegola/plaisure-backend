@@ -90,6 +90,10 @@ export default {
 		_extend(this, constants);
 	},
 
+	beforeRouteLeave() {
+		this.toggleOverflow(false);
+	},
+
 	methods: {
 		toggleDrawer(force) {
 			const open = force !== undefined ? force : !this.drawerOpen;
@@ -98,6 +102,10 @@ export default {
 			if (open) window.scrollTo(0, 0);
 
 			this.drawerOpen = open;
+			this.toggleOverflow(open);
+		},
+
+		toggleOverflow(open) {
 			document.body.style.overflow = open ? 'hidden' : '';
 		},
 

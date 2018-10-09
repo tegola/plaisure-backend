@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Venue;
 use App\Models\VenueCategory;
 use App\Transformers\VenueTransformer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MainController extends Controller
 {
@@ -20,26 +21,81 @@ class MainController extends Controller
 		return view('site.layout');
 	}
 
+	/**
+	 * Load the data for the home page
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
 	public function data()
 	{
 		$categories = VenueCategory::select('id', 'machine_name')->get();
+		$cacheLimit = 1;
 
-		// Load latest venues
-		$venues = Venue::query()
+		// Highlights - 2 taken from the latest 20 (1/10 chance to appear)
+		$highlightedVenues = Cache::remember('home.highlights', $cacheLimit, function() {
+			$venues = $this->initQuery()
+				->whereHas('subscription', function($query) {
+					$query->where('name', 'premium_2');
+				})
+				->latest()
+				->take(20);
+
+			// Get at least 2
+			if ($venues->count() >= 2) {
+				$venues = $venues->get()->random(2);
+				$venues = $this->transformVenues($venues);
+			} else {
+				$venues = [];
+			}
+
+			return $venues;
+		});
+
+
+		// New - 8 taken from the latest 32 (1/4 chance to appear)
+		$newVenues = Cache::remember('home.new', $cacheLimit, function() {
+			$venues = $this->initQuery()
+				->latest()
+				->take(32)
+				->get()
+				->random(8);
+
+			return $this->transformVenues($venues);
+		});
+
+		return compact(
+			'categories',
+			'highlightedVenues',
+			'newVenues'
+		);
+	}
+
+	/**
+	 * Init venue query with satellite data.
+	 * 
+	 * @param  \Illuminate\Database\Builder
+	 */
+	private function initQuery() {
+		return Venue::query()
 			->with('categories', 'businessHours')
 			->with(['photos' => function($query) {
 				$query->take(1);
-			}])
-			->latest()
-			->take(10)
-			->get()
+			}]);
+	}
+
+	/**
+	 * Transform venues using VenueTransformer.
+	 * 
+	 * @param  \Illuminate\Support\Collection $venues
+	 * @return array
+	 */
+	private function transformVenues($venues) {
+		return $venues
 			->transformWith(new VenueTransformer())
 			->parseIncludes([
 				'categories',
 				'photos',
 				'business_hours'
 			]);
-
-		return compact('categories', 'venues');
 	}
 }

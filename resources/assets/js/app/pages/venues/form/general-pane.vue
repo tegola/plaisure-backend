@@ -298,7 +298,7 @@ export default {
 			:label="$t('pages.venue_form.general.surface_size')"
 			:invalid-feedback="$t('pages.venue_form.general.surface_size_error')">
 			<div class="form-row">
-				<div class="col-5 col-md-4 col-lg-3 col-xl-2">
+				<div class="col-5 col-md-4 col-lg-3">
 					<b-input-group :append="$t('pages.venue_form.general.surface_size_unit')">
 						<b-input v-model.number="venueSurfaceSize" type="number" min="1" />
 					</b-input-group>
