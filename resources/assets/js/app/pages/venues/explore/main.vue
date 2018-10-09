@@ -6,7 +6,6 @@ import { Map as PgMap, Marker as PgMapMarker, InfoWindow as PgMapInfoWindow } fr
 import BTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
 
 import PgButton from 'prontogioco/app/components/button';
-import PgPane from 'prontogioco/app/components/pane';
 import PgVenueListItem from './list-item';
 import PgFilterButton from './filter-button';
 
@@ -22,7 +21,6 @@ export default {
 		PgMapInfoWindow,
 		BTooltip,
 		PgButton,
-		PgPane,
 		PgVenueListItem,
 		PgFilterButton
 	},

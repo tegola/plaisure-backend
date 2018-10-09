@@ -5,7 +5,7 @@ export default {
 	name: 'PgPlaceTextbox',
 
 	components: {
-		'autocomplete': Autocomplete
+		Autocomplete
 	},
 
 	props: {

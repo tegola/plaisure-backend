@@ -1,4 +1,5 @@
 <script>
+// FIXME: remove
 import PgIcon from './icon';
 import _throttle from 'lodash/throttle';
 

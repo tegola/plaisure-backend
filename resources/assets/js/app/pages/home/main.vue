@@ -211,7 +211,6 @@ export default {
 										:value="query"
 										:options="placeTextboxOptions"
 										class="form-control form-control-lg pg-home-page__search-form-control pg-home-page__search-query-control"
-										autofocus
 										@place-changed="onPlaceChanged"
 									/>
 									<div
