@@ -196,8 +196,8 @@ export default {
 					<div class="col-md-7">
 						<div class="row">
 							<div class="col-md-10">
-								<h1 class="pg-home-page__title">Trova le sale da gioco più vicine a te.</h1>
-								<p class="pg-home-page__intro">Su {{ APP_NAME }} è veloce, e con più di 5000 sale c'è solo l'imbarazzo della scelta!</p>
+								<h1 class="display-3 text-dark-green mb-4">Trova le sale da gioco più vicine a te.</h1>
+								<p class="lead text-dark-green-muted font-weight-semibold mb-4">Su {{ APP_NAME }} è veloce, e con più di 5000 sale c'è solo l'imbarazzo della scelta!</p>
 							</div>
 						</div>
 
@@ -293,12 +293,12 @@ export default {
 			<div class="container">
 				<div class="row">
 					<div class="col-md-4 text-center">
-						Immagine qui
+						<img src="/img/home/venue.svg" class="pg-home-page__promote-img" />
 					</div>
-					<div class="col-md-8">
-						<p class="text-muted">Scusa il gioco di parole</p>
-						<h3 class="display-4">Mettiti in gioco</h3>
-						<p clas="h4">Registra la tua attività o reclama la gestione di un’attività già presente. È veloce, e soprattutto è gratis!</p>
+					<div class="col-md-8 col-xl-7">
+						<p class="text-dark-green-muted mb-1">Scusa il gioco di parole</p>
+						<h3 class="display-4 text-dark-green mb-3">Mettiti in gioco</h3>
+						<p class="lead text-dark-green mb-4">Registra la tua attività o reclama la gestione di un’attività già presente. È veloce, e soprattutto è gratis!</p>
 						<p>
 							<pg-button :to="{ name: 'register' }" variant="primary">Registrati come gestore</pg-button>
 						</p>

@@ -14,35 +14,13 @@
 .btn-primary {
 	color: $white !important;
 }
-.btn-accent {
-	@include button-variant(theme-color('accent'), theme-color('accent'));
-}
-.btn-neutral {
-	@include button-variant($gray-700, $gray-700);
-}
 
 // Inverse buttons
 .btn-inverse-primary {
 	@include button-variant($white, $white, $white, $white, $white, $white);
 	color: theme-color('primary');
 }
-.btn-inverse-secondary {
-	@include button-variant($white, $white, $white, $white, $white, $white);
-	color: theme-color('secondary');
-}
 .btn-inverse-accent {
 	@include button-variant($white, $white, $white, $white, $white, $white);
 	color: theme-color('accent');
-}
-.btn-inverse-neutral {
-	@include button-variant($white, $white, $white, $white, $white, $white);
-	color: theme-color('neutral');
-}
-
-// Outline buttons
-.btn-outline-accent {
-	@include button-outline-variant(theme-color('accent'));
-}
-.btn-outline-neutral {
-	@include button-outline-variant(rgba($gray-700, .66));
 }

@@ -220,7 +220,7 @@ export default {
 
 					<!-- Title -->
 					<h2 class="header-title">{{ venue.name }}</h2>
-					<ul class="list-inline header-subtitle">
+					<ul class="list-inline text-dark-green-muted mb-0">
 						<li class="list-inline-item">{{ subtitle }}</li>
 						<li v-if="venue.business_hours.length" class="list-inline-item">
 							<span v-if="isOpen" class="text-success">{{ $t('pages.venue_detail.card.open_now') }}</span>
@@ -261,7 +261,7 @@ export default {
 						<!-- Description -->
 						<template v-if="venue.description">
 							<div class="my-5">
-								<h4>{{ $t('pages.venue_detail.description') }}</h4>
+								<h5>{{ $t('pages.venue_detail.description') }}</h5>
 								<p>{{ venue.description }}</p>
 							</div>
 							<hr>
@@ -269,10 +269,10 @@ export default {
 
 						<!-- Details -->
 						<div class="my-5">
-							<h4>
+							<h5>
 								{{ $t('pages.venue_detail.details.title') }}
 								<router-link v-if="showEditAction" :to="editRoute" class="small ml-2">{{ $t('pages.venue_detail.common.edit') }}</router-link>
-							</h4>
+							</h5>
 							<div class="row">
 								<div class="col-md">
 									<ul class="list-unstyled mb-0 mb-md-3">
@@ -356,10 +356,10 @@ export default {
 
 						<!-- Amenities -->
 						<div class="my-5">
-							<h4>
+							<h5>
 								{{ $t('pages.venue_detail.amenities.title') }}
 								<router-link v-if="showEditAction" :to="editRoute" class="small ml-2">{{ $t('pages.venue_detail.common.edit') }}</router-link>
-							</h4>
+							</h5>
 							<div class="row">
 								<div class="col-md">
 									<ul class="list-unstyled mb-0 mb-md-3">

@@ -1,5 +1,5 @@
 .pg-lightbox {
-	background-color: rgba($black, 0.85);
+	background-color: rgba($black, .85);
 	color: $white;
 	position: fixed;
 	top: 0;
@@ -30,7 +30,7 @@
 	text-overflow: ellipsis;
 }
 .pg-lightbox__subtitle {
-	color: rgba($white, 0.5);
+	color: rgba($white, .5);
 	margin-bottom: 0;
 	overflow: hidden;
 	white-space: nowrap;
@@ -44,7 +44,7 @@
 	color: inherit;
 	outline: none !important;
 	cursor: pointer;
-	opacity: 0.75;
+	opacity: .75;
 	transition: 100ms;
 
 	&:hover,
@@ -53,7 +53,7 @@
 		opacity: 1;
 	}
 	&:active {
-		transform: scale(0.9);
+		transform: scale(.9);
 	}
 }
 .pg-lightbox__close-icon {
@@ -81,7 +81,7 @@
 	justify-content: center;
 }
 .pg-lightbox__image {
-	box-shadow: 0 5px 40px rgba(#000, 0.25);
+	box-shadow: 0 5px 40px rgba(#000, .25);
 	border-radius: $border-radius-lg;
 	max-width: 100%;
 	max-height: 100%;
@@ -97,7 +97,7 @@
 	border-radius: 50%;
 	border: $border-width solid transparent;
 	z-index: 1;
-	opacity: 0.5;
+	opacity: .5;
 	padding-left: 1rem;
 	padding-right: 1rem;
 	color: inherit;
@@ -108,10 +108,10 @@
 	&:hover,
 	&:focus,
 	&:active {
-		opacity: 0.75;
+		opacity: .75;
 	}
 	&:active {
-		transform: scale(0.9);
+		transform: scale(.9);
 	}
 }
 .pg-lightbox__prev-arrow {
@@ -140,8 +140,8 @@
 	background-position: center center;
 	background-repeat: no-repeat;
 	border-radius: $border-radius-sm;
-	opacity: 0.5;
-	border: $border-width solid rgba($white, 0.1);
+	opacity: .5;
+	border: $border-width solid rgba($white, .1);
 	cursor: pointer;
 	transition: 200ms, transform 100ms;
 
@@ -154,7 +154,7 @@
 		opacity: 1;
 	}
 	&:active {
-		transform: scale(0.95);
+		transform: scale(.95);
 	}
 	&#{&}--selected {
 		border-color: theme-color('secondary');

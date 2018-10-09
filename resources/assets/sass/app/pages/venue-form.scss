@@ -4,7 +4,7 @@
 		top: 0;
 		z-index: $zindex-dropdown - 1; // Keep it below dropdowns
 		background-color: $white;
-		border-bottom: 1px solid rgba($black, 0.08);
+		border-bottom: 1px solid rgba($black, .08);
 	}
 	.title-wrapper {
 		padding: $navbar-padding-y 0;
@@ -21,7 +21,7 @@
 		.nav-item {
 			position: relative;
 			text-transform: uppercase;
-			letter-spacing: 0.05em;
+			letter-spacing: .05em;
 			font-size: $font-size-sm;
 
 			&::after {

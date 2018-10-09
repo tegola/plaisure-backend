@@ -14,3 +14,6 @@
 		}
 	}
 }
+
+@include text-emphasis-variant('.text-dark-green', $palette-dark-green-500);
+@include text-emphasis-variant('.text-dark-green-muted', $palette-dark-green-300);

@@ -25,7 +25,7 @@
 	right: 0;
 	height: 7px;
 	pointer-events: none;
-	border: 1px solid rgba(#000, 0.3);
+	border: 1px solid rgba(#000, .3);
 	border-width: 0;
 	-webkit-mask-box-image: -webkit-linear-gradient(left, transparent, rgba(#000, 1) 50%, transparent);
 	transition: opacity 150ms;
@@ -33,10 +33,10 @@
 .pg-pane__top-shadow {
 	top: 0;
 	border-top-width: 1px;
-	background-image: radial-gradient(ellipse farthest-side at center top, rgba(#000, 0.15), transparent);
+	background-image: radial-gradient(ellipse farthest-side at center top, rgba(#000, .15), transparent);
 }
 .pg-pane__bottom-shadow {
 	bottom: 0;
 	border-bottom-width: 1px;
-	background-image: radial-gradient(ellipse farthest-side at center bottom, rgba(#000, 0.15), transparent);
+	background-image: radial-gradient(ellipse farthest-side at center bottom, rgba(#000, .15), transparent);
 }

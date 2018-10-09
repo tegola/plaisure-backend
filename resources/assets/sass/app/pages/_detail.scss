@@ -43,14 +43,14 @@
 		align-items: center;
 		justify-content: center;
 		overflow: hidden;
-		padding: 0.25rem;
+		padding: .25rem;
 		transition: $transition-base, padding 0ms, width 0ms, height 0ms;
 
 		&:hover,
 		&:focus {
-			color: theme-color('secondary');
-			border-color: theme-color('secondary');
-			box-shadow: inset 0 0 0 1px theme-color('secondary');
+			color: theme-color('primary');
+			border-color: theme-color('primary');
+			box-shadow: inset 0 0 0 1px theme-color('primary');
 		}
 	}
 	.header-photo + .header-photo {
@@ -66,29 +66,22 @@
 		color: gray('500');
 	}
 	.header-photo-zoom {
-		background-color: rgba(#000, 0.33);
+		background-color: rgba(#000, .33);
 		color: #fff;
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		padding: 0.5rem;
+		padding: .5rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 	}
 	.header-title {
-		font-weight: $font-weight-bold;
-		font-size: $h4-font-size;
-	}
-	.header-subtitle {
-		color: $palette-dark-green-300; // FIXME: Prepare and use text-* classes
-		margin-bottom: 0;
-	}
-	.header-subtitle2 {
-		color: $palette-dark-green-400; // FIXME: Prepare and use text-* classes
+		color: $palette-dark-green-500;
+		font-size: $h5-font-size;
 	}
 
 	// Contact card
@@ -133,9 +126,9 @@
 		left: -($grid-gutter-width);
 	}
 	.contact-card-chevron-icon {
-		height: 0.75rem;
-		width: 0.75rem;
-		vertical-align: -0.125rem;
+		height: .75rem;
+		width: .75rem;
+		vertical-align: -.125rem;
 	}
 
 	// Jackpots
@@ -146,7 +139,7 @@
 	.jackpot-name {
 		text-transform: uppercase;
 		font-size: $font-size-sm;
-		letter-spacing: 0.1em;
+		letter-spacing: .1em;
 	}
 	.jackpot-icon {
 		margin-right: map-get($spacers, 2);
@@ -173,13 +166,10 @@
 		.header-photo {
 			width: 200px;
 			height: 200px;
-			padding: 0.5rem;
+			padding: .5rem;
 		}
 		.header-title {
-			font-size: $h3-font-size;
-		}
-		.header-subtitle {
-			font-size: $font-size-lg;
+			font-size: $h4-font-size;
 		}
 	}
 

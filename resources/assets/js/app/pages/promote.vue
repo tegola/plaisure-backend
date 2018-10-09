@@ -67,11 +67,11 @@ export default {
 				<div class="col-md-10 mx-md-auto col-lg-9">
 					<div class="section mb-5">
 						<h2 class="section-title text-center">{{ $t('pages.promote.cost.title') }}</h2>
-						<i18n tag="p" class="jumbotron-text" path="pages.promote.cost.paragraph1">
+						<i18n tag="p" path="pages.promote.cost.paragraph1">
 							<span place="name">{{ APP_NAME }}</span>
 							<strong place="strong">{{ $t('pages.promote.cost.paragraph1_strong') }}</strong>
 						</i18n>
-						<i18n tag="p" class="jumbotron-text" path="pages.promote.cost.paragraph2">
+						<i18n tag="p" path="pages.promote.cost.paragraph2">
 							<a :href="`mailto:${EMAIL_VENUES}`" place="contact">{{ $t('pages.promote.cost.paragraph2_contact') }}</a>
 						</i18n>
 					</div>
@@ -79,7 +79,7 @@ export default {
 					<div class="section my-5">
 						<h2 class="section-title text-center">{{ $t('pages.promote.start.title') }}</h2>
 						<p>{{ $t('pages.promote.start.paragraph1') }}</p>
-						<i18n tag="p" class="jumbotron-text" path="pages.promote.start.paragraph2">
+						<i18n tag="p" path="pages.promote.start.paragraph2">
 							<span place="name">{{ APP_NAME }}</span>
 							<strong place="strong1">{{ $t('pages.promote.start.paragraph2_strong1') }}</strong>
 							<a :href="`mailto:${EMAIL_VENUES}`" place="email"><strong>{{ EMAIL_VENUES }}</strong></a>
