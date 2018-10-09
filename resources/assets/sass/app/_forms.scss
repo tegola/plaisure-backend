@@ -9,9 +9,3 @@ input[type=number] {
 .form-control-lg {
   font-size: $font-size-base;
 }
-
-select.form-control-lg {
-  &:not([size]):not([multiple]) {
-    height: $input-height-lg;
-  }
-}

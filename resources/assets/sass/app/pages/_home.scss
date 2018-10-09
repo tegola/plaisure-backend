@@ -8,9 +8,9 @@
 	}
 
 	&__title {
-		font-size: $display4-size;
-		font-weight: $font-weight-bold;
-		line-height: 1;
+		font-size: $display3-size;
+		font-weight: $display3-weight;
+		line-height: $display-line-height;
 		color: $palette-dark-green-500;
 		margin-bottom: 2rem;
 	}
@@ -24,7 +24,7 @@
 
 	// Search
 	&__search-form-control:focus {
-		border-color: theme-color(accent);
+		border-color: theme-color('accent');
 	}
 	&__search-query-control {
 		padding-right: ($input-btn-padding-x-lg * 2) + 1rem;
@@ -40,7 +40,7 @@
 
 		&:not([disabled]):hover,
 		&:not([disabled]):focus {
-			color: theme-color(accent);
+			color: theme-color('accent');
 		}
 	}
 
@@ -85,7 +85,7 @@
 			color: $body-color;
 			text-decoration: none;
 			box-shadow:
-				0 0 0 2px $primary inset,
+				0 0 0 2px theme-color('primary') inset,
 				0 1px 0 rgba($black, .08),
 				0 1px 3px rgba($black, .1);
 		}
@@ -140,7 +140,7 @@
 	}
 
 	&__venue-item:hover &__venue-item-image::after {
-		box-shadow: inset 0 0 0 2px $primary;
+		box-shadow: inset 0 0 0 2px theme-color('primary');
 	}
 
 	// Promote

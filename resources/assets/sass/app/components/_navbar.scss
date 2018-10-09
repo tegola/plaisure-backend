@@ -128,7 +128,7 @@
 		color: $palette-dark-green-400;
 
 		&.active {
-			color: $primary;
+			color: theme-color('primary');
 		}
 	}
 }

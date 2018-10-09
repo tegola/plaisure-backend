@@ -34,7 +34,7 @@
 				transform: scaleX(0);
 				opacity: 0;
 				border-radius: 2px;
-				background-color: theme-color(primary);
+				background-color: theme-color('primary');
 				transition: transform 150ms ease-in-out, opacity 100ms 50ms ease-in-out;
 				pointer-events: none;
 			}

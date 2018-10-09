@@ -157,8 +157,8 @@
 		transform: scale(0.95);
 	}
 	&#{&}--selected {
-		border-color: theme-color(secondary);
-		box-shadow: inset 0 0 0 $border-width theme-color(secondary);
+		border-color: theme-color('secondary');
+		box-shadow: inset 0 0 0 $border-width theme-color('secondary');
 		opacity: 1;
 	}
 }
