@@ -3,8 +3,8 @@ import _extend from 'lodash/extend';
 import { formatResult } from 'prontogioco/utilities/geocoder';
 import PgButton from 'prontogioco/app/components/button';
 import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
+import PgVenueGridItem from 'prontogioco/app/components/venue-grid-item';
 import PgToken from './token';
-import PgVenueItem from './venue-item';
 import { APP_NAME } from 'prontogioco/constants';
 import { cityPresets } from 'prontogioco/app/static';
 
@@ -14,8 +14,8 @@ export default {
 	components: {
 		PgButton,
 		PgPlaceTextbox,
-		PgToken,
-		PgVenueItem
+		PgVenueGridItem,
+		PgToken
 	},
 
 	data() {
@@ -59,6 +59,7 @@ export default {
 			this.categories.forEach(category => {
 				presets.push({
 					value: category.machine_name,
+					icon: category.machine_name.replace('_', '-'),
 					label: this.$t(`db.categories.${category.machine_name}`),
 					route: {
 						name: 'venues.explore',
@@ -262,6 +263,7 @@ export default {
 				<pg-token
 					v-for="preset in tokenPresets"
 					:key="preset.value"
+					:icon="preset.icon"
 					:to="preset.route">
 					{{ preset.label }}
 				</pg-token>
@@ -272,7 +274,9 @@ export default {
 					<h5 class="font-weight-bold">In rilievo</h5>
 					<div class="row">
 						<div v-for="venue in highlightedVenues" :key="venue.id" class="col-md-6 mb-4">
-							<pg-venue-item :venue="venue" />
+							<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">
+								<pg-venue-grid-item :venue="venue" />
+							</router-link>
 						</div>
 					</div>
 				</template>
@@ -281,7 +285,9 @@ export default {
 					<h5 class="font-weight-bold">Novità</h5>
 					<div class="row">
 						<div v-for="venue in newVenues" :key="venue.id" class="col-6 col-md-4 col-xl-3 mb-4">
-							<pg-venue-item :venue="venue" />
+							<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">
+								<pg-venue-grid-item :venue="venue" />
+							</router-link>
 						</div>
 					</div>
 				</template>
@@ -292,7 +298,7 @@ export default {
 			<div class="container">
 				<div class="row">
 					<div class="col-md-4 text-center">
-						<img src="/img/home/venue.svg" class="pg-home-page__promote-img" />
+						<img src="/img/home/venue.svg" class="pg-home-page__promote-img">
 					</div>
 					<div class="col-md-8 col-xl-7">
 						<p class="text-dark-green-muted mb-1">Scusa il gioco di parole</p>

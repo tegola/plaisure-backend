@@ -15,11 +15,11 @@
  ☐ Edit sala: focus all'elemento giusto quando c'è errore
  ✔ Edit sala: Il menu utente appare sotto alla navbar secondaria @done (18-09-03 22:53)
  ☐ Edit sala: drag della mappa più che del marker
- ☐ Importante: rimuovere il geocoder in home page, che ora è a pagamento (e dà errori CORS) e a noi non serve granché
+ ✔ Importante: rimuovere il geocoder in home page, che ora è a pagamento (e dà errori CORS) e a noi non serve granché @done (18-10-10 19:50)
  ✔ Pagine di recupero password @done (18-09-14 17:34)
  ☐ Email di benvenuto all'utente dopo la registrazione
  ☐ Aggiungere i link a terms of service e privacy policy (footer e registrazione utente)
- ☐ Spostare le icone svg (views/site/components/vectors.blade.php) in javascript
+ ✔ Spostare le icone svg (views/site/components/vectors.blade.php) in javascript @done (18-10-10 19:50)
  ☐ Spostare i css nelle pagine
  ☐ Ottimizzare la pagina di ricerca per i cellulari
  ☐ Aggiustare gli spazi per il "notch" di iPhone X*

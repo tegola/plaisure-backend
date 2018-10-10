@@ -1,8 +1,8 @@
 <script>
 import { mapState } from 'vuex';
-import PgNoItems from 'prontogioco/app/components/no-items';
 import PgButton from 'prontogioco/app/components/button';
-import Item from './item';
+import PgNoItems from 'prontogioco/app/components/no-items';
+import PgVenueGridItem from 'prontogioco/app/components/venue-grid-item';
 
 export default {
 	name: 'PgUserDetailPage',
@@ -10,7 +10,7 @@ export default {
 	components: {
 		PgNoItems,
 		PgButton,
-		Item
+		PgVenueGridItem
 	},
 
 	computed: {
@@ -52,7 +52,20 @@ export default {
 
 			<div v-if="venues.length" class="row mt-5">
 				<div v-for="venue in venues" :key="venue.id" class="col-md-6 col-xl-4 mb-4">
-					<item :venue="venue" />
+					<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">
+						<pg-venue-grid-item
+							:venue="venue"
+							:show-highlight="false"
+							class="mb-2"
+						/>
+					</router-link>
+					<pg-button
+						:to="{ name: 'venues.edit', params: { venueId: venue.id } }"
+						block
+						variant="primary"
+						size="sm">
+						{{ $t('common.actions.edit') }}
+					</pg-button>
 				</div>
 			</div>
 

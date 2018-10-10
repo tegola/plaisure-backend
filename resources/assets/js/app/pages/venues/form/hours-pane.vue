@@ -68,7 +68,7 @@ export default {
 
 <template>
 	<div class="my-5">
-		<h4>{{ $t('pages.venue_form.hours.title') }}</h4>
+		<h5>{{ $t('pages.venue_form.hours.title') }}</h5>
 		<hr>
 		<b-form-group
 			v-for="day in days"

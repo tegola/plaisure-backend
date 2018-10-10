@@ -5,13 +5,11 @@
 
 // Contextual colors
 .text-inherit {
-	& {
+	color: inherit;
+}
+a.text-inherit {
+	@include hover-focus {
 		color: inherit;
-	}
-	a#{&} {
-		@include hover-focus {
-			color: inherit;
-		}
 	}
 }
 

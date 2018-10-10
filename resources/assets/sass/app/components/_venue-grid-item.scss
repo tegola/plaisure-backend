@@ -1,0 +1,56 @@
+.pg-venue-grid-item {
+	color: inherit;
+
+	&__image {
+		border-radius: $border-radius;
+		margin-bottom: $spacer / 2;
+		background-color: $palette-dark-green-100;
+		position: relative;
+
+		&::after {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			content: '';
+			pointer-events: none;
+			border-radius: $border-radius;
+			transition: .15s;
+		}
+	}
+	&__image-content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	&__image-icon {
+		fill: $white;
+		width: 64px;
+		height: 64px;
+	}
+	&__category {
+		text-transform: uppercase;
+		letter-spacing: .025rem;
+		color: $gray-700;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+	}
+	&__name {
+		font-weight: $font-weight-semibold;
+	}
+	&__address {
+		color: $text-muted;
+		font-size: $font-size-xs;
+	}
+	&__highlight {
+		text-transform: uppercase;
+		letter-spacing: .025rem;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+	}
+
+	&:hover &__image::after {
+		box-shadow: inset 0 0 0 2px theme-color('primary');
+	}
+}

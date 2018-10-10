@@ -11,6 +11,10 @@ export default {
 			type: String,
 			default: '3:2',
 			validator: value => value.match(/^(\d+):(\d+)$/)
+		},
+		contentClass: {
+			type: String,
+			default: null
 		}
 	},
 
@@ -36,7 +40,7 @@ export default {
 <template>
 	<div :style="styles" class="pg-image-frame">
 		<div :style="sizerStyles" />
-		<div v-if="$slots.default" class="pg-image-frame__content">
+		<div v-if="$slots.default" :class="['pg-image-frame__content', contentClass]">
 			<slot />
 		</div>
 	</div>

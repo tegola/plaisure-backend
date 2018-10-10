@@ -67,7 +67,7 @@ export default {
 
 <template>
 	<div class="my-5">
-		<h4>{{ $t('pages.venue_form.jackpots.title') }}</h4>
+		<h5>{{ $t('pages.venue_form.jackpots.title') }}</h5>
 		<hr>
 		<!-- FIXME: Controllare la validazione e i messaggi di errore -->
 		<b-form-group v-for="n in 3" :key="n"

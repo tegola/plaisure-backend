@@ -113,7 +113,7 @@ export default {
 
 <template>
 	<div class="my-5">
-		<h4>{{ $t('pages.venue_form.photos.title') }}</h4>
+		<h5>{{ $t('pages.venue_form.photos.title') }}</h5>
 		<i18n tag="p" path="pages.venue_form.photos.intro">
 			<span place="count">{{ subscription.photo_limit }}</span>
 			<a href="#" place="action"><strong>{{ $t('pages.venue_form.photos.intro_action') }}</strong></a>

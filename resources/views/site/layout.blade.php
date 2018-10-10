@@ -13,10 +13,6 @@
 		<meta name="google-site-verification" content="KOtwsto-b3doO3NsrSsETD-ci_02n8wKCO0dzZfL_bk">
 		<meta name="msvalidate.01" content="0F83EB755446F01A87E89E5439AB1573">
 
-		{{-- Typekit --}}
-		<script src="https://use.typekit.net/qwv3xzz.js"></script>
-		<script>try{Typekit.load({ async: true });}catch(e){}</script>
-
 		{{-- Stripe --}}
 		<script src="https://js.stripe.com/v3/"></script>
 
@@ -33,8 +29,6 @@
 		<div id="app">
 			<pg-app></pg-app>
 		</div>
-
-		@include('site.components.vectors')
 
 		<script src="{{ mix('js/app.js') }}"></script>
 	</body>

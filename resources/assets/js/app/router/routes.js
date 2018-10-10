@@ -76,7 +76,7 @@ export default [
 	{
 		path: '/venues/:venueId',
 		name: 'venues.detail',
-		component: () => import('prontogioco/app/pages/venues/detail/main'),
+		component: () => import('prontogioco/app/pages/venues/detail'),
 		props: true
 	},
 

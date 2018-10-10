@@ -50,8 +50,9 @@
 		line-height: 4;
 	}
 	&__token {
-		display: inline-block;
-		padding: $spacer;
+		display: inline-flex;
+		align-items: center;
+		padding: .5rem 1rem;
 		border-radius: 3rem;
 		color: $body-color;
 		background-color: $white;
@@ -80,53 +81,12 @@
 			margin-left: -.5rem;
 		}
 	}
-
-	// Venues
-	&__venue-item {
-		color: inherit !important;
-		text-decoration: none !important;
-	}
-	&__venue-item-image {
-		border-radius: $border-radius;
-		margin-bottom: $spacer / 2;
-		background-color: $palette-dark-green-100;
-		position: relative;
-
-		&::after {
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			content: '';
-			pointer-events: none;
-			border-radius: $border-radius;
-			transition: .15s;
-		}
-	}
-	&__venue-item-category {
-		text-transform: uppercase;
-		letter-spacing: .025rem;
-		color: $gray-700;
-		font-size: $font-size-xs;
-		font-weight: $font-weight-semibold;
-	}
-	&__venue-item-name {
-		font-weight: $font-weight-semibold;
-	}
-	&__venue-item-address {
-		color: $text-muted;
-		font-size: $font-size-xs;
-	}
-	&__venue-item-highlight {
-		text-transform: uppercase;
-		letter-spacing: .025rem;
-		font-size: $font-size-xs;
-		font-weight: $font-weight-bold;
-	}
-
-	&__venue-item:hover &__venue-item-image::after {
-		box-shadow: inset 0 0 0 2px theme-color('primary');
+	&__token-icon {
+		fill: theme-color('primary');
+		width: 40px;
+		height: 40px;
+		margin-left: -.5rem;
+		margin-right: .5rem;
 	}
 
 	// Promote

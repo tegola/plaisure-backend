@@ -159,7 +159,7 @@ export default {
 				<input :value="lng" type="hidden" name="c_lng">
 
 				<span class="navbar__search-icon-container">
-					<pg-icon icon="search" class="navbar__search-icon" />
+					<pg-icon icon="search" />
 				</span>
 				<pg-place-textbox
 					:placeholder="placeholder"

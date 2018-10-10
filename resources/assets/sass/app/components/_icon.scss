@@ -3,24 +3,28 @@
 	width: $icon-size-base;
 	height: $icon-size-base;
 	fill: currentColor;
-	vertical-align: -.25rem;
-}
+	vertical-align: -.25em;
 
-// Sizes
-.pg-icon--2x {
-	width: $icon-size-base * 2;
-	height: $icon-size-base * 2;
-}
-.pg-icon--3x {
-	width: $icon-size-base * 3;
-	height: $icon-size-base * 3;
-}
+	> svg {
+		vertical-align: 0;
+	}
 
-// Spinning icon
-.pg-icon--spinning {
-	animation: pg-icon__spin 1s infinite linear;
+	// Sizes
+	&--2x {
+		width: $icon-size-base * 2;
+		height: $icon-size-base * 2;
+	}
+	&--3x {
+		width: $icon-size-base * 3;
+		height: $icon-size-base * 3;
+	}
+
+	// Spinning icon
+	&--spinning {
+		animation: pg-icon__spin 1s infinite linear;
+	}
 }
 
 @keyframes pg-icon__spin {
-	100% { transform: rotate(359deg); }
+	100% { transform: rotate(360deg); }
 }

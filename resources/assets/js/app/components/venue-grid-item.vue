@@ -3,7 +3,7 @@ import isVenueOpen from 'prontogioco/utilities/is-venue-open';
 import PgImageFrame from 'prontogioco/app/components/image-frame';
 
 export default {
-	name: 'PgHomePageVenueItem',
+	name: 'PgVenueGridItem',
 
 	components: {
 		PgImageFrame
@@ -13,17 +13,19 @@ export default {
 		venue: {
 			type: Object,
 			required: true
+		},
+
+		showHighlight: {
+			type: Boolean,
+			default: true
 		}
 	},
 
 	computed: {
-		route() {
-			return {
-				name: 'venues.detail',
-				params: {
-					venueId: this.venue.id
-				}
-			};
+		icon() {
+			const name = this.firstCategoryMachineName.replace('-', '_');
+
+			return require(`!svg-inline-loader!assets/svg/venue-grid-item/${name}.svg`);
 		},
 
 		photo() {
@@ -86,15 +88,21 @@ export default {
 </script>
 
 <template>
-	<router-link :to="route" class="pg-home-page__venue-item">
+	<div class="pg-venue-grid-item">
 		<pg-image-frame
 			:src="photo ? photo.resized_url : null"
-			class="pg-home-page__venue-item-image"
-		/>
+			:content-class="photo ? null : 'pg-venue-grid-item__image-content'"
+			class="pg-venue-grid-item__image">
+			<div
+				v-if="!photo"
+				class="pg-venue-grid-item__image-icon"
+				v-html="icon"
+			/>
+		</pg-image-frame>
 
-		<div class="pg-home-page__venue-item-category">{{ categories }}</div>
-		<div class="pg-home-page__venue-item-name">{{ venue.name }}</div>
-		<div class="pg-home-page__venue-item-address">{{ address }}</div>
-		<div v-if="highlight" :class="['pg-home-page__venue-item-highlight', highlight.class]">{{ highlight.label }}</div>
-	</router-link>
+		<div class="pg-venue-grid-item__category">{{ categories }}</div>
+		<div class="pg-venue-grid-item__name">{{ venue.name }}</div>
+		<div class="pg-venue-grid-item__address">{{ address }}</div>
+		<div v-if="showHighlight && highlight" :class="['pg-venue-grid-item__highlight', highlight.class]">{{ highlight.label }}</div>
+	</div>
 </template>

@@ -19,7 +19,7 @@ export default {
 	},
 
 	computed: {
-		svgClass() {
+		classes() {
 			return [
 				'pg-icon',
 				`pg-icon--${this.icon}`,
@@ -27,17 +27,14 @@ export default {
 				this.spinning ? 'pg-icon--spinning' : null
 			];
 		},
-		useProps() {
-			return {
-				'xlink:href': '#pg-icon-' + this.icon
-			};
+
+		svg() {
+			return require(`!svg-inline-loader!assets/svg/icons/${this.icon}.svg`);
 		}
 	}
 };
 </script>
 
 <template>
-	<svg :class="svgClass">
-		<use v-bind="useProps" />
-	</svg>
+	<div :class="classes" v-html="svg" />
 </template>

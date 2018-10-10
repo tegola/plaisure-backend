@@ -212,7 +212,7 @@ export default {
 
 <template>
 	<div class="my-5">
-		<h4>{{ $t('pages.venue_form.services.title') }}</h4>
+		<h5>{{ $t('pages.venue_form.services.title') }}</h5>
 		<hr>
 		<b-form-group v-bind="formGroupProps">
 			<div class="form-row">

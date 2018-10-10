@@ -68,10 +68,6 @@
 		align-items: center;
 		pointer-events: none;
 	}
-	.navbar__search-icon {
-		position: relative;
-		top: -.1rem;
-	}
 	.navbar__search-textbox {
 		padding-left: ($input-btn-padding-x-lg * 1.5) + $icon-size-base;
 	}
