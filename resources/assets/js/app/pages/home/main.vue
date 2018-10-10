@@ -7,6 +7,7 @@ import PgVenueGridItem from 'prontogioco/app/components/venue-grid-item';
 import PgToken from './token';
 import { APP_NAME } from 'prontogioco/constants';
 import { cityPresets } from 'prontogioco/app/static';
+import { mapState } from 'vuex';
 
 export default {
 	name: 'PgHomePage',
@@ -44,8 +45,13 @@ export default {
 			return this.$root.hasGeolocation;
 		},
 
+		...mapState('user', {
+			user: 'user',
+			userVenues: 'venues'
+		}),
+
 		userLocation() {
-			return this.$store.state.user.coords;
+			return this.user.coords;
 		},
 
 		canSubmit() {
@@ -75,6 +81,7 @@ export default {
 			cityPresets.forEach(preset => {
 				presets.push({
 					value: preset.query,
+					icon: 'location',
 					label: preset.query,
 					route: {
 						name: 'venues.explore',
@@ -84,6 +91,30 @@ export default {
 			});
 
 			return presets;
+		},
+
+		promoteButton() {
+			// Unregistered user
+			if (!this.user) {
+				return {
+					route: { name: 'register'},
+					label: 'Registrati come gestore'
+				};
+			}
+
+			// Logged in user with no venues
+			if (!this.userVenues.length) {
+				return {
+					route: { name: 'venues.add' },
+					label: 'Aggiungi la tua attività'
+				};
+			}
+
+			// Logged in user with at least a venue
+			return {
+				route: { name: 'user' },
+				label: 'Vai alla gestione attività'
+			};
 		}
 	},
 
@@ -260,6 +291,8 @@ export default {
 			<div class="my-5 pg-home-page__token-section">
 				<h5 class="font-weight-bold">Esplora</h5>
 
+				FIXME: Aggiungi altre città
+
 				<pg-token
 					v-for="preset in tokenPresets"
 					:key="preset.value"
@@ -305,7 +338,7 @@ export default {
 						<h3 class="display-4 text-dark-green mb-3">Mettiti in gioco</h3>
 						<p class="lead text-dark-green mb-4">Registra la tua attività o reclama la gestione di un’attività già presente. È veloce, e soprattutto è gratis!</p>
 						<p>
-							<pg-button :to="{ name: 'register' }" variant="primary">Registrati come gestore</pg-button>
+							<pg-button :to="promoteButton.route" variant="primary">{{ promoteButton.label }}</pg-button>
 						</p>
 					</div>
 				</div>

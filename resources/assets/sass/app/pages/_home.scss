@@ -60,25 +60,22 @@
 			0 0 0 2px transparent inset,
 			0 1px 0 rgba($black, .08),
 			0 1px 3px rgba($black, .1);
-		transition: box-shadow .15s, color .15s;
+		transition: .15s;
 		outline: none;
 		
 		// Spacing
 		line-height: $line-height-base; // Reset parent line height
-		margin-right: $spacer;
+		margin-left: -.5rem;
+		margin-right: 1.5rem;
 
 		&:hover,
 		&:focus {
-			color: $body-color;
+			color: inherit;
 			text-decoration: none;
 			box-shadow:
 				0 0 0 2px theme-color('primary') inset,
 				0 1px 0 rgba($black, .08),
 				0 1px 3px rgba($black, .1);
-		}
-
-		&:first-of-type {
-			margin-left: -.5rem;
 		}
 	}
 	&__token-icon {
@@ -87,6 +84,10 @@
 		height: 40px;
 		margin-left: -.5rem;
 		margin-right: .5rem;
+
+		.pg-svg__background {
+			fill: $palette-green-100;
+		}
 	}
 
 	// Promote

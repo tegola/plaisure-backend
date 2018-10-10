@@ -25,7 +25,7 @@ export default {
 		icon() {
 			const name = this.firstCategoryMachineName.replace('-', '_');
 
-			return require(`!svg-inline-loader!assets/svg/venue-grid-item/${name}.svg`);
+			return require(`!svg-inline-loader!assets/svg/category-icons/${name}.svg`);
 		},
 
 		photo() {

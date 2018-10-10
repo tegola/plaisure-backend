@@ -15,7 +15,7 @@ export default {
 
 	computed: {
 		iconSvg() {
-			return require(`!svg-inline-loader!assets/svg/venue-grid-item/${this.icon}.svg`);
+			return require(`!svg-inline-loader!assets/svg/category-icons/${this.icon}.svg`);
 		}
 	}
 };

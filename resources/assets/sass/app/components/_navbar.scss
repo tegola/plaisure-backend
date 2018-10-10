@@ -25,11 +25,11 @@
 	width: 29px;
 }
 .navbar__logo-arrow {
-	vertical-align: middle;
 	margin-left: .25rem;
 	width: 16px;
 	height: 16px;
 	transition: transform $navbar-transition-duration;
+	font-size: 0; // Fixes icon misalignment
 
 	.navbar--drawer-open & {
 		transform: rotate(180deg);

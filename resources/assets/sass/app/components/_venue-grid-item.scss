@@ -28,6 +28,13 @@
 		fill: $white;
 		width: 64px;
 		height: 64px;
+
+		.pg-svg__background {
+			fill: $white;
+		}
+		.pg-svg__foreground {
+			fill: $palette-dark-green-100;
+		}
 	}
 	&__category {
 		text-transform: uppercase;
