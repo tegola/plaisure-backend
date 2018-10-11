@@ -10,7 +10,7 @@ import PgVenueListItem from './list-item';
 import PgFilterButton from './filter-button';
 
 
-import { DEFAULT_COORDS, SEARCH_RADIUSES } from 'prontogioco/constants';
+import { MAP_DEFAULT_CENTER, SEARCH_RADIUSES } from 'prontogioco/constants';
 
 export default {
 	name: 'PgExplorePage',
@@ -27,9 +27,10 @@ export default {
 
 	data() {
 		const queryParams = this.$route.query;
+		let searchMode = 'center';
 
 		// Prepare map center
-		let mapCenter = _extend({}, DEFAULT_COORDS);
+		let mapCenter = _extend({}, MAP_DEFAULT_CENTER);
 		if (['c_lat', 'c_lng'].every(key => key in queryParams)) {
 			mapCenter = {
 				lat: parseFloat(queryParams.c_lat),
@@ -37,7 +38,7 @@ export default {
 			};
 		}
 
-		// Prepare map bounds
+		// Prepare map bounds and change search mode
 		let mapBounds = null;
 		if (['ne_lat', 'ne_lng', 'sw_lat', 'sw_lng'].every(key => key in queryParams)) {
 			mapBounds = {
@@ -46,7 +47,10 @@ export default {
 				south: parseFloat(queryParams.sw_lat),
 				west: parseFloat(queryParams.sw_lng)
 			};
+			searchMode = 'bounds';
 		}
+
+		const mapZoom = parseInt(queryParams.zoom) || 13;
 
 		// Prepare default search params
 		const searchParams = _extend({
@@ -78,7 +82,7 @@ export default {
 			locating: false,
 			userLocation: null,
 
-			searchMode: 'center', // bounds, center
+			searchMode, // bounds, center
 			searchParams,
 			placeholder: undefined,
 			query: queryParams.query,
@@ -91,6 +95,7 @@ export default {
 			mapBoundsEventEnabled: false,
 			mapCenter,
 			mapBounds,
+			mapZoom,
 			mapOptions: {
 				gestureHandling: 'greedy',
 				fullscreenControl: false,
@@ -390,10 +395,10 @@ export default {
 					v-if="$root.hasGeolocation"
 					:loading="locating"
 					:icon="userLocation ? 'location' : 'location-outline'"
+					:title="$t('pages.explore.location')"
+					:aria-label="$t('pages.explore.location')"
 					variant="naked"
 					class="navbar__location-btn"
-					title="Usa la tua posizione"
-					aria-label="Usa la tua posizione"
 					@click="findUserLocation"
 				/>
 			</template>
@@ -482,7 +487,7 @@ export default {
 				v-if="showMap"
 				ref="map"
 				:center="mapCenter"
-				:zoom="13"
+				:zoom="mapZoom"
 				:bounds="mapBounds"
 				:options="mapOptions"
 				class="map"

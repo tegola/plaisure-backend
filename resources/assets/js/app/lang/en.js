@@ -81,7 +81,7 @@ export default {
 	pages: {
 		home: {
 			search: {
-				title: 'Find the best game rooms near you.',
+				title: 'Find the best games rooms near you.',
 				subtitle: "It's easy with {name}, and with more than {count} venues available, you're spoilt for choice!",
 				label: 'Search',
 				city_placeholder: 'Type the name of your city',
@@ -473,6 +473,14 @@ export default {
 
 	// Database ---------------------------------------------------------------
 	db: {
+		cities: {
+			bologna: 'Bologna',
+			milano: 'Milano',
+			napoli: 'Napoli',
+			palermo: 'Palermo',
+			roma: 'Roma',
+			venezia: 'Venezia'
+		},
 		categories: {
 			betting_agency: 'Betting Agency',
 			bingo: 'Bingo',

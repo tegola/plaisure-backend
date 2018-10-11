@@ -1,18 +1,18 @@
 <script>
 import _extend from 'lodash/extend';
 import constants from 'prontogioco/constants';
-import { cityPresets } from 'prontogioco/app/static';
+import cities from 'prontogioco/app/pages/home/cities';
 
 export default {
 	name: 'PgPageFooter',
 
 	data() {
 		return {
-			presets: cityPresets.map(preset => ({
-				city: preset.query,
+			presets: cities.map(city => ({
+				city: city.query,
 				route: {
 					name: 'venues.explore',
-					query: preset
+					query: city
 				}
 			}))
 		};

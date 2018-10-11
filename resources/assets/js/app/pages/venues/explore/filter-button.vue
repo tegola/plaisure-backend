@@ -64,9 +64,18 @@ export default {
 			if (!v) return;
 
 			if (this.multiple && v instanceof Array) {
-				if (v.length === 0) return this.emptyText;
-				if (v.length === 1) return this.options.find(option => option.value === v[0]).label;
-				if (v.length === this.options.length && this.allText) return this.allText;
+				if (v.length === 0) {
+					return this.emptyText;
+				}
+
+				if (v.length === 1) {
+					const option = this.options.find(option => option.value === v[0]);
+					return option ? option.label : '';
+				}
+
+				if (v.length === this.options.length && this.allText) {
+					return this.allText;
+				}
 
 				return this.$tc('pages.explore.filters.selected', v.length, { count: v.length });
 			} else {

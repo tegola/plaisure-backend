@@ -72,22 +72,50 @@
 		&:focus {
 			color: inherit;
 			text-decoration: none;
+		}
+	}
+	&__token-icon {
+		width: 40px;
+		height: 40px;
+		margin-left: -.5rem;
+		margin-right: .5rem;
+	}
+
+	&__token--category {
+		&:hover,
+		&:focus {
 			box-shadow:
 				0 0 0 2px theme-color('primary') inset,
 				0 1px 0 rgba($black, .08),
 				0 1px 3px rgba($black, .1);
 		}
-	}
-	&__token-icon {
-		fill: theme-color('primary');
-		width: 40px;
-		height: 40px;
-		margin-left: -.5rem;
-		margin-right: .5rem;
 
-		.pg-svg__background {
-			fill: $palette-green-100;
+		.pg-home-page__token-icon {
+			fill: theme-color('primary');
+
+			.pg-svg__background {
+				fill: $palette-green-100;
+			}
 		}
+
+	}
+	&__token--city {
+		&:hover,
+		&:focus {
+			box-shadow:
+				0 0 0 2px theme-color('accent') inset,
+				0 1px 0 rgba($black, .08),
+				0 1px 3px rgba($black, .1);
+		}
+
+		.pg-home-page__token-icon {
+			fill: theme-color('accent');
+
+			.pg-svg__background {
+				fill: $palette-fuchsia-100;
+			}
+		}
+
 	}
 
 	// Promote

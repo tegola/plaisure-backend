@@ -1,13 +1,15 @@
 <script>
 import _extend from 'lodash/extend';
+import _shuffle from 'lodash/shuffle';
 import { formatResult } from 'prontogioco/utilities/geocoder';
 import PgButton from 'prontogioco/app/components/button';
 import PgPlaceTextbox from 'prontogioco/app/components/place-textbox';
 import PgVenueGridItem from 'prontogioco/app/components/venue-grid-item';
 import PgToken from './token';
 import { APP_NAME } from 'prontogioco/constants';
-import { cityPresets } from 'prontogioco/app/static';
 import { mapState } from 'vuex';
+import cities from './cities';
+import { MAP_DEFAULT_BOUNDS, MAP_DEFAULT_ZOOM } from 'prontogioco/constants';
 
 export default {
 	name: 'PgHomePage',
@@ -64,33 +66,39 @@ export default {
 			// Categories
 			this.categories.forEach(category => {
 				presets.push({
+					type: 'category',
 					value: category.machine_name,
 					icon: category.machine_name.replace('_', '-'),
 					label: this.$t(`db.categories.${category.machine_name}`),
 					route: {
 						name: 'venues.explore',
 						query: {
-							radius: 10,
-							categories: category.id
+							categories: [category.id],
+							ne_lat: MAP_DEFAULT_BOUNDS.ne.lat,
+							ne_lng: MAP_DEFAULT_BOUNDS.ne.lng,
+							sw_lat: MAP_DEFAULT_BOUNDS.sw.lat,
+							sw_lng: MAP_DEFAULT_BOUNDS.sw.lng,
+							zoom: MAP_DEFAULT_ZOOM
 						}
 					}
 				});
 			});
 
 			// Cities
-			cityPresets.forEach(preset => {
+			cities.forEach(city => {
 				presets.push({
-					value: preset.query,
+					type: 'city',
+					value: city.query,
 					icon: 'location',
-					label: preset.query,
+					label: city.query,
 					route: {
 						name: 'venues.explore',
-						query: preset
+						query: city
 					}
 				});
 			});
 
-			return presets;
+			return _shuffle(presets);
 		},
 
 		promoteButton() {
@@ -290,13 +298,11 @@ export default {
 		<div class="container">
 			<div class="my-5 pg-home-page__token-section">
 				<h5 class="font-weight-bold">{{ $t('pages.home.explore.title') }}</h5>
-
-				FIXME: Aggiungi altre città
-
 				<pg-token
 					v-for="preset in tokenPresets"
 					:key="preset.value"
 					:icon="preset.icon"
+					:type="preset.type"
 					:to="preset.route">
 					{{ preset.label }}
 				</pg-token>

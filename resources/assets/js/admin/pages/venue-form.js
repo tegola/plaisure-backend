@@ -36,8 +36,8 @@ export default {
 			payPerViewPlatforms: pg.payPerViewPlatforms,
 
 			mapCenter: {
-				lat: pg.venue.geo_latitude || this.DEFAULT_COORDS.lat,
-				lng: pg.venue.geo_longitude || this.DEFAULT_COORDS.lng
+				lat: pg.venue.geo_latitude || this.MAP_DEFAULT_CENTER.lat,
+				lng: pg.venue.geo_longitude || this.MAP_DEFAULT_CENTER.lng
 			},
 			mapZoom: pg.venue.geo_latitude && pg.venue.geo_longitude ? 15 : 5,
 
