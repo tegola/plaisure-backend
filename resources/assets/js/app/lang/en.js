@@ -80,25 +80,36 @@ export default {
 	// Pages ------------------------------------------------------------------
 	pages: {
 		home: {
-			title: 'Search game rooms nearby, find the highest jackpots and&nbsp;win!',
-			subtitle: 'Over 5000 venues available!',
-			search: 'Search',
-			city_placeholder: 'Type your city name',
-			location_placeholder: 'Near you',
-			location: 'Use your current location',
-			location_error: "We couldn't find your location.",
-			submit: 'Search',
+			search: {
+				title: 'Find the best game rooms near you.',
+				subtitle: "It's easy with {name}, and with more than {count} venues available, you're spoilt for choice!",
+				label: 'Search',
+				city_placeholder: 'Type the name of your city',
+				location_placeholder: 'Near you',
+				location: 'Use your current location',
+				location_error: "We couldn't find your location.",
+				submit: 'Search'
+			},
+			venue: {
+				hint: 'Show your venue here'
+			},
 			explore: {
-				intro: 'Feeling lucky?',
-				title: 'Explore venues nearby'
+				title: 'Explore'
+			},
+			highlights: {
+				title: 'Highlights'
+			},
+			new: {
+				title: 'New'
 			},
 			promote: {
-				intro: "It's your daily job?",
-				title: 'Promote your venue'
-			},
-			play_responsibly: {
-				intro: 'Be careful',
-				title: 'Play responsibly'
+				intro: 'Excuse the pun',
+				title: 'Get in the game',
+				paragraph: "Add your venue or claim and manage an existing one. It's fast, and È veloce, and best of all it's free!",
+				register: 'Register as owner',
+				add: 'Add your venue',
+				manage: 'Manage your venues',
+				more: 'Learn more'
 			}
 		},
 
@@ -188,7 +199,7 @@ export default {
 		venue_detail: {
 			subtitle: '{category} in {city}',
 			gallery: {
-				add: 'Add photo',
+				add: 'Add photos',
 				all: 'See all'
 			},
 			description: 'Description',

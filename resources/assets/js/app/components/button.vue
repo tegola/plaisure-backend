@@ -24,6 +24,11 @@ export default {
 		icon: {
 			type: String,
 			default: ''
+		},
+		iconPosition: {
+			type: String,
+			default: 'left',
+			validator: value => ['left', 'right'].indexOf(value) !== -1
 		}
 	},
 
@@ -37,11 +42,22 @@ export default {
 
 <template>
 	<b-button v-bind="$attrs" :disabled="isDisabled" v-on="$listeners">
+		<!-- Left icon (used also as loader) -->
 		<pg-icon
-			v-if="icon || loading"
+			v-if="(icon && iconPosition === 'left') || loading"
 			:icon="loading ? 'circle-outline-notch' : icon"
 			:spinning="loading"
+			class="pg-button__icon"
 		/>
+
+		<!-- Content -->
 		<slot v-if="!loading" />
+
+		<!-- Right icon -->
+		<pg-icon
+			v-if="(icon && iconPosition === 'right') && !loading"
+			:icon="icon"
+			class="pg-button__icon"
+		/>
 	</b-button>
 </template>

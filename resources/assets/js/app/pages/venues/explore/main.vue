@@ -434,7 +434,7 @@ export default {
 				/>
 				-->
 			</div>
-			<div v-if="venues.length" class="text-muted px-3 align-self-center text-nowrap">
+			<div v-if="venues.length" class="text-muted px-3 align-self-center text-nowrap small">
 				{{
 					$tc('pages.explore.results', venues.length, {
 						count: hasMorePages ? `${venues.length}+` : venues.length
@@ -505,13 +505,14 @@ export default {
 				<template slot="visible">
 					<!-- Refresh buttons -->
 					<template v-if="$mq.comfortable && mapNeedsRefresh">
-						<button
+						<pg-button
 							id="desktop-refresh-btn"
 							:aria-label="$t('pages.explore.search_area')"
-							class="btn map-btn map-refresh-btn"
-							@click="onSearchBoundsClick">
-							<pg-icon icon="refresh" />
-						</button>
+							variant="accent"
+							class="map-refresh-btn"
+							icon="refresh"
+							@click="onSearchBoundsClick"
+						/>
 						<b-tooltip
 							target="desktop-refresh-btn"
 							placement="right"
@@ -521,7 +522,7 @@ export default {
 						</b-tooltip>
 					</template>
 					<div v-if="$mq.constrained && mapNeedsRefresh" v-cloak class="container-fluid map-floating-controls">
-						<button class="btn btn-accent btn-block" @click="onSearchBoundsClick">{{ $t('pages.explore.search_area') }}</button>
+						<pg-button variant="accent" block @click="onSearchBoundsClick">{{ $t('pages.explore.search_area') }}</pg-button>
 					</div>
 				</template>
 			</pg-map>

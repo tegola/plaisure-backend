@@ -80,25 +80,36 @@ export default {
 	// Pages ------------------------------------------------------------------
 	pages: {
 		home: {
-			title: 'Cerca le sale da gioco più vicine a te, trova i jackpot più alti e&nbsp;vinci!',
-			subtitle: 'Più di 5000 sale tra cui&nbsp;scegliere!',
-			search: 'Cerca',
-			city_placeholder: 'Scrivi la tua città',
-			location_placeholder: 'Vicino a te',
-			location: 'Usa la tua posizione',
-			location_error: 'Non è stato possibile trovare la tua posizione.',
-			submit: 'Cerca',
+			search: {
+				title: 'Trova le sale da gioco più vicine a te.',
+				subtitle: "Su {name} è veloce, e con più di {count} sale c'è solo l'imbarazzo della scelta!",
+				label: 'Cerca',
+				city_placeholder: 'Scrivi la tua città',
+				location_placeholder: 'Vicino a te',
+				location: 'Usa la tua posizione',
+				location_error: 'Non è stato possibile trovare la tua posizione.',
+				submit: 'Cerca'
+			},
+			venue: {
+				hint: 'Mostra qui la tua attività'
+			},
 			explore: {
-				intro: 'Ti senti fortunato?',
-				title: 'Esplora la tua zona'
+				title: 'Esplora'
+			},
+			highlights: {
+				title: 'In rilievo'
+			},
+			new: {
+				title: 'Novità'
 			},
 			promote: {
-				intro: 'Sei nel campo?',
-				title: 'Promuovi la tua attività'
-			},
-			play_responsibly: {
-				intro: 'Non esagerare',
-				title: 'Gioca responsabilmente'
+				intro: 'Scusa il gioco di parole',
+				title: 'Mettiti in gioco',
+				paragraph: 'Registra la tua attività o reclama la gestione di un’attività già presente. È veloce, e soprattutto è gratis!',
+				register: 'Registrati come gestore',
+				add: 'Aggiungi la tua attività',
+				manage: 'Vai alla gestione attività',
+				more: 'Maggiori informazioni'
 			}
 		},
 

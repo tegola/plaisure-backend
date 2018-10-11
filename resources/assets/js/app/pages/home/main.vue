@@ -23,7 +23,7 @@ export default {
 		return {
 			APP_NAME,
 			query: null,
-			placeholder: this.$t('pages.home.city_placeholder'),
+			placeholder: this.$t('pages.home.search.city_placeholder'),
 			placeTextboxOptions: {
 				types: ['geocode'] // Limit search to cities, addresses, etc.
 			},
@@ -98,7 +98,7 @@ export default {
 			if (!this.user) {
 				return {
 					route: { name: 'register'},
-					label: 'Registrati come gestore'
+					label: this.$t('pages.home.promote.register')
 				};
 			}
 
@@ -106,14 +106,14 @@ export default {
 			if (!this.userVenues.length) {
 				return {
 					route: { name: 'venues.add' },
-					label: 'Aggiungi la tua attività'
+					label: this.$t('pages.home.promote.add')
 				};
 			}
 
 			// Logged in user with at least a venue
 			return {
 				route: { name: 'user' },
-				label: 'Vai alla gestione attività'
+				label: this.$t('pages.home.promote.manage')
 			};
 		}
 	},
@@ -146,7 +146,7 @@ export default {
 
 				// Update view
 				this.query = null;
-				this.placeholder = ['(', this.$t('pages.home.location_placeholder'), ')'].join('');
+				this.placeholder = ['(', this.$t('pages.home.search.location_placeholder'), ')'].join('');
 				this.useUserLocation = true;
 
 				// Find city name
@@ -169,7 +169,7 @@ export default {
 					}
 				});
 			}).catch(() => {
-				alert(this.$t('pages.home.location_error'));
+				alert(this.$t('pages.home.search.location_error'));
 			}).then(() => {
 				this.locating = false;
 			});
@@ -178,7 +178,7 @@ export default {
 		onPlaceChanged(place) {
 			// Reset user location indicator
 			this.useUserLocation = false;
-			this.placeholder = this.$t('pages.home.city_placeholder');
+			this.placeholder = this.$t('pages.home.search.city_placeholder');
 
 			// Reset search
 			if (!place) {
@@ -228,15 +228,15 @@ export default {
 					<div class="col-md-7">
 						<div class="row">
 							<div class="col-md-10">
-								<h1 class="display-3 text-dark-green mb-4">Trova le sale da gioco più vicine a te.</h1>
-								<p class="lead text-dark-green-muted font-weight-semibold mb-4">Su {{ APP_NAME }} è veloce, e con più di 5000 sale c'è solo l'imbarazzo della scelta!</p>
+								<h1 class="display-3 text-dark-green mb-4">{{ $t('pages.home.search.title') }}</h1>
+								<p class="lead text-dark-green-muted font-weight-semibold mb-4">{{ $t('pages.home.search.subtitle', { name: APP_NAME, count: 5000 }) }}</p>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-sm-8">
 								<div class="position-relative">
-									<label class="sr-only">{{ $t('pages.home.search') }}</label>
+									<label class="sr-only">{{ $t('pages.home.search.label') }}</label>
 									<pg-place-textbox
 										:placeholder="placeholder"
 										:place="query"
@@ -248,7 +248,7 @@ export default {
 									<div
 										v-b-tooltip
 										v-if="hasGeolocation"
-										:title="$t('pages.home.location')"
+										:title="$t('pages.home.search.location')"
 										class="pg-home-page__search-locate-btn-wrapper">
 										<pg-button
 											:icon="useUserLocation ? 'location' : 'location-outline'"
@@ -270,7 +270,7 @@ export default {
 									size="lg"
 									class="pg-home-page__search-submit-btn"
 									@click="submit">
-									{{ $t('pages.home.submit') }}
+									{{ $t('pages.home.search.submit') }}
 								</pg-button>
 							</div>
 						</div>
@@ -278,7 +278,7 @@ export default {
 					<div class="col-md-5 position-relative">
 						<div class="pg-home-page__main-venue-container">
 							<div class="mb-md-2 text-right small">
-								<a href="#">Mostra qui la tua attività</a>
+								<a href="#">{{ $t('pages.home.venue.hint') }}</a>
 							</div>
 							<div class="pg-home-page__main-venue" />
 						</div>
@@ -289,7 +289,7 @@ export default {
 
 		<div class="container">
 			<div class="my-5 pg-home-page__token-section">
-				<h5 class="font-weight-bold">Esplora</h5>
+				<h5 class="font-weight-bold">{{ $t('pages.home.explore.title') }}</h5>
 
 				FIXME: Aggiungi altre città
 
@@ -304,7 +304,7 @@ export default {
 
 			<div class="my-5">
 				<template v-if="highlightedVenues.length">
-					<h5 class="font-weight-bold">In rilievo</h5>
+					<h5 class="font-weight-bold">{{ $t('pages.home.highlights.title') }}</h5>
 					<div class="row">
 						<div v-for="venue in highlightedVenues" :key="venue.id" class="col-md-6 mb-4">
 							<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">
@@ -315,7 +315,7 @@ export default {
 				</template>
 
 				<template v-if="newVenues.length">
-					<h5 class="font-weight-bold">Novità</h5>
+					<h5 class="font-weight-bold">{{ $t('pages.home.new.title') }}</h5>
 					<div class="row">
 						<div v-for="venue in newVenues" :key="venue.id" class="col-6 col-md-4 col-xl-3 mb-4">
 							<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">
@@ -334,11 +334,14 @@ export default {
 						<img src="/img/home/venue.svg" class="pg-home-page__promote-img">
 					</div>
 					<div class="col-md-8 col-xl-7">
-						<p class="text-dark-green-muted mb-1">Scusa il gioco di parole</p>
-						<h3 class="display-4 text-dark-green mb-3">Mettiti in gioco</h3>
-						<p class="lead text-dark-green mb-4">Registra la tua attività o reclama la gestione di un’attività già presente. È veloce, e soprattutto è gratis!</p>
+						<p class="text-dark-green-muted mb-1">{{ $t('pages.home.promote.intro') }}</p>
+						<h3 class="display-4 text-dark-green mb-3">{{ $t('pages.home.promote.title') }}</h3>
+						<p class="lead text-dark-green mb-4">{{ $t('pages.home.promote.paragraph') }}</p>
 						<p>
-							<pg-button :to="promoteButton.route" variant="primary">{{ promoteButton.label }}</pg-button>
+							<pg-button :to="promoteButton.route" variant="primary" icon="arrow-right" icon-position="right">
+								{{ promoteButton.label }}
+							</pg-button>
+							<pg-button :to="{ name: 'promote' }" variant="link" class="text-dark-green">{{ $t('pages.home.promote.more') }}</pg-button>
 						</p>
 					</div>
 				</div>

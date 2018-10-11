@@ -31,7 +31,7 @@
 		border: 0;
 
 		position: relative;
-		padding: .85rem 1rem;
+		padding: $input-btn-padding-y-lg $input-btn-padding-x-lg;
 		line-height: 1;
 		cursor: default;
 		user-select: none;
@@ -54,18 +54,17 @@
 	.filter-button__label {
 		text-transform: uppercase;
 		font-size: $font-size-xs;
-		font-weight: $font-weight-bold;
+		font-weight: $font-weight-semibold;
 		color: gray('600');
 	}
 	.filter-button__arrow {
-		width: .85rem;
-		height: .85rem;
-		vertical-align: middle;
+		width: .75rem;
+		height: .75rem;
+		vertical-align: -.08em;
 		color: gray('600');
 	}
 	.filter-button__text {
 		margin-top: .125rem;
-		font-size: $font-size-lg;
 	}
 	.dropdown.show > .filter-button {
 		color: $white;
@@ -161,19 +160,21 @@
 		background-color: theme-color('accent');
 		border-radius: 50%;
 	}
-	.map-btn {
-		background-color: $body-bg;
-		color: gray('700');
-		border-radius: $border-radius-sm;
-		box-shadow: 0 1px 4px -1px rgba(#000, .3);
-		padding: 0;
-	}
 	.map-refresh-btn {
 		position: absolute;
-		top: 10px;
-		left: 48px;
-		width: 55px; // Align with zoom buttons
-		height: 55px;
+		top: 101px;
+		left: 10px;
+		width: 40px; // Align with zoom buttons
+		height: 40px;
+		padding: 0;
+		border-radius: $border-radius-sm;
+		box-shadow: 0 1px 4px -1px rgba(#000, .3);
+
+		.pg-button__icon {
+			width: 24px;
+			height: 24px;
+			vertical-align: -.3em;
+		}
 	}
 	.map-floating-controls {
 		position: fixed;
