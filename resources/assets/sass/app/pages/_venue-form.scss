@@ -10,7 +10,8 @@
 		padding: $navbar-padding-y 0;
 	}
 	.section-nav-wrapper {
-		overflow: auto;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
 		padding-top: 0;
 		padding-bottom: 0;
 	}

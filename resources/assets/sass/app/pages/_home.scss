@@ -45,6 +45,28 @@
 		border-radius: $border-radius-lg;
 	}
 
+	// Scrollable pane on small screens
+	@include media-breakpoint-down(sm) {
+		&__scrollable-pane {
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+		}
+		&__scrollable-pane-row {
+			white-space: nowrap;
+			flex-wrap: nowrap;
+			padding-bottom: $spacer / 2; // Avoid cropping to token shadows
+			scroll-snap-type: y mandatory;
+
+			> * {
+				white-space: normal;
+			}
+
+			> [class^=col] {
+				scroll-snap-align: start;
+			}
+		}
+	}
+
 	// Tokens
 	&__token-section {
 		line-height: 4;

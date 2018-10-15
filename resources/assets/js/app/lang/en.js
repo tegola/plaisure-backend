@@ -105,7 +105,7 @@ export default {
 			promote: {
 				intro: 'Excuse the pun',
 				title: 'Get in the game',
-				paragraph: "Add your venue or claim and manage an existing one. It's fast, and È veloce, and best of all it's free!",
+				paragraph: "Add your venue or claim and manage an existing one. It's fast, and best of all, it's free!",
 				register: 'Register as owner',
 				add: 'Add your venue',
 				manage: 'Manage your venues',

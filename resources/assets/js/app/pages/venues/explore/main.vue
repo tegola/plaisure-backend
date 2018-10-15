@@ -239,6 +239,7 @@ export default {
 			// Move map center, but disable map bounds tracking first
 			this.mapBoundsEventEnabled = false;
 			this.mapBounds = null;
+			this.mapZoom = 13;
 			this.mapCenter = {
 				lat: latitude,
 				lng: longitude

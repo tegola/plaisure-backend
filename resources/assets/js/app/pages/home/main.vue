@@ -295,41 +295,57 @@ export default {
 			</div>
 		</div>
 
-		<div class="container">
-			<div class="my-5 pg-home-page__token-section">
+		<div class="my-5 pg-home-page__token-section">
+			<div class="container">
 				<h5 class="font-weight-bold">{{ $t('pages.home.explore.title') }}</h5>
-				<pg-token
-					v-for="preset in tokenPresets"
-					:key="preset.value"
-					:icon="preset.icon"
-					:type="preset.type"
-					:to="preset.route">
-					{{ preset.label }}
-				</pg-token>
 			</div>
+			<div class="pg-home-page__scrollable-pane">
+				<div class="container">
+					<div class="pg-home-page__scrollable-pane-row">
+						<pg-token
+							v-for="preset in tokenPresets"
+							:key="preset.value"
+							:icon="preset.icon"
+							:type="preset.type"
+							:to="preset.route">
+							{{ preset.label }}
+						</pg-token>
+					</div>
+				</div>
+			</div>
+		</div>
 
-			<div class="my-5">
-				<template v-if="highlightedVenues.length">
-					<h5 class="font-weight-bold">{{ $t('pages.home.highlights.title') }}</h5>
-					<div class="row">
-						<div v-for="venue in highlightedVenues" :key="venue.id" class="col-md-6 mb-4">
+		<div v-if="highlightedVenues.length" class="my-5">
+			<div class="container">
+				<h5 class="font-weight-bold">{{ $t('pages.home.highlights.title') }}</h5>
+			</div>
+			<div class="pg-home-page__scrollable-pane">
+				<div class="container">
+					<div class="row pg-home-page__scrollable-pane-row">
+						<div v-for="venue in highlightedVenues" :key="venue.id" class="col-11 col-md-6 mb-4">
 							<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">
 								<pg-venue-grid-item :venue="venue" />
 							</router-link>
 						</div>
 					</div>
-				</template>
+				</div>
+			</div>
+		</div>
 
-				<template v-if="newVenues.length">
-					<h5 class="font-weight-bold">{{ $t('pages.home.new.title') }}</h5>
-					<div class="row">
-						<div v-for="venue in newVenues" :key="venue.id" class="col-6 col-md-4 col-xl-3 mb-4">
+		<div v-if="newVenues.length" class="my-5">
+			<div class="container">
+				<h5 class="font-weight-bold">{{ $t('pages.home.new.title') }}</h5>
+			</div>
+			<div class="pg-home-page__scrollable-pane">
+				<div class="container">
+					<div class="row pg-home-page__scrollable-pane-row">
+						<div v-for="venue in newVenues" :key="venue.id" class="col-7 col-md-4 col-xl-3 mb-4">
 							<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">
 								<pg-venue-grid-item :venue="venue" />
 							</router-link>
 						</div>
 					</div>
-				</template>
+				</div>
 			</div>
 		</div>
 
