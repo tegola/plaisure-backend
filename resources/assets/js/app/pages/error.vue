@@ -10,11 +10,12 @@ export default {
 		message: {
 			type: String,
 			default: function() {
-				let key = 'pages.error.not_found';
+				let key;
 
 				switch (this.code) {
 					case 404: key = 'pages.error.not_found'; break;
 					case 500: key = 'pages.error.server_error'; break;
+					default: key = 'pages.error.not_found';
 				}
 
 				return this.$t(key);

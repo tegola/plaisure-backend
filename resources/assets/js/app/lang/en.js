@@ -245,7 +245,7 @@ export default {
 				intro: "If you're the owner or the manager of this venue, you can claim it for free and keep it updated, add photos, jackpots, and more.",
 				more: 'More info',
 				action: 'Claim this venue',
-				subject: 'Claim venue: {name} (id: {id})'
+				// subject: 'Claim venue: {name} (id: {id})'
 			},
 			issues: {
 				title: 'Found an error?',

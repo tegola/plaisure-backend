@@ -5,6 +5,7 @@ import constants from 'prontogioco/constants';
 
 import PgLightbox from 'prontogioco/app/components/lightbox';
 import PgVenueDetailPageContactCard from './contact-card';
+import PgButton from 'prontogioco/app/components/button';
 import store from 'prontogioco/app/store';
 
 const handleRoute = function(to, from, next) {
@@ -26,7 +27,8 @@ export default {
 
 	components: {
 		PgLightbox,
-		PgVenueDetailPageContactCard
+		PgVenueDetailPageContactCard,
+		PgButton
 	},
 
 	filters: {
@@ -422,7 +424,7 @@ export default {
 							<div class="card-body">
 								<h4 class="card-title">{{ $t('pages.venue_detail.claim.title') }}</h4>
 								<p class="card-text">{{ $t('pages.venue_detail.claim.intro') }} <router-link :to="{ name: 'promote' }">{{ $t('pages.venue_detail.claim.more') }}&hellip;</router-link></p>
-								<p class="card-text"><a :href="prepareEmailLink(EMAIL_VENUES, $t('pages.venue_detail.claim.subject', { name: venue.name, id: venue.id }))" class="btn btn-primary">{{ $t('pages.venue_detail.claim.action') }}</a></p>
+								<pg-button :to="{ name: 'venues.claim', params: { venueId: venueId } }" variant="primary">{{ $t('pages.venue_detail.claim.action') }}</pg-button>
 							</div>
 						</div>
 					</div>

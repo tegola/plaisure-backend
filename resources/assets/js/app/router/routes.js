@@ -80,6 +80,15 @@ export default [
 		props: true
 	},
 
+	// Claim venue ------------------------------------------------------------
+	{
+		path: '/venues/:venueId/claim',
+		name: 'venues.claim',
+		component: () => import('prontogioco/app/pages/venues/claim'),
+		props: true,
+		beforeEnter: requireAuth
+	},
+
 	// Edit venue -------------------------------------------------------------
 	{
 		path: '/venues/:venueId/edit',

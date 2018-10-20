@@ -105,7 +105,7 @@ export default {
 			promote: {
 				intro: 'Scusa il gioco di parole',
 				title: 'Mettiti in gioco',
-				paragraph: 'Registra la tua attività o reclama la gestione di un’attività già presente. È veloce, e soprattutto è gratis!',
+				paragraph: 'Registra la tua attività o rivendica un’attività già presente. È veloce, e soprattutto è gratis!',
 				register: 'Registrati come gestore',
 				add: 'Aggiungi la tua attività',
 				manage: 'Vai alla gestione attività',
@@ -245,7 +245,7 @@ export default {
 				intro: 'Se sei proprietaro o gestore di questa attività, puoi rivendicarla gratuitamente e tenerla aggiornata, aggiungere foto, jackpot e tanto altro.',
 				more: 'Ulteriori informazioni',
 				action: 'Rivendica attività',
-				subject: 'Rivendicazione attività: {name} (identificativo: {id})'
+				// subject: 'Rivendicazione attività: {name} (identificativo: {id})'
 			},
 			issues: {
 				title: 'Hai trovato un errore?',

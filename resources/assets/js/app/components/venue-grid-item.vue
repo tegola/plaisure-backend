@@ -1,5 +1,5 @@
 <script>
-import isVenueOpen from 'prontogioco/utilities/is-venue-open';
+import ApVenueItemMixin from 'prontogioco/app/mixins/venue-collection-item';
 import PgImageFrame from 'prontogioco/app/components/image-frame';
 
 export default {
@@ -9,12 +9,9 @@ export default {
 		PgImageFrame
 	},
 
-	props: {
-		venue: {
-			type: Object,
-			required: true
-		},
+	mixins: [ApVenueItemMixin],
 
+	props: {
 		showHighlight: {
 			type: Boolean,
 			default: true
@@ -22,54 +19,6 @@ export default {
 	},
 
 	computed: {
-		icon() {
-			const name = this.firstCategoryMachineName.replace('-', '_');
-
-			return require(`!svg-inline-loader!assets/svg/category-icons/${name}.svg`);
-		},
-
-		photo() {
-			if (!this.venue.photos || !this.venue.photos.length) return null;
-
-			return this.venue.photos[0];
-		},
-
-		categories() {
-			if (!this.venue.categories || !this.venue.categories.length) return null;
-
-			return this.venue.categories
-				.slice(0, 2)
-				.map(category => this.$t(`db.categories.${category.machine_name}`))
-				.join(', ');
-		},
-
-		firstCategoryMachineName() {
-			if (!this.venue.categories || !this.venue.categories.length) return null;
-
-			return this.venue.categories[0].machine_name;
-		},
-
-		address() {
-			const a = this.venue.address;
-
-			return [
-				[a.street, a.number].join(' '),
-				a.city
-			].join(', ');
-		},
-
-		isOpen() {
-			return isVenueOpen(this.venue.business_hours);
-		},
-
-		isNew() {
-			const created = new Date(this.venue.created_at);
-			const now = new Date();
-			const days = (now - created) / (1000*60*60*24);
-
-			return days <= 1;
-		},
-
 		highlight() {
 			if (this.isNew) return {
 				class: 'text-info',
@@ -96,7 +45,7 @@ export default {
 			<div
 				v-if="!photo"
 				class="pg-venue-grid-item__image-icon"
-				v-html="icon"
+				v-html="iconMarkup"
 			/>
 		</pg-image-frame>
 

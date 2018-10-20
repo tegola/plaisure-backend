@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\File;
 use App\Transformers\FileTransformer;
 use Storage;
-use Auth;
 use Validator;
 
 class FileController extends Controller
@@ -29,7 +28,7 @@ class FileController extends Controller
 	 */
 	public function upload(Request $request)
 	{
-		$user = Auth::user();
+		$user = auth()->user();
 		$uploadedFile = $request->file('file');
 
 		// Stope if file is too big, and force json response, since it is most

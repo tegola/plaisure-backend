@@ -38,12 +38,15 @@ Route::group(['namespace' => 'Site'], function() {
 	Route::post('/venues/explore/search', 'Venues\ExploreController@search');
 
 	// Venue edit
-	Route::group(['middleware' => 'auth:api'], function() {
-		Route::get ('/venues/add',            'Venues\FormController@create');
-		Route::post('/venues',                'Venues\FormController@store');
-		Route::get ('/venues/{venue}/edit',   'Venues\FormController@edit');
-		Route::post('/venues/{venue}',        'Venues\FormController@update');
-	});
+	Route::get ('/venues/add',            'Venues\FormController@create');
+	Route::post('/venues',                'Venues\FormController@store');
+	Route::post('/venues/{venue}',        'Venues\FormController@update');
+	Route::get ('/venues/{venue}/edit',   'Venues\FormController@edit');
+
+	// Venue claim
+	Route::get ('/venues/{venue}/claim',  'Venues\ClaimController@load');
+	Route::post('/venues/{venue}/claim',  'Venues\ClaimController@confirm');
+
 	// Venue detail
 	Route::get ('/venues/{venue}',        'Venues\DetailController@detail');
 });
