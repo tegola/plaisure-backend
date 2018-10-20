@@ -22,8 +22,7 @@ class ClaimController extends Controller
 	 * @return Illuminate\Http\Response
 	 */
 	public function load(Venue $venue) {
-		// Stop if venue already has an owner
-		if ($venue->has_owner) abort(403);
+		$this->authorize('claim', $venue);
 
 		// Load first photo
 		$venue->with(['photos' => function($query) {
@@ -41,8 +40,7 @@ class ClaimController extends Controller
 	}
 
 	public function confirm(Venue $venue, Request $request) {
-		// Stop if venue already has an owner
-		if ($venue->has_owner) abort(403);
+		$this->authorize('claim', $venue);
 
 		// Validate aams census code if needed
 		if ($venue->aams_census_code) {

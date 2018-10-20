@@ -10,8 +10,8 @@ class VenuePolicy
 {
 	use HandlesAuthorization;
 
-	public function before(User $user) {
-		if ($user->is_admin) return true;
+	public function before(User $user, $ability) {
+		if ($user->is_admin && $ability != 'claim') return true;
 	}
 
 	/**
@@ -24,6 +24,21 @@ class VenuePolicy
 	public function view(User $user, Venue $venue)
 	{
 		//
+	}
+
+	/**
+	 * Determine whether the user can claim the venue.
+	 *
+	 * @param  \App\Models\User  $user
+	 * @param  \App\Venue  $venue
+	 * @return mixed
+	 */
+	public function claim(User $user, Venue $venue)
+	{
+		// Avoid letting admins claim venues to their users
+		if ($user->is_admin) return false;
+
+		return !$venue->has_owner;
 	}
 
 	/**
