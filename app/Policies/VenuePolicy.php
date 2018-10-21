@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Venue;
+use App\Models\Venue;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class VenuePolicy
@@ -11,11 +11,7 @@ class VenuePolicy
 	use HandlesAuthorization;
 
 	public function before(User $user, $ability) {
-		// In dev env an admin can do everything
-		if (app()->isLocal() && $user->is_admin) return true;
-
-		// In production evn an admin can't claim an activity
-		if ($user->is_admin && $ability != 'claim') return true;
+		if ($user->is_admin) return true;
 	}
 
 	/**
@@ -39,9 +35,6 @@ class VenuePolicy
 	 */
 	public function claim(User $user, Venue $venue)
 	{
-		// Avoid letting admins claim venues to their users
-		if ($user->is_admin) return false;
-
 		return !$venue->has_owner;
 	}
 
