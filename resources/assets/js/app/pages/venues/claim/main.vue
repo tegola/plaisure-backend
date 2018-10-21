@@ -72,6 +72,16 @@ export default {
 		}
 	},
 
+	meta() {
+		if (!this.venue) return;
+
+		return {
+			title: this.$t('pages.venue_claim.meta_title', {
+				name: this.venue.name
+			})
+		};
+	},
+
 	validations: {
 		model: {
 			code: {
@@ -108,7 +118,7 @@ export default {
 				.catch(() => {
 					this.saving = false;
 					this.$refs.input.focus();
-					alert('Il codice non è corretto.');
+					alert(this.$t('pages.venue_claim.submit_error'));
 				});
 		}
 	}
@@ -122,50 +132,48 @@ export default {
 		<div class="container my-5">
 			<div class="row">
 				<div class="col-md-8">
-					<h3>Rivendica attività</h3>
-					<p>Stai per rivendicare la seguente attività, che non ha un proprietario o gestore. Così facendo essa sarà assegnata a te e potrai gestirne i dati.</p>
+					<h3>{{ $t('pages.venue_claim.title') }}</h3>
+					<p>{{ $t('pages.venue_claim.intro') }}</p>
 
 					<pg-claim-venue-page-item v-if="venue" :venue="venue" />
 
-					<template v-if="codeRequired">
-						<p>Per continuare, inserisci il codice di censimento dell'attività come registrata con l'AAMS:</p>
+					<form v-if="codeRequired" @submit.prevent="submit">
+						<p>{{ $t('pages.venue_claim.continue_code') }}</p>
 
-						<form @submit.prevent="submit">
-							<div class="row">
-								<div class="col-sm">
-									<b-form-group
-										:state="!$v.model.code.$error"
-										class="mb-0"
-										invalid-feedback="Inserisci il codice di censimento AAMS"
-										label="Codice AAMS"
-										label-sr-only>
-										<b-input
-											ref="input"
-											v-model.trim="model.code"
-											autocomplete="off"
-											autofocus
-											placeholder="Codice censimento AAMS"
-										/>
-									</b-form-group>
-								</div>
-								<div class="col-sm-auto">
-									<pg-button
-										:loading="saving"
-										type="submit"
-										variant="primary"
-										icon="arrow-right"
-										icon-position="right"
-										block>
-										Continua
-									</pg-button>
-								</div>
+						<div class="row">
+							<div class="col-sm">
+								<b-form-group
+									:state="!$v.model.code.$error"
+									:label="$t('pages.venue_claim.code')"
+									:invalid-feedback="$t('pages.venue_claim.code_error')"
+									class="mb-0"
+									label-sr-only>
+									<b-input
+										ref="input"
+										:placeholder="$t('pages.venue_claim.code_placeholder')"
+										v-model.trim="model.code"
+										autocomplete="off"
+										autofocus
+									/>
+								</b-form-group>
 							</div>
-						</form>
-					</template>
+							<div class="col-sm-auto">
+								<pg-button
+									:loading="saving"
+									type="submit"
+									variant="primary"
+									icon="arrow-right"
+									icon-position="right"
+									block>
+									{{ $t('pages.venue_claim.submit') }}
+								</pg-button>
+							</div>
+						</div>
+					</form>
 
 					<div v-else class="row align-items-center">
 						<div class="col-sm">
-							Per continuare, fai click su “Prosegui”.
+							<p>{{ $t('pages.venue_claim.continue_nocode') }}</p>
 						</div>
 						<div class="col-sm-auto">
 							<pg-button
@@ -174,24 +182,24 @@ export default {
 								icon="arrow-right"
 								icon-position="right"
 								@click="submit">
-								Prosegui
+								{{ $t('pages.venue_claim.submit') }}
 							</pg-button>
 						</div>
 					</div>
 
 					<hr class="mt-5">
 
-					<router-link :to="{ name: 'venues.detail', params: { venueId: venueId } }">Torna all'attività</router-link>
+					<router-link :to="{ name: 'venues.detail', params: { venueId: venueId } }">{{ $t('pages.venue_claim.back') }}</router-link>
 				</div>
 
-				<div class="col-md-4">
+				<div class="col-md-4 mt-4 mt-md-0">
 					<div class="card border-accent">
 						<div class="card-body">
-							<h5 class="card-title text-accent">È gratis!</h5>
-							<p class="card-text">Gestire un'attività è completamente gratuito. Se lo vorrai, potrai sottoscrivere un'abbonamento mensile per promuoverla.</p>
+							<h5 class="card-title text-accent">{{ $t('pages.venue_claim.infobox.title') }}</h5>
+							<p class="card-text">{{ $t('pages.venue_claim.infobox.body') }}</p>
 							<p class="card-text font-weight-semibold">
 								<router-link :to="{ name: 'promote' }" class="text-accent">
-									Maggiori informazioni
+									{{ $t('pages.venue_claim.infobox.action') }}
 									<pg-icon icon="arrow-right" />
 								</router-link>
 							</p>

@@ -262,6 +262,25 @@ export default {
 			}
 		},
 
+		venue_claim: {
+			meta_title: 'Rivendica attività: {name}',
+			title: 'Rivendica attività',
+			intro: 'Stai per rivendicare la seguente attività, che non ha un proprietario o gestore. Così facendo essa sarà assegnata a te e potrai gestirne i dati.',
+			continue_code: "Per continuare, inserisci il codice di censimento dell'attività come registrata con l'AAMS:",
+			continue_nocode: 'Per proseguire, fai click su “Continua”.',
+			code: 'Codice AAMS',
+			code_placeholder: 'Codice censimento AAMS',
+			code_error: 'Inserisci il codice di censimento AAMS',
+			submit: 'Continua',
+			submit_error: 'Il codice inserito non è corretto.',
+			back: "Torna all'attività",
+			infobox: {
+				title: 'È gratis!',
+				body: "Gestire un'attività è completamente gratuito. Se lo vorrai, potrai sottoscrivere un'abbonamento mensile per promuoverla.",
+				action: 'Maggiori informazioni'
+			}
+		},
+
 		venue_form: {
 			title: {
 				add: 'Aggiungi attività',

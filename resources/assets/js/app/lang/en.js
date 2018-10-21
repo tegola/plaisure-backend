@@ -262,6 +262,25 @@ export default {
 			}
 		},
 
+		venue_claim: {
+			meta_title: 'Claim venue: {name}',
+			title: 'Claim venue',
+			intro: "You're about to claim the following venue, which is not managed by anybody. It will be assigned to you and you'll be able to edit its data.",
+			continue_code: "To continue, please type the venue's census code as registered with AAMS:",
+			continue_nocode: 'To continue, please click “Continue”.',
+			code: 'AAMS census code',
+			code_placeholder: 'AAMS census code',
+			code_error: 'Type the AAMS census code.',
+			submit: 'Continue',
+			submit_error: 'The code entered is incorrect.',
+			back: 'Go back to the venue',
+			infobox: {
+				title: "It's free!",
+				body: 'Managing a venue is completely free. If you wish, you will be able subscribe to pay a monthly subscription to promote it.',
+				action: 'Learn more'
+			}
+		},
+
 		venue_form: {
 			title: {
 				add: 'Add venue',
@@ -277,13 +296,13 @@ export default {
 				description: 'Description',
 				surface_size: 'Surface size',
 				surface_size_unit: 'm²',
-				surface_size_error: "Insert the venue's surface size",
+				surface_size_error: "Insert the venue's surface size.",
 				category: 'Category',
 				category_error: 'Pick at least a category.',
 				address: 'Address',
 				address_placeholder1: 'Street',
 				address_placeholder2: 'Street number',
-				address_error: 'Fill in all address data',
+				address_error: 'Fill in all address data.',
 				city: 'City',
 				zipcode_province: 'Zip code & province',
 				zipcode_placeholder: 'Zip code',
@@ -323,7 +342,7 @@ export default {
 				phone: 'Phone number',
 				email: 'E-mail',
 				email_placeholder: 'Ex.: name@gmail.com',
-				email_error: 'Type a valid e-mail address..',
+				email_error: 'Type a valid e-mail address.',
 				url_placeholder: 'http://',
 				url_error: "Type a valid URL, starting with 'http://' or 'https://'.",
 				site: 'Website URL',

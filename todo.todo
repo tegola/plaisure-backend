@@ -8,7 +8,6 @@
  ✔ Login: sbagliando i dati (credenziali non corrette) non viene mostrato l'errore @done (18-09-03 22:17)
  ✔ Form: mostrare errore in caso di caricamento errato @done (18-08-29 20:02)
  ✔ Aggiustare i menu nella pagina explore @done (18-09-02 20:02)
- ☐ Importante: La modifica fa accedere anche alle sale non rivendicate, o rivendicate da altri @high
  ☐ Passare la lingua selezionata al client
  ☐ Controllare il salvataggio dell'orario, sembra che l'array sia sballato
  ☐ Porting delle funzionalità di localizzazione in home nella pagina explore
