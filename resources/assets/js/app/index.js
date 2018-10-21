@@ -75,7 +75,7 @@ new Vue({
 	created() {
 		// Automatically get user data
 		if (this.userIsAuthenticated) {
-			this.$store.dispatch('user/getData');
+			this.$store.dispatch('user/fetch');
 		}
 	}
 });

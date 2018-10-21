@@ -58,7 +58,7 @@ export default {
 					refreshToken: response.data.refresh_token
 				});
 			}).then(() => {
-				dispatch('getData');
+				dispatch('fetch');
 			});
 		},
 
@@ -71,7 +71,7 @@ export default {
 					refreshToken: response.data.refresh_token
 				});
 			}).then(() => {
-				dispatch('getData');
+				dispatch('fetch');
 			});
 		},
 
@@ -92,7 +92,7 @@ export default {
 			}
 		},
 
-		getData: ({ commit }) => {
+		fetch: ({ commit }) => {
 			return axios.get('/user').then(response => {
 				commit('setUser', response.data.user);
 				commit('setVenues', response.data.venues);

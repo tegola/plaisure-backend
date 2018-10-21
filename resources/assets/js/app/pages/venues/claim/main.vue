@@ -109,7 +109,10 @@ export default {
 
 			this.$axios.post(`/venues/${this.venueId}/claim`, this.model)
 				.then(() => {
-					// Success, go to edit
+					// Reload user data, including venues
+					this.$store.dispatch('user/fetch');
+
+					// Go to user page
 					this.$router.push({
 						name: 'user',
 						replace: true
