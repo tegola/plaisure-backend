@@ -11,6 +11,10 @@ class VenuePolicy
 	use HandlesAuthorization;
 
 	public function before(User $user, $ability) {
+		// In dev env an admin can do everything
+		if (app()->isLocal() && $user->is_admin) return true;
+
+		// In production evn an admin can't claim an activity
 		if ($user->is_admin && $ability != 'claim') return true;
 	}
 

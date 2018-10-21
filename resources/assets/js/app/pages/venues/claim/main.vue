@@ -146,7 +146,6 @@ export default {
 									:state="!$v.model.code.$error"
 									:label="$t('pages.venue_claim.code')"
 									:invalid-feedback="$t('pages.venue_claim.code_error')"
-									class="mb-0"
 									label-sr-only>
 									<b-input
 										ref="input"
@@ -187,7 +186,7 @@ export default {
 						</div>
 					</div>
 
-					<hr class="mt-5">
+					<hr class="mt-4">
 
 					<router-link :to="{ name: 'venues.detail', params: { venueId: venueId } }">{{ $t('pages.venue_claim.back') }}</router-link>
 				</div>
