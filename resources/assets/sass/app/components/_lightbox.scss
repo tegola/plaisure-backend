@@ -163,11 +163,6 @@
 	}
 }
 
-// Prevent scroling the container/body
-.pg--pg-lightbox-open { // Namespace + this class namespaced modifier
-	overflow: hidden;
-}
-
 .pg-lightbox--visible-enter-active,
 .pg-lightbox--visible-leave-active {
 	transition: opacity 200ms;

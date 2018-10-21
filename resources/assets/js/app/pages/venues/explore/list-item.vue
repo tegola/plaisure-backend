@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import ApVenueItemMixin from 'prontogioco/app/mixins/venue-collection-item';
+import PgVenueItemMixin from 'prontogioco/app/mixins/venue-collection-item';
 import formatDistance from 'prontogioco/utilities/format-distance';
 
 export default {
@@ -38,7 +38,7 @@ export default {
 		formatDistance: formatDistance
 	},
 
-	mixins: [ApVenueItemMixin],
+	mixins: [PgVenueItemMixin],
 
 	props: {
 		highlighted: {

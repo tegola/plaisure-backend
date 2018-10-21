@@ -74,6 +74,13 @@ export default {
 			rating: 'Il gioco è vietato{break}ai minori di {age} anni',
 			copyright: 'Copyright {year} {company}',
 			vat: 'P. IVA {number}'
+		},
+
+		venue_item: {
+			highlight: {
+				new: 'Nuovo!',
+				open: 'Aperto ora!'
+			}
 		}
 	},
 

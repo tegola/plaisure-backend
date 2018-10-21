@@ -4,8 +4,9 @@ import _extend from 'lodash/extend';
 import constants from 'prontogioco/constants';
 
 import PgLightbox from 'prontogioco/app/components/lightbox';
-import PgVenueDetailPageContactCard from './contact-card';
 import PgButton from 'prontogioco/app/components/button';
+import PgVenueDetailPageContactCard from './contact-card';
+import PgVenueDetailPageNearbyItem from './nearby-item';
 import store from 'prontogioco/app/store';
 
 const handleRoute = function(to, from, next) {
@@ -27,8 +28,9 @@ export default {
 
 	components: {
 		PgLightbox,
+		PgButton,
 		PgVenueDetailPageContactCard,
-		PgButton
+		PgVenueDetailPageNearbyItem
 	},
 
 	filters: {
@@ -200,7 +202,7 @@ export default {
 						</div>
 						<router-link v-if="showEditAction" :to="editRoute" class="header-photo header-photo-add">
 							<pg-icon icon="plus" />
-							{{ $t('pages.venue_detail.gallery.add') }}
+							<div>{{ $t('pages.venue_detail.gallery.add') }}</div>
 						</router-link>
 						<template v-for="(file, index) in venue.photos">
 							<a v-if="index < 10" :href="file.resized_url" :key="index" class="header-photo" @click.prevent="showLightbox(index)">
@@ -441,14 +443,7 @@ export default {
 						<div v-if="nearbyVenues.length" class="my-5">
 							<h5 class="mb-3">{{ $t('pages.venue_detail.nearby') }}</h5>
 							<ul class="list-unstyled">
-								<li v-for="nearbyVenue in nearbyVenues" :key="nearbyVenue.id" class="d-flex align-items-start">
-									<img :src="`/img/map/pin-normal-${nearbyVenue.categories[0].machine_name || 'collapsed'}.svg`" class="mr-3">
-									<p>
-										<strong><router-link :to="`/venues/${nearbyVenue.id}`">{{ nearbyVenue.name }}</router-link></strong><br>
-										<span class="initialism text-muted">{{ $t(`db.categories.${nearbyVenue.categories[0].machine_name}`) }}</span><br>
-										{{ nearbyVenue.address.short }}
-									</p>
-								</li>
+								<pg-venue-detail-page-nearby-item v-for="nearbyVenue in nearbyVenues" :key="nearbyVenue.id" :venue="nearbyVenue" />
 							</ul>
 						</div>
 

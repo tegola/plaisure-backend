@@ -35,7 +35,7 @@
         "svg-inline-loader": "^0.8.0",
         "vue": "^2.5.17",
         "vue-analytics": "^5.16.0",
-        "vue-i18n": "^8.1.0",
+        "vue-i18n": "^8.2.1",
         "vue-match-media": "^1.0.3",
         "vue-meta": "^1.5.5",
         "vue-router": "^3.0.1",

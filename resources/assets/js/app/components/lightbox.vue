@@ -93,7 +93,7 @@ export default {
 		this.$el.focus();
 
 		// Add body class to prevent mouse scrolling
-		document.body.classList.add('pg--pg-lightbox-open');
+		document.body.classList.add('pg--pg-overlay-open');
 	},
 
 	methods: {
@@ -127,7 +127,7 @@ export default {
 
 		beforeLeave() {
 			// Remove body class
-			document.body.classList.remove('pg--pg-lightbox-open');
+			document.body.classList.remove('pg--pg-overlay-open');
 		},
 
 		afterLeave() {

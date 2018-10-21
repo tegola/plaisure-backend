@@ -1,15 +1,15 @@
 <script>
-import ApVenueItemMixin from 'prontogioco/app/mixins/venue-collection-item';
+import PgVenueItemMixin from 'prontogioco/app/mixins/venue-collection-item';
 import PgImageFrame from 'prontogioco/app/components/image-frame';
 
 export default {
-	name: 'ApClaimVenuePageItem',
+	name: 'PgClaimVenuePageItem',
 
 	components: {
 		PgImageFrame
 	},
 
-	mixins: [ApVenueItemMixin]
+	mixins: [PgVenueItemMixin]
 };
 </script>
 

@@ -1,5 +1,5 @@
 <script>
-import ApVenueItemMixin from 'prontogioco/app/mixins/venue-collection-item';
+import PgVenueItemMixin from 'prontogioco/app/mixins/venue-collection-item';
 import PgImageFrame from 'prontogioco/app/components/image-frame';
 
 export default {
@@ -9,7 +9,7 @@ export default {
 		PgImageFrame
 	},
 
-	mixins: [ApVenueItemMixin],
+	mixins: [PgVenueItemMixin],
 
 	props: {
 		showHighlight: {
@@ -22,12 +22,12 @@ export default {
 		highlight() {
 			if (this.isNew) return {
 				class: 'text-info',
-				label: 'Nuovo!'
+				label: this.$t('components.venue_item.highlight.new')
 			};
 
 			if (this.isOpen) return {
 				class: 'text-success',
-				label: 'Aperto ora!'
+				label: this.$t('components.venue_item.highlight.open')
 			};
 
 			return null;

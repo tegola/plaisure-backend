@@ -6,6 +6,7 @@ import VueMatchMedia from 'vue-match-media/dist';
 Vue.use(VueMatchMedia);
 
 export default {
+	xs: '(max-width: 576px)',
 	constrained: '(max-width: 767px)',
 	comfortable: '(min-width: 768px)'
 };

@@ -64,6 +64,7 @@
 		flex-direction: column;
 		text-decoration: none;
 		color: gray('500');
+		text-align: center;
 	}
 	.header-photo-zoom {
 		background-color: rgba(#000, .33);
@@ -88,6 +89,7 @@
 	.contact-card {
 		border: 0;
 		margin-top: -($spacer * 5);
+		font-size: $font-size-sm;
 	}
 	.contact-card-map {
 		.vue-map {
@@ -155,6 +157,36 @@
 	// Details
 	.detail-list-item {
 		margin-top: map-get($spacers, 2);
+	}
+
+	// Nearby venues
+	&__nearby-item-icon {
+		width: 24px;
+		height: 24px;
+		fill: $white;
+		margin-right: $grid-gutter-width / 2;
+
+		.pg-svg__background {
+			fill: $palette-fuchsia-400;
+		}
+	}
+	&__nearby-item-category {
+		text-transform: uppercase;
+		letter-spacing: .025rem;
+		color: $gray-700;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+	}
+	&__nearby-item-name {
+		font-weight: $font-weight-semibold;
+	}
+	&__nearby-item-address {
+		color: $text-muted;
+		font-size: $font-size-xs;
+	}
+
+	&__nearby-item:hover &__nearby-item-name {
+		color: $link-hover-color;
 	}
 
 	@include media-breakpoint-up(md) {

@@ -241,8 +241,8 @@ export default {
 							</div>
 						</div>
 
-						<div class="row">
-							<div class="col-sm-8">
+						<div class="row form-row">
+							<div class="col col-lg-8">
 								<div class="position-relative">
 									<label class="sr-only">{{ $t('pages.home.search.label') }}</label>
 									<pg-place-textbox
@@ -271,12 +271,13 @@ export default {
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-4">
+							<div class="col-auto">
 								<pg-button
 									:disabled="!canSubmit"
 									variant="accent"
 									size="lg"
 									class="pg-home-page__search-submit-btn"
+									block
 									@click="submit">
 									{{ $t('pages.home.search.submit') }}
 								</pg-button>
@@ -360,10 +361,21 @@ export default {
 						<h3 class="display-4 text-dark-green mb-3">{{ $t('pages.home.promote.title') }}</h3>
 						<p class="lead text-dark-green mb-4">{{ $t('pages.home.promote.paragraph') }}</p>
 						<p>
-							<pg-button :to="promoteButton.route" variant="primary" icon="arrow-right" icon-position="right">
+							<pg-button
+								:to="promoteButton.route"
+								:block="$mq.xs"
+								variant="primary"
+								icon="arrow-right"
+								icon-position="right">
 								{{ promoteButton.label }}
 							</pg-button>
-							<pg-button :to="{ name: 'promote' }" variant="link" class="text-dark-green">{{ $t('pages.home.promote.more') }}</pg-button>
+							<pg-button
+								:to="{ name: 'promote' }"
+								:block="$mq.xs"
+								variant="link"
+								class="text-dark-green">
+								{{ $t('pages.home.promote.more') }}
+							</pg-button>
 						</p>
 					</div>
 				</div>

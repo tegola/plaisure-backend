@@ -9,29 +9,32 @@
  ✔ Form: mostrare errore in caso di caricamento errato @done (18-08-29 20:02)
  ✔ Aggiustare i menu nella pagina explore @done (18-09-02 20:02)
  ☐ Passare la lingua selezionata al client
+ ☐ Dettaglio: scorrimento foto come sale in home page + "altre foto"
  ☐ Controllare il salvataggio dell'orario, sembra che l'array sia sballato
+ ☐ Controllare perché al reload delle pagine su mobile non funziona google maps
  ☐ Porting delle funzionalità di localizzazione in home nella pagina explore
  ☐ Personalizzare il template dell'email
- ☐ Rimuovere AuthController in favore di Auth\LoginController e Auth\RegisterController
- ☐ Edit sala: focus all'elemento giusto quando c'è errore
+ ☐ Email di benvenuto all'utente dopo la registrazione
+ ☐ Dettaglio: usare una mappa statica, che costa meno su google maps
  ✔ Edit sala: Il menu utente appare sotto alla navbar secondaria @done (18-09-03 22:53)
- ☐ Edit sala: drag della mappa più che del marker
+ ☐ Edit sala: focus all'elemento giusto quando c'è errore
  ✔ Importante: rimuovere il geocoder in home page, che ora è a pagamento (e dà errori CORS) e a noi non serve granché @done (18-10-10 19:50)
  ✔ Pagine di recupero password @done (18-09-14 17:34)
- ☐ Email di benvenuto all'utente dopo la registrazione
+ ☐ Edit sala: drag della mappa più che del marker
  ☐ Aggiungere i link a terms of service e privacy policy (footer e registrazione utente)
  ✔ Spostare le icone svg (views/site/components/vectors.blade.php) in javascript @done (18-10-10 19:50)
  ☐ Spostare i css nelle pagine
  ☐ Ottimizzare la pagina di ricerca per i cellulari
- ☐ Aggiustare gli spazi per il "notch" di iPhone X*
+ ✔ Aggiustare gli spazi per il "notch" di iPhone X* @done (18-10-22 00:07)
  ☐ Modifica dati utente. Non si possono nullare i campi di fatturazione se ci sono sottoscrizioni attive.
  ☐ Modifica dati utente: al salvataggio, aggiornare i dati su Stripe.
- ☐ Modifica attività: spostare caricamento e salvataggio nello store
+ ✔ Modifica attività: spostare caricamento e salvataggio nello store @done (18-10-22 00:08)
  ☐ Edit sala: il link all'edit quando una sala non ha proprietario ma l'utente è già registrato deve rimandare alla richiesta del codice dell'AAMS
  ☐ Disattivare i piani attivi su Stripe all'eliminazione di una sala
  ☐ Convertire amenities in una tabella a parte e restituirlo in javascript come un array
- ☐ Porting di Fractal a Laravel API Resources
  ☐ Abbassare le dimensioni del logo per far arrivare la navbar a 64px
+ ☐ Rimuovere AuthController in favore di Auth\LoginController e Auth\RegisterController
+ ☐ Porting di Fractal a Laravel API Resources
  ☐ Controllare il reload della pagina explore dopo esserci arrivato da un pulsante in home page
 
  ✔ Tutte le sale attuali devono avere la categoria "Sala VLT" @done (17-11-04 20:03)
@@ -42,7 +45,7 @@
 
 Generale:
  ☐ Controllare l'aspetto degli indirizzi senza numero civico
- ☐ Unire indirizzo e numero civico
+ ☐ Unire indirizzo e numero civico (quindi rimozione campo e script di unione o query sql)
  ✔ Aggiungere orari e farli renderizzare @done (17-10-21 01:51)
  ✔ Aggiungere caricamento foto @done (17-11-01 19:23)
  ☐ Aggiungere il lazy load alla galleria foto
@@ -50,7 +53,7 @@ Generale:
  ☐ Possibilità di inserire le descrizioni alle foto
  ☐ Possibilità di riordinare le foto
  ☐ Estrapolare l'indirizzo FB messenger dall'indirizzo Facebook (facebook.com/Planet-Rich-Frascati-293498787699636/ -> 293498787699636)
- ☐ Catena (Punto Snai, Eurobet, ecc.)
+ ☐ Catena/Franchise (Punto Snai, Eurobet, ecc.)
  ✔ Lightbox: controllare che ESC funzioni sempre @done (17-11-02 00:05)
  ✔ Lightbox: click sullo sfondo per chiudere @done (17-11-02 00:05)
  ☐ Supporto per i jackpot (inserimento, filtro nella lista)
@@ -133,7 +136,7 @@ Promuovi attività:
  ✔ Menzionare che è gratutito il prima possibile @done (17-09-14 22:04)
 
 Rivendica attività:
- ☐ Tutto da fare
+ ✔ Pagina di rivendicazione con codice aams della sala @done (18-10-21 22:05)
  ☐ Mostrare le altre attività dopo aver inserito il codice aams del soggetto
 
 Gioca responsabilmente:
@@ -157,6 +160,3 @@ Sale premium:
     certificate, Quindi se la tua sala è certificata (ovvero i tuoi dipendenti
     hanno fatto i corsi) puoi applicare il badge
  ☐ Eventi
-
-Futuro:
- ☐ Supporto per dare un indirizzo email agli utenti

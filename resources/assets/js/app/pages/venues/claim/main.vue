@@ -30,7 +30,7 @@ const handleRoute = function(to, from, next) {
 };
 
 export default {
-	name: 'ApClaimVenuePage',
+	name: 'PgClaimVenuePage',
 
 	components: {
 		PgButton,

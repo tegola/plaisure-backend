@@ -1,4 +1,5 @@
 <script>
+import 'classlist-polyfill';
 import { mapState } from 'vuex';
 import _extend from 'lodash/extend';
 
@@ -90,7 +91,7 @@ export default {
 		_extend(this, constants);
 	},
 
-	beforeRouteLeave() {
+	destroyed() {
 		this.toggleOverflow(false);
 	},
 
@@ -98,15 +99,12 @@ export default {
 		toggleDrawer(force) {
 			const open = force !== undefined ? force : !this.drawerOpen;
 
-			// When opening, scroll to top
-			if (open) window.scrollTo(0, 0);
-
 			this.drawerOpen = open;
 			this.toggleOverflow(open);
 		},
 
 		toggleOverflow(open) {
-			document.body.style.overflow = open ? 'hidden' : '';
+			document.body.classList.toggle('pg--pg-overlay-open', open);
 		},
 
 		onPlaceChanged(place) {

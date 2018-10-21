@@ -74,6 +74,13 @@ export default {
 			rating: 'Il gioco è vietato{break}ai minori di {age} anni', // FIXME
 			copyright: 'Copyright {year} {company}',
 			vat: 'VAT {number}'
+		},
+
+		venue_item: {
+			highlight: {
+				new: 'New!',
+				open: 'Open now!'
+			}
 		}
 	},
 
@@ -84,7 +91,7 @@ export default {
 				title: 'Find the best games rooms near you.',
 				subtitle: "It's easy with {name}, and with more than {count} venues available, you're spoilt for choice!",
 				label: 'Search',
-				city_placeholder: 'Type the name of your city',
+				city_placeholder: 'Enter your city',
 				location_placeholder: 'Near you',
 				location: 'Use your current location',
 				location_error: "We couldn't find your location.",
