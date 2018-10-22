@@ -52,13 +52,13 @@ class MainController extends Controller
 		});
 
 
-		// New - 8 taken from the latest 32 (1/4 chance to appear)
+		// New - 8 taken from the latest 36 (1/4 chance to appear)
 		$newVenues = Cache::remember('home.new', $cacheLimit, function() {
 			$venues = $this->initQuery()
 				->latest()
-				->take(32)
+				->take(36)
 				->get()
-				->random(8);
+				->random(9);
 
 			return $this->transformVenues($venues);
 		});

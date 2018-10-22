@@ -348,7 +348,11 @@ export default {
 			<div class="pg-home-page__scrollable-pane">
 				<div class="container">
 					<div class="row pg-home-page__scrollable-pane-row">
-						<div v-for="venue in newVenues" :key="venue.id" class="col-7 col-md-4 col-xl-3 mb-4">
+						<div
+							v-for="(venue, index) in newVenues"
+							:key="venue.id"
+							:class="index == newVenues.length - 1 ? 'd-xl-none' : null"
+							class="col-7 col-md-4 col-xl-3 mb-4">
 							<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">
 								<pg-venue-grid-item :venue="venue" />
 							</router-link>
