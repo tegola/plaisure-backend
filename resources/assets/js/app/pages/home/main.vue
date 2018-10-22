@@ -235,12 +235,20 @@ export default {
 		<div class="pg-home-page__hero">
 			<pg-navbar :search="false" />
 
+			<div class="pg-home-page__hero-background d-none d-lg-block" role="presentation">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="pg-home-page__hero-background-img">
+					<circle cx="50" cy="50" r="50" fill="#CBECD4"/>
+					<circle cx="50" cy="50" r="28" fill="#B1E3BE"/>
+					<circle cx="50" cy="50" r="8" fill="#7DD194"/>
+				</svg>
+			</div>
+
 			<div class="pg-home-page__hero-content">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-10 col-lg-8">
+						<div class="col-md-10 col-lg-7">
 							<div class="row">
-								<div class="col-md-10">
+								<div class="col-md-10 col-lg-11">
 									<h1 class="display-3 text-dark-green mb-4">{{ $t('pages.home.search.title') }}</h1>
 									<p class="lead text-dark-green-muted font-weight-semibold mb-4">{{ $t('pages.home.search.subtitle', { name: APP_NAME, count: 5000 }) }}</p>
 								</div>

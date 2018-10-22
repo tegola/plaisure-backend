@@ -4,9 +4,25 @@
 		background-color: transparent;
 	}
 
-	// Hero container
+	// Hero
 	&__hero {
 		background-color: $palette-green-100;
+		position: relative;
+	}
+	&__hero-background {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: 60%;
+		overflow: hidden;
+	}
+	&__hero-background-img {
+		width: 100%;
+		position: absolute;
+		top: 50%;
+		right: -30%;
+		margin-top: -50%;
 	}
 	&__hero-content {
 		padding-top: $spacer * 3;
