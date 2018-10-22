@@ -1,4 +1,4 @@
-import { requireAuth, redirectIfAuthenticated } from './guards';
+import { requireAuth, requireSignup, redirectIfAuthenticated } from './guards';
 
 export default [
 	// Home -------------------------------------------------------------------
@@ -86,7 +86,7 @@ export default [
 		name: 'venues.claim',
 		component: () => import('prontogioco/app/pages/venues/claim'),
 		props: true,
-		beforeEnter: requireAuth
+		beforeEnter: requireSignup
 	},
 
 	// Edit venue -------------------------------------------------------------

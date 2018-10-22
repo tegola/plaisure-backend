@@ -76,7 +76,12 @@ export default {
 					// Go to the next page
 					this.$router.push(this.redirect);
 				}).catch(error => {
-					console.log('error', error);
+					const data = error.response.data;
+
+					if (data.errors.email) {
+						this.$refs.emailInput.focus();
+						alert(this.$t('pages.register.submit_error'));
+					}
 				}).then(() => {
 					this.loading = false;
 				});
@@ -109,7 +114,7 @@ export default {
 							:label="$t('pages.register.email')"
 							:state="!$v.model.email.$error"
 							:invalid-feedback="$t('pages.register.email_error')">
-							<b-input v-model="model.email" type="email" />
+							<b-input ref="emailInput" v-model="model.email" type="email" />
 						</b-form-group>
 
 						<b-form-group

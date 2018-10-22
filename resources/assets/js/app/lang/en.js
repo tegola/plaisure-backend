@@ -138,7 +138,7 @@ export default {
 		register: {
 			meta_title: 'Register',
 			title: 'Register to {name}',
-			intro: 'You will be able to claim your venue or publish a new one',
+			intro: 'You will be able to claim your venue or publish a new one.',
 			name: 'Name',
 			name_error: 'Type your name.',
 			email: 'E-mail address',
@@ -149,6 +149,7 @@ export default {
 			agree2: 'Terms of Service',
 			agree3: 'Privacy policy',
 			submit: 'Register',
+			submit_error: 'This e-mail address has been already used.',
 			login1: 'Already registered? {link}',
 			login2: 'Sign in'
 		},

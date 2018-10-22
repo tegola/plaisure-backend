@@ -25,6 +25,27 @@ export const requireAuth = (to, from, next) => {
 };
 
 /**
+ * Redirect to signup if needed.
+ *
+ * @param  {Route}    to
+ * @param  {Route}    from
+ * @param  {Function} next
+ * @return void
+ */
+export const requireSignup = (to, from, next) => {
+	if (!isAuthenticated()) {
+		next({
+			name: 'register',
+			query: {
+				redirect: to.fullPath
+			}
+		});
+	} else {
+		next();
+	}
+};
+
+/**
  * Go to home page if already authenticated.
  *
  * @param  {Route}    to
@@ -44,5 +65,6 @@ export const redirectIfAuthenticated = (to, from, next) => {
 
 export default {
 	requireAuth,
+	requireSignup,
 	redirectIfAuthenticated
 };

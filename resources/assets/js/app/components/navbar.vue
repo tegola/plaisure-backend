@@ -174,9 +174,9 @@ export default {
 				<slot name="right" />
 				<b-navbar-nav v-if="$mq.comfortable">
 					<template v-if="!user">
-						<b-nav-item :to="{ name: 'promote' }">Promuovi la tua attività</b-nav-item>
-						<b-nav-item :to="{ name: 'register' }">Registrati</b-nav-item>
-						<b-nav-item :to="{ name: 'login' }">Accedi</b-nav-item>
+						<b-nav-item :to="{ name: 'promote' }">{{ $t('components.navbar.promote') }}</b-nav-item>
+						<b-nav-item :to="{ name: 'register' }">{{ $t('components.navbar.register') }}</b-nav-item>
+						<b-nav-item :to="{ name: 'login' }">{{ $t('components.navbar.login') }}</b-nav-item>
 					</template>
 					<b-nav-item v-if="user" :to="{ name: 'user' }" exact>
 						<pg-icon icon="user" />
@@ -187,7 +187,7 @@ export default {
 		</nav>
 
 		<transition>
-			<div v-if="$mq.constrained && drawerOpen" class="navbar__drawer" @click.self="toggleDrawer()">
+			<div v-if="drawerOpen" class="navbar__drawer" @click.self="toggleDrawer()">
 				<b-nav vertical class="navbar__drawer-nav">
 					<b-nav-item :to="{ name: 'home' }" exact>{{ $t('components.navbar.home') }}</b-nav-item>
 					<b-nav-item v-if="user" :to="{ name: 'user' }" exact>

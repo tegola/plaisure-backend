@@ -149,6 +149,7 @@ export default {
 			agree2: 'Condizioni',
 			agree3: 'Normativa sui dati',
 			submit: 'Iscriviti',
+			submit_error: "Questo'indirizzo e-mail è già stato usato.",
 			login1: 'Sei già registrato? {link}',
 			login2: 'Accedi'
 		},
