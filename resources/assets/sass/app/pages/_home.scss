@@ -1,14 +1,20 @@
 .pg-home-page {
+	// Navbar
+	.navbar-light {
+		background-color: transparent;
+	}
+
 	// Hero container
 	&__hero {
+		background-color: $palette-green-100;
+	}
+	&__hero-content {
 		padding-top: $spacer * 3;
 		padding-bottom: $spacer * 3;
-		background-color: $palette-green-100;
 	}
 
 	@include media-breakpoint-up(md) {
-		&__hero {
-			margin-top: $spacer * 5;
+		&__hero-content {
 			margin-bottom: $spacer * 5;
 			padding-top: $spacer * 5;
 			padding-bottom: $spacer * 5;
@@ -54,7 +60,7 @@
 	@include media-breakpoint-up(md) {
 		&__main-venue-container {
 			position: absolute;
-			top: -($spacer * 10);
+			top: -($spacer * 5);
 			bottom: -($spacer * 8);
 		}
 	}
@@ -151,12 +157,26 @@
 
 	// Promote
 	&__promote-section {
-		padding-top: $spacer * 4;
+		padding-top: $spacer;
 		padding-bottom: $spacer;
 		background-color: $palette-green-100;
 	}
-	&__promote-img {
-		width: 80%;
-		margin: 0 auto -1.14rem;
+
+	@include media-breakpoint-down(sm) {
+		&__promote-section {
+			text-align: center;
+			margin-top: $spacer * 4;
+			margin-bottom: $spacer * 3;
+		}
+		&__promote-img {
+			width: 7rem;
+			margin: -($spacer * 4) auto $spacer;
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+		&__promote-section {
+			padding-top: $spacer * 2;
+		}
 	}
 }

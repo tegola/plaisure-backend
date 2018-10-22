@@ -139,6 +139,10 @@ export default {
 			});
 		},
 
+		svg(path) {
+			return require(`!svg-inline-loader!assets/svg/${path}`);
+		},
+
 		findUserLocation() {
 			this.locating = true;
 
@@ -228,69 +232,73 @@ export default {
 
 <template>
 	<div class="pg-home-page">
-		<pg-navbar :search="false" />
-
 		<div class="pg-home-page__hero">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-7">
-						<div class="row">
-							<div class="col-md-10">
-								<h1 class="display-3 text-dark-green mb-4">{{ $t('pages.home.search.title') }}</h1>
-								<p class="lead text-dark-green-muted font-weight-semibold mb-4">{{ $t('pages.home.search.subtitle', { name: APP_NAME, count: 5000 }) }}</p>
-							</div>
-						</div>
+			<pg-navbar :search="false" />
 
-						<div class="row form-row">
-							<div class="col col-lg-8">
-								<div class="position-relative">
-									<label class="sr-only">{{ $t('pages.home.search.label') }}</label>
-									<pg-place-textbox
-										:placeholder="placeholder"
-										:place="query"
-										:value="query"
-										:options="placeTextboxOptions"
-										class="form-control form-control-lg pg-home-page__search-form-control pg-home-page__search-query-control"
-										@place-changed="onPlaceChanged"
-									/>
-									<div
-										v-b-tooltip
-										v-if="hasGeolocation"
-										:title="$t('pages.home.search.location')"
-										class="pg-home-page__search-locate-btn-wrapper">
-										<pg-button
-											:icon="useUserLocation ? 'location' : 'location-outline'"
-											:loading="locating"
-											:disabled="useUserLocation ? true : false"
-											variant="naked"
-											size="lg"
-											class="pg-home-page__search-locate-btn"
-											tabindex="-1"
-											@click="findUserLocation"
-										/>
-									</div>
+			<div class="pg-home-page__hero-content">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-10 col-lg-8">
+							<div class="row">
+								<div class="col-md-10">
+									<h1 class="display-3 text-dark-green mb-4">{{ $t('pages.home.search.title') }}</h1>
+									<p class="lead text-dark-green-muted font-weight-semibold mb-4">{{ $t('pages.home.search.subtitle', { name: APP_NAME, count: 5000 }) }}</p>
 								</div>
 							</div>
-							<div class="col-auto">
-								<pg-button
-									:disabled="!canSubmit"
-									variant="accent"
-									size="lg"
-									class="pg-home-page__search-submit-btn"
-									block
-									@click="submit">
-									{{ $t('pages.home.search.submit') }}
-								</pg-button>
+
+							<div class="row form-row">
+								<div class="col">
+									<div class="position-relative">
+										<label class="sr-only">{{ $t('pages.home.search.label') }}</label>
+										<pg-place-textbox
+											:placeholder="placeholder"
+											:place="query"
+											:value="query"
+											:options="placeTextboxOptions"
+											class="form-control form-control-lg pg-home-page__search-form-control pg-home-page__search-query-control"
+											@place-changed="onPlaceChanged"
+										/>
+										<div
+											v-b-tooltip
+											v-if="hasGeolocation"
+											:title="$t('pages.home.search.location')"
+											class="pg-home-page__search-locate-btn-wrapper">
+											<pg-button
+												:icon="useUserLocation ? 'location' : 'location-outline'"
+												:loading="locating"
+												:disabled="useUserLocation ? true : false"
+												variant="naked"
+												size="lg"
+												class="pg-home-page__search-locate-btn"
+												tabindex="-1"
+												@click="findUserLocation"
+											/>
+										</div>
+									</div>
+								</div>
+								<div class="col-auto">
+									<pg-button
+										:disabled="!canSubmit"
+										variant="accent"
+										size="lg"
+										class="pg-home-page__search-submit-btn"
+										block
+										@click="submit">
+										{{ $t('pages.home.search.submit') }}
+									</pg-button>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-md-5 position-relative">
-						<div class="pg-home-page__main-venue-container">
-							<div class="mb-md-2 text-right small">
-								<a href="#">{{ $t('pages.home.venue.hint') }}</a>
+						<!--
+						<div class="col-md-5 position-relative">
+							<div class="pg-home-page__main-venue-container">
+								<div class="mb-md-2 text-right small">
+									<a href="#">{{ $t('pages.home.venue.hint') }}</a>
+								</div>
+								<div class="pg-home-page__main-venue" />
 							</div>
-							<div class="pg-home-page__main-venue" />
 						</div>
+						-->
 					</div>
 				</div>
 			</div>
@@ -352,9 +360,12 @@ export default {
 
 		<div class="my-5 pg-home-page__promote-section">
 			<div class="container">
-				<div class="row">
-					<div class="col-md-4 text-center">
-						<img src="/img/home/venue.svg" class="pg-home-page__promote-img">
+				<div class="row align-items-md-center">
+					<div class="col-md-3 mx-auto">
+						<div
+							class="pg-home-page__promote-img"
+							v-html="svg('illustrations/venue.svg')"
+						/>
 					</div>
 					<div class="col-md-8 col-xl-7">
 						<p class="text-dark-green-muted mb-1">{{ $t('pages.home.promote.intro') }}</p>
