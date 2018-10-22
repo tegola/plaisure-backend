@@ -130,7 +130,13 @@ export default {
 						</i18n>
 
 						<b-form-group>
-							<pg-button type="submit" variant="primary" block>{{ $t('pages.register.submit') }}</pg-button>
+							<pg-button
+								:loading="loading"
+								type="submit"
+								variant="primary"
+								block>
+								{{ $t('pages.register.submit') }}
+							</pg-button>
 						</b-form-group>
 
 						<p class="text-center">
