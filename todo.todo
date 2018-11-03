@@ -8,26 +8,26 @@
  ✔ Login: sbagliando i dati (credenziali non corrette) non viene mostrato l'errore @done (18-09-03 22:17)
  ✔ Form: mostrare errore in caso di caricamento errato @done (18-08-29 20:02)
  ✔ Aggiustare i menu nella pagina explore @done (18-09-02 20:02)
- ☐ Passare la lingua selezionata al client
+ ☐ Controllare perché al reload delle pagine su mobile non funziona google maps @high
  ☐ Dettaglio: scorrimento foto come sale in home page + "altre foto"
  ☐ Controllare il salvataggio dell'orario, sembra che l'array sia sballato
- ☐ Controllare perché al reload delle pagine su mobile non funziona google maps
  ☐ Porting delle funzionalità di localizzazione in home nella pagina explore
  ☐ Personalizzare il template dell'email
  ☐ Email di benvenuto all'utente dopo la registrazione
  ☐ Dettaglio: usare una mappa statica, che costa meno su google maps
  ✔ Edit sala: Il menu utente appare sotto alla navbar secondaria @done (18-09-03 22:53)
- ☐ Edit sala: focus all'elemento giusto quando c'è errore
  ✔ Importante: rimuovere il geocoder in home page, che ora è a pagamento (e dà errori CORS) e a noi non serve granché @done (18-10-10 19:50)
  ✔ Pagine di recupero password @done (18-09-14 17:34)
- ☐ Edit sala: drag della mappa più che del marker
  ☐ Aggiungere i link a terms of service e privacy policy (footer e registrazione utente)
  ✔ Spostare le icone svg (views/site/components/vectors.blade.php) in javascript @done (18-10-10 19:50)
- ☐ Spostare i css nelle pagine
  ☐ Ottimizzare la pagina di ricerca per i cellulari
+ ☐ Aggiustare la place textbox con le conoscenze migliori di vue
+ ☐ Edit sala: focus all'elemento giusto quando c'è errore
+ ☐ Edit sala: drag della mappa più che del marker
  ✔ Aggiustare gli spazi per il "notch" di iPhone X* @done (18-10-22 00:07)
  ☐ Modifica dati utente. Non si possono nullare i campi di fatturazione se ci sono sottoscrizioni attive.
  ☐ Modifica dati utente: al salvataggio, aggiornare i dati su Stripe.
+ ☐ Spostare i css nelle pagine
  ✔ Modifica attività: spostare caricamento e salvataggio nello store @done (18-10-22 00:08)
  ☐ Edit sala: il link all'edit quando una sala non ha proprietario ma l'utente è già registrato deve rimandare alla richiesta del codice dell'AAMS
  ☐ Disattivare i piani attivi su Stripe all'eliminazione di una sala
@@ -36,6 +36,7 @@
  ☐ Rimuovere AuthController in favore di Auth\LoginController e Auth\RegisterController
  ☐ Porting di Fractal a Laravel API Resources
  ☐ Controllare il reload della pagina explore dopo esserci arrivato da un pulsante in home page
+ ☐ Passare la lingua selezionata al client @low
 
  ✔ Tutte le sale attuali devono avere la categoria "Sala VLT" @done (17-11-04 20:03)
  ✔ Mostrare le prime due categorie per ogni sala @done (17-11-04 20:03)

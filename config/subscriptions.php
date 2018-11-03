@@ -24,7 +24,7 @@ return [
 	'premium_2' => [
 		'name' => 'premium_2',
 		'currency' => 'EUR',
-		'price' => 69,
+		'price' => 79,
 		'distance_bonus' => 15,
 		'photo_limit' => 50,
 		'hide_nearby_venues' => true

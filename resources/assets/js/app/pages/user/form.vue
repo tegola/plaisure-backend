@@ -2,9 +2,11 @@
 import { mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { required, requiredIf, email, minLength, sameAs } from 'vuelidate/lib/validators';
+import countryOptions from 'prontogioco/app/common/country-select-options';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
+import BSelect from 'bootstrap-vue/es/components/form-select/form-select';
 import BCheckbox from 'bootstrap-vue/es/components/form-checkbox/form-checkbox';
 import PgButton from 'prontogioco/app/components/button';
 
@@ -14,6 +16,7 @@ export default {
 	components: {
 		BFormGroup,
 		BInput,
+		BSelect,
 		BCheckbox,
 		PgButton
 	},
@@ -23,6 +26,7 @@ export default {
 	data() {
 		return {
 			loading: false,
+			countryOptions,
 			model: {}
 		};
 	},
@@ -155,11 +159,11 @@ export default {
 							:state="!$v.model.name.$error"
 							:label="$t('pages.user_form.general.name')"
 							:invalid-feedback="$t('pages.user_form.general.name_error')">
-							<b-input v-model="model.name" type="text" />
+							<b-input v-model="model.name" type="text" autocomplete="name" />
 						</b-form-group>
 						<b-form-group
 							:label="$t('pages.user_form.general.email')">
-							<b-input v-model="model.email" type="email" disabled />
+							<b-input v-model="model.email" type="email" autocomplete="email" disabled />
 						</b-form-group>
 						<b-form-group>
 							<b-checkbox v-model="model.send_newsletter">{{ $t('pages.user_form.general.newsletter') }}</b-checkbox>
@@ -170,13 +174,13 @@ export default {
 							:state="!$v.model.legal_name.$error"
 							:label="$t('pages.user_form.billing.legal_name')"
 							:invalid-feedback="$t('pages.user_form.billing.legal_name_error')">
-							<b-input v-model="model.legal_name" type="text" />
+							<b-input v-model="model.legal_name" type="text" autocomplete="organization" />
 						</b-form-group>
 						<b-form-group
 							:state="!$v.model.address_street.$error"
 							:label="$t('pages.user_form.billing.address')"
 							:invalid-feedback="$t('pages.user_form.billing.address_error')">
-							<b-input v-model="model.address_street" type="text" />
+							<b-input v-model="model.address_street" type="text" autocomplete="street-address" />
 						</b-form-group>
 						<div class="row">
 							<div class="col-sm-4">
@@ -184,7 +188,7 @@ export default {
 									:state="!$v.model.address_postcode.$error"
 									:label="$t('pages.user_form.billing.postcode')"
 									:invalid-feedback="$t('pages.user_form.billing.postcode_error')">
-									<b-input v-model="model.address_postcode" type="text" />
+									<b-input v-model="model.address_postcode" type="text" autocomplete="postal-code" />
 								</b-form-group>
 							</div>
 							<div class="col-sm-8">
@@ -192,7 +196,7 @@ export default {
 									:state="!$v.model.address_city.$error"
 									:label="$t('pages.user_form.billing.city')"
 									:invalid-feedback="$t('pages.user_form.billing.city_error')">
-									<b-input v-model="model.address_city" type="text" />
+									<b-input v-model="model.address_city" type="text" autocomplete="address-level2" />
 								</b-form-group>
 							</div>
 						</div>
@@ -202,7 +206,7 @@ export default {
 									:state="!$v.model.address_region.$error"
 									:label="$t('pages.user_form.billing.region')"
 									:invalid-feedback="$t('pages.user_form.billing.region_error')">
-									<b-input v-model="model.address_region" type="text" />
+									<b-input v-model="model.address_region" type="text" autocomplete="address-level1" />
 								</b-form-group>
 							</div>
 							<div class="col-sm">
@@ -210,7 +214,7 @@ export default {
 									:state="!$v.model.address_country.$error"
 									:label="$t('pages.user_form.billing.country')"
 									:invalid-feedback="$t('pages.user_form.billing.country_error')">
-									<b-input v-model="model.address_country" type="text" />
+									<b-select v-model="model.address_country" :options="countryOptions" />
 								</b-form-group>
 							</div>
 						</div>
@@ -228,13 +232,13 @@ export default {
 							:label="$t('pages.user_form.password.password')"
 							:invalid-feedback="$t('pages.user_form.password.password_error')"
 							:description="$t('pages.user_form.password.password_hint')">
-							<b-input v-model="model.new_password" type="password" />
+							<b-input v-model="model.new_password" type="password" autocomplete="new-password" />
 						</b-form-group>
 						<b-form-group
 							:state="!$v.model.new_password_confirmation.$error"
 							:label="$t('pages.user_form.password.password_confirmation')"
 							:invalid-feedback="$t('pages.user_form.password.password_confirmation_error')">
-							<b-input v-model="model.new_password_confirmation" type="password" />
+							<b-input v-model="model.new_password_confirmation" type="password" autocomplete="new-password" />
 						</b-form-group>
 						<b-form-group class="mt-3 text-right">
 							<pg-button :block="$mq.constrained" :to="{ name: 'user' }">{{ $t('common.actions.cancel') }}</pg-button>

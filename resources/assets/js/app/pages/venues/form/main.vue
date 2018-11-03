@@ -166,7 +166,7 @@ export default {
 			<div class="secondary-nav">
 				<div class="title-wrapper">
 					<div class="container d-flex align-items-center justify-content-between">
-						<h2 class="h4 mb-0">{{ venueId ? $t('pages.venue_form.title.edit') : $t('pages.venue_form.title.add') }}</h2>
+						<h2 class="h5 mb-0">{{ venueId ? $t('pages.venue_form.title.edit') : $t('pages.venue_form.title.add') }}</h2>
 						<pg-button
 							:disabled="isSaved"
 							:loading="saving"
@@ -194,7 +194,11 @@ export default {
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-9 mx-lg-auto">
-						<router-link :to="{ name: 'venues.selectPlan', params: { venueId: venueId }}">Plan</router-link>
+						<router-link
+							v-if="venueId"
+							:to="{ name: 'venues.selectPlan', params: { venueId: venueId }}">
+							Passa a un piano Premium
+						</router-link>
 						<component
 							v-for="pane in panes"
 							:key="pane"
@@ -202,6 +206,9 @@ export default {
 							:id="pane"
 							:venue-id="venueId"
 						/>
+					</div>
+					<div class="col-lg-3">
+						<div class="bg-primary">Laterale qui</div>
 					</div>
 				</div>
 			</div>

@@ -1,11 +1,9 @@
 import { load } from 'vue2-google-maps';
-import { GOOGLE_MAPS_API_KEY } from 'prontogioco/constants';
-
-const locale = process.env.MIX_LOCALE;
+import { GOOGLE_MAPS_API_KEY, APP_LOCALE } from 'prontogioco/constants';
 
 load({
 	key: GOOGLE_MAPS_API_KEY,
-	language: locale,
-	region: locale,
+	language: APP_LOCALE,
+	region: APP_LOCALE,
 	libraries: 'places'
 });

@@ -77,7 +77,12 @@ export default {
 			:invalid-feedback="$t('pages.venue_form.jackpots.amount_error')">
 			<div class="form-row">
 				<div class="col-md col-lg-5">
-					<b-input :placeholder="$t('pages.venue_form.jackpots.name_placeholder')" :value="venueJackpots[n].label" @input="onInput('label', n, $event)" />
+					<b-input
+						:placeholder="$t('pages.venue_form.jackpots.name_placeholder')"
+						:value="venueJackpots[n].label"
+						class="mb-2 mb-md-0"
+						@input="onInput('label', n, $event)"
+					/>
 				</div>
 				<div class="col-md col-lg-4">
 					<b-input-group prepend="€">

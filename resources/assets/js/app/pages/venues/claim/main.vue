@@ -3,7 +3,6 @@ import { validationMixin } from 'vuelidate';
 import { requiredIf } from 'vuelidate/lib/validators';
 import axios from 'prontogioco/app/plugins/axios';
 import PgButton from 'prontogioco/app/components/button';
-import PgImageFrame from 'prontogioco/app/components/image-frame';
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 
@@ -34,7 +33,6 @@ export default {
 
 	components: {
 		PgButton,
-		PgImageFrame,
 		BFormGroup,
 		BInput,
 		PgClaimVenuePageItem

@@ -3,9 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App;
 use JavaScript;
-use Locale;
 
 class PrepareJavascriptData
 {

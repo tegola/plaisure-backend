@@ -50,6 +50,9 @@ Route::group([
 	Route::get('/users', 'Users\ListController@index')->name('admin.users.index');
 });
 
+// Stripe webhooks ------------------------------------------------------------
+Route::post('/stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
+
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
 Route::get ('/venues/{id}',  'SeoController@redirectToHashed')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits

@@ -196,7 +196,7 @@ $btn-focus-box-shadow:  none;
 $btn-active-box-shadow: none;
 
 // Forms
-$input-bg:                 $white;
+$input-bg:                 gray('100');
 $input-border-color:       rgba($black, .15);
 $input-border-width:       $input-btn-border-width;
 $input-box-shadow:         0 0 0 transparent; // "none" was removing additional box shadows;
@@ -204,6 +204,7 @@ $input-box-shadow:         0 0 0 transparent; // "none" was removing additional 
 $input-border-radius-lg:   $border-radius;
 // $input-border-radius-sm:   $border-radius-sm;
 
+$input-focus-bg:           $white;
 $input-focus-border-color: theme-color('primary');
 $input-focus-box-shadow:   inset 0 0 0 1px theme-color('primary');
 
@@ -213,6 +214,8 @@ $input-height-border:     $input-border-width * 2;
 
 $input-height-inner-lg:   ($font-size-base * $input-btn-line-height) + ($input-btn-padding-y-lg * 2);
 $input-height-lg:         calc(#{$input-height-inner-lg} + #{$input-height-border});
+
+$input-transition:        border-color .15s ease-in-out, background-color .15s ease-in-out, box-shadow .15s ease-in-out;
 
 $input-group-addon-bg:           $input-bg;
 $input-group-addon-border-color: $input-border-color;

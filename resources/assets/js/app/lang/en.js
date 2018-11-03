@@ -500,13 +500,10 @@ export default {
 
 	// Database ---------------------------------------------------------------
 	db: {
-		cities: {
-			bologna: 'Bologna',
-			milano: 'Milano',
-			napoli: 'Napoli',
-			palermo: 'Palermo',
-			roma: 'Roma',
-			venezia: 'Venezia'
+		subscriptions: {
+			default: 'Free',
+			premium_1: 'Premium 1',
+			premium_2: 'Premium 2'
 		},
 		categories: {
 			betting_agency: 'Betting Agency',

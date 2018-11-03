@@ -45,6 +45,24 @@ export default {
 	getters: {
 		isAuthenticated(state) {
 			return (state.accessToken && state.refreshToken) ? true : false;
+		},
+
+		hasBillingInfo(state) {
+			const u = state.user;
+
+			if (!u) return false;
+
+			return Boolean(u.legal_name
+				&& u.address_street
+				&& u.address_city
+				&& u.address_postcode
+				&& u.address_region
+				&& u.address_country
+				&& u.vat_number);
+		},
+
+		hasCreditCard(state) {
+			return Boolean(state.user && state.user.card_brand && state.user.card_last_four);
 		}
 	},
 

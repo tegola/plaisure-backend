@@ -7,7 +7,7 @@
     },
     "globals": {
         "pg": true, // ProntoGioco
-        "google": true // Google maps
+        "google": true // Google Maps
     },
     "extends": [
         "plugin:vue/recommended",
