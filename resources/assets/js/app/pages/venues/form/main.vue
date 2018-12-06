@@ -8,6 +8,8 @@ import BListGroup from 'bootstrap-vue/es/components/list-group/list-group';
 import BListGroupItem from 'bootstrap-vue/es/components/list-group/list-group-item';
 
 import PgButton from 'prontogioco/app/components/button';
+import PgSubscriptionCard from 'prontogioco/app/components/subscription-card';
+
 import PgVenueFormGeneralPane from './general-pane';
 import PgVenueFormServicesPane from './services-pane';
 import PgVenueFormContactsPane from './contacts-pane';
@@ -29,6 +31,7 @@ export default {
 		BListGroup,
 		BListGroupItem,
 		PgButton,
+		PgSubscriptionCard,
 		PgVenueFormGeneralPane,
 		PgVenueFormServicesPane,
 		PgVenueFormContactsPane,
@@ -178,7 +181,7 @@ export default {
 				</div>
 				<div ref="sectionNavWrapper" class="section-nav-wrapper">
 					<div class="container">
-						<b-nav v-b-scrollspy="113" class="section-nav">
+						<b-nav v-b-scrollspy="123" class="section-nav">
 							<b-nav-item
 								v-for="pane in panes"
 								:key="pane"
@@ -193,12 +196,7 @@ export default {
 
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-9 mx-lg-auto">
-						<router-link
-							v-if="venueId"
-							:to="{ name: 'venues.selectPlan', params: { venueId: venueId }}">
-							Passa a un piano Premium
-						</router-link>
+					<div class="col-lg-8 mx-lg-auto">
 						<component
 							v-for="pane in panes"
 							:key="pane"
@@ -207,8 +205,16 @@ export default {
 							:venue-id="venueId"
 						/>
 					</div>
-					<div class="col-lg-3">
-						<div class="bg-primary">Laterale qui</div>
+					<div class="col-lg-4">
+						<pg-subscription-card
+							v-if="venueId"
+							:subscription="venue.subscription"
+							:current-subscription="venue.subscription"
+							:selected-subscription="venue.subscription"
+							highlight="Abbonamento corrente"
+							class="my-5"
+							@select="$router.push({ name: 'venues.selectPlan', params: { venueId: venueId }})"
+						/>
 					</div>
 				</div>
 			</div>

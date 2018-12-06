@@ -81,7 +81,7 @@ export default {
 			<div class="row">
 				<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 					<form @submit.prevent="submit">
-						<p v-if="done" class="lead text-success text-center">{{ $t('pages.forgot_password.submit_success') }}</p>
+						<p v-if="done" class="text-success text-center">{{ $t('pages.forgot_password.submit_success') }}</p>
 						<b-form-group
 							:label="$t('pages.forgot_password.email')"
 							:state="!$v.model.email.$error"

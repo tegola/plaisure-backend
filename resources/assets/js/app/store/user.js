@@ -62,7 +62,7 @@ export default {
 		},
 
 		hasCreditCard(state) {
-			return Boolean(state.user && state.user.card_brand && state.user.card_last_four);
+			return Boolean(state.user && state.user.card_brand);
 		}
 	},
 

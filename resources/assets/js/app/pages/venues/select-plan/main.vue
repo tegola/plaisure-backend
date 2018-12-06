@@ -8,10 +8,10 @@ import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
 import BSelect from 'bootstrap-vue/es/components/form-select/form-select';
 import PgButton from 'prontogioco/app/components/button';
-import { Card as StripeCard, createToken as createStripeToken } from 'vue-stripe-elements-plus';
+import PgSubscriptionCard from 'prontogioco/app/components/subscription-card';
+import { Card as StripeCard, createToken } from 'vue-stripe-elements-plus';
 import countryOptions from 'prontogioco/app/common/country-select-options';
 import subscriptions from './subscriptions';
-import PgSelectPlanPageSubscription from './card';
 import venueFormStore from 'prontogioco/app/store/venue-form';
 
 const locale = constants.APP_LOCALE.split('_')[0]; // it_IT -> it
@@ -24,8 +24,8 @@ export default {
 		BInput,
 		BSelect,
 		PgButton,
-		StripeCard,
-		PgSelectPlanPageSubscription
+		PgSubscriptionCard,
+		StripeCard
 	},
 
 	mixins: [validationMixin],
@@ -61,6 +61,7 @@ export default {
 			loading: false,
 			error: false,
 			saving: false,
+			newBilling: false,
 			countryOptions,
 			stripeOptions,
 			cardError: null,
@@ -74,13 +75,17 @@ export default {
 				address_region: '',
 				address_country: '',
 				vat_number: '',
-				stripe_token: null
+				token_id: null,
+				card_holder_name: ''
 			}
 		};
 	},
 
 	computed: {
-		...mapState('user', ['user']),
+		...mapState('user', {
+			user: 'user',
+			userVenues: 'venues'
+		}),
 		...mapGetters('user', [
 			'hasBillingInfo',
 			'hasCreditCard'
@@ -95,6 +100,16 @@ export default {
 			return state ? state.venue : null;
 		},
 
+		selectedSubscription() {
+			if (!this.model.subscription_name) return;
+
+			return this.subscriptions.find(subscription => subscription.name == this.model.subscription_name);
+		},
+
+		showBillingForm() {
+			return !this.hasBillingInfo || !this.hasCreditCard || this.newBilling;
+		},
+
 		address() {
 			if (!this.venue) return;
 
@@ -104,6 +119,18 @@ export default {
 				[a.street, a.number].join(' '),
 				a.city
 			].join(', ');
+		},
+
+		stripeTokenData() {
+			if (!this.user) return;
+
+			return {
+				name: this.model.card_holder_name,
+				address_line1: this.user.address_street,
+				address_city: this.user.address_city,
+				address_postal_code: this.user.address_postcode,
+				address_country: this.user.address_country
+			};
 		}
 	},
 
@@ -135,25 +162,31 @@ export default {
 	validations: {
 		model: {
 			legal_name: {
-				required: requiredIf(function() { return !this.hasBillingInfo; })
+				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
 			address_street: {
-				required: requiredIf(function() { return !this.hasBillingInfo; })
+				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
 			address_city: {
-				required: requiredIf(function() { return !this.hasBillingInfo; })
+				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
 			address_postcode: {
-				required: requiredIf(function() { return !this.hasBillingInfo; })
+				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
 			address_region: {
-				required: requiredIf(function() { return !this.hasBillingInfo; })
+				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
 			address_country: {
-				required: requiredIf(function() { return !this.hasBillingInfo; })
+				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
 			vat_number: {
-				required: requiredIf(function() { return !this.hasBillingInfo; })
+				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
+			},
+			token_id: {
+				required: requiredIf(function() { return !this.hasCreditCard || this.newBilling; })
+			},
+			card_holder_name: {
+				required: requiredIf(function() { return !this.hasCreditCard || this.newBilling; })
 			}
 		}
 	},
@@ -187,25 +220,75 @@ export default {
 				});
 		},
 
+		cancelSelection() {
+			this.model.subscription_name = null;
+		},
+
 		onCardChange({ error }) {
 			this.cardError = error ? error.message : null;
 		},
 
-		submit() {
-			// Validate
-			this.$v.$touch();
+		prepareToken() {
+			return new Promise((resolve, reject) => {
+				// No billing form, just return
+				if (!this.showBillingForm) resolve();
 
-			// Stop on validation errors
-			if (this.$v.$error) return;
+				// Billing form visible, create the token for storing the new
+				// cretid card
+				if (this.showBillingForm) {
+					createToken(this.stripeTokenData).then(({ token, error }) => {
+						// Error
+						if (error) return reject(error);
+
+						// Success, store token id
+						this.model.token_id = token.id;
+						resolve();
+					});
+				}
+			});
+		},
+
+		submit() {
+			const msg = "C'è stato un errore nel tentativo di effettuare il pagamento. Ti preghiamo di riprovare più tardi.";
 
 			this.saving = true;
 
-			// FIXME: Add user data
-			createStripeToken().then(({ token, error }) => {
-				this.saving = false;
+			// Before checking for errors, we need to be sure that we get the
+			// token for registering the new credit card
+			this.prepareToken().then(() => {
+				// Validate
+				this.$v.$touch();
 
-				if (error) return; // FIXME: Gestire l'errore
-				if (token) this.model.stripe_token = token.id;
+				// Stop on validation errors
+				if (this.$v.$error) {
+					this.saving = false;
+					return;
+				}
+
+				// Prepare model to save - just the subscription name or the
+				// whole model
+				const model = this.showBillingForm
+					? { subscription_name: this.model.subscription_name }
+					: this.model;
+
+				// Save subscription
+				// FIXME: Move to store
+				this.$axios.post(`/venues/${this.venueId}/subscribe`, model)
+					.catch(() => {
+						alert(msg);
+					})
+					.then(() => {
+						this.saving = false;
+						this.loadData();
+
+						// Reload user data, including venues
+						this.$store.dispatch('user/fetch');
+					});
+
+				// FIXME: Ricaricare le attività
+			}).catch(() => {
+				this.saving = false;
+				alert(msg);
 			});
 		}
 	}
@@ -228,7 +311,7 @@ export default {
 
 		<template v-if="!loading && venue">
 			<div class="container my-5">
-				<h2 class="h4">{{ venue.subscription.name === 'default' ? 'Abbonati' : 'Modifica abbonamento' }}</h2>
+				<h2 class="h4">{{ venue.subscription ? 'Modifica abbonamento' : 'Abbonati' }}</h2>
 				<p>
 					<router-link :to="{ name: 'venues.edit', params: { venueId }}">
 						<pg-icon icon="arrow-left" />
@@ -237,45 +320,97 @@ export default {
 					<span class="text-muted">({{ address }})</span>
 				</p>
 
-				<div class="card-group my-5">
-					<pg-select-plan-page-subscription
+				<div v-if="!model.subscription_name" class="row my-5">
+					<div
 						v-for="subscription in subscriptions"
-						:key="subscription.machine_name"
-						:subscription="subscription"
-						:selected="model.subscription_name == subscription.machine_name"
-						:current="venue.subscription.name == subscription.machine_name"
-						:end-date="venue.subscription.ends_at.date"
-						@select="model.subscription_name = subscription.machine_name"
-					/>
+						:key="subscription.name"
+						class="col-md-4 d-flex">
+						<pg-subscription-card
+							:subscription="subscription"
+							:current-subscription="venue.subscription"
+							:selected-subscription-name="model.subscription_name"
+							class="flex-fill mb-3 mb-md-0"
+							@select="model.subscription_name = subscription.name"
+						/>
+					</div>
 				</div>
 
-				<template v-if="model.subscription_name">
-					<div class="row">
-						<div class="col-lg-8 mx-auto">
-							<div v-if="!hasBillingInfo" class="mb-5">
-								<p>Per continuare, abbiamo bisogno dei dati di fatturazione. Inseriscili qui di seguito.</p>
+
+				<div v-if="selectedSubscription" class="row">
+					<div class="col-lg-4 order-lg-2">
+						<pg-subscription-card
+							:subscription="selectedSubscription"
+							:current-subscription="venue.subscription"
+							:selected-subscription="selectedSubscription"
+							highlight="Nuovo abbonamento"
+							@select="cancelSelection"
+						/>
+					</div>
+					<div class="col-lg-7 mr-lg-auto order-lg-0">
+						<!-- Back to default subscription -->
+						<template v-if="model.subscription_name == 'default'">
+							<p>Hai scelto l'abbonamento gratuito. Questo annullerà il rinnovo mensile e non ti verrà addebitato nessun altro costo. L'attuale abbonamento rimarrà comunque attivo fino allo scadere del periodo già pagato.</p>
+						</template>
+
+						<!-- All other subscriptions -->
+						<template v-else>
+							<p>
+								Hai scelto un abbonamento a pagamento.
+								<template v-if="!hasBillingInfo">Per continuare, abbiamo bisogno dei dati di fatturazione. Inseriscili qui di seguito.</template>
+								<template v-if="hasBillingInfo">Assicurati che i dati di fatturazione e pagamento siano corretti. Se non lo sono, puoi modificarli prima di continuare.</template>
+							</p>
+
+							<p v-if="hasBillingInfo && userVenues.length > 1" class="font-weight-bold">
+								<strong class="text-danger">Attenzione:</strong> se hai abbonamenti attivi sulle altre attività, queste verranno aggiornate con i nuovi dati.
+							</p>
+
+							<div v-if="!showBillingForm" class="my-5">
+								<div class="row">
+									<div class="col-md">
+										<p class="initialism text-muted font-size-xs mb-1">Fatturazione</p>
+										<p>
+											<strong>{{ user.legal_name }}</strong><br>
+											{{ user.address_street }},
+											{{ user.address_city }}
+											{{ user.address_postcode }}
+											{{ user.address_region }}
+											({{ user.address_country }})<br>
+											P. IVA: {{ user.vat_number }}
+										</p>
+									</div>
+									<div class="col-md">
+										<p class="initialism text-muted font-size-xs mb-1">Pagamento (carta di credito)</p>
+										<p>
+											{{ user.card_brand }} <code>**** {{ user.card_last_four }}</code><br>
+											{{ user.card_holder_name }}<br>
+											Scadenza: {{ user.card_expiry_month }}/{{ user.card_expiry_year }}
+										</p>
+									</div>
+								</div>
+								<p class="text-center">
+									<pg-button @click="newBilling = true">Modifica dati di fatturazione</pg-button>
+								</p>
+							</div>
+
+							<template v-if="showBillingForm">
+								<h5 class="mt-5">Fatturazione</h5>
+								<hr>
 								<b-form-group
 									:state="!$v.model.legal_name.$error"
 									:label="$t('pages.user_form.billing.legal_name')"
 									:invalid-feedback="$t('pages.user_form.billing.legal_name_error')">
-									<b-input v-model="model.legal_name" type="text" autocomplete="organization" />
+									<b-input v-model="model.legal_name" type="text" autocomplete="organization" autofocus />
 								</b-form-group>
-								<b-form-group
-									:state="!$v.model.address_street.$error"
-									:label="$t('pages.user_form.billing.address')"
-									:invalid-feedback="$t('pages.user_form.billing.address_error')">
-									<b-input v-model="model.address_street" type="text" autocomplete="street-address" />
-								</b-form-group>
-								<div class="row">
-									<div class="col-sm-4">
+								<div class="form-row">
+									<div class="col-md">
 										<b-form-group
-											:state="!$v.model.address_postcode.$error"
-											:label="$t('pages.user_form.billing.postcode')"
-											:invalid-feedback="$t('pages.user_form.billing.postcode_error')">
-											<b-input v-model="model.address_postcode" type="text" autocomplete="postal-code" />
+											:state="!$v.model.address_street.$error"
+											:label="$t('pages.user_form.billing.address')"
+											:invalid-feedback="$t('pages.user_form.billing.address_error')">
+											<b-input v-model="model.address_street" type="text" autocomplete="street-address" />
 										</b-form-group>
 									</div>
-									<div class="col-sm-8">
+									<div class="col-md">
 										<b-form-group
 											:state="!$v.model.address_city.$error"
 											:label="$t('pages.user_form.billing.city')"
@@ -284,8 +419,16 @@ export default {
 										</b-form-group>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-sm">
+								<div class="form-row">
+									<div class="col-md-3">
+										<b-form-group
+											:state="!$v.model.address_postcode.$error"
+											:label="$t('pages.user_form.billing.postcode')"
+											:invalid-feedback="$t('pages.user_form.billing.postcode_error')">
+											<b-input v-model="model.address_postcode" type="text" autocomplete="postal-code" />
+										</b-form-group>
+									</div>
+									<div class="col-md">
 										<b-form-group
 											:state="!$v.model.address_region.$error"
 											:label="$t('pages.user_form.billing.region')"
@@ -293,7 +436,7 @@ export default {
 											<b-input v-model="model.address_region" type="text" autocomplete="address-level1" />
 										</b-form-group>
 									</div>
-									<div class="col-sm">
+									<div class="col-md">
 										<b-form-group
 											:state="!$v.model.address_country.$error"
 											:label="$t('pages.user_form.billing.country')"
@@ -308,85 +451,44 @@ export default {
 									:invalid-feedback="$t('pages.user_form.billing.vat_number_error')">
 									<b-input v-model="model.vat_number" type="text" />
 								</b-form-group>
-							</div>
 
-							<div class="mb4">
-								<h6>Dati di fatturazione</h6>
-								<p>
-									<strong>{{ user.legal_name }}</strong><br>
-									<small>
-										{{ user.address_street }}
-										-
-										{{ user.address_city }}
-										{{ user.address_postcode }}
-										{{ user.address_region }}
-										({{ user.address_country }})
-									</small><br>
-									Partita IVA: {{ user.vat_number }}
-								</p>
-								<p><router-link :to="{ name: 'user.edit' }">Modifica</router-link></p>
-							</div>
-
-							<h6>Pagamento</h6>
-							<template v-if="hasCreditCard">
-								<b-form-group :label="$t('Carta di credito')">
-									<div class="row">
-										<div class="col-auto">
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<code class="input-group-text font-weight-bold">{{ user.card_brand }}</code>
-												</div>
-												<div class="input-group-append flex-grow-1">
-													<code class="input-group-text w-100 bg-transparent">**** **** **** {{ user.card_last_four }}</code>
-												</div>
-											</div>
-										</div>
-										<div class="col-auto">
-											Card holder
-										</div>
-									</div>
-									<p><router-link :to="{ name: 'user.edit' }">Modifica</router-link></p>
+								<h5 class="mt-5">Pagamento</h5>
+								<hr>
+								<b-form-group
+									:state="!cardError"
+									:label="$t('Carta di credito')"
+									:invalid-feedback="cardError">
+									<stripe-card
+										:stripe="STRIPE_KEY"
+										:options="stripeOptions"
+										@change="onCardChange"
+									/>
+								</b-form-group>
+								<b-form-group
+									:state="!$v.model.card_holder_name.$error"
+									:label="$t('Nome e cognome intestatario')"
+									:invalid-feedback="$t('Inserisci il nome dell\'intestatario come mostrato sulla carta')">
+									<b-input v-model="model.card_holder_name" type="text" autocomplete="cc-name" />
 								</b-form-group>
 							</template>
 
-							<b-form-group
-								v-else
-								:state="!cardError"
-								:label="$t('Carta di credito')"
-								:invalid-feedback="cardError">
-								<stripe-card
-									:stripe="STRIPE_KEY"
-									:options="stripeOptions"
-									@change="onCardChange"
-								/>
-							</b-form-group>
-
 							<p class="small">Stai per attivare un abbonamento costante. Se fai clic su "Abbonati", autorizzi {{ APP_NAME }} ad addebitarti mensilmente il costo dell'abbonamento (attualmente pari a 1,99 €/mese). Puoi annullare l'abbonamento in qualsiasi momento. Ulteriori informazioni.</p>
 							<p class="small">Se fai clic su "Abbonati" accetti i Termini di servizio di {{ APP_NAME }} l'Informativa sulla privacy. Accetti inoltre che il tuo acquisto sarà subito disponibile e di rinunciare al diritto di recesso previsto dalla legge (ad eccezione dei servizi).</p>
+						</template>
 
-							<div class="form-row justify-content-between">
-								<div class="col-auto">
-									<pg-button
-										:disabled="saving"
-										block
-										variant="naked"
-										@click="model.subscription_name = ''">
-										Annulla
-									</pg-button>
-								</div>
-								<div class="col col-md-auto">
-									<pg-button
-										:loading="saving"
-										:block="$mq.constrained"
-										variant="primary"
-										@click="submit">
-										Abbonati
-									</pg-button>
-								</div>
-							</div>
+						<!-- Confirm change -->
+						<div class="text-center">
+							<pg-button
+								:loading="saving"
+								:block="$mq.constrained"
+								variant="primary"
+								size="lg"
+								@click="submit">
+								{{ venue.subscription ? 'Modifica abbonamento' : 'Abbonati' }}
+							</pg-button>
 						</div>
 					</div>
-				</template>
+				</div>
 			</div>
 		</template>
 

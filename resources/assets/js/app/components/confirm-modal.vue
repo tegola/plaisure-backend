@@ -52,7 +52,7 @@ export default {
 		hide-header-close
 		cancel-variant="light"
 		v-on="$listeners">
-		<p v-if="$slots.message" class="lead mb-0">
+		<p v-if="$slots.message" class="mb-0">
 			<slot name="message" />
 		</p>
 		<slot />

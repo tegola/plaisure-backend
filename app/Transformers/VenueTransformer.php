@@ -291,14 +291,18 @@ class VenueTransformer extends TransformerAbstract
 	}
 
 	/**
-	 * Include subscription.
+	 * Include the active subscription.
 	 * 
 	 * @param  Venue  $venue
 	 * @return \League\Fractal\Resource\Item
 	 */
 	public function includeSubscription(Venue $venue)
 	{
-		return $this->item($venue->subscription, function(Subscription $subscription) {		
+		$subscription = $venue->subscribed() ? $venue->subscription() : null;
+
+		if (!$subscription) return;
+
+		return $this->item($subscription, function(Subscription $subscription) {
 			return $subscription->only(
 				'name',
 				'currency',

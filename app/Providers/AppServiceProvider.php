@@ -8,6 +8,7 @@ use Schema;
 use Blade;
 use Carbon;
 use App;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,9 @@ class AppServiceProvider extends ServiceProvider
 		Blade::directive('currency', function ($value, $decimals = 2) {
 			return "<?php echo '&euro; ' . number_format($value, $decimals, ',', '.'); ?>";
 		});
+
+		// Cashier currency
+		Cashier::useCurrency('eur', '€');
 	}
 
 	/**

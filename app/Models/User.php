@@ -35,15 +35,36 @@ class User extends Authenticatable
 	];
 
 	/**
-	 * The attributes that are mass assignable.
+	 * The attributes that are not mass assignable.
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'name',
-		'email',
-		'password'
-	];
+	protected $guarded = [];
+
+	/**
+	 * Fills the model's properties with the source from Stripe.
+	 *
+	 * @param  \Stripe\Card|\Stripe\BankAccount|null  $card
+	 * @return $this
+	 */
+	protected function fillCardDetails($card)
+	{
+	    if ($card instanceof StripeCard) {
+	        $this->card_brand = $card->brand;
+	        $this->card_last_four = $card->last4;
+	        $this->card_expiry_month = $card->exp_month;
+	        $this->card_expiry_year = $card->exp_year;
+	        $this->card_holder_name = $card->name;
+	    } elseif ($card instanceof StripeBankAccount) {
+	        $this->card_brand = 'Bank Account';
+	        $this->card_last_four = $card->last4;
+	        $this->card_expiry_month = null;
+	        $this->card_expiry_year = null;
+	        $this->card_holder_name = $card->account_holder_name;
+	    }
+
+	    return $this;
+	}
 
 	/**
 	 * Venues claimed by this user.
@@ -76,5 +97,21 @@ class User extends Authenticatable
 	public function sendPasswordResetNotification($token)
 	{
 		$this->notify(new ResetPasswordNotification($token));
+	}
+
+	/**
+	 * Determines if the user has set its billing info.
+	 * 
+	 * @return boolean
+	 */
+	public function hasBillingInfo()
+	{
+		return ($this->legal_name
+			&& $this->address_street
+			&& $this->address_city
+			&& $this->address_postcode
+			&& $this->address_region
+			&& $this->address_country
+			&& $this->vat_number);
 	}
 }

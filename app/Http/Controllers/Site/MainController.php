@@ -34,8 +34,8 @@ class MainController extends Controller
 		// Highlights - 2 taken from the latest 20 (1/10 chance to appear)
 		$highlightedVenues = Cache::remember('home.highlights', $cacheLimit, function() {
 			$venues = $this->initQuery()
-				->whereHas('subscription', function($query) {
-					$query->where('name', 'premium_2');
+				->whereHas('subscriptions', function($query) {
+					$query->where('name', 'premium_2'); // FIXME: where subscription has a field "home_page_highlight"
 				})
 				->latest()
 				->take(20);

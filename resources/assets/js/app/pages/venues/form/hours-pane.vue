@@ -76,7 +76,7 @@ export default {
 			:label="day.name"
 			v-bind="formGroupProps">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<pg-venue-form-hour-fieldset
 						:label="day.name"
 						:value="venueHours[day.index]"

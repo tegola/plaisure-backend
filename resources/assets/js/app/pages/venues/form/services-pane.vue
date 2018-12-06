@@ -216,7 +216,7 @@ export default {
 		<hr>
 		<b-form-group v-bind="formGroupProps">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<div><b-checkbox v-model="venueSportsBetting">{{ $t('pages.venue_form.services.sports_betting') }}</b-checkbox></div>
 					<div><b-checkbox v-model="venueVirtualBetting">{{ $t('pages.venue_form.services.virtual_betting') }}</b-checkbox></div>
 					<div><b-checkbox v-model="venueHorseBetting">{{ $t('pages.venue_form.services.horse_betting') }}</b-checkbox></div>
@@ -231,7 +231,7 @@ export default {
 			:label="$t('pages.venue_form.services.vlt_machine_count')"
 			:invalid-feedback="$t('pages.venue_form.services.invalid_value')">
 			<div class="form-row">
-				<div class="col-md-3 col-lg-2">
+				<div class="col-md-3 col-lg-3">
 					<b-input v-model.number="venueVltMachineCount" type="number" min="0" />
 				</div>
 			</div>
@@ -243,7 +243,7 @@ export default {
 			:label="$t('pages.venue_form.services.awp_machine_count')"
 			:invalid-feedback="$t('pages.venue_form.services.invalid_value')">
 			<div class="form-row">
-				<div class="col-md-3 col-lg-2">
+				<div class="col-md-3 col-lg-3">
 					<b-input v-model.number="venueAwpMachineCount" type="number" min="0" />
 				</div>
 			</div>
@@ -255,7 +255,7 @@ export default {
 			:label="$t('pages.venue_form.services.seating_capacity')"
 			:invalid-feedback="$t('pages.venue_form.services.invalid_value')">
 			<div class="form-row">
-				<div class="col-md-3 col-lg-2">
+				<div class="col-md-3 col-lg-3">
 					<b-input v-model.number="venueSeatingCapacity" type="number" min="0" />
 				</div>
 			</div>
@@ -267,7 +267,7 @@ export default {
 			:label="$t('pages.venue_form.services.parking_capacity')"
 			:invalid-feedback="$t('pages.venue_form.services.invalid_value')">
 			<div class="form-row">
-				<div class="col-md-3 col-lg-2">
+				<div class="col-md-3 col-lg-3">
 					<b-input v-model.number="venueParkingCapacity" type="number" min="0" />
 				</div>
 			</div>
@@ -278,7 +278,7 @@ export default {
 			:label="$t('pages.venue_form.services.vlt_platforms')"
 			label-class="pt-0">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<b-checkbox-group v-model="venueVltPlatformIds" stacked>
 						<b-checkbox v-for="item in vltPlatforms" :value="item.id" :key="item.id">{{ item.name }}</b-checkbox>
 					</b-checkbox-group>
@@ -291,7 +291,7 @@ export default {
 			:label="$t('pages.venue_form.services.amenities.title')"
 			label-class="pt-0">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<b-checkbox-group v-model="venueAmenities" stacked>
 						<b-checkbox v-for="item in amenities" :value="item" :key="item">{{ $t(`pages.venue_form.services.amenities.${item}`) }}</b-checkbox>
 					</b-checkbox-group>
@@ -304,7 +304,7 @@ export default {
 			:label="$t('pages.venue_form.services.pay_per_view_platforms')"
 			label-class="pt-0">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<b-checkbox-group v-model="venuePayPerViewPlatformIds" stacked>
 						<b-checkbox v-for="item in payPerViewPlatforms" :value="item.id" :key="item.id">{{ item.name }}</b-checkbox>
 					</b-checkbox-group>

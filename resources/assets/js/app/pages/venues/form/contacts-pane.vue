@@ -82,7 +82,7 @@ export default {
 			v-bind="formGroupProps"
 			:label="$t('pages.venue_form.contacts.phone')">
 			<div class="form-row">
-				<div class="col-md-7 col-lg-5">
+				<div class="col-md-9 col-lg-10">
 					<b-input
 						:value="venue.contacts.phone"
 						type="tel"
@@ -98,7 +98,7 @@ export default {
 			:label="$t('pages.venue_form.contacts.email')"
 			:invalid-feedback="$t('pages.venue_form.contacts.email_error')">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-md-9 col-lg-10">
 					<b-input
 						:placeholder="$t('pages.venue_form.contacts.email_placeholder' )"
 						:value="venue.contacts.email"
@@ -113,7 +113,7 @@ export default {
 			v-bind="formGroupProps"
 			label="Facebook Messenger">
 			<div class="form-row">
-				<div class="col-md-7 col-lg-5">
+				<div class="col-md-9 col-lg-10">
 					<b-input
 						:value="venue.contacts.facebook"
 						@input="onContactInput('facebook', $event)"
@@ -126,7 +126,7 @@ export default {
 			v-bind="formGroupProps"
 			label="Twitter">
 			<div class="form-row">
-				<div class="col-md-7 col-lg-5">
+				<div class="col-md-9 col-lg-10">
 					<b-input-group prepend="@">
 						<b-input
 							:value="venue.contacts.twitter"
@@ -143,7 +143,7 @@ export default {
 			:label="$t('pages.venue_form.contacts.site')"
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<b-input
 						v-auto-http
 						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"
@@ -161,7 +161,7 @@ export default {
 			:label="$t('pages.venue_form.contacts.online_casino')"
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<b-input
 						v-auto-http
 						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"
@@ -179,7 +179,7 @@ export default {
 			:label="$t('pages.venue_form.contacts.facebook')"
 			:invalid-feedback="$t('pages.venue_form.contacts.url_error')">
 			<div class="form-row">
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<b-input
 						v-auto-http
 						:placeholder="$t('pages.venue_form.contacts.url_placeholder')"

@@ -7,9 +7,9 @@
 
     # Force redirect to https:// (some browsers require it for requesting the
     # location) but not on development environment
-    RewriteCond %{HTTP_HOST} !localhost
-    RewriteCond %{HTTPS} !=on
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    # RewriteCond %{HTTP_HOST} !localhost
+    # RewriteCond %{HTTPS} !=on
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

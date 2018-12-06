@@ -110,7 +110,7 @@ export default {
 			<div class="row">
 				<div class="ml-md-auto mr-md-auto col-md-6 col-xl-4">
 					<form @submit.prevent="submit">
-						<p v-if="error" class="lead text-danger text-center">{{ $t('pages.reset_password.submit_error') }}</p>
+						<p v-if="error" class="text-danger text-center">{{ $t('pages.reset_password.submit_error') }}</p>
 
 						<b-form-group
 							:label="$t('pages.reset_password.email')"

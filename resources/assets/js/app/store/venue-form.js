@@ -52,10 +52,6 @@ export default {
 			} else {
 				state.venue[field] = value;
 			}
-		},
-
-		setVenueAmenityField: (state, { amenity, value }) => {
-			state.venue.amenities[amenity] = value;
 		}
 	},
 
@@ -86,7 +82,6 @@ export default {
 			return axios.post(url, state.venue)
 				.then(() => {
 					// Keep the original copy so it will appear as saved
-					console.log('then in store');
 					commit('setOriginalVenue', state.venue);
 				})
 				.catch(() => {})

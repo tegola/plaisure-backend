@@ -396,8 +396,8 @@ export default {
 				logout: 'Logout'
 			},
 			no_items: {
-				title: 'No venues found',
-				message: "You haven't added your venue(s) yet. {action} to start now!",
+				title: 'No venues',
+				message: '{action} to add your first one now!',
 				message_action: 'Click here'
 			}
 		},

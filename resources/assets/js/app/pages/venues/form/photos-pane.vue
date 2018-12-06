@@ -1,8 +1,8 @@
 <script>
-import BButton from 'bootstrap-vue/es/components/button/button';
 import BProgress from 'bootstrap-vue/es/components/progress/progress';
 import VueUploader from 'vue-upload-component'; // FIXME: Make custom component
 
+import PgButton from 'prontogioco/app/components/button';
 import PgImageFrame from 'prontogioco/app/components/image-frame';
 import PgConfirmModal from 'prontogioco/app/components/confirm-modal';
 
@@ -11,7 +11,7 @@ export default {
 
 	components: {
 		BProgress,
-		BButton,
+		PgButton,
 		PgImageFrame,
 		PgConfirmModal,
 		VueUploader
@@ -125,7 +125,7 @@ export default {
 				<a :href="photo.resized_url" target="_blank">
 					<pg-image-frame :src="photo.thumbnail_url" ratio="1:1" class="rounded" />
 				</a>
-				<b-button size="sm" variant="danger" block class="mt-2" @click="deletePhoto(photo)">{{ $t('common.actions.delete') }}</b-button>
+				<pg-button size="sm" variant="danger" block class="mt-2" @click="deletePhoto(photo)">{{ $t('common.actions.delete') }}</pg-button>
 			</div>
 
 			<!-- Current uploads -->
@@ -140,7 +140,7 @@ export default {
 						</template>
 					</div>
 				</div>
-				<b-button v-if="file.error" size="sm" variant="danger" block class="mt-2" @click="$refs.uploader.remove(file)">{{ $t('common.actions.remove') }}</b-button>
+				<pg-button v-if="file.error" size="sm" variant="danger" block class="mt-2" @click="$refs.uploader.remove(file)">{{ $t('common.actions.remove') }}</pg-button>
 			</div>
 
 			<!-- Uploader -->
@@ -168,10 +168,12 @@ export default {
 			:ok-title="$t('common.actions.remove')"
 			variant="danger"
 			@ok="confirmDeletePhoto">
-			<i18n tag="p" class="lead" path="pages.venue_form.photos.remove.intro">
+			<i18n tag="p" path="pages.venue_form.photos.remove.intro">
 				<strong class="text-danger" place="action">{{ $t('pages.venue_form.photos.remove.intro_action') }}</strong>
 			</i18n>
-			<img v-if="currentPhoto" :src="currentPhoto.thumbnail_url" class="img-fluid rounded">
+			<div v-if="currentPhoto" class="text-center">
+				<img :src="currentPhoto.thumbnail_url" class="img-fluid rounded">
+			</div>
 		</pg-confirm-modal>
 	</div>
 </template>

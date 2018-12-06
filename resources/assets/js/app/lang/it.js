@@ -373,7 +373,7 @@ export default {
 				intro_action: 'scegli un piano a pagamento',
 				upload: 'Carica foto',
 				remove: {
-					title: 'Rimuovi photo',
+					title: 'Rimuovi foto',
 					intro: "Stai per {action}. Essa verrà effettivamente eliminata dalla galleria una volta salvati i dati dell'attività.",
 					intro_action: 'rimuovere questa foto'
 				}
@@ -396,8 +396,8 @@ export default {
 				logout: 'Esci'
 			},
 			no_items: {
-				title: 'Nessuna attività trovata',
-				message: 'Non hai ancora aggiunto la/le tua/e attività. {action} per farlo subito!',
+				title: 'Nessuna attività',
+				message: '{action} per aggiungere la tua prima attività!',
 				message_action: 'Clicca qui'
 			}
 		},

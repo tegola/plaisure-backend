@@ -252,17 +252,39 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the subscription for this venue. Defaults to the free plan data.
+	 * Determine if the Stripe model has a given subscription.
 	 *
+	 * @param  string  $subscription
+	 * @param  string|null  $plan
+	 * @return bool
+	 */
+	public function subscribed()
+	{
+		$subscription = $this->subscription();
+
+		return $subscription && $subscription->valid();
+	}
+
+	/**
+	 * Get the subscription instance for this venue
+	 * 
 	 * @return \App\Models\Subscription
 	 */
 	public function subscription()
 	{
-		$subscriptions = config('subscriptions');
+		return $this->subscriptions->first();
+	}
 
+	/**
+	 * Get all subscriptions for this venue.
+	 *
+	 * @return \App\Models\Subscription
+	 */
+	public function subscriptions()
+	{
 		return $this
-			->hasOne('App\Models\Subscription')
-			->withDefault($subscriptions['default']);
+			->hasMany('App\Models\Subscription')
+			->orderBy('created_at', 'desc');
 	}
 
 	/**
@@ -594,7 +616,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Venues that are still without an owner.
+	 * Venues that don't have an owner.
 	 * 
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
 	 * @return Illuminate\Database\Query\Builder          Modified query builder

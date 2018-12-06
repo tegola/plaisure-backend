@@ -84,7 +84,7 @@ export default {
 						@input="onInput('label', n, $event)"
 					/>
 				</div>
-				<div class="col-md col-lg-4">
+				<div class="col-md col-lg-5">
 					<b-input-group prepend="€">
 						<b-input
 							:placeholder="$t('pages.venue_form.jackpots.amount_placeholder')"

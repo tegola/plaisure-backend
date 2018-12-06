@@ -92,6 +92,7 @@ export default {
 
 	computed: {
 		...mapState('user', {
+			user: 'user',
 			userVenues: 'venues'
 		}),
 
@@ -146,7 +147,14 @@ export default {
 				return {
 					name: 'venues.edit',
 					params: {
-						venueId: this.venue.id
+						venueId: this.venueId
+					}
+				};
+			} else if (this.user) {
+				return {
+					name: 'venues.claim',
+					params: {
+						venueId: this.venueId
 					}
 				};
 			} else {

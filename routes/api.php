@@ -37,11 +37,14 @@ Route::group(['namespace' => 'Site'], function() {
 	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');
 	Route::post('/venues/explore/search', 'Venues\ExploreController@search');
 
-	// Venue edit
-	Route::get ('/venues/add',            'Venues\FormController@create');
-	Route::post('/venues',                'Venues\FormController@store');
-	Route::post('/venues/{venue}',        'Venues\FormController@update');
-	Route::get ('/venues/{venue}/edit',   'Venues\FormController@edit');
+	// Venue edit + subscription
+	Route::get ('/venues/add',          'Venues\FormController@create');
+	Route::post('/venues',              'Venues\FormController@store');
+	Route::get ('/venues/{venue}/edit', 'Venues\FormController@edit');
+	Route::post('/venues/{venue}',      'Venues\FormController@update');
+
+	// Venue subscription
+	Route::post('/venues/{venue}/subscribe', 'Venues\SubscriptionController@update');
 
 	// Venue claim
 	Route::get ('/venues/{venue}/claim',  'Venues\ClaimController@load');
