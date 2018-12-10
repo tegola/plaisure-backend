@@ -92,23 +92,16 @@
 		font-size: $font-size-sm;
 	}
 	.contact-card-map {
-		.vue-map {
-			border-radius: $card-border-radius;
-			z-index: 0; // Activates border radius
-		}
-
-		&:after {
-			display: block;
-			position: absolute;
-			content: '';
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			border: $card-border-width solid $card-border-color;
-			border-radius: $card-border-radius;
-			pointer-events: none;
-		}
+		border-radius: $card-border-radius;
+		background-size: 200%;
+	}
+	.contact-card-map-content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.contact-card-map-marker {
+		transform: translateY(-50%); // Use bottom part to point to center
 	}
 	.contact-card-list-item {
 		margin-left: $grid-gutter-width;
@@ -189,6 +182,12 @@
 		color: $link-hover-color;
 	}
 
+	@include media-breakpoint-up(sm) {
+		.contact-card-map {
+			background-size: 150%;
+		}
+	}
+
 	@include media-breakpoint-up(md) {
 		.header-gallery {
 			margin-top: $spacer * 2;
@@ -202,6 +201,9 @@
 		}
 		.header-title {
 			font-size: $h4-font-size;
+		}
+		.contact-card-map {
+			background-size: 100%;
 		}
 	}
 
@@ -226,12 +228,8 @@
 			}
 		}
 		.contact-card-map {
-			&:after {
-				display: none;
-			}
-			.vue-map {
-				@include border-bottom-radius(0);
-			}
+			background-size: 200%;
+			@include border-bottom-radius(0);
 		}
 		.contact-card-list-item {
 			margin-left: $grid-gutter-width * 1.5;

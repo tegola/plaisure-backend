@@ -28,7 +28,7 @@ export const MAP_DEFAULT_BOUNDS = {
 };
 export const MAP_DEFAULT_ZOOM = 6;
 
-export const GOOGLE_MAPS_API_KEY = 'AIzaSyDfes2NBJiO8mSTmmTcCliqaV3vKGMD3nk';
+export const GOOGLE_MAPS_API_KEY = process.env.NODE_ENV == 'production' ? 'AIzaSyDfes2NBJiO8mSTmmTcCliqaV3vKGMD3nk' : 'AIzaSyC7HUu36wqXlH_E27AMOFFF9v7t1809Upk';
 export const GOOGLE_ANALYTICS_CODE = 'UA-78547269-1';
 
 export const STRIPE_KEY = process.env.MIX_STRIPE_KEY;

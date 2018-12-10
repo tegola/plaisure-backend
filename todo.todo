@@ -8,13 +8,13 @@
  ✔ Login: sbagliando i dati (credenziali non corrette) non viene mostrato l'errore @done (18-09-03 22:17)
  ✔ Form: mostrare errore in caso di caricamento errato @done (18-08-29 20:02)
  ✔ Aggiustare i menu nella pagina explore @done (18-09-02 20:02)
- ☐ Controllare perché al reload delle pagine su mobile non funziona google maps @high
+ ✔ Controllare perché al reload delle pagine su mobile non funziona google maps @high @done (18-12-07 01:00)
  ☐ Dettaglio: scorrimento foto come sale in home page + "altre foto"
  ☐ Controllare il salvataggio dell'orario, sembra che l'array sia sballato
  ☐ Porting delle funzionalità di localizzazione in home nella pagina explore
  ☐ Personalizzare il template dell'email
  ☐ Email di benvenuto all'utente dopo la registrazione
- ☐ Dettaglio: usare una mappa statica, che costa meno su google maps
+ ✔ Dettaglio: usare una mappa statica, che costa meno su google maps @done (18-12-10 21:52)
  ✔ Edit sala: Il menu utente appare sotto alla navbar secondaria @done (18-09-03 22:53)
  ✔ Importante: rimuovere il geocoder in home page, che ora è a pagamento (e dà errori CORS) e a noi non serve granché @done (18-10-10 19:50)
  ✔ Pagine di recupero password @done (18-09-14 17:34)

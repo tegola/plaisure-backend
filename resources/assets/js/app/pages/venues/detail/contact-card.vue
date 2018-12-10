@@ -1,13 +1,13 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
-import { Map as PgMap, Marker as PgMapMarker } from 'vue2-google-maps';
+import PgImageFrame from 'prontogioco/app/components/image-frame';
+import { GOOGLE_MAPS_API_KEY } from 'prontogioco/constants';
 
 export default {
 	name: 'PgVenueDetailPageContactCard',
 
 	components: {
-		PgMap,
-		PgMapMarker
+		PgImageFrame
 	},
 
 	props: {
@@ -24,9 +24,6 @@ export default {
 	data() {
 		return {
 			mapOptions: {
-				disableDefaultUI: true,
-				draggable: false,
-				scrollwheel: false,
 				styles: [
 					{ // No labels on POI
 						'featureType': 'poi',
@@ -55,6 +52,18 @@ export default {
 			'readableSiteUrl'
 		]),
 
+		mapImgUrl() {
+			return [
+				'https://maps.googleapis.com/maps/api/staticmap',
+				`?center=${this.venue.coords.lat},${this.venue.coords.lng}`,
+				'&zoom=15',
+				'&size=700x395',
+				'&scale=2',
+				'&style=feature:poi|element:labels.text|visibility:off',
+				`&key=${GOOGLE_MAPS_API_KEY}`
+			].join('');
+		},
+
 		addressLines() {
 			const a = this.venue.address;
 			return [
@@ -75,15 +84,15 @@ export default {
 
 <template>
 	<div class="card contact-card">
-		<!-- Map -->
-		<div class="embed-responsive embed-responsive-16by9 contact-card-map">
-			<pg-map :center="venue.coords" :zoom="15" :options="mapOptions" class="embed-responsive-item">
-				<pg-map-marker
-					:position="venue.coords"
-					:icon="`/img/map/pin-normal-${venue.categories[0].machine_name}.svg`"
-				/>
-			</pg-map>
-		</div>
+		<pg-image-frame
+			:src="mapImgUrl"
+			ratio="16:9"
+			class="contact-card-map"
+			content-class="contact-card-map-content">
+			<img
+				:src="`/img/map/pin-normal-${venue.categories[0].machine_name}.svg`"
+				class="contact-card-map-marker">
+		</pg-image-frame>
 
 		<div class="list-group list-group-flush">
 			<!-- Address -->

@@ -15,10 +15,22 @@ export default {
 		contentClass: {
 			type: String,
 			default: null
+		},
+		sizing: {
+			type: String,
+			default: 'cover',
+			validator: value => ['cover', 'contain'].indexOf(value) !== -1
 		}
 	},
 
 	computed: {
+		classes() {
+			return [
+				'pg-image-frame',
+				this.sizing ? `pg-image-frame--${this.sizing}` : null
+			];
+		},
+
 		styles() {
 			return {
 				backgroundImage: this.src ? `url(${this.src})` : null
@@ -38,7 +50,7 @@ export default {
 </script>
 
 <template>
-	<div :style="styles" class="pg-image-frame">
+	<div :class="classes" :style="styles">
 		<div :style="sizerStyles" />
 		<div v-if="$slots.default" :class="['pg-image-frame__content', contentClass]">
 			<slot />

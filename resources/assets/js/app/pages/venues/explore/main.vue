@@ -264,7 +264,7 @@ export default {
 		onUserLocationNotFound() {
 			this.locating = false;
 			this.userLocation = null;
-			alert(this.$t('pages.home.location_error'));
+			alert(this.$t('pages.explore.location_error'));
 		},
 
 		// Filters ------------------------------------------------------------
