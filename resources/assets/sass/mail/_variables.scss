@@ -1,0 +1,256 @@
+// Variables
+//
+// Copy settings from this file into the provided `_custom.scss` to override
+// the Bootstrap defaults without modifying key, versioned files.
+
+// Colors
+//
+// Grayscale and brand colors for use across Bootstrap.
+
+// Create grayscale
+$white:    #fff;
+$gray-100: #fafafa;
+$gray-200: #efefef;
+$gray-300: #e6e6e6;
+$gray-400: #dadada;
+$gray-500: #bdbdbd;
+$gray-600: #969696;
+$gray-700: #575757;
+$gray-800: #404040;
+$gray-900: #292929;
+$black:    #000;
+
+$grays: ();
+$grays: map-merge((
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900
+), $grays);
+
+$blue:    #007bff;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #e83e8c;
+$red:     #dc3545;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #28a745;
+$teal:    #20c997;
+$cyan:    #17a2b8;
+
+// Create a color palette
+$palette-blue-100: #d4f0f7;
+$palette-blue-200: #aae1ef;
+$palette-blue-300: #7fd3e8;
+$palette-blue-400: #55c4e0;
+$palette-blue-500: #2bb6d9;
+
+$palette-fuchsia-100: #fbd5de;
+$palette-fuchsia-200: #f7acbd;
+$palette-fuchsia-300: #f3829c;
+$palette-fuchsia-400: #ef597b;
+$palette-fuchsia-500: #eb305a;
+
+$palette-green-100: #e5f5e9;
+$palette-green-200: #cbecd4;
+$palette-green-300: #b1e3be;
+$palette-green-400: #97daa9;
+$palette-green-500: #7dd194;
+
+$palette-dark-green-100: #d1d9d8;
+$palette-dark-green-200: #a4b3b2;
+$palette-dark-green-300: #768d8c;
+$palette-dark-green-400: #496766;
+$palette-dark-green-500: #1c4240;
+
+$colors: ();
+$colors: map-merge((
+  "blue":       $blue,
+  "indigo":     $indigo,
+  "purple":     $purple,
+  "pink":       $pink,
+  "red":        $red,
+  "orange":     $orange,
+  "yellow":     $yellow,
+  "green":      $green,
+  "teal":       $teal,
+  "cyan":       $cyan,
+  "white":      $white,
+  "gray":       $gray-600,
+  "gray-dark":  $gray-800
+), $colors);
+
+$primary:       $palette-green-500;
+$secondary:     $gray-300;
+$accent:        $palette-fuchsia-500;
+$neutral:       $gray-700;
+$success:       $green;
+$info:          $cyan;
+$warning:       $yellow;
+$danger:        $red;
+$light:         $gray-100;
+$dark:          $gray-800;
+
+$theme-colors: ();
+$theme-colors: map-merge((
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "accent":     $accent,
+  "neutral":    $neutral,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+), $theme-colors);
+
+// Options
+$enable-shadows:  true;
+
+// Spacing
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: ($spacer * .25),
+  2: ($spacer * .5),
+  3: $spacer,
+  4: ($spacer * 1.5),
+  5: ($spacer * 3)
+);
+
+// Links
+$link-hover-decoration: none;
+
+// Grid
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1080px
+);
+
+$grid-gutter-width: 24px;
+
+// Components
+$border-width: 1px;
+
+// Typography
+$font-family-sans-serif: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-size-root:         16px;
+$font-size-base:         1rem; // Assumes the browser default, typically `16px`
+$font-size-xs:           .75rem; // 12px
+// $font-size-sm:        .875; // 14px
+$font-size-md:           1.125rem; // 18px
+// $font-size-lg:        1.25rem; // 20px
+$font-size-xl:           1.5rem; // 24px
+
+$font-weight-normal:     300;
+$font-weight-semibold:   400;
+$font-weight-bold:       600;
+
+$font-weight-base:       $font-weight-normal;
+
+$line-height-base:       1.5;
+
+$headings-font-weight:   $font-weight-bold;
+
+$display1-size:          5rem;
+$display2-size:          4rem;
+$display3-size:          3rem;
+$display4-size:          2.5rem;
+$display1-weight:        600;
+$display2-weight:        600;
+$display3-weight:        600;
+$display4-weight:        600;
+$display-line-height:    1;
+
+$hr-border-color: rgba($black, .08);
+
+$list-inline-padding: $spacer;
+
+// Components
+$border-radius:    .25rem;
+$border-radius-lg: .375rem;
+$border-radius-sm: .1875rem;
+
+// Buttons + forms
+$input-btn-line-height:  $line-height-base;
+$input-btn-padding-y-lg: .6875rem;
+$input-btn-padding-x-lg: 1.125rem;
+$input-btn-border-width: $border-width;
+
+// Buttons
+$btn-font-weight:       $font-weight-semibold;
+$btn-box-shadow:        none;
+$btn-border-radius-lg:  $border-radius;
+
+$btn-focus-box-shadow:  none;
+$btn-disabled-opacity:  .5;
+
+$btn-active-box-shadow: none;
+
+// Forms
+$input-bg:                 gray('100');
+$input-border-color:       rgba($black, .15);
+$input-border-width:       $input-btn-border-width;
+$input-box-shadow:         0 0 0 transparent; // "none" was removing additional box shadows;
+// $input-border-radius:      $border-radius;
+$input-border-radius-lg:   $border-radius;
+// $input-border-radius-sm:   $border-radius-sm;
+
+$input-focus-bg:           $white;
+$input-focus-border-color: theme-color('primary');
+$input-focus-box-shadow:   inset 0 0 0 1px theme-color('primary');
+
+$input-placeholder-color: $gray-500;
+
+$input-height-border:     $input-border-width * 2;
+
+$input-height-inner-lg:   ($font-size-base * $input-btn-line-height) + ($input-btn-padding-y-lg * 2);
+$input-height-lg:         calc(#{$input-height-inner-lg} + #{$input-height-border});
+
+$input-transition:        border-color .15s ease-in-out, background-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+$input-group-addon-bg:           $input-bg;
+$input-group-addon-border-color: $input-border-color;
+
+$custom-control-gutter:         1.75rem;
+$custom-control-indicator-size: 1.25rem;
+
+$custom-select-box-shadow:         0 0 0 transparent; // "none" was removing additional box shadows
+$custom-select-focus-border-color: $input-focus-border-color;
+$custom-select-focus-box-shadow:   inset 0 0 0 1px theme-color('primary');
+
+// Icons
+$icon-size-base: 1.25rem; // 20px
+
+// Dropdowns
+$dropdown-border-color:   rgba($black, .08);
+$dropdown-box-shadow:     0 .33rem 1rem rgba($black, .05);
+
+$dropdown-link-hover-bg:  $palette-green-100;
+
+// Navbar
+$navbar-transition-duration: 300ms;
+
+// Cards
+$card-border-color: rgba($black, .08);
+$card-border-radius: $border-radius-lg;
+
+// List group
+$list-group-border-color: rgba($black, .08);
+
+// Modal
+$modal-content-box-shadow-xs:    0 .25rem 1.5rem rgba($black, .25);
+$modal-content-box-shadow-sm-up: 0 .5rem 3rem rgba($black, .25);
+
+$modal-backdrop-opacity:         .25;
+
+$modal-header-padding:           0.75rem 1rem;

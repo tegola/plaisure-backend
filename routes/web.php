@@ -14,6 +14,13 @@
 // Auth -----------------------------------------------------------------------
 // Auth::routes();
 
+Route::get('/send-mail', function() {
+	$u = App\Models\User::find(1);
+	$u->sendPasswordResetNotification('pippo');
+
+	return 'OK';
+});
+
 // Admin ----------------------------------------------------------------------
 Route::group([
 	'domain' => 'admin.' . env('APP_DOMAIN'),

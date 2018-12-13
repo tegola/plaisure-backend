@@ -46,3 +46,6 @@ mix.sass('resources/assets/sass/admin/main.scss', 'css/admin.css')
 mix.sass('resources/assets/sass/app/main.scss', 'css/app.css')
 	.js('resources/assets/js/app/index.js', 'js/app.js')
 	.version();
+
+// Mail (output to resources so the inliner works automatically)
+mix.sass('resources/assets/sass/mail/main.scss', '../resources/views/vendor/mail/html/themes/test.css');
