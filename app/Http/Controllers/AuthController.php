@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use GuzzleHttp\Client;
 use App\Models\User;
+use App\Notifications\Admin\UserRegistered;
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class AuthController extends Controller
 {
@@ -29,6 +31,10 @@ class AuthController extends Controller
 			'email' => $request->email,
 			'password' => bcrypt($request->password),
 		]);
+
+		// Send internal Slack notification
+		$notification = new UserRegistered($user);
+		Notification::route('slack', env('SLACK_ACITIVITY_WEBHOOK_URL'))->notify($notification);
 
 		// TODO: Send email confirmation
 
