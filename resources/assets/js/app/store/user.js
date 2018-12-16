@@ -53,7 +53,7 @@ export default {
 			if (!u) return false;
 
 			return Boolean(u.legal_name
-				&& u.address_street
+				&& (u.address_line1 || u.address_line2)
 				&& u.address_city
 				&& u.address_postcode
 				&& u.address_region

@@ -107,7 +107,7 @@ class User extends Authenticatable
 	public function hasBillingInfo()
 	{
 		return ($this->legal_name
-			&& $this->address_street
+			&& $this->address_line1
 			&& $this->address_city
 			&& $this->address_postcode
 			&& $this->address_region

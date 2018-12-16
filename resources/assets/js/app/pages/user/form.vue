@@ -39,7 +39,8 @@ export default {
 
 			return Boolean(
 				m.legal_name ||
-				m.address_street ||
+				m.address_line1 ||
+				m.address_line2 ||
 				m.address_city ||
 				m.address_postcode ||
 				m.address_region ||
@@ -66,7 +67,8 @@ export default {
 					email: this.user.email,
 					send_newsletter: this.user.send_newsletter,
 					legal_name: this.user.legal_name,
-					address_street: this.user.address_street,
+					address_line1: this.user.address_line1,
+					address_line2: this.user.address_line2,
 					address_city: this.user.address_city,
 					address_postcode: this.user.address_postcode,
 					address_region: this.user.address_region,
@@ -91,7 +93,7 @@ export default {
 			legal_name: {
 				required: requiredIf(function() { return this.hasAnyLegalField; })
 			},
-			address_street: {
+			address_line1: {
 				required: requiredIf(function() { return this.hasAnyLegalField; })
 			},
 			address_city: {
@@ -177,12 +179,13 @@ export default {
 							<b-input v-model="model.legal_name" type="text" autocomplete="organization" />
 						</b-form-group>
 						<b-form-group
-							:state="!$v.model.address_street.$error"
+							:state="!$v.model.address_line1.$error"
 							:label="$t('pages.user_form.billing.address')"
 							:invalid-feedback="$t('pages.user_form.billing.address_error')">
-							<b-input v-model="model.address_street" type="text" autocomplete="street-address" />
+							<b-input v-model="model.address_line1" type="text" autocomplete="address-line1" class="mb-2" />
+							<b-input v-model="model.address_line2" type="text" autocomplete="address-line2" />
 						</b-form-group>
-						<div class="row">
+						<div class="form-row">
 							<div class="col-sm-4">
 								<b-form-group
 									:state="!$v.model.address_postcode.$error"
@@ -200,7 +203,7 @@ export default {
 								</b-form-group>
 							</div>
 						</div>
-						<div class="row">
+						<div class="form-row">
 							<div class="col-sm">
 								<b-form-group
 									:state="!$v.model.address_region.$error"

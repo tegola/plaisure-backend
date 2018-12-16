@@ -69,7 +69,8 @@ export default {
 			model: {
 				subscription_name: '',
 				legal_name: '',
-				address_street: '',
+				address_line1: '',
+				address_line2: '',
 				address_city: '',
 				address_postcode: '',
 				address_region: '',
@@ -123,7 +124,8 @@ export default {
 
 			return {
 				name: this.model.card_holder_name,
-				address_line1: this.user.address_street,
+				address_line1: this.user.address_line1,
+				address_line2: this.user.address_line2,
 				address_city: this.user.address_city,
 				address_postal_code: this.user.address_postcode,
 				address_country: this.user.address_country
@@ -145,7 +147,8 @@ export default {
 
 				_extend(this.model, {
 					legal_name: this.user.legal_name,
-					address_street: this.user.address_street,
+					address_line1: this.user.address_line1,
+					address_line2: this.user.address_line2,
 					address_city: this.user.address_city,
 					address_postcode: this.user.address_postcode,
 					address_region: this.user.address_region,
@@ -161,7 +164,7 @@ export default {
 			legal_name: {
 				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
-			address_street: {
+			address_line1: {
 				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
 			address_city: {
@@ -367,7 +370,8 @@ export default {
 										<p class="initialism text-muted font-size-xs mb-1">Fatturazione</p>
 										<p>
 											<strong>{{ user.legal_name }}</strong><br>
-											{{ user.address_street }},
+											{{ user.address_line1 }},
+											<template v-if="user.address_line2">{{ user.address_line2 }},</template>
 											{{ user.address_city }}
 											{{ user.address_postcode }}
 											{{ user.address_region }}
@@ -398,16 +402,23 @@ export default {
 									:invalid-feedback="$t('pages.user_form.billing.legal_name_error')">
 									<b-input v-model="model.legal_name" type="text" autocomplete="organization" autofocus />
 								</b-form-group>
+								<b-form-group
+									:state="!$v.model.address_line1.$error"
+									:label="$t('pages.user_form.billing.address')"
+									:invalid-feedback="$t('pages.user_form.billing.address_error')">
+									<b-input v-model="model.address_line1" type="text" autocomplete="address-line1" class="mb-2" />
+									<b-input v-model="model.address_line2" type="text" autocomplete="address-line2" />
+								</b-form-group>
 								<div class="form-row">
-									<div class="col-md">
+									<div class="col-sm-4">
 										<b-form-group
-											:state="!$v.model.address_street.$error"
-											:label="$t('pages.user_form.billing.address')"
-											:invalid-feedback="$t('pages.user_form.billing.address_error')">
-											<b-input v-model="model.address_street" type="text" autocomplete="street-address" />
+											:state="!$v.model.address_postcode.$error"
+											:label="$t('pages.user_form.billing.postcode')"
+											:invalid-feedback="$t('pages.user_form.billing.postcode_error')">
+											<b-input v-model="model.address_postcode" type="text" autocomplete="postal-code" />
 										</b-form-group>
 									</div>
-									<div class="col-md">
+									<div class="col-sm-8">
 										<b-form-group
 											:state="!$v.model.address_city.$error"
 											:label="$t('pages.user_form.billing.city')"
@@ -417,15 +428,7 @@ export default {
 									</div>
 								</div>
 								<div class="form-row">
-									<div class="col-md-3">
-										<b-form-group
-											:state="!$v.model.address_postcode.$error"
-											:label="$t('pages.user_form.billing.postcode')"
-											:invalid-feedback="$t('pages.user_form.billing.postcode_error')">
-											<b-input v-model="model.address_postcode" type="text" autocomplete="postal-code" />
-										</b-form-group>
-									</div>
-									<div class="col-md">
+									<div class="col-sm">
 										<b-form-group
 											:state="!$v.model.address_region.$error"
 											:label="$t('pages.user_form.billing.region')"
@@ -433,7 +436,7 @@ export default {
 											<b-input v-model="model.address_region" type="text" autocomplete="address-level1" />
 										</b-form-group>
 									</div>
-									<div class="col-md">
+									<div class="col-sm">
 										<b-form-group
 											:state="!$v.model.address_country.$error"
 											:label="$t('pages.user_form.billing.country')"

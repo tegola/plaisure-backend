@@ -56,13 +56,14 @@ class SubscriptionController extends Controller
 			// Require billing data if something is missing
 			if (!$user->hasBillingInfo()) {
 				$validator->addRules([
-					'legal_name' => 'required',
-					'address_street' => 'required',
-					'address_city' => 'required',
-					'address_region' => 'required',
-					'address_postcode' => 'required',
-					'address_country' => 'required',
-					'vat_number' => 'required'
+					'legal_name' => 'required|string',
+					'address_line1' => 'required|string',
+					'address_line2' => 'nullable|string',
+					'address_city' => 'required|string',
+					'address_region' => 'required|string',
+					'address_postcode' => 'required|string',
+					'address_country' => 'required|string',
+					'vat_number' => 'required|string|max:20'
 				]);
 			}
 		}
@@ -123,7 +124,8 @@ class SubscriptionController extends Controller
 			$user
 				->fill($request->only([
 					'legal_name',
-					'address_street',
+					'address_line1',
+					'address_line2',
 					'address_city',
 					'address_region',
 					'address_postcode',

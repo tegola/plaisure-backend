@@ -60,23 +60,25 @@ class UserController extends Controller
 
 		// Validate fields
 		$request->validate([
-			'name'                         => 'required|string|max:255',
-			'legal_name'                   =>  'nullable|'.$this->requiredLegalFieldsExcept('legal_name') .'|string',
-			'address_street'               =>  'nullable|'.$this->requiredLegalFieldsExcept('address_street') .'|string',
-			'address_city'                 =>  'nullable|'.$this->requiredLegalFieldsExcept('address_city') .'|string',
-			'address_postcode'             =>  'nullable|'.$this->requiredLegalFieldsExcept('address_postcode') .'|string',
-			'address_region'               =>  'nullable|'.$this->requiredLegalFieldsExcept('address_region') .'|string',
-			'address_country'              =>  'nullable|'.$this->requiredLegalFieldsExcept('address_country') .'|string',
-			'vat_number'                   =>  'nullable|'.$this->requiredLegalFieldsExcept('vat_number') .'|string|max:20',
-			'new_password'                 => 'nullable|string|min:8|confirmed',
-			'send_newsletter'              => 'boolean'
+			'name'             => 'required|string|max:255',
+			'legal_name'       => 'nullable|'.$this->requiredLegalFieldsExcept('legal_name') .'|string',
+			'address_line1'    => 'nullable|'.$this->requiredLegalFieldsExcept('address_line1') .'|string',
+			'address_line2'    => 'nullable|string',
+			'address_city'     => 'nullable|'.$this->requiredLegalFieldsExcept('address_city') .'|string',
+			'address_postcode' => 'nullable|'.$this->requiredLegalFieldsExcept('address_postcode') .'|string',
+			'address_region'   => 'nullable|'.$this->requiredLegalFieldsExcept('address_region') .'|string',
+			'address_country'  => 'nullable|'.$this->requiredLegalFieldsExcept('address_country') .'|string',
+			'vat_number'       => 'nullable|'.$this->requiredLegalFieldsExcept('vat_number') .'|string|max:20',
+			'new_password'     => 'nullable|string|min:8|confirmed',
+			'send_newsletter'  => 'boolean'
 		]);
 
 		// Save user data
 		$user->fill([
 			'name' => $request->input('name'),
 			'legal_name' => $request->input('legal_name'),
-			'address_street' => $request->input('address_street'),
+			'address_line1' => $request->input('address_line1'),
+			'address_line2' => $request->input('address_line2'),
 			'address_city' => $request->input('address_city'),
 			'address_postcode' => $request->input('address_postcode'),
 			'address_region' => $request->input('address_region'),
@@ -108,7 +110,7 @@ class UserController extends Controller
 	private function requiredLegalFieldsExcept($name) {
 		$fields = [
 			'legal_name',
-			'address_street',
+			'address_line1',
 			'address_city',
 			'address_postcode',
 			'address_region',
