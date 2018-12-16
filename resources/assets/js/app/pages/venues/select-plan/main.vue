@@ -74,7 +74,7 @@ export default {
 				address_city: '',
 				address_postcode: '',
 				address_region: '',
-				address_country: '',
+				country: '',
 				vat_number: '',
 				token_id: null,
 				card_holder_name: ''
@@ -128,7 +128,7 @@ export default {
 				address_line2: this.user.address_line2,
 				address_city: this.user.address_city,
 				address_postal_code: this.user.address_postcode,
-				address_country: this.user.address_country
+				country: this.user.country
 			};
 		}
 	},
@@ -152,7 +152,7 @@ export default {
 					address_city: this.user.address_city,
 					address_postcode: this.user.address_postcode,
 					address_region: this.user.address_region,
-					address_country: this.user.address_country,
+					country: this.user.country,
 					vat_number: this.user.vat_number
 				});
 			}
@@ -176,7 +176,7 @@ export default {
 			address_region: {
 				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
-			address_country: {
+			country: {
 				required: requiredIf(function() { return !this.hasBillingInfo || this.newBilling; })
 			},
 			vat_number: {
@@ -375,7 +375,7 @@ export default {
 											{{ user.address_city }}
 											{{ user.address_postcode }}
 											{{ user.address_region }}
-											({{ user.address_country }})<br>
+											({{ user.country }})<br>
 											P. IVA: {{ user.vat_number }}
 										</p>
 									</div>
@@ -438,10 +438,10 @@ export default {
 									</div>
 									<div class="col-sm">
 										<b-form-group
-											:state="!$v.model.address_country.$error"
+											:state="!$v.model.country.$error"
 											:label="$t('pages.user_form.billing.country')"
 											:invalid-feedback="$t('pages.user_form.billing.country_error')">
-											<b-select v-model="model.address_country" :options="countryOptions" />
+											<b-select v-model="model.country" :options="countryOptions" />
 										</b-form-group>
 									</div>
 								</div>

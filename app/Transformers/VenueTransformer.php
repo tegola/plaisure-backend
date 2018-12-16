@@ -71,8 +71,8 @@ class VenueTransformer extends TransformerAbstract
 				'postcode' => $venue->address_postcode,
 				'province' => $venue->address_province,
 				// 'region' => $venue->address_region,
-				// 'country' => $venue->address_country
 			],
+			'country' => $venue->country,
 			'coords' => [
 				'lat' => $venue->geo_latitude,
 				'lng' => $venue->geo_longitude,

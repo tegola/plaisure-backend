@@ -145,8 +145,7 @@ class FormController extends Controller
 			'address.city'              => 'required|string',
 			'address.postcode'          => 'required|string',
 			'address.province'          => 'required|string',
-			// 'address_region'            => 'required|string',
-			// 'address_country'           => 'required|string',
+			// 'address.region'            => 'required|string',
 
 			'coords.lat'                => 'required|numeric|between:-90,90',
 			'coords.lng'                => 'required|numeric|between:-180,180',

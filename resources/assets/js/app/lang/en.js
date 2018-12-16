@@ -424,7 +424,7 @@ export default {
 				region: 'Region',
 				region_error: 'Please type the region.',
 				country: 'Country',
-				country_error: 'Please type the country name.',
+				country_error: 'Please select the country.',
 				vat_number: 'VAT number',
 				vat_number_error: 'Please type the VAT number.'
 			},

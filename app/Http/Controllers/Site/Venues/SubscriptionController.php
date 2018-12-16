@@ -62,7 +62,7 @@ class SubscriptionController extends Controller
 					'address_city' => 'required|string',
 					'address_region' => 'required|string',
 					'address_postcode' => 'required|string',
-					'address_country' => 'required|string',
+					'country' => 'required|string',
 					'vat_number' => 'required|string|max:20'
 				]);
 			}
@@ -129,7 +129,7 @@ class SubscriptionController extends Controller
 					'address_city',
 					'address_region',
 					'address_postcode',
-					'address_country',
+					'country',
 					'vat_number'
 				]))
 				->save();

@@ -424,7 +424,7 @@ export default {
 				region: 'Provincia',
 				region_error: 'Inserisci la provincia.',
 				country: 'Paese',
-				country_error: 'Inserisci il paese.',
+				country_error: 'Scegli il paese.',
 				vat_number: 'Partita IVA',
 				vat_number_error: 'Inserisci la partita IVA.'
 			},

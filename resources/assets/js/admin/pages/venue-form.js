@@ -78,7 +78,7 @@ export default {
 					address_postcode: result.zipcode || '',
 					address_province: result.administrativeLevels.level2long ? result.administrativeLevels.level2long.replace(provinceRegex, '') : '',
 					address_region: result.administrativeLevels.level1long || '',
-					address_country: result.country || '',
+					country: result.country || '',
 					geo_latitude: result.latitude || '',
 					geo_longitude: result.longitude || ''
 				});

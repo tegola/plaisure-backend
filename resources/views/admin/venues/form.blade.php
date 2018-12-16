@@ -219,7 +219,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<label>Stato</label>
-							<input type="text" class="form-control" name="address_country" v-model="venue.address_country">
+							<input type="text" class="form-control" name="country" v-model="venue.country">
 						</div>
 					</div>
 					<div class="form-group">

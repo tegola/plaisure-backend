@@ -44,7 +44,7 @@ export default {
 				m.address_city ||
 				m.address_postcode ||
 				m.address_region ||
-				m.address_country ||
+				m.country ||
 				m.vat_number
 			);
 		}
@@ -72,7 +72,7 @@ export default {
 					address_city: this.user.address_city,
 					address_postcode: this.user.address_postcode,
 					address_region: this.user.address_region,
-					address_country: this.user.address_country,
+					country: this.user.country,
 					vat_number: this.user.vat_number,
 					new_password: '',
 					new_password_confirmation: ''
@@ -105,7 +105,7 @@ export default {
 			address_region: {
 				required: requiredIf(function() { return this.hasAnyLegalField; })
 			},
-			address_country: {
+			country: {
 				required: requiredIf(function() { return this.hasAnyLegalField; })
 			},
 			vat_number: {
@@ -214,10 +214,10 @@ export default {
 							</div>
 							<div class="col-sm">
 								<b-form-group
-									:state="!$v.model.address_country.$error"
+									:state="!$v.model.country.$error"
 									:label="$t('pages.user_form.billing.country')"
 									:invalid-feedback="$t('pages.user_form.billing.country_error')">
-									<b-select v-model="model.address_country" :options="countryOptions" />
+									<b-select v-model="model.country" :options="countryOptions" />
 								</b-form-group>
 							</div>
 						</div>

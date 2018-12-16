@@ -19,10 +19,8 @@ class Venue extends Model
 	const MACHINE_TYPE_AB = 3;
 
 	/**
-	 * Default attributes. This is needed to pass the empty object to Vue's
-	 * 'data' object, so it can be reactive. Setting a default on the migration
-	 * does not prefill the model.
-	 * 
+	 * The model's attributes.
+	 *
 	 * @var array
 	 */
 	protected $attributes = [
@@ -50,7 +48,8 @@ class Venue extends Model
 		'address_postcode' => '',
 		'address_province' => '',
 		'address_region' => '',
-		'address_country' => '',
+
+		'country' => '', // See constructor
 
 		'geo_latitude' => null,
 		'geo_longitude' => null,
@@ -139,7 +138,7 @@ class Venue extends Model
 		'address_postcode',
 		'address_province',
 		'address_region',
-		'address_country',
+		'country',
 		'geo_latitude',
 		'geo_longitude',
 		'contact_phone',
@@ -166,6 +165,20 @@ class Venue extends Model
 		'amenity_smoking_area',
 		'amenity_wifi'
 	];
+
+	/**
+	 * Create a new Venue model instance.
+	 *
+	 * @param  array  $attributes
+	 * @return void
+	 */
+	public function __construct(array $attributes = [])
+	{
+		// Default country
+		$this->country = env('APP_COUNTRY');
+
+		parent::__construct($attributes);
+	}
 
 	/**
 	 * The "booting" method of the model.

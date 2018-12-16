@@ -42,6 +42,20 @@ class User extends Authenticatable
 	protected $guarded = [];
 
 	/**
+	 * Create a new User model instance.
+	 *
+	 * @param  array  $attributes
+	 * @return void
+	 */
+	public function __construct(array $attributes = [])
+	{
+		// Default country
+		$this->country = env('APP_COUNTRY');
+
+		parent::__construct($attributes);
+	}
+
+	/**
 	 * Fills the model's properties with the source from Stripe.
 	 *
 	 * @param  \Stripe\Card|\Stripe\BankAccount|null  $card
@@ -107,11 +121,11 @@ class User extends Authenticatable
 	public function hasBillingInfo()
 	{
 		return ($this->legal_name
-			&& $this->address_line1
+			&& ($this->address_line1 || $this->address_line2)
 			&& $this->address_city
 			&& $this->address_postcode
 			&& $this->address_region
-			&& $this->address_country
+			&& $this->country
 			&& $this->vat_number);
 	}
 }

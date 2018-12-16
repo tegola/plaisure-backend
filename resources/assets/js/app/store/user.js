@@ -57,7 +57,7 @@ export default {
 				&& u.address_city
 				&& u.address_postcode
 				&& u.address_region
-				&& u.address_country
+				&& u.country
 				&& u.vat_number);
 		},
 
