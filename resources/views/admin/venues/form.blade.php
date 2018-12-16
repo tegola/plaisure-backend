@@ -195,13 +195,13 @@
 			<div class="row">
 				<div class="col-lg-7">
 					<div class="row">
-						<div class="form-group col-8">
-							<label>Via</label>
-							<input type="text" class="form-control" name="address_street" v-model="venue.address_street">
+						<div class="form-group col-12">
+							<label>Riga 1</label>
+							<input type="text" class="form-control" name="address_line1" v-model="venue.address_line1">
 						</div>
-						<div class="form-group col-4">
-							<label>N. civico</label>
-							<input type="text" class="form-control" name="address_number" v-model="venue.address_number">
+						<div class="form-group col-12">
+							<label>Riga 2</label>
+							<input type="text" class="form-control" name="address_line2" v-model="venue.address_line2">
 						</div>
 						<div class="form-group col-12">
 							<label>Città</label>

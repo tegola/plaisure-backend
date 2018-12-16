@@ -40,7 +40,7 @@ class ListController extends Controller
 					->whereNull('geo_latitude')
 					->orWhereNull('geo_latitude')
 					->orWhere('address_city', '')
-					->orWhere('address_street', '');
+					->orWhere('address_line1', '');
 			});
 		}
 

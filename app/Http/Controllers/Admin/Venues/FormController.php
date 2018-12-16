@@ -79,7 +79,7 @@ class FormController extends Controller
 		]);
 
 		// If the venus has no geo or address, data, get the original Imported venue
-		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venued->address_street) && $venue->aams_census_code) {
+		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venue->address_line1) && $venue->aams_census_code) {
 			$importedVenue = ImportedVenue::where('aams_census_code', $venue->aams_census_code)->first();
 		} else {
 			$importedVenue = null;

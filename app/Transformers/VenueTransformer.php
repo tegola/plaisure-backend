@@ -55,8 +55,8 @@ class VenueTransformer extends TransformerAbstract
 			'arcade_roulette' => $venue->arcade_roulette,
 			'machine_type' => $venue->machine_type,
 			'address' => [
-				'street' => $venue->address_street,
-				'number' => $venue->address_number,
+				'line1' => $venue->address_line1,
+				'line2' => $venue->address_line2,
 				'city' => $venue->address_city,
 				'postcode' => $venue->address_postcode,
 				'province' => $venue->address_province,

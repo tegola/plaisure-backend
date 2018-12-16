@@ -46,8 +46,8 @@ class Venue extends Model
 		'arcade_roulette' => false,
 		'machine_type' => self::MACHINE_TYPE_A,
 
-		'address_street' => '',
-		'address_number' => '',
+		'address_line1' => '',
+		'address_line2' => '',
 		'address_city' => '',
 		'address_postcode' => '',
 		'address_province' => '',
@@ -113,8 +113,8 @@ class Venue extends Model
 		'horse_betting',
 		'arcade_roulette',
 		'machine_type',
-		'address_street',
-		'address_number',
+		'address_line1',
+		'address_line2',
 		'address_city',
 		'address_postcode',
 		'address_province',
@@ -163,7 +163,7 @@ class Venue extends Model
 			static::addGlobalScope('noGeoData', function (Builder $builder) {
 				$builder->whereNotNull('geo_latitude')
 						->whereNotNull('geo_longitude')
-						->where('address_street', '!=', '')
+						->where('address_line1', '!=', '')
 						->where('address_city', '!=', '');
 			});
 		}
@@ -228,11 +228,16 @@ class Venue extends Model
 	 */
 	public function addressComponents()
 	{
-		return [
-			$this->address_street . ' ' . $this->address_number,
-			$this->address_city,
-			$this->address_postcode . ' ' . $this->address_province
-		];
+		$components = [];
+
+		$components[] = $this->address_line1;
+		if ($this->address_line2) {
+			$components[] = $this->address_line2;
+		}
+		$components[] = $this->address_city;
+		$components[] = $this->address_postcode . ' ' . $this->address_province;
+
+		return $components;
 	}
 
 	/**
@@ -252,7 +257,7 @@ class Venue extends Model
 	 */
 	public function getShortAddressAttribute()
 	{
-		return "{$this->address_street} {$this->address_number}, {$this->address_city }";
+		return trim("{$this->address_line1} {$this->address_line2}") . ", {$this->address_city }";
 	}
 
 	/**
@@ -262,7 +267,7 @@ class Venue extends Model
 	 */
 	public function getLongAddressAttribute()
 	{
-		return "{$this->address_street} {$this->address_number}, {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
+		return trim("{$this->address_line1} {$this->address_line2}") . ", {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
 	}
 
 	/**
@@ -303,8 +308,8 @@ class Venue extends Model
 	public function googleMapsUrl() {
 		$base_url = 'https://www.google.com/maps/dir/?api=1&map_action=map&destination=';
 		$address = join(', ', [
-			$this->address_street,
-			$this->address_number,
+			$this->address_line1,
+			$this->address_line2,
 			$this->address_city,
 			$this->address_postcode,
 			$this->address_province,
