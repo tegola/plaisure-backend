@@ -57,7 +57,7 @@ export default {
 		},
 
 		canSubmit() {
-			return (this.searchParams.c_lat && this.searchParams.c_lng);
+			return Boolean(this.searchParams.c_lat && this.searchParams.c_lng);
 		},
 
 		tokenPresets() {
@@ -194,7 +194,6 @@ export default {
 
 			// Reset search
 			if (!place) {
-				this.query = null;
 				_extend(this.searchParams, {
 					query: null,
 					c_lat: null,
@@ -204,17 +203,10 @@ export default {
 			}
 
 			// Update search params
-			let query = place.name;
-			if (place.vicinity && place.name != place.vicinity) {
-				query = `${place.name}, ${place.vicinity}`;
-			}
-
 			const center = place.geometry.viewport.getCenter();
 
-			this.query = query;
-
 			_extend(this.searchParams, {
-				query: query,
+				query: this.query,
 				c_lat: center.lat(),
 				c_lng: center.lng()
 			});
@@ -260,11 +252,11 @@ export default {
 										<label class="sr-only">{{ $t('pages.home.search.label') }}</label>
 										<pg-place-textbox
 											:placeholder="placeholder"
-											:place="query"
-											:value="query"
+											v-model="query"
 											:options="placeTextboxOptions"
 											class="form-control form-control-lg pg-home-page__search-form-control pg-home-page__search-query-control"
 											@place-changed="onPlaceChanged"
+											@keydown.enter="canSubmit ? submit : null"
 										/>
 										<div
 											v-b-tooltip

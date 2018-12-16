@@ -4,7 +4,7 @@ const locale = i18n.locale;
 const countries = require(`@umpirsky/country-list/data/${locale}/country.json`);
 
 const options = [{
-	value: null,
+	value: '', // Default value in db
 	text: i18n.t('common.actions.select') + '...'
 }];
 

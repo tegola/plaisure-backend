@@ -61,27 +61,29 @@ class UserController extends Controller
 		// Validate fields
 		$request->validate([
 			'name'                         => 'required|string|max:255',
-			'legal_name'                   =>  $this->requiredLegalFieldsExcept('legal_name') .'|string',
-			'address_street'               =>  $this->requiredLegalFieldsExcept('address_street') .'|string',
-			'address_city'                 =>  $this->requiredLegalFieldsExcept('address_city') .'|string',
-			'address_postcode'             =>  $this->requiredLegalFieldsExcept('address_postcode') .'|string',
-			'address_region'               =>  $this->requiredLegalFieldsExcept('address_region') .'|string',
-			'address_country'              =>  $this->requiredLegalFieldsExcept('address_country') .'|string',
-			'vat_number'                   =>  $this->requiredLegalFieldsExcept('vat_number') .'|string|max:20',
+			'legal_name'                   =>  'nullable|'.$this->requiredLegalFieldsExcept('legal_name') .'|string',
+			'address_street'               =>  'nullable|'.$this->requiredLegalFieldsExcept('address_street') .'|string',
+			'address_city'                 =>  'nullable|'.$this->requiredLegalFieldsExcept('address_city') .'|string',
+			'address_postcode'             =>  'nullable|'.$this->requiredLegalFieldsExcept('address_postcode') .'|string',
+			'address_region'               =>  'nullable|'.$this->requiredLegalFieldsExcept('address_region') .'|string',
+			'address_country'              =>  'nullable|'.$this->requiredLegalFieldsExcept('address_country') .'|string',
+			'vat_number'                   =>  'nullable|'.$this->requiredLegalFieldsExcept('vat_number') .'|string|max:20',
 			'new_password'                 => 'nullable|string|min:8|confirmed',
 			'send_newsletter'              => 'boolean'
 		]);
 
 		// Save user data
-		$user->name = $request->input('name');
-		$user->legal_name = $request->input('legal_name');
-		$user->address_street = $request->input('address_street');
-		$user->address_city = $request->input('address_city');
-		$user->address_postcode = $request->input('address_postcode');
-		$user->address_region = $request->input('address_region');
-		$user->address_country = $request->input('address_country');
-		$user->vat_number = $request->input('vat_number');
-		$user->send_newsletter = $request->input('send_newsletter');
+		$user->fill([
+			'name' => $request->input('name'),
+			'legal_name' => $request->input('legal_name'),
+			'address_street' => $request->input('address_street'),
+			'address_city' => $request->input('address_city'),
+			'address_postcode' => $request->input('address_postcode'),
+			'address_region' => $request->input('address_region'),
+			'address_country' => $request->input('address_country'),
+			'vat_number' => $request->input('vat_number'),
+			'send_newsletter' => $request->input('send_newsletter')
+		]);
 
 		// Save new password
 		if ($request->has('new_password')) {

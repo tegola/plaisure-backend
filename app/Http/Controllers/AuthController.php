@@ -30,6 +30,7 @@ class AuthController extends Controller
 			'name' => $request->name,
 			'email' => $request->email,
 			'password' => bcrypt($request->password),
+			'is_owner' => true
 		]);
 
 		// Send internal Slack notification

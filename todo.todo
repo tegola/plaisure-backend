@@ -9,6 +9,7 @@
  ✔ Form: mostrare errore in caso di caricamento errato @done (18-08-29 20:02)
  ✔ Aggiustare i menu nella pagina explore @done (18-09-02 20:02)
  ✔ Controllare perché al reload delle pagine su mobile non funziona google maps @high @done (18-12-07 01:00)
+ ✔ Edit utente: lato client permette di continuare senza dati, ma lato server no @done (18-12-15 14:20)
  ☐ Dettaglio: scorrimento foto come sale in home page + "altre foto"
  ☐ Controllare il salvataggio dell'orario, sembra che l'array sia sballato
  ☐ Porting delle funzionalità di localizzazione in home nella pagina explore
@@ -25,7 +26,7 @@
  ☐ Edit sala: focus all'elemento giusto quando c'è errore
  ☐ Edit sala: drag della mappa più che del marker
  ✔ Aggiustare gli spazi per il "notch" di iPhone X* @done (18-10-22 00:07)
- ☐ Modifica dati utente. Non si possono nullare i campi di fatturazione se ci sono sottoscrizioni attive.
+ ☐ Modifica dati utente: non si devono poter nullare i campi di fatturazione se ci sono sottoscrizioni attive.
  ☐ Modifica dati utente: al salvataggio, aggiornare i dati su Stripe.
  ☐ Spostare i css nelle pagine
  ✔ Modifica attività: spostare caricamento e salvataggio nello store @done (18-10-22 00:08)

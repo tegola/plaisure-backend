@@ -9,7 +9,7 @@ export default {
 	},
 
 	props: {
-		place: {
+		value: {
 			type: String,
 			default: null
 		},
@@ -19,39 +19,73 @@ export default {
 		}
 	},
 
+	data() {
+		return {
+			place: null
+		};
+	},
+
 	methods: {
-		onPlaceChanged(place) {
-			this.$emit('place-changed', place);
-		},
-
 		onFocus(e) {
-			this.$emit('focus', e);
+			// Auto select text
+			if (this.value) e.target.select();
 
-			if (this.place) e.target.select();
+			this.$emit('focus', e);
 		},
 
-		onBlur(e) {
-			if (!this.place) e.target.value = '';
+		onBlur() {
+			// Remove place if there's no text
+			if (!this.value) this.$emit('place-changed', null);
 		},
 
 		onInput(e) {
-			const input = e.target;
+			this.$emit('input', e.target.value);
 
-			this.$emit('input', input.value);
-
-			if (this.place) this.$emit('place-changed', null);
+			// Remove place if present
+			if (this.place) {
+				this.place = null;
+				this.$emit('place-changed', null);
+			}
 		},
 
-		onEscKey(e) {
-			if (!this.place) e.target.value = '';
+		onEscKey() {
+			// Delete all text if not place is selected
+			this.$emit('input', null);
+			this.$emit('place-changed', null);
 		},
 
 		onEnterKey(e) {
 			const menus = document.querySelectorAll('.pac-container');
 
 			menus.forEach(menu => {
-				if (menu.offsetWidth || menu.offsetHeight || menu.getClientRects().length) e.preventDefault();
+				if (menu.offsetWidth || menu.offsetHeight || menu.getClientRects().length) {
+					e.preventDefault();
+				}
 			});
+
+			console.log('enter');
+
+			// Pass event to parent if not stopped
+			if (!e.defaultPrevented) {
+				console.log('non prevented');
+				this.$emit(e.type, e);
+			}
+		},
+
+		onPlaceChanged(place) {
+			// Emit clean place name as input
+			let value = place.name;
+			if (place.vicinity && place.name != place.vicinity) {
+				value = `${place.name}, ${place.vicinity}`;
+			}
+
+			this.$emit('input', value);
+
+			// Store place locally
+			this.place = place;
+
+			// Emit place
+			this.$emit('place-changed', place);
 		}
 	}
 };
@@ -61,7 +95,7 @@ export default {
 	<autocomplete
 		ref="input"
 		v-bind="$attrs"
-		v-model="place"
+		:value="value"
 		:select-first-on-enter="selectFirstOnEnter"
 		@place_changed="onPlaceChanged"
 		@focus.native="onFocus"
