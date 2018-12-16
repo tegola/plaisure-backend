@@ -101,8 +101,9 @@ export default {
 	},
 
 	mounted() {
-		// Load venue if it isn't already loaded
-		if (!this.venue) this.loadData();
+		// Load venue if it isn't already loaded or it is, but is already saved
+		// (so we're sure to get the latest version)
+		if (!this.venue || (this.venue && this.isSaved)) this.loadData();
 	},
 
 	methods: {
@@ -139,12 +140,15 @@ export default {
 			this.saving = true;
 
 			this.$store.dispatch(`${this.storeName}/save`)
-				.then(() => {
-					console.log('then in program');
-				})
 				.catch(() => {})
 				.then(() => {
 					this.saving = false;
+
+					// Reload user data, including venues
+					this.$store.dispatch('user/fetch');
+
+					// Go back to the user profile
+					this.$router.push({ name: 'user' });
 				});
 		}
 	}

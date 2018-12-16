@@ -67,7 +67,7 @@ export default {
 		addressLines() {
 			const a = this.venue.address;
 			return [
-				`${a.street} ${a.number}`.trim(),
+				[a.line1, a.line2].join(', '),
 				a.city,
 				`${a.postcode} ${a.province}`.trim()
 			];

@@ -38,10 +38,7 @@ export default {
 			minLength: minLength(1)
 		},
 		address: {
-			street: {
-				required
-			},
-			number: {
+			line1: {
 				required
 			},
 			postcode: {

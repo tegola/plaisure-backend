@@ -44,8 +44,8 @@ class Venue extends Model
 		'arcade_roulette' => false,
 		'machine_type' => self::MACHINE_TYPE_A,
 
-		'address_street' => '',
-		'address_number' => '',
+		'address_line1' => '',
+		'address_line2' => '',
 		'address_city' => '',
 		'address_postcode' => '',
 		'address_province' => '',
@@ -133,8 +133,8 @@ class Venue extends Model
 		'horse_betting',
 		'arcade_roulette',
 		'machine_type',
-		'address_street',
-		'address_number',
+		'address_line1',
+		'address_line2',
 		'address_city',
 		'address_postcode',
 		'address_province',
@@ -183,7 +183,7 @@ class Venue extends Model
 			static::addGlobalScope('noGeoData', function (Builder $builder) {
 				$builder->whereNotNull('geo_latitude')
 						->whereNotNull('geo_longitude')
-						->where('address_street', '!=', '')
+						->where('address_line1', '!=', '')
 						->where('address_city', '!=', '');
 			});
 		}

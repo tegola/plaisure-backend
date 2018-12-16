@@ -64,7 +64,7 @@ export default {
 			const a = this.venue.address;
 
 			return [
-				[a.street, a.number].join(' '),
+				[a.line1, a.line2].join(', '),
 				a.city
 			].join(', ');
 		}

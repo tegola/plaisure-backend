@@ -170,7 +170,7 @@ export default {
 
 		showMap() {
 			const a = this.venueAddress;
-			return Boolean(a.street && a.number && a.postcode && a.city && a.province);
+			return Boolean(a.line1 && a.postcode && a.city && a.province);
 		},
 
 		canDragMarker() {
@@ -205,16 +205,15 @@ export default {
 		findMarkerCoords: _throttle(function() {
 			let address = this.venueAddress;
 
-			if (!address.street ||
-				!address.number ||
+			if (!address.line1 ||
 				!address.postcode ||
 				!address.city ||
 				!address.province
 			) return;
 
 			address = [
-				address.street,
-				address.number,
+				address.line1,
+				address.line2,
 				address.postcode,
 				address.city,
 				address.province
@@ -325,11 +324,11 @@ export default {
 			v-bind="formGroupProps"
 			:label="$t('pages.venue_form.general.address')">
 			<div class="form-row">
-				<div class="col-9 col-lg-7">
-					<b-input :placeholder="$t('pages.venue_form.general.address_placeholder1')" :value="venueAddress.street" @input="onAddressInput('street', $event)" />
+				<div class="col-lg-10 mb-2">
+					<b-input :placeholder="$t('pages.venue_form.general.address_line1_placeholder')" :value="venueAddress.line1" @input="onAddressInput('line1', $event)" />
 				</div>
-				<div class="col-3 col-lg-3">
-					<b-input :placeholder="$t('pages.venue_form.general.address_placeholder2')" :value="venueAddress.number" @input="onAddressInput('number', $event)" />
+				<div class="col-lg-10">
+					<b-input :placeholder="$t('pages.venue_form.general.address_line2_placeholder')" :value="venueAddress.line2" @input="onAddressInput('line2', $event)" />
 				</div>
 			</div>
 		</b-form-group>

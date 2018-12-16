@@ -39,10 +39,7 @@ export default {
 		address() {
 			const a = this.venue.address;
 
-			return [
-				[a.street, a.number].join(' '),
-				a.city
-			].join(', ');
+			return [a.line1, a.city].join(', ');
 		},
 
 		isOpen() {

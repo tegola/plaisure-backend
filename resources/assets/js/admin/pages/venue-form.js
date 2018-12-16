@@ -73,8 +73,7 @@ export default {
 				const provinceRegex = /(Provincia di )|(Città Metropolitana di )/gi;
 
 				_assign(this.venue, {
-					address_street: result.streetName || '',
-					address_number: result.streetNumber || '',
+					address_line1: [result.streetName || '', + results.streetNumber || ''].join(' '),
 					address_city: result.city || '',
 					address_postcode: result.zipcode || '',
 					address_province: result.administrativeLevels.level2long ? result.administrativeLevels.level2long.replace(provinceRegex, '') : '',
