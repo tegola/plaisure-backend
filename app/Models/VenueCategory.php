@@ -11,10 +11,7 @@ class VenueCategory extends Model
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'machine_name',
-		'name'
-	];
+	protected $guarded = [];
 
 	/**
 	 * Venues belonging to this category.
@@ -24,5 +21,17 @@ class VenueCategory extends Model
 	public function venues()
 	{
 		return $this->belongsToMany('App\Models\Venue');
+	}
+
+	/**
+	 * Scope to items for the specified country.
+	 *
+	 * @param  Illuminate\Database\Query\Builder  $query   Query builder instance
+	 * @param  String                             $country The country to limit to
+	 * @return Illuminate\Database\Query\Builder           Modified query builder
+	 */
+	public function scopeForCountry($query, String $country)
+	{
+		return $query->whereIn('country', [$country, '']);
 	}
 }

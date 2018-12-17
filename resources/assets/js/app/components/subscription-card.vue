@@ -105,7 +105,7 @@ export default {
 		<div class="card-body d-flex flex-column">
 			<div>
 				<span v-if="highlightText" class="badge badge-primary initialism">{{ highlightText }}</span>
-				<h3 class="card-title">{{ $t(`db.subscriptions.${subscription.name}`) }}</h3>
+				<h3 class="card-title">{{ $t(`data.subscriptions.${subscription.name}`) }}</h3>
 				<p class="card-text lead">€ {{ price }}/mese</p>
 				<p v-if="endDate" class="text-info">Attivo fino al {{ endDate }}</p>
 				<ul class="list-unstyled">

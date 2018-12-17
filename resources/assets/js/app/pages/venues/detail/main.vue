@@ -114,7 +114,7 @@ export default {
 
 			if (categories.length) {
 				return this.$t('pages.venue_detail.subtitle', {
-					category: this.$t(`db.categories.${categories[0].machine_name}`),
+					category: categories[0].name,
 					city
 				});
 			} else {

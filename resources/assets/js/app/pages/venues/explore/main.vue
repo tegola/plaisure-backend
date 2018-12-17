@@ -150,12 +150,12 @@ export default {
 				this.categories = response.data.categories;
 				this.categoryOptions = response.data.categories.map(category => ({
 					value: category.id,
-					label: this.$t(`db.categories.${category.machine_name}`)
+					label: category.name
 				}));
 				/*
 				this.amenityOptions = response.data.amenities.map(amenity => ({
 					value: amenity.machine_name,
-					label: this.$t(`db.amenities.${amenity.machine_name}`)
+					label: this.$t(`data.amenities.${amenity.machine_name}`)
 				}));
 				*/
 

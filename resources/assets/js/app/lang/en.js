@@ -498,17 +498,12 @@ export default {
 		}
 	},
 
-	// Database ---------------------------------------------------------------
-	db: {
+	// Data -------------------------------------------------------------------
+	data: {
 		subscriptions: {
 			default: 'Free',
 			premium_1: 'Premium 1',
 			premium_2: 'Premium 2'
-		},
-		categories: {
-			betting_agency: 'Betting Agency',
-			bingo: 'Bingo',
-			vlt: 'VLT Games Room'
 		},
 		amenities: {
 			atm: 'ATM',

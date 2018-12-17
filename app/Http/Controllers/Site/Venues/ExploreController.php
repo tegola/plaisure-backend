@@ -34,7 +34,9 @@ class ExploreController extends Controller
 	 */
 	public function data()
 	{
-		$categories = VenueCategory::all();
+		$categories = VenueCategory::forCountry(env('APP_COUNTRY'))
+			->select('id', 'machine_name', 'name')
+			->get();
 		// $amenities = $this->amenities()->all();
 		
 		return compact('categories'/*, 'amenities'*/);
@@ -51,10 +53,14 @@ class ExploreController extends Controller
 	{
 		// $query = $request->input('query');
 
-		$categories = $request->filled('categories') ? $request->input('categories') : VenueCategory::pluck('id')->all();
-		$categoryIds = array_map(function($id) { // pluck() returns IDs as strings
-			return (int) $id;
-		}, $categories);
+		if ($request->filled('categories')) {
+			$categories = $request->input('categories');
+		} else {
+			$categories = VenueCategory::forCountry(env('APP_COUNTRY'))
+				->pluck('id')
+				->all();
+		}
+		$categoryIds = array_map('intval', $categories);
 		// $amenityIds = $request->filled('amenities') ? $request->input('amenities') : [];
 		$radius = $request->filled('radius') ? intval($request->input('radius')) : 10;
 		$c_lat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;

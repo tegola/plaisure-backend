@@ -69,7 +69,7 @@ export default {
 					type: 'category',
 					value: category.machine_name,
 					icon: category.machine_name.replace('_', '-'),
-					label: this.$t(`db.categories.${category.machine_name}`),
+					label: category.name,
 					route: {
 						name: 'venues.explore',
 						query: {
