@@ -28,7 +28,7 @@ class MainController extends Controller
 	 */
 	public function data()
 	{
-		$categories = VenueCategory::forCountry(env('APP_COUNTRY'))
+		$categories = VenueCategory::forCountry(locale_get_region(app()->getLocale()))
 			->select('id', 'machine_name', 'name')
 			->get();
 		$cacheLimit = 1;

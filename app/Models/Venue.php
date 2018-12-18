@@ -175,7 +175,7 @@ class Venue extends Model
 	public function __construct(array $attributes = [])
 	{
 		// Default country
-		$this->country = env('APP_COUNTRY');
+		$this->country = locale_get_region(app()->getLocale());
 
 		parent::__construct($attributes);
 	}

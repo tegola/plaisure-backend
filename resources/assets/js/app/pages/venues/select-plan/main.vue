@@ -14,7 +14,7 @@ import countryOptions from 'prontogioco/app/common/country-select-options';
 import subscriptions from './subscriptions';
 import venueFormStore from 'prontogioco/app/store/venue-form';
 
-const locale = constants.APP_LOCALE.split('_')[0]; // it_IT -> it
+const locale = constants.APP_LOCALE.split(/_|-/)[0]; // it_IT -> it
 
 export default {
 	name: 'PgSelectVenuePlanPage',

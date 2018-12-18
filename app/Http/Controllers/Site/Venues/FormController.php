@@ -76,16 +76,17 @@ class FormController extends Controller
 				'subscription'
 			]);
 
-		$categories = VenueCategory::forCountry(env('APP_COUNTRY'))
+		$country = locale_get_region(app()->getLocale());
+		$categories = VenueCategory::forCountry($country)
 			->select('id', 'machine_name', 'name')
 			->get();
-		$concessionaires = Concessionaire::forCountry(env('APP_COUNTRY'))
+		$concessionaires = Concessionaire::forCountry($country)
 			->select('id', 'name')
 			->get();
-		$vltPlatforms = VltPlatform::forCountry(env('APP_COUNTRY'))
+		$vltPlatforms = VltPlatform::forCountry($country)
 			->select('id', 'name')
 			->get();
-		$payPerViewPlatforms = PayPerViewPlatform::forCountry(env('APP_COUNTRY'))
+		$payPerViewPlatforms = PayPerViewPlatform::forCountry($country)
 			->select('id', 'name')
 			->get();
 

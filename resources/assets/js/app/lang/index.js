@@ -3,7 +3,7 @@ import VueI18n from 'vue-i18n';
 import axios from 'prontogioco/app/plugins/axios';
 import { APP_LOCALE } from 'prontogioco/constants';
 
-const lang = APP_LOCALE.split('_')[0]; // it_IT -> it
+const lang = APP_LOCALE.split(/_|-/)[0]; // it_IT -> it
 const messages = require(`./${lang}`).default;
 
 // const loadedLanguages = [lang];

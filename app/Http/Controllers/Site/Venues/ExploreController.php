@@ -34,7 +34,7 @@ class ExploreController extends Controller
 	 */
 	public function data()
 	{
-		$categories = VenueCategory::forCountry(env('APP_COUNTRY'))
+		$categories = VenueCategory::forCountry(locale_get_region(app()->getLocale()))
 			->select('id', 'machine_name', 'name')
 			->get();
 		// $amenities = $this->amenities()->all();
@@ -56,7 +56,7 @@ class ExploreController extends Controller
 		if ($request->filled('categories')) {
 			$categories = $request->input('categories');
 		} else {
-			$categories = VenueCategory::forCountry(env('APP_COUNTRY'))
+			$categories = VenueCategory::forCountry(locale_get_region(app()->getLocale()))
 				->pluck('id')
 				->all();
 		}

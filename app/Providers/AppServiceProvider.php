@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use Javascript;
 use Illuminate\Support\ServiceProvider;
 use Schema;
 use Blade;
 use Carbon;
-use App;
 use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
 		Blade::setEchoFormat('nl2br(e(%s))');
 
 		// Set locale for dates
-		Carbon::setLocale(App::getLocale());
-		setlocale(LC_TIME, App::getLocale());
+		Carbon::setLocale(app()->getLocale());
+		setlocale(LC_TIME, app()->getLocale());
 
 		// Blade currency directive
 		Blade::directive('currency', function ($value, $decimals = 2) {
