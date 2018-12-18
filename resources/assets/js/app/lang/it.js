@@ -11,7 +11,6 @@ export default {
 			sunday: 'Domenica'
 		},
 		status: {
-			offline_warning: 'Attenzione: non sei connesso a internet!',
 			error: 'Error',
 			loading: 'Caricamento',
 			invalid_form: 'Ci sono degli errori nel modulo. Controlla i dati inseriti.',
@@ -30,6 +29,10 @@ export default {
 
 	// Components -------------------------------------------------------------
 	components: {
+		offline_alert: {
+			offline: 'Attenzione: non sei connesso a internet!'
+		},
+
 		navbar: {
 			search: 'Cerca vicino a...',
 			home: 'Home',

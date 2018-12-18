@@ -1,5 +1,4 @@
 .navbar {
-	z-index: $zindex-fixed + 1;
 	transition:
 		background-color $navbar-transition-duration,
 		color $navbar-transition-duration;

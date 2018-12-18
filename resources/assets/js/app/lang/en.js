@@ -11,7 +11,6 @@ export default {
 			sunday: 'Sunday'
 		},
 		status: {
-			offline_warning: "Attention: you're not connected to the internet!",
 			error: 'Error',
 			loading: 'Loading',
 			invalid_form: 'There are errors in the form. Please review your entry.',
@@ -30,6 +29,10 @@ export default {
 
 	// Components -------------------------------------------------------------
 	components: {
+		offline_alert: {
+			offline: "Attention: you're not connected to the internet!"
+		},
+
 		navbar: {
 			search: 'Search...',
 			home: 'Home',
