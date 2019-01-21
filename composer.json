@@ -22,8 +22,8 @@
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
-        "deployer/deployer": "^6.0",
-        "deployer/recipes": "^6.0",
+        "deployer/deployer": "6.3.*",
+        "deployer/recipes": "6.1.*",
         "filp/whoops": "~2.0",
         "nunomaduro/collision": "~1.1",
         "fzaninotto/faker": "~1.4",

@@ -18,6 +18,8 @@ set('bin/composer', function() { // Always use composer.phar
 });
 
 // Hosts
+// Keep the hostname, as having two host(<same address here>) is not really
+// supported: https://github.com/deployphp/deployer/issues/1433
 host('testing')
 	->stage('testing')
 	->user('prontogioco')
