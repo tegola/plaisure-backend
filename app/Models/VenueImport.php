@@ -16,6 +16,15 @@ class VenueImport extends Model
 	protected $guarded = [];
 
 	/**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'source_data' => 'object'
+	];
+
+	/**
 	 * Venue belonging to this import.
 	 *
 	 * @return [App\Models\Venue]
