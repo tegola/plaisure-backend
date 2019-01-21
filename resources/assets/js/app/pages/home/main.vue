@@ -225,8 +225,6 @@ export default {
 <template>
 	<div class="pg-home-page">
 		<div class="pg-home-page__hero">
-			<pg-navbar :search="false" />
-
 			<div class="pg-home-page__hero-background d-none d-lg-block" role="presentation">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="pg-home-page__hero-background-img">
 					<circle cx="50" cy="50" r="50" fill="#CBECD4"/>
@@ -234,6 +232,8 @@ export default {
 					<circle cx="50" cy="50" r="8" fill="#7DD194"/>
 				</svg>
 			</div>
+
+			<pg-navbar :search="false" />
 
 			<div class="pg-home-page__hero-content">
 				<div class="container">

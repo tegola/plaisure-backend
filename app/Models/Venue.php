@@ -301,6 +301,16 @@ class Venue extends Model
 	}
 
 	/**
+	 * Imported venue data.
+	 *
+	 * @return [\App\Models\VenueImport]
+	 */
+	public function import()
+	{
+		return $this->hasOne('App\Models\VenueImport');
+	}
+
+	/**
 	 * Concessionaire this venue is affiliate to.
 	 * 
 	 * @return \App\Models\Concessionaire

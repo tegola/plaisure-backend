@@ -35,7 +35,7 @@ class AuthController extends Controller
 
 		// Send internal Slack notification
 		$notification = new UserRegistered($user);
-		Notification::route('slack', env('SLACK_ACITIVITY_WEBHOOK_URL'))->notify($notification);
+		Notification::route('slack', env('SLACK_ACTIVITY_WEBHOOK_URL'))->notify($notification);
 
 		// TODO: Send email confirmation
 
