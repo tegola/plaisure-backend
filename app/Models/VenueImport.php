@@ -8,6 +8,7 @@ class VenueImport extends Model
 {
 	const SOURCE_BRAND_ADMIRAL_UK = 1;
 	const SOURCE_BRAND_CASHINO    = 2;
+	const SOURCE_BRAND_MEGABET    = 3;
 	
 	/**
 	 * The attributes that aren't mass assignable.
