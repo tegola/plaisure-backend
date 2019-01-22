@@ -6,21 +6,21 @@ use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use App\Models\VenueImport;
 
-class ImportAdmiralUK extends Command
+class ImportCashino extends Command
 {
 	/**
 	 * The name and signature of the console command.
 	 *
 	 * @var string
 	 */
-	protected $signature = 'import:admiral-uk';
+	protected $signature = 'import:cashino';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Import Admiral UK venues';
+	protected $description = 'Import Cashino venues';
 
 	/**
 	 * Create a new command instance.
@@ -40,12 +40,12 @@ class ImportAdmiralUK extends Command
 	public function handle()
 	{
 		// Print intro
-		$this->line('Importing Admiral UK venues.');
+		$this->line('Importing Cashino venues.');
 		$this->line('');
 
 		// Get the data
 		$client = new Client();
-		$response = $client->get('https://www.admiralslots.co.uk/venues.json');
+		$response = $client->get('https://venues.cashino.com/venues.json');
 		$data = json_decode($response->getBody());
 
 		// Init counters
@@ -57,8 +57,8 @@ class ImportAdmiralUK extends Command
 		foreach ($data as $row) {
 			// Search a previous import
 			$venueImport = VenueImport::firstOrNew([
-				'source_brand' => VenueImport::SOURCE_BRAND_ADMIRAL_UK,
-				'source_id' => $row->id
+				'source_brand' => VenueImport::SOURCE_BRAND_CASHINO,
+				'source_id' => $row->{'Venue ID'}
 			]);
 
 			if (!$venueImport->exists) {
@@ -67,7 +67,7 @@ class ImportAdmiralUK extends Command
 				$venueImport->source_data = $row;
 				$venueImport->save();
 
-				$this->info("Added {$row->id}: {$row->name}, {$row->address}, {$row->city}");
+				$this->info("Added {$row->{'Venue ID'}}: {$row->{'Venue Name'}}, {$row->{'Venue Address'}}, {$row->{'Venue Town'}}");
 				$added++;
 
 			} else if ($venueImport->source_data != $row) {
@@ -76,7 +76,7 @@ class ImportAdmiralUK extends Command
 				$venueImport->source_data = $row;
 				$venueImport->save();
 
-				$this->comment("Updated {$row->id}: {$row->name}, {$row->address}, {$row->city}");
+				$this->comment("Updated {$row->{'Venue ID'}}: {$row->{'Venue Name'}}, {$row->{'Venue Address'}}, {$row->{'Venue Town'}}");
 				$updated++;
 
 			}
@@ -84,10 +84,10 @@ class ImportAdmiralUK extends Command
 
 		// Delete closed venues
 		$rowIds = array_map(function($row) {
-			return $row->id;
+			return $row->{'Venue ID'};
 		}, $data);
 		$closedVenueImports = VenueImport::query()
-			->where('source_brand', VenueImport::SOURCE_BRAND_ADMIRAL_UK)
+			->where('source_brand', VenueImport::SOURCE_BRAND_CASHINO)
 			->whereNotIn('source_id', $rowIds)
 			->get();
 
@@ -95,7 +95,7 @@ class ImportAdmiralUK extends Command
 			$sourceData = $closedVenueImport->source_data;
 			$closedVenueImport->delete();
 
-			$this->error("Deleted {$closedVenueImport->source_id}: {$sourceData->name}, {$sourceData->address}, {$sourceData->city}");
+			$this->error("Deleted {$closedVenueImport->source_id}: {$sourceData->{'Venue Name'}}, {$sourceData->{'Venue Address'}}, {$sourceData->{'Venue Town'}}");
 			$deleted++;
 		}
 
