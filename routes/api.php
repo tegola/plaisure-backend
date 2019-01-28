@@ -53,3 +53,49 @@ Route::group(['namespace' => 'Site'], function() {
 	// Venue detail
 	Route::get ('/venues/{venue}',        'Venues\DetailController@detail');
 });
+
+Route::group([
+	'prefix' => '/admin',
+	'namespace' => 'Admin',
+	'middleware' => ['auth:api', 'can:administer'],
+], function() {
+	// Route::get('/', 'AdminController@index')->name('admin.home');
+
+	// Venues
+	Route::get('/venues',         'Venues\ListController@index');
+	Route::get('/venues/{venue}', 'Venues\DetailController@detail');
+
+	// Venue imports
+	Route::get('/venue-imports',               'VenueImports\ListController@index');
+	Route::get('/venue-imports/{venueImport}', 'VenueImports\DetailController@detail');
+
+	// Users
+	Route::get('/users',        'Users\ListController@index');
+	Route::get('/users/{user}', 'Users\DetailController@detail');
+
+	// Venues
+	/*
+	Route::group(['prefix' => '/venues', 'namespace' => 'Venues'], function(){
+		// Obsolete
+		Route::get('/obsolete', 'ObsoleteListController@index')->name('admin.venues.obsolete.index');
+
+		// Unmanaged
+		Route::get('/unmanaged', 'UnmanagedListController@index')->name('admin.venues.unmanaged.index');
+
+		// Import (upload CSV)
+		Route::get('/import',  'ImportFormController@edit')  ->name('admin.venues.import.edit');
+		Route::post('/import', 'ImportFormController@update')->name('admin.venues.import.update');
+
+		// Normal ones
+		Route::get('/',                        'ListController@index')  ->name('admin.venues.index');
+		Route::get('/add',                     'FormController@create') ->name('admin.venues.create');
+		Route::get('/promote/{importedVenue}', 'FormController@promote')->name('admin.venues.promote');
+		Route::post('/',                       'FormController@store')  ->name('admin.venues.store');
+		// Route::get('/{venue}',                 'DetailController@show') ->name('admin.venues.show');
+		Route::get('/{venue}/edit',            'FormController@edit')   ->name('admin.venues.edit');
+		Route::patch('/{venue}',               'FormController@update') ->name('admin.venues.update');
+		Route::delete('/{venue}',              'ListController@delete') ->name('admin.venues.delete');
+
+	});
+	*/
+});

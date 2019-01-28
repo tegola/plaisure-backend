@@ -84,11 +84,18 @@ class ImportLadbrokes extends Command
 		$bar->finish();
 		$this->line('');
 
-		// Remove non venues, i.e. those with the total
+
+
+		// Generate an id for each row
+		foreach ($data as $row) {
+			$row->generated_id = substr(md5($row->n . $row->pc), 0, 8);
+		}
+
+		// Find unique venues by filtering their generated id
 		$uniqueIds = [];
 		$data = array_filter($data, function($row) use (&$uniqueIds) {
-			if (!in_array($row->bpid, $uniqueIds)) {
-				$uniqueIds[] = $row->bpid;
+			if (!in_array($row->generated_id, $uniqueIds)) {
+				$uniqueIds[] = $row->generated_id;
 				return $row;
 			}
 		});
@@ -103,7 +110,7 @@ class ImportLadbrokes extends Command
 			// Search a previous import
 			$venueImport = VenueImport::firstOrNew([
 				'source_brand' => VenueImport::SOURCE_BRAND_LADBROKES,
-				'source_id' => $row->bpid
+				'source_id' => $row->generated_id
 			]);
 
 			if (!$venueImport->exists) {
@@ -112,7 +119,7 @@ class ImportLadbrokes extends Command
 				$venueImport->source_data = $row;
 				$venueImport->save();
 
-				$this->info("Added {$row->bpid}: {$row->n}, {$row->ad}");
+				$this->info("Added {$row->generated_id}: {$row->n}, {$row->ad}");
 				$added++;
 
 			} else if ($venueImport->source_data != $row) {
@@ -121,7 +128,11 @@ class ImportLadbrokes extends Command
 				$venueImport->source_data = $row;
 				$venueImport->save();
 
-				$this->comment("Updated {$row->bpid}: {$row->n}, {$row->ad}");
+				echo "SOURCE_DATA: {$venueImport->source_data}";
+				echo "\n";
+				echo "ROW: {$row}";
+
+				$this->comment("Updated {$row->generated_id}: {$row->n}, {$row->ad}");
 				$updated++;
 
 			}
@@ -129,7 +140,7 @@ class ImportLadbrokes extends Command
 
 		// Delete closed venues
 		$rowIds = array_map(function($row) {
-			return $row->bpid;
+			return $row->generated_id;
 		}, $data);
 		$closedVenueImports = VenueImport::query()
 			->where('source_brand', VenueImport::SOURCE_BRAND_LADBROKES)
@@ -140,7 +151,7 @@ class ImportLadbrokes extends Command
 			$sourceData = $closedVenueImport->source_data;
 			$closedVenueImport->delete();
 
-			$this->error("Deleted {$closedVenueImport->source_id}: {$sourceData->n}, {$sourceData->a}");
+			$this->error("Deleted {$closedVenueImport->source_id}: {$sourceData->n}, {$sourceData->ad}");
 			$deleted++;
 		}
 

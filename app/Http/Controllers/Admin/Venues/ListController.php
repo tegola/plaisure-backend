@@ -5,17 +5,27 @@ namespace App\Http\Controllers\Admin\Venues;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Venue;
-use App\Models\ImportedVenue;
 
 class ListController extends Controller
 {
 	/**
-	 * Shows the venue list.
+	 * Get the data to show the venue list.
 	 * 
-	 * @return \Illuminate\Http\Response
+	 * @return Illuminate\Http\Response
 	 */
 	public function index(Request $request)
 	{
+		$venues = Venue::oldest('updated_at')
+			->paginate(
+				$request->input('perPage'),
+				['*'],
+				'page',
+				$request->input('currentPage')
+			);
+
+		return compact('venues');
+		/*
+
 		// Load venues sorted by update date
 		$venues = Venue::oldest('updated_at');
 
@@ -52,6 +62,7 @@ class ListController extends Controller
 		$request->flash();
 
 		return view('admin.venues.list', compact('venues'));
+		*/
 	}
 
 	/**

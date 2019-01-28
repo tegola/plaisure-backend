@@ -22,6 +22,7 @@ Route::get('/send-mail', function() {
 });
 
 // Admin ----------------------------------------------------------------------
+/*
 Route::group([
 	'domain' => 'admin.' . env('APP_DOMAIN'),
 	'namespace' => 'Admin',
@@ -56,6 +57,7 @@ Route::group([
 	// Users
 	Route::get('/users', 'Users\ListController@index')->name('admin.users.index');
 });
+*/
 
 // Stripe webhooks ------------------------------------------------------------
 Route::post('/stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');

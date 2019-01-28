@@ -9,12 +9,23 @@ use Illuminate\Http\Request;
 class ListController extends Controller
 {
 	/**
-	 * Shows the user list.
+	 * Get the data to show the user list.
 	 * 
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request)
 	{
+		$users = User::latest('updated_at')
+			->paginate(
+				$request->input('perPage'),
+				['*'],
+				'page',
+				$request->input('currentPage')
+			);
+
+		return compact('users');
+
+		/*
 		// Load users sorted by registration date
 		$users = User::latest();
 
@@ -36,5 +47,6 @@ class ListController extends Controller
 		$request->flash();
 
 		return view('admin.users.list', compact('users'));
+		*/
 	}
 }
