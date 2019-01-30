@@ -3,32 +3,91 @@
 namespace App\Http\Controllers\Admin\Venues;
 
 use App\Http\Controllers\Controller;
+/*
 use App\Http\Requests\StoreVenue;
+*/
 use App\Models\Venue;
-use App\Models\ImportedVenue;
-use App\Models\VenuePlan;
-use App\Models\VenueBusinessHour;
 use App\Models\VenueCategory;
 use App\Models\Concessionaire;
 use App\Models\VltPlatform;
 use App\Models\PayPerViewPlatform;
+/*
+use App\Models\ImportedVenue;
+use App\Models\VenuePlan;
+use App\Models\VenueBusinessHour;
 use App\Models\File;
 use JavaScript;
 use DB;
+*/
 
 class FormController extends Controller
 {
+	/**
+	 * Get the data to show the venue form.
+	 * 
+	 * @param  Venue  $venue
+	 * @return Illuminate\Http\Response
+	 */
+	public function load(Venue $venue = null)
+	{
+		// Add venue if none is specified
+		if (!$venue) $venue = new Venue();
+
+		// Eager load relationships
+		$venue->load([
+			'businessHours',
+			'categories',
+			'payPerViewPlatforms',
+			'photos',
+			'vltPlatforms',
+			'subscriptions',
+			'import'
+		]);
+
+		// Load satellite data
+		$categories = VenueCategory::query()
+			->select('id', 'name', 'country')
+			->orderBy('country', 'asc')
+			->orderBy('name', 'asc')
+			->get();
+		$concessionaires = Concessionaire::query()
+			->select('id', 'name', 'country')
+			->orderBy('country', 'asc')
+			->orderBy('name', 'asc')
+			->get();
+		$vltPlatforms = VltPlatform::query()
+			->select('id', 'name', 'country')
+			->orderBy('country', 'asc')
+			->orderBy('name', 'asc')
+			->get();
+		$payPerViewPlatforms = PayPerViewPlatform::query()
+			->select('id', 'name', 'country')
+			->orderBy('country', 'asc')
+			->orderBy('name', 'asc')
+			->get();
+
+		return compact(
+			'venue',
+			'categories',
+			'concessionaires',
+			'vltPlatforms',
+			'payPerViewPlatforms'
+		);
+	}
+
 	/**
 	 * Create a new venue.
 	 * 
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function create()
 	{
 		$venue = new Venue(old());
 
 		return $this->showForm($venue);
 	}
+	*/
 
 	/**
 	 * Create a new venue from an imported venue.
@@ -36,6 +95,7 @@ class FormController extends Controller
 	 * @param  ImportedVenue $importedVenue
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function promote(ImportedVenue $importedVenue)
 	{
 		// Create the new venue
@@ -61,6 +121,7 @@ class FormController extends Controller
 
 		return $this->showForm($venue, $importedVenue);
 	}
+	*/
 
 	/**
 	 * Edit an existing venue.
@@ -68,6 +129,7 @@ class FormController extends Controller
 	 * @param  Venue  $venue
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function edit(Venue $venue)
 	{
 		if (old()) $venue->fill(old());
@@ -87,6 +149,7 @@ class FormController extends Controller
 
 		return $this->showForm($venue, $importedVenue);
 	}
+	*/
 
 	/**
 	 * Actually shows the form view to add/edit a venue.
@@ -94,6 +157,7 @@ class FormController extends Controller
 	 * @param  Venue $venue
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	private function showForm(Venue $venue, ImportedVenue $importedVenue = null)
 	{
 		$venueCategories = $venue->categories()->pluck('id');
@@ -125,6 +189,7 @@ class FormController extends Controller
 
 		return view('admin.venues.form', compact('venue', 'daysOfWeek'));
 	}
+	*/
 
 	/**
 	 * Save a new venue.
@@ -132,6 +197,7 @@ class FormController extends Controller
 	 * @param  StoreVenue $request
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function store(StoreVenue $request)
 	{
 		DB::transaction(function() use($request) {
@@ -166,6 +232,7 @@ class FormController extends Controller
 
 		return redirect()->route('admin.venues.index');
 	}
+	*/
 
 	/**
 	 * Save over an existing venue.
@@ -174,6 +241,7 @@ class FormController extends Controller
 	 * @param  Venue $venue
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function update(StoreVenue $request, Venue $venue)
 	{
 		DB::transaction(function() use ($request, $venue) {
@@ -238,4 +306,5 @@ class FormController extends Controller
 
 		return redirect()->route('admin.venues.index');
 	}
+	*/
 }

@@ -10,15 +10,16 @@ class AdmiralUk extends Normalizer
 	{
 		$source = $this->source;
 
-		// Find city and region
-		$cityAndRegion = explode(',', $source->city);
+		// Find city and province
+		$cityAndProvince = explode(',', $source->city);
 
 		return [
 			'name' => $source->name,
 			'address_line1' => $source->address,
-			'address_city' => trim($cityAndRegion[0]),
+			'address_city' => trim($cityAndProvince[0]),
 			'address_postcode' => $source->postcode,
-			'address_region' => count($cityAndRegion) > 1 ? trim($cityAndRegion[1]) : '',
+			'address_province' => count($cityAndProvince) > 1 ? trim($cityAndProvince[1]) : '',
+			'country' => 'UK',
 			'geo_latitude' => round($source->lat, 6),
 			'geo_longitude' => round($source->lng, 6),
 			'contact_phone' => $source->telephone,

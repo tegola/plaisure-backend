@@ -34,6 +34,7 @@ class Cashino extends Normalizer
 			'address_line1' => $address,
 			'address_city' => $source->{'Venue Town'},
 			'address_postcode' => $source->{'Post Code'},
+			'country' => 'UK',
 			'geo_latitude' => (float) $coords[0],
 			'geo_longitude' => (float) $coords[1],
 			'contact_phone' => $source->{'Tel Number'},

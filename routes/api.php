@@ -62,8 +62,13 @@ Route::group([
 	// Route::get('/', 'AdminController@index')->name('admin.home');
 
 	// Venues
-	Route::get('/venues',         'Venues\ListController@index');
-	Route::get('/venues/{venue}', 'Venues\DetailController@detail');
+	Route::get('/venues',              'Venues\ListController@index');
+	Route::get('/venues/{venue}',      'Venues\DetailController@detail');
+	Route::get('/venues/add',          'Venues\FormController@load');
+	Route::post('/venues',             'Venues\FormController@save');
+	Route::get('/venues/{venue}/edit', 'Venues\FormController@load');
+	Route::put('/venues/{venue}',      'Venues\FormController@save');
+	Route::delete('/venues/{venue}',   'Venues\ListController@delete');
 
 	// Venue imports
 	Route::get('/venue-imports',               'VenueImports\ListController@index');

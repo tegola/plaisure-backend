@@ -47,6 +47,9 @@ class Ladbrokes extends Normalizer
 		$business_hours = [];
 
 		foreach ($daysKeys as $day => $name) {
+			// Skip day if empty
+			if (!$source->name) continue;
+
 			$hours = explode('-', $source->$name);
 			$opens = date('H:i', strtotime(trim($hours[0])));
 			$closes = date('H:i', strtotime(trim($hours[1])));
@@ -59,6 +62,7 @@ class Ladbrokes extends Normalizer
 			'address_line1' => $address_line1,
 			'address_city' => $address_city,
 			'address_postcode' => $source->pc,
+			'country' => 'UK',
 			'geo_latitude' => round($source->lat, 6),
 			'geo_longitude' => round($source->lng, 6),
 			'business_hours' => $business_hours

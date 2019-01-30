@@ -28,8 +28,6 @@ Route::group([
 	'namespace' => 'Admin',
 	'middleware' => ['auth', 'can:administer']
 ], function() {
-	Route::get('/', 'AdminController@index')->name('admin.home');
-
 	// Venues
 	Route::group(['prefix' => '/venues', 'namespace' => 'Venues'], function(){
 		// Obsolete
@@ -53,9 +51,6 @@ Route::group([
 		Route::delete('/{venue}',              'ListController@delete') ->name('admin.venues.delete');
 
 	});
-
-	// Users
-	Route::get('/users', 'Users\ListController@index')->name('admin.users.index');
 });
 */
 

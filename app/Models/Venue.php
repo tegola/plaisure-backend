@@ -109,55 +109,7 @@ class Venue extends Model
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'concessionaire_id',
-		'aams_census_code',
-		'aams_subject_enrollment_code',
-		'name',
-		'description',
-		'surface_size',
-		'vlt_machine_count',
-		'awp_machine_count',
-		'seating_capacity',
-		'parking_capacity',
-		'sports_betting',
-		'virtual_betting',
-		'horse_betting',
-		'arcade_roulette',
-		'machine_type',
-		'address_line1',
-		'address_line2',
-		'address_city',
-		'address_postcode',
-		'address_province',
-		'address_region',
-		'country',
-		'geo_latitude',
-		'geo_longitude',
-		'contact_phone',
-		'contact_email',
-		'contact_facebook',
-		'contact_twitter',
-		'url_site',
-		'url_online_casino',
-		'url_facebook',
-		'url_tripadvisor',
-		'jackpot1_label',
-		'jackpot1_value',
-		'jackpot2_label',
-		'jackpot2_value',
-		'jackpot3_label',
-		'jackpot3_value',
-		'amenity_atm',
-		'amenity_bar',
-		'amenity_pay_per_view',
-		'amenity_pos',
-		'amenity_private_parking',
-		'amenity_restaurant',
-		'amenity_security',
-		'amenity_smoking_area',
-		'amenity_wifi'
-	];
+	protected $guarded = [];
 
 	/**
 	 * Create a new Venue model instance.

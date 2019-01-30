@@ -13,8 +13,9 @@ class Megabet extends Normalizer
 		return [
 			'name' => "Megabet",
 			'address_postcode' => $source->postcode,
+			'country' => 'UK',
 			'geo_latitude' => round($source->latitude, 6),
-			'geo_longitude' => round($source->longitude, 6),
+			'geo_longitude' => round($source->longitude, 6)
 		];
 	}
 }
