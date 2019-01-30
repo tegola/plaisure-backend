@@ -11,58 +11,31 @@ class ListController extends Controller
 	/**
 	 * Get the data to show the venue list.
 	 * 
-	 * @return Illuminate\Http\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request)
 	{
-		$venues = Venue::oldest('updated_at')
-			->paginate(
-				$request->input('perPage'),
-				['*'],
-				'page',
-				$request->input('currentPage')
-			);
+		$currentPage = $request->query('currentPage', 1);
+		$perPage = $request->query('perPage', 20);
+		$sortBy = $request->query('sortBy', 'updated_at');
+		$sortDir = $request->query('sortDesc', 'true') == 'true' ? 'desc' : 'asc';
+		$filter = $request->query('filter');
+
+		$venues = Venue::orderBy($sortBy, $sortDir)
+			->when($filter, function($query, $filter) {
+				return $query
+					->orWhere('id_hashed', $filter)
+					->orWhere('name', 'like', "%{$filter}%")
+					->orWhere('address_line1', 'like', "%{$filter}%")
+					->orWhere('address_line2', 'like', "%{$filter}%")
+					->orWhere('address_city', 'like', "%{$filter}%")
+					->orWhere('address_postcode', 'like', "%{$filter}%")
+					->orWhere('address_province', 'like', "%{$filter}%")
+					->orWhere('address_region', 'like', "%{$filter}%");
+			})
+			->paginate($perPage, ['*'], 'page', $currentPage);
 
 		return compact('venues');
-		/*
-
-		// Load venues sorted by update date
-		$venues = Venue::oldest('updated_at');
-
-		// Search
-		if ($request->filled('query')) {
-			$query = $request->input('query');
-
-			$venues->where(function($builder) use ($query) {
-				$builder
-					->where('name', 'like', "%{$query}%")
-					->orWhere('address_city', 'like', "%{$query}%")
-					->orWhere('address_province', 'like', "%{$query}%")
-					->orWhere('aams_census_code', 'like', "%{$query}%");
-			});
-				
-		}
-
-		// Without geo data
-		if ($request->filled('without_geo_data')) {
-			$venues->where(function($builder) {
-				$builder
-					->whereNull('geo_latitude')
-					->orWhereNull('geo_latitude')
-					->orWhere('address_city', '')
-					->orWhere('address_line1', '');
-			});
-		}
-
-		// Paginate
-		$venues = $venues->paginate(50);
-		$venues->appends($request->all());
-
-		// Pass old values
-		$request->flash();
-
-		return view('admin.venues.list', compact('venues'));
-		*/
 	}
 
 	/**
@@ -70,6 +43,7 @@ class ListController extends Controller
 	 * 
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function obsolete()
 	{
 		// Get current venues' aams census codes
@@ -83,4 +57,5 @@ class ListController extends Controller
 
 		return view('admin.venues.obsolete-list', compact('venues', 'showObsolete'));
 	}
+	*/
 }
