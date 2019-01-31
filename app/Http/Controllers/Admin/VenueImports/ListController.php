@@ -11,17 +11,24 @@ class ListController extends Controller
 	/**
 	 * Get the data to show the venue import list.
 	 * 
-	 * @return Illuminate\Http\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request)
 	{
-		$venueImports = VenueImport::oldest('updated_at')
-			->paginate(
-				$request->input('perPage'),
-				['*'],
-				'page',
-				$request->input('currentPage')
-			);
+		$currentPage = $request->query('currentPage', 1);
+		$perPage = $request->query('perPage', 20);
+		$sortBy = $request->query('sortBy', 'updated_at');
+		$sortDir = $request->query('sortDesc', 'true') == 'true' ? 'desc' : 'asc';
+		$filter = $request->query('filter');
+
+		$venueImports = VenueImport::orderBy($sortBy, $sortDir)
+			->when($filter, function($query, $filter) {
+				return $query
+					->orWhere('id', $filter)
+					->orWhere('source_id', $filter)
+					->orWhere('source_data', 'like', "%{$filter}%");
+			})
+			->paginate($perPage, ['*'], 'page', $currentPage);
 
 		return compact('venueImports');
 	}

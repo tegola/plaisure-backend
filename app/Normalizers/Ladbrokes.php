@@ -48,7 +48,7 @@ class Ladbrokes extends Normalizer
 
 		foreach ($daysKeys as $day => $name) {
 			// Skip day if empty
-			if (!$source->name) continue;
+			if (!$source->$name) continue;
 
 			$hours = explode('-', $source->$name);
 			$opens = date('H:i', strtotime(trim($hours[0])));
