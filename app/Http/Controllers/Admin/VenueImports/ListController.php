@@ -20,15 +20,21 @@ class ListController extends Controller
 		$sortBy = $request->query('sortBy', 'updated_at');
 		$sortDir = $request->query('sortDesc', 'true') == 'true' ? 'desc' : 'asc';
 		$filter = $request->query('filter');
+		$view = $request->query('view');
 
-		$venueImports = VenueImport::orderBy($sortBy, $sortDir)
+		$query = VenueImport::orderBy($sortBy, $sortDir)
+			->when($view, function ($query, $view) {
+				if ($view == 'linked') $query->has('venue');
+				else if ($view == 'unlinked') $query->doesntHave('venue');
+			})
 			->when($filter, function($query, $filter) {
-				return $query
+				$query
 					->orWhere('id', $filter)
 					->orWhere('source_id', $filter)
 					->orWhere('source_data', 'like', "%{$filter}%");
-			})
-			->paginate($perPage, ['*'], 'page', $currentPage);
+			});
+
+		$venueImports = $query->paginate($perPage, ['*'], 'page', $currentPage);
 
 		return compact('venueImports');
 	}

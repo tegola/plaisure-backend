@@ -39,17 +39,7 @@ class VenueImport extends Model
 	protected $appends = ['normalized_data'];
 
 	/**
-	 * Venue belonging to this import.
-	 *
-	 * @return [App\Models\Venue]
-	 */
-	public function venue()
-	{
-		return $this->belongsTo('App\Models\Venue');
-	}
-
-	/**
-	 * Get the normalized data attribute
+	 * Get the normalized data attribute.
 	 * 
 	 * @return array
 	 */
@@ -63,5 +53,15 @@ class VenueImport extends Model
 			case self::SOURCE_BRAND_MEGABET: return new MegabetNormalizer($source);
 			case self::SOURCE_BRAND_LADBROKES: return new LadbrokesNormalizer($source);
 		}
+	}
+
+	/**
+	 * Venue belonging to this import.
+	 *
+	 * @return [App\Models\Venue]
+	 */
+	public function venue()
+	{
+		return $this->belongsTo('App\Models\Venue');
 	}
 }

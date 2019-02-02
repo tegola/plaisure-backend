@@ -20,8 +20,9 @@ class ListController extends Controller
 		$sortBy = $request->query('sortBy', 'updated_at');
 		$sortDir = $request->query('sortDesc', 'true') == 'true' ? 'desc' : 'asc';
 		$filter = $request->query('filter');
+		$view = $request->query('view');
 
-		$venues = Venue::orderBy($sortBy, $sortDir)
+		$query = Venue::orderBy($sortBy, $sortDir)
 			->when($filter, function($query, $filter) {
 				return $query
 					->orWhere('id_hashed', $filter)
@@ -32,8 +33,26 @@ class ListController extends Controller
 					->orWhere('address_postcode', 'like', "%{$filter}%")
 					->orWhere('address_province', 'like', "%{$filter}%")
 					->orWhere('address_region', 'like', "%{$filter}%");
-			})
-			->paginate($perPage, ['*'], 'page', $currentPage);
+			});
+
+		// Filter for "linked only"
+		switch ($view) {
+			case 'linked':
+				$query->has('import');
+				break;
+
+			case 'outdated':
+				$query->whereHas('import', function($query) {
+					return $query->whereColumn('venue_imports.updated_at', '>', 'venues.updated_at');
+				});
+				break;
+
+			case 'unlinked':
+				$query->doesntHave('import');
+				break;
+		}
+
+		$venues = $query->paginate($perPage, ['*'], 'page', $currentPage);
 
 		return compact('venues');
 	}
