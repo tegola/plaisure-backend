@@ -31,7 +31,7 @@ class MainController extends Controller
 		$categories = VenueCategory::forCountry(locale_get_region(app()->getLocale()))
 			->select('id', 'machine_name', 'name')
 			->get();
-		$cacheLimit = 1;
+		$cacheLimit = 60;
 
 		// Highlights - 2 taken from the latest 20 (1/10 chance to appear)
 		$highlightedVenues = Cache::remember('home.highlights', $cacheLimit, function() {

@@ -14,45 +14,13 @@
 // Auth -----------------------------------------------------------------------
 // Auth::routes();
 
+// Send mail test -------------------------------------------------------------
 Route::get('/send-mail', function() {
 	$u = App\Models\User::find(1);
 	$u->sendPasswordResetNotification('pippo');
 
 	return 'OK';
 });
-
-// Admin ----------------------------------------------------------------------
-/*
-Route::group([
-	'domain' => 'admin.' . env('APP_DOMAIN'),
-	'namespace' => 'Admin',
-	'middleware' => ['auth', 'can:administer']
-], function() {
-	// Venues
-	Route::group(['prefix' => '/venues', 'namespace' => 'Venues'], function(){
-		// Obsolete
-		Route::get('/obsolete', 'ObsoleteListController@index')->name('admin.venues.obsolete.index');
-
-		// Unmanaged
-		Route::get('/unmanaged', 'UnmanagedListController@index')->name('admin.venues.unmanaged.index');
-
-		// Import (upload CSV)
-		Route::get('/import',  'ImportFormController@edit')  ->name('admin.venues.import.edit');
-		Route::post('/import', 'ImportFormController@update')->name('admin.venues.import.update');
-
-		// Normal ones
-		Route::get('/',                        'ListController@index')  ->name('admin.venues.index');
-		Route::get('/add',                     'FormController@create') ->name('admin.venues.create');
-		Route::get('/promote/{importedVenue}', 'FormController@promote')->name('admin.venues.promote');
-		Route::post('/',                       'FormController@store')  ->name('admin.venues.store');
-		// Route::get('/{venue}',                 'DetailController@show') ->name('admin.venues.show');
-		Route::get('/{venue}/edit',            'FormController@edit')   ->name('admin.venues.edit');
-		Route::patch('/{venue}',               'FormController@update') ->name('admin.venues.update');
-		Route::delete('/{venue}',              'ListController@delete') ->name('admin.venues.delete');
-
-	});
-});
-*/
 
 // Stripe webhooks ------------------------------------------------------------
 Route::post('/stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');

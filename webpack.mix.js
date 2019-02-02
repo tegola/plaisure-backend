@@ -37,11 +37,6 @@ mix.setPublicPath('public')
 	})
 	.webpackConfig(webpackConfig);
 
-// Admin
-mix.sass('resources/assets/sass/admin/main.scss', 'css/admin.css')
-	.js('resources/assets/js/admin/index.js', 'js/admin.js')
-	.version();
-
 // App
 mix.sass('resources/assets/sass/app/main.scss', 'css/app.css')
 	.js('resources/assets/js/app/index.js', 'js/app.js')

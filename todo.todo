@@ -39,6 +39,31 @@
  ☐ Controllare il reload della pagina explore dopo esserci arrivato da un pulsante in home page
  ☐ Passare la lingua selezionata al client @low
 
+ ✔ L'indirizzo deve avere una riga unica, nessun campo per numero civico (+ codice per la migrazione del db) @done (18-12-16 01:59)
+ ✔ Deploy con la modifica dell'indirizzo riga 1 e 2 @done (18-12-16 11:53)
+ ✔ indirizzo line 1 e line 2 anche per informazioni legali dell'utente @done (18-12-16 12:31)
+ ✔ country invece di address_country @done (18-12-16 12:49)
+
+ ☐ Trovare un nuovo nome per UK + dominio e vari account Twitter, Facebook, ecc.
+ ☐ Importazione dati
+ ☐ Cookie + GDPR
+ ☐ Fatturazione utente (IVA) per nazione
+ ☐ Rimuovere la richiesta del codice di censimento aams prima della rivendicazione di una sala
+ ☐ Testo della pagina della scelta piani
+ ☐ Prezzi, limiti e bonus iniziali
+ ☐ Piani: prezzi, nomi e nomi piani stripe per nazione
+
+ ✔ Limitare le categorie per nazione (ma una categoria può anche essere non essere limitata per nazione, quindi country = null) @done (18-12-18 00:07)
+ ✔ Piattaforme VLT/Pay per view/concessionari, come le categorie, devono essere limitate per nazione (anche se in UK non ci sono concessionari) @done (18-12-18 00:07)
+
+ ☐ Rimuovere il limite di foto dalle sottoscrizioni (limitare a 50)
+ ☐ Default map center e città in home page per UK
+ ☐ Configurazione deploy (shared dir multidominio)
+
+ ✔ Completare configurazione stripe (fatturazione, logo) @done (18-12-16 23:50)
+ ☐ Aggiungere configurazione stripe live
+ ☐ Controllare che succede quando il charge della carta non va a buon fine
+
  ✔ Tutte le sale attuali devono avere la categoria "Sala VLT" @done (17-11-04 20:03)
  ✔ Mostrare le prime due categorie per ogni sala @done (17-11-04 20:03)
  ✔ Slider per ricerca distanza fino a 50km @done (18-01-28 00:41)
@@ -146,8 +171,10 @@ Gioca responsabilmente:
  ☐ Aggiungere ricerca ASL (http://www.dati.salute.gov.it/imgs/C_17_dataset_2_download_itemDownload_0_upFile.csv)
 
 Admin:
- ✔ Modalità di manutenzione (esercizi nuovi e chiusi) @done (17-07-04 22:49)
- ☐ Modalità di manutenzione per esercizi con poche informazioni
+ ☐ Creazione e modifica di una sala
+ ☐ Creazione sala da un'importazione
+ ☐ Visualizzazione dei dati di importazione in caso di aggiornamento di quest'ultima
+ ☐ Modalità di ricerca per esercizi con poche informazioni o non aggiornate da tanto tempo
 
 Sale premium:
  ☐ Bonus distanza (in range e fuori range della mappa, o comunque quando la mappa non è visibile)
@@ -162,3 +189,10 @@ Sale premium:
     certificate, Quindi se la tua sala è certificata (ovvero i tuoi dipendenti
     hanno fatto i corsi) puoi applicare il badge
  ☐ Eventi
+
+Dopo il deploy:
+  ☐ Aggiornare i file .env
+  ☐ Aggiungere il client api + secret
+  ☐ tabella venues: country passa da "Italia" a "IT"
+  ☐ tabella users: country viene riempito con "IT"
+  ☐ tabelle concessionaires/pay_per_view_platforms/venue_categories/vlt_platforms: country viene riempito con "IT", aggiungere le altre categorie
