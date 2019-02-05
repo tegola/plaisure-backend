@@ -20,7 +20,7 @@ class ConvertVenuePlansConfigToJsonField extends Migration
                 'hide_nearby_venues'
             ]);
 
-            $table->json('config')->after('machine_name');
+            $table->text('config')->after('machine_name'); // JSON not supported on MariaDB
         });
     }
 

@@ -6,7 +6,7 @@ require 'recipe/npm.php';
 
 set('allow_anonymous_stats', false);
 set('git_tty', true); // Allocate tty for git clone. Default value is false.
-set('default_stage', 'testing');
+set('default_stage', 'test_it');
 set('deploy_path', '/var/www/vhosts/prontogioco.it/{{stage}}');
 set('repository', 'git@bitbucket.org:tegola/prontogioco.git');
 set('bin/php', '/opt/plesk/php/7.1/bin/php');
@@ -20,8 +20,8 @@ set('bin/composer', function() { // Always use composer.phar
 // Hosts
 // Keep the hostname, as having two host(<same address here>) is not really
 // supported: https://github.com/deployphp/deployer/issues/1433
-host('testing')
-	->stage('testing')
+host('test_it')
+	->stage('test_it')
 	->user('prontogioco')
 	->hostname('vps512931.ovh.net');
 
