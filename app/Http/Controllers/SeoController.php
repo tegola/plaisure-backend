@@ -9,23 +9,6 @@ use App;
 class SeoController extends Controller
 {
 	/**
-	 * Redirect /venues/{id} to /venues/{id_hashed} or shows the 404 page.
-	 * FIXME: Remove whene there are no more hits.
-	 * 
-	 * @param  int $id The venue id
-	 * @return Illuminate\Http\Response
-	 */
-	public function redirectToHashed($id) {
-		$venue = Venue::find($id);
-
-		// Stop if venue doesn't exist
-		abort_if(!$venue, 404);
-
-		// Redirect to venue with hashed id
-		return redirect("/venues/{$venue->id_hashed}", 301);
-	}
-
-	/**
 	 * Build the sitemap.
 	 * 
 	 * @return \Illuminate\Http\Response

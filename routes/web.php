@@ -27,7 +27,6 @@ Route::post('/stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookControl
 
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
-Route::get ('/venues/{id}',  'SeoController@redirectToHashed')->where('id', '[0-9]{1,9}+'); // FIXME: Remove whene there are no more hits
 Route::get('/sitemap',       'SeoController@sitemap')->name('sitemap');
 Route::get('/robots.txt',    'SeoController@robots') ;
 
