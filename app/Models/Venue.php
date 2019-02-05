@@ -562,7 +562,7 @@ class Venue extends Model
 
 		$schema->image($photo ? $photo->thumbnail_url : [
 			asset('img/schema/16x9.png'),
-			asset('img/schema/14x3.png'),
+			asset('img/schema/4x3.png'),
 			asset('img/schema/1x1.png')
 		]);
 
