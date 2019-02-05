@@ -27,8 +27,8 @@ Route::post('/stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookControl
 
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
-Route::get('/sitemap',       'SeoController@sitemap')->name('sitemap');
-Route::get('/robots.txt',    'SeoController@robots') ;
+Route::get('/sitemap',       'SeoController@sitemap');
+Route::get('/robots.txt',    'SeoController@robots');
 
 // Single page app ------------------------------------------------------------
 Route::get('/{any}', 'Site\MainController@index')->where('any', '.*');

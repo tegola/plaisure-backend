@@ -48,17 +48,11 @@ class SeoController extends Controller
 	 */
 	public function robots()
 	{		
+		$sitemapUrl = url('/sitemap');
 		$lines = [
 			"User-agent: *",
-			"Disallow: /admin"
+			"Sitemap: {$sitemapUrl}"
 		];
-
-		if (App::environment('production')) {
-			$sitemapUrl = url('/sitemap');
-			array_push($lines, "Sitemap: {$sitemapUrl}");
-		} else {
-			array_push($lines, "Disallow: *");
-		}
 
 		$text = implode(PHP_EOL, $lines);
 
