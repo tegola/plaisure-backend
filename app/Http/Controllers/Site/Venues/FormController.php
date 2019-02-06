@@ -11,6 +11,7 @@ use App\Models\VltPlatform;
 use App\Models\PayPerViewPlatform;
 use App\Models\VenueBusinessHour;
 use App\Models\File;
+use App\Models\Subscription;
 use App\Transformers\VenueTransformer;
 use DB;
 
@@ -130,8 +131,11 @@ class FormController extends Controller
 
 	public function save(Venue $venue, Request $request)
 	{
-		$subscriptions = config('subscriptions');
-		$subscription = $venue->subscribed() ? $venue->subscription() : $subscriptions['default'];
+		if ($venue->subscribed()) {
+			$subscription = $venue->subscription();
+		} else {
+			$subscription = new Subscription(config('subscriptions.default'));
+		}
 
 		$request->validate([
 			'concessionaire_id'         => 'nullable|exists:concessionaires,id',

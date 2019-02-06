@@ -114,10 +114,6 @@ export default {
 <template>
 	<div class="my-5">
 		<h5>{{ $t('pages.venue_form.photos.title') }}</h5>
-		<i18n tag="p" path="pages.venue_form.photos.intro">
-			<span place="count">{{ subscription.photo_limit }}</span>
-			<a href="#" place="action"><strong>{{ $t('pages.venue_form.photos.intro_action') }}</strong></a>
-		</i18n>
 		<hr>
 		<div :class="{ 'bg-light': $refs.uploader && $refs.uploader.dropActive }" class="row">
 			<!-- Current photos -->

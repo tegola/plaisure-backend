@@ -31,7 +31,7 @@ class FileController extends Controller
 		$user = auth()->user();
 		$uploadedFile = $request->file('file');
 
-		// Stope if file is too big, and force json response, since it is most
+		// Stop if file is too big, and force json response, since it is most
 		// probably a normal request
 		$validator = Validator::make($request->all(), [
 			'file' => 'bail|required|file|max:5192'

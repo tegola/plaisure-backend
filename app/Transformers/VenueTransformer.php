@@ -300,7 +300,10 @@ class VenueTransformer extends TransformerAbstract
 	{
 		$subscription = $venue->subscribed() ? $venue->subscription() : null;
 
-		if (!$subscription) return;
+		// Use default subscription
+		if (!$subscription) {
+			$subscription = new Subscription(config('subscriptions.default'));
+		}
 
 		return $this->item($subscription, function(Subscription $subscription) {
 			return $subscription->only(

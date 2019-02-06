@@ -9,7 +9,7 @@ return [
 		'currency' => 'EUR',
 		'price' => 0,
 		'distance_bonus' => 0,
-		'photo_limit' => 5,
+		'photo_limit' => 20,
 		'hide_nearby_venues' => false
 	],
 
@@ -20,7 +20,7 @@ return [
 		'currency' => 'EUR',
 		'price' => 39,
 		'distance_bonus' => 20,
-		'photo_limit' => 20,
+		'photo_limit' => 50,
 		'hide_nearby_venues' => true
 	],
 	'premium_2' => [
@@ -29,7 +29,7 @@ return [
 		'currency' => 'EUR',
 		'price' => 79,
 		'distance_bonus' => 50,
-		'photo_limit' => 50,
+		'photo_limit' => 100,
 		'hide_nearby_venues' => true
 	]
 ];

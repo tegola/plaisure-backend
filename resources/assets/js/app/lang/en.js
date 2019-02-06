@@ -372,8 +372,6 @@ export default {
 			},
 			photos: {
 				title: 'Photos',
-				intro: 'You can add up to {count} photos. To add more, {action}.',
-				intro_action: 'switch to a paid plan',
 				upload: 'Upload photo',
 				remove: {
 					title: 'Remove photo',
