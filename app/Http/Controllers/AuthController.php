@@ -11,6 +11,18 @@ use Illuminate\Support\Facades\Notification;
 
 class AuthController extends Controller
 {
+	public function __construct()
+	{
+		$this->client = new Client([
+			// Allow it to work even in testing environments, where we don't
+			// have ssl certificates
+			'verify' => false,
+
+			// Automatically handle errors
+			'http_errors' => false 
+		]);
+	}
+
 	/**
 	 * Register a new user.
 	 * 
@@ -40,8 +52,7 @@ class AuthController extends Controller
 		// TODO: Send email confirmation
 
 		// Login using password grant client
-		$client = new Client();
-		$response = $client->post(url('/oauth/token'), [
+		$response = $this->client->post(url('/oauth/token'), [
 			'form_params' => [
 				'grant_type' => 'password',
 				'client_id' => env('APP_CLIENT_ID'),
@@ -49,8 +60,7 @@ class AuthController extends Controller
 				'username' => $request->email,
 				'password' => $request->password,
 				'scope' => ''
-			],
-			'http_errors' => false // Automatically handle errors
+			]
 		]);
 
 		return json_decode($response->getBody(), true);
@@ -70,8 +80,7 @@ class AuthController extends Controller
 		]);
 
 		// Login using password grant client
-		$client = new Client();
-		$response = $client->post(url('/oauth/token'), [
+		$response = $this->client->post(url('/oauth/token'), [
 			'form_params' => [
 				'grant_type' => 'password',
 				'client_id' => env('APP_CLIENT_ID'),
@@ -79,9 +88,10 @@ class AuthController extends Controller
 				'username' => $request->email,
 				'password' => $request->password,
 				'scope' => ''
-			],
-			'http_errors' => false // Automatically handle errors
+			]
 		]);
+
+		return $response->getBody();
 
 		return json_decode($response->getBody(), true);
 	}
@@ -94,16 +104,13 @@ class AuthController extends Controller
 	 */
 	public function refresh(Request $request) {
 		// Refresh token using password grant client
-		$client = new Client();
-		$response = $client->post(url('/oauth/token'), [
+		$response = $this->client->post(url('/oauth/token'), [
 			'form_params' => [
 				'grant_type' => 'refresh_token',
 				'client_id' => env('APP_CLIENT_ID'),
 				'client_secret' => env('APP_CLIENT_SECRET'),
 				'refresh_token' => $request->refresh_token,
-				'scope' => ''
-			],
-			'http_errors' => false // Automatically handle errors
+			]
 		]);
 
 		return json_decode($response->getBody(), true);

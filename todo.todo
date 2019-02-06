@@ -192,7 +192,9 @@ Sale premium:
 
 Dopo il deploy:
   ☐ Aggiornare i file .env
-  ☐ Aggiungere il client api + secret
+  ☐ Creare le chiavi (artisan passport:keys)
+  ☐ Crere il client oauth (artisan passport:client --password)
+  ☐ Aggiornare il file .env con l'id e la chiave del client ouath
   ☐ tabella venues: country passa da "Italia" a "IT"
   ☐ tabella users: country viene riempito con "IT"
-  ☐ tabelle concessionaires/pay_per_view_platforms/venue_categories/vlt_platforms: country viene riempito con "IT", aggiungere le altre categorie
+  ☐ tabelle concessionaires/pay_per_view_platforms/venue_categories/vlt_platforms: country viene riempito con "IT", aggiungere le categorie GB
