@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Site\Venues;
 use Illuminate\Http\Request;
 use App\Models\Venue;
 use App\Http\Controllers\Controller;
-use App\Transformers\VenueTransformer;
 use Illuminate\Validation\Rule;
 use Validator;
 

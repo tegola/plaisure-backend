@@ -123,7 +123,8 @@ class VenueTransformer extends TransformerAbstract
 	/**
 	 * Include business hours grouped by day.
 	 * [
-	 *   { day: 1, hours: ['10:00', '16:00'] },
+	 *   0 => ['10:00', '16:00'],
+	 *   1 => ['10:00', '13:00', '16:00', '20:00'],
 	 *   ...
 	 * ]
 	 *
@@ -132,60 +133,16 @@ class VenueTransformer extends TransformerAbstract
 	 */
 	public function includeBusinessHours(Venue $venue)
 	{
-		$hoursByDay = [
-			1 => [],
-			2 => [],
-			3 => [],
-			4 => [],
-			5 => [],
-			6 => [],
-			0 => []
-		];
+		return $this->item($venue->businessHours, function(Collection $businessHours) {
+			$days = [[], [], [], [], [], [], []];
 
-		// Copy business hours in every day
-		foreach($venue->businessHours as $hours) {
-			array_push($hoursByDay[$hours->day], $hours->opens, $hours->closes);
-		}
+			// Copy business hours in every day
+			foreach ($businessHours as $hours) {
+				array_push($days[$hours->day], $hours->opens, $hours->closes);
+			}
 
-		// Return as a collection
-		return $this->collection($hoursByDay, function($hoursByDay) {
-			return $hoursByDay;
+			return $days;
 		});
-
-		/*
-		$businessHours = $venue
-			->businessHours
-			->groupBy('day')
-			->map(function($item) {
-				return [
-					'day' => $item->first()->day,
-					'hours' => $item->reduce(function($hours, $record) {
-						array_push($hours, $record->opens, $record->closes);
-						return $hours;
-					}, [])
-				];
-			});
-
-		// Add missing days
-		$includedDays = $businessHours->pluck('day')->all();
-
-		foreach ([1, 2, 3, 4, 5, 6, 0] as $i) {
-			if (in_array($i, $includedDays)) continue;
-
-			$businessHours->push([
-				'day' => $i,
-				'hours' => []
-			]);
-		}
-
-		// Sort and reorder indexes
-		$businessHours = $businessHours->sortBy('day')->values();
-
-		// Prepare the collection
-		return $this->collection($businessHours, function($businessHours) {
-			return $businessHours;
-		});
-		*/
 	}
 
 	/**

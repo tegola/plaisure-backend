@@ -324,15 +324,7 @@ class Venue extends Model
 	 */
 	public function businessHoursByDay($includeClosedDays = false)
 	{
-		$days = [
-			1 => [],
-			2 => [],
-			3 => [],
-			4 => [],
-			5 => [],
-			6 => [],
-			0 => []
-		];
+		$days = [[], [], [], [], [], [], []];
 
 		// Copy business hours in every day
 		foreach($this->businessHours as $hours) {
