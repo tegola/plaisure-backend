@@ -57,7 +57,7 @@
  ✔ Piattaforme VLT/Pay per view/concessionari, come le categorie, devono essere limitate per nazione (anche se in UK non ci sono concessionari) @done (18-12-18 00:07)
 
  ✔ Rimuovere il limite di foto dalle sottoscrizioni (limitare a 50) @done (19-02-06 19:42)
- ☐ Default map center e città in home page per UK
+ ✔ Default map center e città in home page per UK @done (19-02-06 22:13)
  ☐ Configurazione deploy (shared dir multidominio)
 
  ✔ Completare configurazione stripe (fatturazione, logo) @done (18-12-16 23:50)

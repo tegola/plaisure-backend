@@ -6,7 +6,7 @@ const webpackConfig = {
 	resolve: {
 		alias: {
 			assets: path.resolve(__dirname, 'resources/assets/'),
-			prontogioco: path.resolve(__dirname, 'resources/assets/js/')
+			'@': path.resolve(__dirname, 'resources/assets/js/')
 		}
 	},
 	plugins: [],
@@ -39,7 +39,7 @@ mix.setPublicPath('public')
 
 // App
 mix.sass('resources/assets/sass/app/main.scss', 'css/app.css')
-	.js('resources/assets/js/app/index.js', 'js/app.js')
+	.js('resources/assets/js/index.js', 'js/app.js')
 	.version();
 
 // Mail (output to resources so the inliner works automatically)
