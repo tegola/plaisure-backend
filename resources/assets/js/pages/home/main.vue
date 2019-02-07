@@ -9,7 +9,6 @@ import PgVenueGridItem from '@/components/venue-grid-item';
 import PgToken from './token';
 import {
 	APP_NAME,
-	APP_LOCALE_REGION,
 	SEARCH_CITIES,
 	MAP_DEFAULT_BOUNDS,
 	MAP_DEFAULT_ZOOM
@@ -78,18 +77,18 @@ export default {
 						name: 'venues.explore',
 						query: {
 							categories: [category.id],
-							ne_lat: MAP_DEFAULT_BOUNDS[APP_LOCALE_REGION].ne.lat,
-							ne_lng: MAP_DEFAULT_BOUNDS[APP_LOCALE_REGION].ne.lng,
-							sw_lat: MAP_DEFAULT_BOUNDS[APP_LOCALE_REGION].sw.lat,
-							sw_lng: MAP_DEFAULT_BOUNDS[APP_LOCALE_REGION].sw.lng,
-							zoom: MAP_DEFAULT_ZOOM[APP_LOCALE_REGION]
+							ne_lat: MAP_DEFAULT_BOUNDS.ne.lat,
+							ne_lng: MAP_DEFAULT_BOUNDS.ne.lng,
+							sw_lat: MAP_DEFAULT_BOUNDS.sw.lat,
+							sw_lng: MAP_DEFAULT_BOUNDS.sw.lng,
+							zoom: MAP_DEFAULT_ZOOM
 						}
 					}
 				});
 			});
 
 			// Cities
-			SEARCH_CITIES[APP_LOCALE_REGION].forEach(city => {
+			SEARCH_CITIES.forEach(city => {
 				presets.push({
 					type: 'city',
 					value: city.query,

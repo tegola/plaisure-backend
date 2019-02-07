@@ -13,14 +13,10 @@ import BCheckbox from 'bootstrap-vue/es/components/form-checkbox/form-checkbox';
 import BCheckboxGroup from 'bootstrap-vue/es/components/form-checkbox/form-checkbox-group';
 import {
 	Map as PgMap,
-	Marker as PgMapMarker,
-	InfoWindow as PgMapInfoWindow
+	Marker as PgMapMarker
 } from 'vue2-google-maps';
 import formGroupProps from './form-group-props';
-import {
-	APP_LOCALE_REGION,
-	MAP_DEFAULT_CENTER
-} from '@/constants';
+import { MAP_DEFAULT_CENTER } from '@/constants';
 
 export default {
 	name: 'PgVenueFormGeneralPane',
@@ -35,8 +31,7 @@ export default {
 		BCheckbox,
 		BCheckboxGroup,
 		PgMap,
-		PgMapMarker,
-		PgMapInfoWindow
+		PgMapMarker
 	},
 
 	props: {
@@ -49,7 +44,7 @@ export default {
 	data() {
 		return {
 			formGroupProps,
-			mapCenter: MAP_DEFAULT_CENTER[APP_LOCALE_REGION],
+			mapCenter: MAP_DEFAULT_CENTER,
 			mapZoom: 5,
 			searchingMarkerCoords: false
 		};
@@ -187,7 +182,7 @@ export default {
 			handler() {
 				this.mapCenter = this.venueCoords;
 				this.markerCoords = this.venueCoords;
-				if (!isEqual(this.venueCoords, MAP_DEFAULT_CENTER[APP_LOCALE_REGION])) this.mapZoom = 15;
+				if (!isEqual(this.venueCoords, MAP_DEFAULT_CENTER)) this.mapZoom = 15;
 			}
 		}
 	},

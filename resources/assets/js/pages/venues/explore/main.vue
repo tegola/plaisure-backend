@@ -10,7 +10,6 @@ import PgVenueListItem from './list-item';
 import PgFilterButton from './filter-button';
 
 import {
-	APP_LOCALE_REGION,
 	MAP_DEFAULT_CENTER,
 	SEARCH_RADIUSES
 } from '@/constants';
@@ -33,7 +32,7 @@ export default {
 		let searchMode = 'center';
 
 		// Prepare map center
-		let mapCenter = extend({}, MAP_DEFAULT_CENTER[APP_LOCALE_REGION]);
+		let mapCenter = extend({}, MAP_DEFAULT_CENTER);
 		if (['c_lat', 'c_lng'].every(key => key in queryParams)) {
 			mapCenter = {
 				lat: parseFloat(queryParams.c_lat),

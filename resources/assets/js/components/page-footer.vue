@@ -1,17 +1,14 @@
 <script>
 import extend from 'lodash/extend';
 import constants from '@/constants';
-import {
-	APP_LOCALE_REGION,
-	SEARCH_CITIES
-} from '@/constants';
+import { SEARCH_CITIES } from '@/constants';
 
 export default {
 	name: 'PgPageFooter',
 
 	data() {
 		return {
-			presets: SEARCH_CITIES[APP_LOCALE_REGION].map(city => ({
+			presets: SEARCH_CITIES.map(city => ({
 				city: city.query,
 				route: {
 					name: 'venues.explore',
