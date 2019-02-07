@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Normalizers\AdmiralUk as AdmiralUkNormalizer;
-use App\Normalizers\Cashino as CashinoNormalizer;
-use App\Normalizers\Megabet as MegabetNormalizer;
-use App\Normalizers\Ladbrokes as LadbrokesNormalizer;
+use App\Import\Normalizers\AdmiralUk as AdmiralUkNormalizer;
+use App\Import\Normalizers\Cashino as CashinoNormalizer;
+use App\Import\Normalizers\Megabet as MegabetNormalizer;
+use App\Import\Normalizers\Ladbrokes as LadbrokesNormalizer;
 
 class VenueImport extends Model
 {

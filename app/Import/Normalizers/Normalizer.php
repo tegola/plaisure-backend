@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Normalizers;
+namespace App\Import\Normalizers;
 
 use JsonSerializable;
 
@@ -19,10 +19,12 @@ class Normalizer implements JsonSerializable
 		$this->source = (object) $source;
 	}
 
+	/*
 	protected function findPostcode(string $address)
 	{
 		return preg_match('/[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z][A-Z]/', $address);
 	}
+	*/
 
 	public function normalize()
 	{

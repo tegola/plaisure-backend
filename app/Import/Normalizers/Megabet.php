@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Normalizers;
-
-use App\Normalizers\Normalizer;
+namespace App\Import\Normalizers;
 
 class Megabet extends Normalizer
 {
