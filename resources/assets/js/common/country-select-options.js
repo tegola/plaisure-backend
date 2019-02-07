@@ -1,8 +1,17 @@
 import i18n from '@/lang';
 import { APP_LOCALE_LANGUAGE, APP_LOCALE_REGION } from '@/constants';
-const countries = require(`@umpirsky/country-list/data/${APP_LOCALE_LANGUAGE}/country.json`);
 
+// Load all supported languages, we can't load them dynamically in a build
+import countriesIt from '@umpirsky/country-list/data/it/country.json';
+import countriesEn from '@umpirsky/country-list/data/en/country.json';
+
+let countries;
 const options = [];
+
+switch (APP_LOCALE_LANGUAGE) {
+	case 'it': countries = countriesIt; break;
+	case 'en': countries = countriesEn; break;
+}
 
 Object.keys(countries).forEach(code => {
 	const obj = {
