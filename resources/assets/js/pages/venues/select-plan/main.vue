@@ -2,7 +2,7 @@
 import { mapState, mapGetters } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { requiredIf } from 'vuelidate/lib/validators';
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 import constants from '@/constants';
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
@@ -143,7 +143,7 @@ export default {
 			handler() {
 				if (!this.user) return;
 
-				_extend(this.model, {
+				extend(this.model, {
 					legal_name: this.user.legal_name,
 					address_line1: this.user.address_line1,
 					address_line2: this.user.address_line2,
@@ -190,7 +190,7 @@ export default {
 	},
 
 	created() {
-		_extend(this, constants);
+		extend(this, constants);
 
 		// Register store
 		if (!this.$store.state[this.storeName]) {

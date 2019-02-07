@@ -1,6 +1,6 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 import constants from '@/constants';
 
 import PgLightbox from '@/components/lightbox';
@@ -170,7 +170,7 @@ export default {
 	beforeRouteUpdate: handleRoute,
 
 	beforeCreate() {
-		_extend(this, constants);
+		extend(this, constants);
 	},
 
 	methods: {

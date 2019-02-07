@@ -1,5 +1,5 @@
 import axios from 'axios';
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 
 import { GOOGLE_MAPS_API_KEY } from 'constants';
 
@@ -17,7 +17,7 @@ function geocode(address, callback) {
 	if (!address) return null;
 
 	axios.get(googleGeocoderUrl, {
-		params: _extend(googleGeocoderOptions, {
+		params: extend(googleGeocoderOptions, {
 			address: address
 		})
 	}).then(response => {
@@ -26,7 +26,7 @@ function geocode(address, callback) {
 		if (data.status != 'OK' || !data.results) {
 			callback(new Error(data.error_message || errorMsg));
 		} else {
-			const formattedResults = data.results.map(format);
+			const formattedResults = data.results.map(formatResult);
 			callback(null, formattedResults);
 		}
 	});
@@ -45,7 +45,7 @@ function reverse(lat, lng, callback) {
 	if (!lat || !lng) return null;
 
 	axios.get(googleGeocoderUrl, {
-		params: _extend(googleGeocoderOptions, {
+		params: extend(googleGeocoderOptions, {
 			latlng: [lat, lng].join()
 		})
 	}).then(response => {
@@ -155,4 +155,9 @@ function formatResult(result) {
 	return extractedObj;
 }
 
-export { geocode, geocodeByIp, reverse, formatResult };
+export {
+	geocode,
+	geocodeByIp,
+	reverse,
+	formatResult
+};

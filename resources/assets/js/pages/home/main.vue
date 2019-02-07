@@ -1,7 +1,7 @@
 <script>
 import { mapState } from 'vuex';
-import _extend from 'lodash/extend';
-import _shuffle from 'lodash/shuffle';
+import extend from 'lodash/extend';
+import shuffle from 'lodash/shuffle';
 import { formatResult } from '@/utilities/geocoder';
 import PgButton from '@/components/button';
 import PgPlaceTextbox from '@/components/place-textbox';
@@ -102,7 +102,7 @@ export default {
 				});
 			});
 
-			return _shuffle(presets);
+			return shuffle(presets);
 		},
 
 		promoteButton() {
@@ -154,7 +154,7 @@ export default {
 				const { lat, lng } = coords;
 
 				// Update search params
-				_extend(this.searchParams, {
+				extend(this.searchParams, {
 					query: null,
 					c_lat: lat,
 					c_lng: lng
@@ -198,7 +198,7 @@ export default {
 
 			// Reset search
 			if (!place) {
-				_extend(this.searchParams, {
+				extend(this.searchParams, {
 					query: null,
 					c_lat: null,
 					c_lng: null
@@ -209,7 +209,7 @@ export default {
 			// Update search params
 			const center = place.geometry.viewport.getCenter();
 
-			_extend(this.searchParams, {
+			extend(this.searchParams, {
 				query: this.query,
 				c_lat: center.lat(),
 				c_lng: center.lng()

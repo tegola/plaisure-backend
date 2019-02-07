@@ -1,6 +1,6 @@
 <script>
-import _extend from 'lodash/extend';
-import _debounce from 'lodash/debounce';
+import extend from 'lodash/extend';
+import debounce from 'lodash/debounce';
 
 import { Map as PgMap, Marker as PgMapMarker, InfoWindow as PgMapInfoWindow } from 'vue2-google-maps';
 import BTooltip from 'bootstrap-vue/es/components/tooltip/tooltip';
@@ -33,7 +33,7 @@ export default {
 		let searchMode = 'center';
 
 		// Prepare map center
-		let mapCenter = _extend({}, MAP_DEFAULT_CENTER[APP_LOCALE_REGION]);
+		let mapCenter = extend({}, MAP_DEFAULT_CENTER[APP_LOCALE_REGION]);
 		if (['c_lat', 'c_lng'].every(key => key in queryParams)) {
 			mapCenter = {
 				lat: parseFloat(queryParams.c_lat),
@@ -56,7 +56,7 @@ export default {
 		const mapZoom = parseInt(queryParams.zoom) || 13;
 
 		// Prepare default search params
-		const searchParams = _extend({
+		const searchParams = extend({
 			radius: SEARCH_RADIUSES[0],
 			categories: []
 		}, queryParams);
@@ -199,7 +199,7 @@ export default {
 			}
 
 			// Update search params
-			_extend(this.searchParams, {
+			extend(this.searchParams, {
 				query: this.query,
 				c_lat: center ? center.lat() : null,
 				c_lng: center ? center.lng() : null,
@@ -250,7 +250,7 @@ export default {
 			if (this.$refs.map) this.$refs.map.panTo(this.mapCenter);
 
 			// Update search params
-			_extend(this.searchParams, {
+			extend(this.searchParams, {
 				query: '',
 				c_lat: latitude,
 				c_lng: longitude,
@@ -289,7 +289,7 @@ export default {
 		*/
 
 		// Map ----------------------------------------------------------------
-		onMapBoundsChange: _debounce(function(bounds) { // Fat arrow functions do not work with debounce
+		onMapBoundsChange: debounce(function(bounds) { // Fat arrow functions do not work with debounce
 			// Store bounds
 			this.mapBounds = bounds;
 
@@ -331,7 +331,7 @@ export default {
 			const ne = this.mapBounds.getNorthEast();
 			const sw = this.mapBounds.getSouthWest();
 
-			_extend(this.searchParams, {
+			extend(this.searchParams, {
 				query: '',
 				c_lat: c.lat(),
 				c_lng: c.lng(),

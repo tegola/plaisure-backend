@@ -1,5 +1,5 @@
 <script>
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 import constants from '@/constants';
 import {
 	APP_LOCALE_REGION,
@@ -28,7 +28,7 @@ export default {
 	},
 
 	beforeCreate() {
-		_extend(this, constants);
+		extend(this, constants);
 	}
 };
 </script>

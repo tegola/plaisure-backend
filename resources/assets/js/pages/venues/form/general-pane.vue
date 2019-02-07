@@ -1,7 +1,7 @@
 <script>
-import _throttle from 'lodash/throttle';
-import _extend from 'lodash/extend';
-import _isEqual from 'lodash/isEqual';
+import throttle from 'lodash/throttle';
+import extend from 'lodash/extend';
+import isEqual from 'lodash/isEqual';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BFormText from 'bootstrap-vue/es/components/form/form-text';
@@ -187,7 +187,7 @@ export default {
 			handler() {
 				this.mapCenter = this.venueCoords;
 				this.markerCoords = this.venueCoords;
-				if (!_isEqual(this.venueCoords, MAP_DEFAULT_CENTER[APP_LOCALE_REGION])) this.mapZoom = 15;
+				if (!isEqual(this.venueCoords, MAP_DEFAULT_CENTER[APP_LOCALE_REGION])) this.mapZoom = 15;
 			}
 		}
 	},
@@ -195,7 +195,7 @@ export default {
 	methods: {
 		onAddressInput (field, value) {
 			// Save new address
-			const address = _extend({}, this.venueAddress, {
+			const address = extend({}, this.venueAddress, {
 				[field]: value
 			});
 
@@ -205,7 +205,7 @@ export default {
 			this.findMarkerCoords();
 		},
 
-		findMarkerCoords: _throttle(function() {
+		findMarkerCoords: throttle(function() {
 			let address = this.venueAddress;
 
 			if (!address.line1 ||

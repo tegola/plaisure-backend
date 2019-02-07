@@ -1,7 +1,7 @@
 <script>
 import 'classlist-polyfill';
 import { mapState } from 'vuex';
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 
 import BNav from 'bootstrap-vue/es/components/nav/nav';
 import BNavbarNav from 'bootstrap-vue/es/components/navbar/navbar-nav';
@@ -88,7 +88,7 @@ export default {
 	},
 
 	beforeCreate() {
-		_extend(this, constants);
+		extend(this, constants);
 	},
 
 	destroyed() {

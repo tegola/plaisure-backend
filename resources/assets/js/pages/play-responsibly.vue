@@ -1,5 +1,5 @@
 <script>
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 import constants from '@/constants';
 
 export default {
@@ -13,7 +13,7 @@ export default {
 	},
 
 	created() {
-		_extend(this, constants);
+		extend(this, constants);
 	}
 };
 </script>

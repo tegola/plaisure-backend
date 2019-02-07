@@ -1,6 +1,6 @@
-import _extend from 'lodash/extend';
-import _cloneDeep from 'lodash/cloneDeep';
-import _isEqual from 'lodash/isEqual';
+import extend from 'lodash/extend';
+import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 import axios from '@/plugins/axios';
 
 export default {
@@ -20,7 +20,7 @@ export default {
 
 	getters: {
 		isSaved: state => {
-			return _isEqual(state.venue, state.originalVenue);
+			return isEqual(state.venue, state.originalVenue);
 		}
 	},
 
@@ -48,7 +48,7 @@ export default {
 			if (field === 'amenities') {
 				// Avoid changing the entire object or it will trigger a loop
 				// FIXME: ...
-				_extend(state.venue.amenities, value);
+				extend(state.venue.amenities, value);
 			} else {
 				state.venue[field] = value;
 			}
@@ -64,7 +64,7 @@ export default {
 
 			return axios.get(url).then(({ data }) => {
 				commit('setVenue', data.venue);
-				commit('setOriginalVenue', _cloneDeep(data.venue));
+				commit('setOriginalVenue', cloneDeep(data.venue));
 				commit('setSupportData', {
 					concessionaires: data.concessionaires,
 					categories: data.categories,

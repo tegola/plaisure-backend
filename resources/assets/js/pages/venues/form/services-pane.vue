@@ -1,5 +1,5 @@
 <script>
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
@@ -172,7 +172,7 @@ export default {
 			},
 			set(value) {
 				// Array to object
-				const amenities = _extend({}, this.venue.amenities);
+				const amenities = extend({}, this.venue.amenities);
 
 				// Turn all to false
 				for (const key of Object.keys(amenities)) {

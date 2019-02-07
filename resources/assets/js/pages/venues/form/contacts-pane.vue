@@ -1,6 +1,6 @@
 <script>
 import autoHttp from '@/directives/auto-http';
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
@@ -50,7 +50,7 @@ export default {
 
 	methods: {
 		onContactInput (name, value) {
-			const contacts = _extend({}, this.venue.contacts, {
+			const contacts = extend({}, this.venue.contacts, {
 				[name]: value
 			});
 
@@ -61,7 +61,7 @@ export default {
 		},
 
 		onUrlInput (name, value) {
-			const urls = _extend({}, this.venue.urls, {
+			const urls = extend({}, this.venue.urls, {
 				[name]: value
 			});
 

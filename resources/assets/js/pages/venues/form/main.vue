@@ -1,5 +1,5 @@
 <script>
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 import { validationMixin } from 'vuelidate';
 
 import BNav from 'bootstrap-vue/es/components/nav/nav';
@@ -89,7 +89,7 @@ export default {
 	validations,
 
 	beforeCreate() {
-		_extend(this, constants);
+		extend(this, constants);
 	},
 
 	created() {

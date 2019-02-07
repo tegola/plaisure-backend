@@ -1,5 +1,5 @@
 <script>
-import _extend from 'lodash/extend';
+import extend from 'lodash/extend';
 
 import BFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
 import BInput from 'bootstrap-vue/es/components/form-input/form-input';
@@ -57,7 +57,7 @@ export default {
 
 	methods: {
 		onInput(type, number, value) {
-			const jackpots = _extend({}, this.venueJackpots);
+			const jackpots = extend({}, this.venueJackpots);
 			jackpots[number][type] = type == 'value' ? parseInt(value) : value;
 			this.venueJackpots = jackpots;
 		}
