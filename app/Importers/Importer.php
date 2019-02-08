@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Import\Importers;
+namespace App\Importers;
 
 use GuzzleHttp\Client;
 use Goutte\Client as Browser;
@@ -84,6 +84,14 @@ abstract class Importer
 	{
 		return "{$item->name}, {$item->address}, {$item->city}";
 	}
+
+	/**
+	 * Normalize source item data for venue creation usage.
+	 * 
+	 * @param  \stdClass $item
+	 * @return \stdClass
+	 */
+	abstract public function normalizeItem(\stdClass $item);
 
 	/**
 	 * Get the Brand name.

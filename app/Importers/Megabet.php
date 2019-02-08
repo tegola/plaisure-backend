@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Import\Importers;
+namespace App\Importers;
 
 use App\Models\VenueImport;
 
@@ -84,5 +84,22 @@ class Megabet extends Importer
 	public function getDescriptionForItem(\stdClass $item)
 	{
 		return "{$item->name}, {$item->address}, {$item->postcode}";
+	}
+
+	/**
+	 * Normalize source item data for venue creation usage.
+	 * 
+	 * @param  \stdClass $item
+	 * @return \stdClass
+	 */
+	public function normalizeItem(\stdClass $item)
+	{
+		return (object) [
+			'name' => 'Megabet',
+			'address_postcode' => $item->postcode,
+			'country' => 'GB',
+			'geo_latitude' => round($item->latitude, 6),
+			'geo_longitude' => round($item->longitude, 6)
+		];
 	}
 }

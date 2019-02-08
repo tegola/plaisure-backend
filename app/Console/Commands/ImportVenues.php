@@ -3,12 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use GuzzleHttp\Client;
 use App\Models\VenueImport;
-use App\Import\Importers\AdmiralUk as AdmiralUkImporter;
-use App\Import\Importers\Cashino as CashinoImporter;
-use App\Import\Importers\Ladbrokes as LadbrokesImporter;
-use App\Import\Importers\MegaBet as MegabetImporter;
+use App\Importers\AdmiralUk as AdmiralUkImporter;
+use App\Importers\Cashino as CashinoImporter;
+use App\Importers\Ladbrokes as LadbrokesImporter;
+use App\Importers\MegaBet as MegabetImporter;
 
 class ImportVenues extends Command
 {
@@ -25,7 +24,6 @@ class ImportVenues extends Command
 	 * @var string
 	 */
 	protected $description = 'Import venue data from theire respective websites.';
-
 
 	/**
 	 * The Venue importer to use to get data.
@@ -55,16 +53,6 @@ class ImportVenues extends Command
 	protected $deleted = 0;
 
 	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	/**
 	 * Execute the console command.
 	 *
 	 * @return mixed
@@ -82,6 +70,7 @@ class ImportVenues extends Command
 		// Stop if there's no importer
 		if (!$this->importer) {
 			$this->error("Error: the specified brand ({$this->argument('brand')}) is not supported.");
+			return;
 		}
 
 		// Print intro
@@ -103,21 +92,24 @@ class ImportVenues extends Command
 				'source_id' => $item->$idKey
 			]);
 
+			$normalizedItem = $this->importer->normalizeItem($item);
 			$description = $this->importer->getDescriptionForItem($item);
 
 			if (!$venueImport->exists) {
 
 				// Add
 				$venueImport->source_data = $item;
+				$venueImport->normalized_data = $normalizedItem;
 				$venueImport->save();
 
 				$this->info("Added {$item->$idKey}: {$description}");
 				$this->added++;
 
-			} else if ($venueImport->source_data != $item) {
+			} else if ($venueImport->source_data != $item || $venueImport->normalized_data != $normalizedItem) {
 
 				// Update when data is different
 				$venueImport->source_data = $item;
+				$venueImport->normalized_data = $normalizedItem;
 				$venueImport->save();
 
 				$this->comment("Updated {$item->$idKey}: {$description}");
@@ -144,7 +136,7 @@ class ImportVenues extends Command
 
 		// Print summary
 		$this->line('');
-		$this->line('Done!');
+		$this->line('Import done!');
 		$this->line("{$this->added} added, {$this->updated} updated, {$this->deleted} deleted.");
 		$this->line('');
 	}

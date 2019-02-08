@@ -3,10 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Import\Normalizers\AdmiralUk as AdmiralUkNormalizer;
-use App\Import\Normalizers\Cashino as CashinoNormalizer;
-use App\Import\Normalizers\Megabet as MegabetNormalizer;
-use App\Import\Normalizers\Ladbrokes as LadbrokesNormalizer;
 
 class VenueImport extends Model
 {
@@ -28,32 +24,9 @@ class VenueImport extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'source_data' => 'object'
+		'source_data' => 'object',
+		'normalized_data' => 'object'
 	];
-
-	/**
-	 * The accessors to append to the model's array form.
-	 *
-	 * @var array
-	 */
-	protected $appends = ['normalized_data'];
-
-	/**
-	 * Get the normalized data attribute.
-	 * 
-	 * @return array
-	 */
-	public function getNormalizedDataAttribute()
-	{
-		$source = $this->source_data;
-
-		switch ($this->source_brand) {
-			case self::SOURCE_BRAND_ADMIRAL_UK: return new AdmiralUkNormalizer($source);
-			case self::SOURCE_BRAND_CASHINO: return new CashinoNormalizer($source);
-			case self::SOURCE_BRAND_MEGABET: return new MegabetNormalizer($source);
-			case self::SOURCE_BRAND_LADBROKES: return new LadbrokesNormalizer($source);
-		}
-	}
 
 	/**
 	 * Venue belonging to this import.

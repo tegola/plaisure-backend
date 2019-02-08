@@ -50,7 +50,7 @@ class User extends Authenticatable
 	public function __construct(array $attributes = [])
 	{
 		// Default country
-		// $this->country = locale_get_region(app()->getLocale());
+		$this->country = locale_get_region(app()->getLocale());
 
 		parent::__construct($attributes);
 	}

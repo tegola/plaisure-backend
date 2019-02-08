@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Import\Importers;
+namespace App\Importers;
 
 use App\Models\VenueImport;
 
@@ -93,5 +93,72 @@ class Ladbrokes extends Importer
 	public function getDescriptionForItem(\stdClass $item)
 	{
 		return "{$item->n}, {$item->ad}";
+	}
+
+	/**
+	 * Normalize source item data for venue creation usage.
+	 * 
+	 * @param  \stdClass $item
+	 * @return \stdClass
+	 */
+	public function normalizeItem(\stdClass $item)
+	{
+		// Find address
+		$address = explode(',', $item->ad);
+		$address_line1 = '';
+		$address_city = '';
+
+		foreach ($address as $index => $component) {
+			$component = trim($component);
+
+			if ($component != $item->pc && $component == strtoupper($component)) {
+
+				// City
+				$address_city = trim($component);
+				unset($address[$index]);
+
+			} else if ($component == $item->pc) {
+
+				// Post code
+				unset($address[$index]);
+
+			}
+		}
+
+		$address_line1 = implode(',', $address);
+
+		// Find business hours
+		$daysKeys = [
+			1 => 'mon',
+			2 => 'tue',
+			3 => 'wed',
+			4 => 'thu',
+			5 => 'fri',
+			6 => 'sat',
+			0 => 'sun'
+		];
+		$business_hours = [];
+
+		foreach ($daysKeys as $day => $name) {
+			// Skip day if empty
+			if (!$item->$name) continue;
+
+			$hours = explode('-', $item->$name);
+			$opens = date('H:i', strtotime(trim($hours[0])));
+			$closes = date('H:i', strtotime(trim($hours[1])));
+
+			$business_hours[] = compact('day', 'opens', 'closes');
+		}
+
+		return (object) [
+			'name' => $item->n,
+			'address_line1' => $address_line1,
+			'address_city' => $address_city,
+			'address_postcode' => $item->pc,
+			'country' => 'GB',
+			'geo_latitude' => round($item->lat, 6),
+			'geo_longitude' => round($item->lng, 6),
+			'business_hours' => $business_hours
+		];
 	}
 }

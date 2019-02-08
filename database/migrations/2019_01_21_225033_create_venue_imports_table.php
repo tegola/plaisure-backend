@@ -23,6 +23,7 @@ class CreateVenueImportsTable extends Migration
 			$table->integer('source_brand');
 			$table->string('source_id');
 			$table->text('source_data'); // JSON not supported on MariaDB
+			$table->text('normalized_data'); // JSON not supported on MariaDB
 
 			$table->index(['source_brand', 'source_id']);
 
