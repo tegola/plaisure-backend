@@ -25,7 +25,7 @@ export default {
 		},
 
 		iconMarkup() {
-			const name = this.firstCategoryMachineName.replace('_', '-');
+			const name = this.firstCategoryMachineName;
 
 			return require(`!svg-inline-loader!assets/svg/category-icons/${name}.svg`);
 		},

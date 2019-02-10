@@ -1,5 +1,5 @@
 Importanti:
-  ☐ Icone per le categorie GB
+  ☐ Icone per le categorie GB (anche mappa)
   ☐ Errore: si può scegliere il piano free su una sala appena reclamata
 
  ✔ Far funzionare la ricerca in home page @done (18-06-20 22:12)
@@ -198,7 +198,12 @@ Dopo il deploy:
   ☐ Creare le chiavi (artisan passport:keys)
   ☐ Crere il client oauth (artisan passport:client --password)
   ☐ Aggiornare il file .env con l'id e la chiave del client ouath
+
   ☐ tabella venues: country passa da "Italia" a "IT"
   ☐ tabella users: country viene riempito con "IT"
   ☐ tabelle concessionaires/pay_per_view_platforms/venue_categories/vlt_platforms: country viene riempito con "IT"
-  ☐ Aggiungere le categorie GB: adult_gaming_center (Adult gaming centre), family_entertainment_center (Family entertainment centre), betting_shop (Betting shop)
+  ☐ Tabella categories: rinominare betting_agency in betting-shop
+  ☐ Aggiungere le categorie GB: adult-gaming-center (Adult gaming centre), family-entertainment-center (Family entertainment centre)
+  ☐ Lanciare gli importer
+  ☐ Lanciare la creazione
+  ☐ Svuotare la cache della home page (per evitare che le query usino il nome vecchio delle categorie)
