@@ -24,8 +24,8 @@ class ListController extends Controller
 
 		$query = VenueImport::orderBy($sortBy, $sortDir)
 			->when($view, function ($query, $view) {
-				if ($view == 'linked') $query->has('venue');
-				else if ($view == 'unlinked') $query->doesntHave('venue');
+				if ($view == 'linked') $query->has('venues');
+				else if ($view == 'unlinked') $query->doesntHave('venues');
 			})
 			->when($filter, function($query, $filter) {
 				$query

@@ -246,13 +246,13 @@ class Venue extends Model
 	}
 
 	/**
-	 * Imported venue data.
+	 * Imported venue data to get data from.
 	 *
-	 * @return [\App\Models\VenueImport]
+	 * @return \App\Models\VenueImport|null
 	 */
-	public function import()
+	public function venueImport()
 	{
-		return $this->hasOne('App\Models\VenueImport');
+		return $this->belongsTo('App\Models\VenueImport');
 	}
 
 	/**

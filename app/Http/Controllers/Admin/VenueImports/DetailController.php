@@ -16,8 +16,8 @@ class DetailController extends Controller
 	 */
 	public function detail(VenueImport $venueImport)
 	{
-		// Load venue
-		$venueImport->load('venue');
+		// Load venues
+		$venueImport->load('venues');
 
 		return compact('venueImport');
 	}

@@ -85,12 +85,12 @@ class VenueImport extends Model
 	}
 
 	/**
-	 * Venue belonging to this import.
+	 * Venue that get their data from this import.
 	 *
 	 * @return [App\Models\Venue]
 	 */
-	public function venue()
+	public function venues()
 	{
-		return $this->belongsTo('App\Models\Venue');
+		return $this->hasMany('App\Models\Venue');
 	}
 }

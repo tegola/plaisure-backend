@@ -16,10 +16,6 @@ class CreateVenueImportsTable extends Migration
 		Schema::create('venue_imports', function (Blueprint $table) {
 			$table->increments('id');
 
-			// Venue relationship
-			$table->integer('venue_id')->unsigned()->nullable();
-			$table->foreign('venue_id')->references('id')->on('venues')->onDelete('cascade');
-
 			$table->integer('source_brand');
 			$table->string('source_id');
 			$table->text('source_data'); // JSON not supported on MariaDB

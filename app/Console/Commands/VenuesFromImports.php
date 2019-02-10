@@ -62,7 +62,7 @@ class VenuesFromImports extends Command
 	{
 		// Get venue imports and related venues, optionally limited to specified brand
 		$query = VenueImport::query()
-			->with('venue')
+			->with('venues')
 			->withTrashed();
 
 		switch ($this->option('brand')) {
@@ -84,14 +84,14 @@ class VenuesFromImports extends Command
 		$this->line('');
 
 		foreach ($query->get() as $venueImport) {
-			// Handle deleted imports: force delete them if not connected to
-			// any venue, otherwise skip them
+			// Handle soft deleted imports: skip if still connected to a vanue,
+			// otherwise force delete them
 			if ($venueImport->trashed()) {
-				if ($venueImport->venue) {
-					$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: is deleted but still connected to a venue.");
+				if ($venueImport->venues->count()) {
+					$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: is deleted but still connected to one or more venues. Needs admin intervention.");
 					$this->skipped++;
 				} else {
-					// $venueImport->forceDelete();
+					$venueImport->forceDelete();
 					$this->error("Deleted {$venueImport->readableSourceBrand()} {$venueImport->source_id}: confirmed deletion.");
 					$this->deleted++;
 				}
@@ -105,40 +105,42 @@ class VenuesFromImports extends Command
 				continue;
 			}
 
-			// Handle update: skip if venue is owned by somebody or venue
-			// import data is older than the venue itself. Otherwise, just
-			// plain update it
-			if ($venueImport->venue) {
-				if ($venueImport->venue->owner_id) {
-					$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: needs to be updated from an admin.");
-					$this->skipped++;
-				} else if ($venueImport->updated_at <= $venueImport->venue->updated_at) {
-					$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: venue data is newer than imported data.");
-					$this->skipped++;
-				} else {
-					DB::transaction(function() use ($venueImport) {
-						$venue = $venueImport->venue;
+			if ($venueImport->venues->count()) {
 
-						try {
-							$this->fill($venue, $venueImport);
-						} catch (\Exception $e) {
-							$message = $e->getMessage();
-							$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: $message.");
-							$this->skipped++;
-							return;
-						}
+				// Handle update of connected venues: skip if venue is owned by
+				// somebody or venue import data is older than the venue data
+				// (by comparing the updated_at field). Otherwise, just plain
+				// update it.
+				foreach ($venueImport->venues as $venue) {
+					if ($venue->owner_id) {
+						$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: needs admin intervention to be updated.");
+						$this->skipped++;
+					} else if ($venueImport->updated_at <= $venue->updated_at) {
+						$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: venue data is newer than imported data.");
+						$this->skipped++;
+					} else {
+						DB::transaction(function() use ($venueImport, $venue) {
+							try {
+								$this->fill($venue, $venueImport);
+							} catch (\Exception $e) {
+								$message = $e->getMessage();
+								$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: $message.");
+								$this->skipped++;
+								return;
+							}
+							// $venue->save();
+							$venue->touch(); // Like save, but forces update of timestamps when no attribute has changed
 
-						$venue->save();
-
-						$this->warn("Updated {$venueImport->readableSourceBrand()} {$venueImport->source_id}: {$venue->address_line1}, {$venue->address_postcode}, {$venue->address_city}.");
-						$this->updated++;
-					});
+							$this->warn("Updated {$venueImport->readableSourceBrand()} {$venueImport->source_id}: {$venue->address_line1}, {$venue->address_postcode}, {$venue->address_city}.");
+							$this->updated++;
+						});
+					}
+					continue; // To next venue related to import
 				}
-				continue;
-			}
 
-			// Handle creation
-			if (!$venueImport->venue) {
+			} else {
+
+				// Handle creation of new 
 				DB::transaction(function() use ($venueImport) {
 					$venue = new Venue();
 					$venue->save(); // So relations can be attached
@@ -152,17 +154,14 @@ class VenuesFromImports extends Command
 						return;
 					}
 
-					$venue->save();
-
-					$venueImport->venue()->associate($venue);
-					$venueImport->save();
+					$venueImport->venues()->save($venue);
 
 					$this->info("Added {$venueImport->readableSourceBrand()} {$venueImport->source_id}: {$venue->address_line1}, {$venue->address_postcode}, {$venue->address_city}.");
 					$this->added++;
 				});
 
-				continue;
 			}
+			continue; // To next Import
 		}
 
 		// Print import summary
