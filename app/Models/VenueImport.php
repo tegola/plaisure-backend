@@ -47,8 +47,7 @@ class VenueImport extends Model
 	public function isReadyForVenue()
 	{
 		$data = (array) $this->normalized_data;
-
-		return array_has($data, [
+		$requiredKeys = [
 			'name',
 			'categories',
 			'address_line1',
@@ -57,7 +56,16 @@ class VenueImport extends Model
 			'country',
 			'geo_latitude',
 			'geo_longitude'
-		]);
+		];
+		$isReady = true;
+
+		foreach ($requiredKeys as $key) {
+			if (!array_key_exists($key, $data) || !$data[$key]) {
+				$isReady = false;
+			}
+		}
+
+		return $isReady;
 	}
 
 	/**

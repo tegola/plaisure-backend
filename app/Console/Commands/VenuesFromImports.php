@@ -165,9 +165,6 @@ class VenuesFromImports extends Command
 			}
 		}
 
-		// L'eliminazione di un import collegata a un'attività deve essere tracciata (soft delete e lista in admin tra gli aggiornati)
-		// Qui l'aggiunta, aggiornamento e eliminazione devono comportarsi diversamente se la sala è "owned" o no
-
 		// Print import summary
 		$this->line('');
 		$this->line('Venue creation from imports has finished!');
