@@ -28,6 +28,7 @@ class CreateVenueImportsTable extends Migration
 			$table->index(['source_brand', 'source_id']);
 
 			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

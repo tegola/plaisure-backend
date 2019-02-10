@@ -1,3 +1,6 @@
+Importanti:
+  ☐ Icone per le categorie GB
+  ☐ Errore: si può scegliere il piano free su una sala appena reclamata
 
  ✔ Far funzionare la ricerca in home page @done (18-06-20 22:12)
  ✔ tracking analytics @done (18-06-09 01:35)
@@ -197,4 +200,5 @@ Dopo il deploy:
   ☐ Aggiornare il file .env con l'id e la chiave del client ouath
   ☐ tabella venues: country passa da "Italia" a "IT"
   ☐ tabella users: country viene riempito con "IT"
-  ☐ tabelle concessionaires/pay_per_view_platforms/venue_categories/vlt_platforms: country viene riempito con "IT", aggiungere le categorie GB
+  ☐ tabelle concessionaires/pay_per_view_platforms/venue_categories/vlt_platforms: country viene riempito con "IT"
+  ☐ Aggiungere le categorie GB: adult_gaming_center (Adult gaming centre), family_entertainment_center (Family entertainment centre), betting_shop (Betting shop)

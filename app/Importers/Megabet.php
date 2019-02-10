@@ -99,7 +99,10 @@ class Megabet extends Importer
 			'address_postcode' => $item->postcode,
 			'country' => 'GB',
 			'geo_latitude' => round($item->latitude, 6),
-			'geo_longitude' => round($item->longitude, 6)
+			'geo_longitude' => round($item->longitude, 6),
+			'categories' => [
+				['machine_name' => 'betting_shop', 'is_primary' => true]
+			]
 		];
 	}
 }

@@ -63,8 +63,8 @@ class ImportVenues extends Command
 		switch ($this->argument('brand')) {
 			case 'admiral-uk': $this->importer = new AdmiralUkImporter(); break;
 			case 'cashino': $this->importer = new CashinoImporter(); break;
-			case 'ladbrokes': $this->importer = new LadbrokesImporter(); break;
 			case 'megabet': $this->importer = new MegabetImporter(); break;
+			case 'ladbrokes': $this->importer = new LadbrokesImporter(); break;
 		}
 
 		// Stop if there's no importer
@@ -92,7 +92,7 @@ class ImportVenues extends Command
 				'source_id' => $item->$idKey
 			]);
 
-			$normalizedItem = $this->importer->normalizeItem($item);
+			$normalizedItem = json_decode(json_encode($this->importer->normalizeItem($item))); // Force cast object recursive
 			$description = $this->importer->getDescriptionForItem($item);
 
 			if (!$venueImport->exists) {
@@ -118,7 +118,7 @@ class ImportVenues extends Command
 			}
 		}
 
-		// Delete closed venues
+		// Delete closed venues (soft deleted)
 		$outdatedImports = VenueImport::query()
 			->where('source_brand', $this->importer->getVenueImportBrand())
 			->whereNotIn('source_id', $this->importer->getIds())

@@ -1,6 +1,6 @@
 import axios from '@/plugins/axios';
 import isVenueOpen from '@/utilities/is-venue-open';
-import capitalize from 'capitalize';
+import capitalize from 'lodash/capitalize';
 
 const indexToDayName = index => {
 	// Create any date but se the right day of the week
@@ -72,7 +72,8 @@ export default {
 			if (!state.venue) return null;
 
 			const baseUrl = 'https://www.google.com/maps/dir/?api=1&map_action=map&destination=';
-			const address = encodeURIComponent(state.venue.address.long);
+			let address = Object.keys(state.venue.address).map(e => state.venue.address[e]);
+			address = encodeURIComponent(address);
 			return `${baseUrl}${address}`;
 		},
 

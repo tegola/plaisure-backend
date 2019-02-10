@@ -158,7 +158,10 @@ class Ladbrokes extends Importer
 			'country' => 'GB',
 			'geo_latitude' => round($item->lat, 6),
 			'geo_longitude' => round($item->lng, 6),
-			'business_hours' => $business_hours
+			'business_hours' => $business_hours,
+			'categories' => [
+				['machine_name' => 'betting_shop', 'is_primary' => true]
+			]
 		];
 	}
 }

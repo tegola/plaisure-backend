@@ -70,12 +70,12 @@ class Cashino extends Importer
 
 		// Find categories
 		$categories = [];
-		if ($item->{'AGC Venue'}) $categories[] = 'Adult Gaming Centre';
-		if ($item->{'Bingo Venue'}) $categories[] = 'Bingo';
-		if ($item->{'Bingo Express'}) $categories[] = 'Bingo Express';
-		if ($item->{'Bingo Plus'}) $categories[] = 'Bingo Plus';
-		if ($item->{'Cash Bingo'}) $categories[] = 'Cash Bingo';
-		if ($item->{'FEC Venue'}) $categories[] = 'Family Entertainment Centre';
+		if ($item->{'AGC Venue'}) $categories[] = ['machine_name' => 'adult_gaming_center'];
+		if ($item->{'Bingo Venue'}) $categories[] = ['machine_name' => 'bingo'];
+		// if ($item->{'Bingo Express'}) $categories[] = 'Bingo Express';
+		// if ($item->{'Bingo Plus'}) $categories[] = 'Bingo Plus';
+		// if ($item->{'Cash Bingo'}) $categories[] = 'Cash Bingo';
+		if ($item->{'FEC Venue'}) $categories[] = ['machine_name' => 'family_entertainment_center'];
 
 		// FIXME: Trovare gli orari
 

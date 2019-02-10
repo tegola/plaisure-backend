@@ -134,6 +134,8 @@ class VenueTransformer extends TransformerAbstract
 	public function includeBusinessHours(Venue $venue)
 	{
 		return $this->item($venue->businessHours, function(Collection $businessHours) {
+			if (!count($businessHours)) return [];
+
 			$days = [[], [], [], [], [], [], []];
 
 			// Copy business hours in every day

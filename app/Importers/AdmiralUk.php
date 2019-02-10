@@ -52,7 +52,10 @@ class AdmiralUk extends Importer
 			'geo_latitude' => round($item->lat, 6),
 			'geo_longitude' => round($item->lng, 6),
 			'contact_phone' => $item->telephone,
-			'url_site' => "https://www.admiralslots.co.uk/venue/{$item->link}/"
+			'url_site' => "https://www.admiralslots.co.uk/venue/{$item->link}/",
+			'categories' => [
+				['machine_name' => 'betting_shop']
+			]
 		];
 	}
 }
