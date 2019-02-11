@@ -71,8 +71,8 @@ export default {
 				presets.push({
 					type: 'category',
 					value: category.machine_name,
-					icon: category.machine_name.replace('_', '-'),
-					label: category.name,
+					icon: category.machine_name.replace(/_/g, '-'),
+					label: this.$t(`data.categories.${category.machine_name}`),
 					route: {
 						name: 'venues.explore',
 						query: {
@@ -245,7 +245,7 @@ export default {
 							<div class="row">
 								<div class="col-md-10 col-lg-11">
 									<h1 class="display-3 text-dark-green mb-4">{{ $t('pages.home.search.title') }}</h1>
-									<p class="lead text-dark-green-muted font-weight-semibold mb-4">{{ $t('pages.home.search.subtitle', { name: APP_NAME, count: 5000 }) }}</p>
+									<p class="lead text-dark-green-muted font-weight-semibold mb-4">{{ $t('pages.home.search.subtitle', { name: APP_NAME }) }}</p>
 								</div>
 							</div>
 

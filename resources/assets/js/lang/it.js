@@ -92,7 +92,7 @@ export default {
 		home: {
 			search: {
 				title: 'Trova le sale da gioco più vicine a te.',
-				subtitle: "Su {name} è veloce, e con più di {count} sale c'è solo l'imbarazzo della scelta!",
+				subtitle: "Su {name} è veloce, e con più di migliaia di sale disponibili c'è solo l'imbarazzo della scelta!",
 				label: 'Cerca',
 				city_placeholder: 'Scrivi la tua città',
 				location_placeholder: 'Vicino a te',
@@ -505,6 +505,13 @@ export default {
 			default: 'Gratuito',
 			premium_1: 'Premium 1',
 			premium_2: 'Premium 2'
+		},
+		categories: {
+			adult_gaming_center: 'Sala giochi per adulti',
+			betting_shop: 'Agenzia scommesse',
+			bingo: 'Sala bingo',
+			family_entertainment_center: 'Intrattenimento per famiglie',
+			vlt: 'Sala slot VLT'
 		},
 		amenities: {
 			atm: 'Totem Bancomat',

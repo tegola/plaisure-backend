@@ -14,7 +14,7 @@ export default {
 
 			return this.venue.categories
 				.slice(0, 2)
-				.map(category => category.name)
+				.map(category => this.$t(`data.categories.${category.machine_name}`))
 				.join(', ');
 		},
 
@@ -25,7 +25,7 @@ export default {
 		},
 
 		iconMarkup() {
-			const name = this.firstCategoryMachineName;
+			const name = this.firstCategoryMachineName.replace(/_/g, '-');
 
 			return require(`!svg-inline-loader!assets/svg/category-icons/${name}.svg`);
 		},

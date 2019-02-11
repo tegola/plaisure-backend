@@ -92,7 +92,7 @@ export default {
 		home: {
 			search: {
 				title: 'Find the best games rooms near you.',
-				subtitle: "It's easy with {name}, and with more than {count} venues available, you're spoilt for choice!",
+				subtitle: "It's easy with {name}, and with thousands of venues available, you're spoilt for choice!",
 				label: 'Search',
 				city_placeholder: 'Enter your city',
 				location_placeholder: 'Near you',
@@ -505,6 +505,13 @@ export default {
 			default: 'Free',
 			premium_1: 'Premium 1',
 			premium_2: 'Premium 2'
+		},
+		categories: {
+			adult_gaming_center: 'Adult gaming centre',
+			betting_shop: 'Betting shop',
+			bingo: 'Bingo hall',
+			family_entertainment_center: 'Family entertainment centre',
+			vlt: 'VLT game room'
 		},
 		amenities: {
 			atm: 'ATM',

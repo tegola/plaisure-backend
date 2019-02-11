@@ -1,5 +1,6 @@
 Importanti:
   ☐ Icone per le categorie GB (anche mappa)
+  ✔ Solo categorie GB nel sito GB, solo IT nel sito IT @done (19-02-11 21:32)
   ☐ Errore: si può scegliere il piano free su una sala appena reclamata
 
  ✔ Far funzionare la ricerca in home page @done (18-06-20 22:12)
@@ -156,10 +157,10 @@ Ricerca:
  ☐ Priorità alle attività paganti, con indicatore più visibile
  ☐ Pulsante per usare la posizione dell'utente
  ☐ Se una sala con un bonus di distanza esce dalla mappa sparisce completamente, mentre dovrebbe comunque rimanere (ha un bonus!)
- ☐ Pulsante per condividere il link della ricerca
 
 Azienda:
  ☐ Abbellire
+ ☐ Testo in inglese
  ☐ Aggiungere form di contatto
 
 Promuovi attività:
@@ -202,8 +203,8 @@ Dopo il deploy:
   ☐ tabella venues: country passa da "Italia" a "IT"
   ☐ tabella users: country viene riempito con "IT"
   ☐ tabelle concessionaires/pay_per_view_platforms/venue_categories/vlt_platforms: country viene riempito con "IT"
-  ☐ Tabella categories: rinominare betting_agency in betting-shop
-  ☐ Aggiungere le categorie GB: adult-gaming-center (Adult gaming centre), family-entertainment-center (Family entertainment centre)
+  ☐ Tabella categories: rinominare betting_agency in betting_shop
+  ☐ Aggiungere le categorie GB: adult_gaming_center (Adult gaming centre), family_entertainment_center (Family entertainment centre)
   ☐ Lanciare gli importer
   ☐ Lanciare la creazione
   ☐ Svuotare la cache della home page (per evitare che le query usino il nome vecchio delle categorie)

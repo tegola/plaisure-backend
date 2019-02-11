@@ -79,7 +79,7 @@ class FormController extends Controller
 
 		$country = locale_get_region(app()->getLocale());
 		$categories = VenueCategory::forCountry($country)
-			->select('id', 'machine_name', 'name')
+			->select('id', 'machine_name')
 			->get();
 		$concessionaires = Concessionaire::forCountry($country)
 			->select('id', 'name')

@@ -312,7 +312,12 @@ export default {
 			<div class="form-row">
 				<div class="col-lg-10">
 					<b-checkbox-group v-model="venueCategoryIds" stacked>
-						<b-checkbox v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</b-checkbox>
+						<b-checkbox
+							v-for="category in categories"
+							:value="category.id"
+							:key="category.id">
+							{{ $t(`data.categories.${category.machine_name}`) }}
+						</b-checkbox>
 					</b-checkbox-group>
 				</div>
 			</div>
