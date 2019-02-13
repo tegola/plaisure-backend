@@ -9,10 +9,11 @@ class VenueImport extends Model
 {
 	use SoftDeletes;
 
-	const SOURCE_BRAND_ADMIRAL_UK = 1;
-	const SOURCE_BRAND_CASHINO    = 2;
-	const SOURCE_BRAND_MEGABET    = 3;
-	const SOURCE_BRAND_LADBROKES  = 4;
+	const SOURCE_BRAND_ADMIRAL_UK       = 1;
+	const SOURCE_BRAND_CASHINO          = 2;
+	const SOURCE_BRAND_MEGABET          = 3;
+	const SOURCE_BRAND_LADBROKES        = 4;
+	const SOURCE_BRAND_WILLIAM_HILL_UK  = 5;
 	
 	/**
 	 * The attributes that aren't mass assignable.
@@ -80,6 +81,7 @@ class VenueImport extends Model
 			case self::SOURCE_BRAND_CASHINO: return 'Cashino';
 			case self::SOURCE_BRAND_MEGABET: return 'Megabet';
 			case self::SOURCE_BRAND_LADBROKES: return 'Ladbrokes';
+			case self::SOURCE_BRAND_WILLIAM_HILL_UK: return 'William Hill UK';
 		}
 		
 	}

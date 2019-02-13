@@ -22,11 +22,25 @@ abstract class Importer
 	protected $venueImportBrand;
 
 	/**
-	 * Downloaded data.
+	 * Whether the importer does one request per venue.
+	 * 
+	 * @var boolean
+	 */
+	protected $cycles = false;
+
+	/**
+	 * The current fetch index, for importers that make multiple requests.
+	 * 
+	 * @var integer
+	 */
+	private $index = 1;
+
+	/**
+	 * Fetched data.
 	 * 
 	 * @var array
 	 */
-	protected $data = [];
+	private $data = [];
 
 	/**
 	 * The Guzzle client.
@@ -43,6 +57,13 @@ abstract class Importer
 	protected $browser;
 
 	/**
+	 * Whether the importer has more data to fetch.
+	 * 
+	 * @var boolean
+	 */
+	private $hasMore = true;
+
+	/**
 	 * Create a new Importer instance.
 	 *
 	 * @return void
@@ -54,14 +75,33 @@ abstract class Importer
 	}
 
 	/**
-	 * Load data from the source.
+	 * Fetches the importer data and appends it to the stored data.
 	 * 
 	 * @return void
 	 */
-	abstract public function load();
+	public function load()
+	{
+		// Fetch
+		$rows = $this->fetch();
+
+		// If there are new rows, append them to data
+		if ($rows) {
+			$this->data = array_merge($this->data, $rows);
+		}
+
+		// Set next index
+		$this->index++;
+	}
 
 	/**
-	 * Get ids (real or generated) from downloaded data.
+	 * Fetch data from the source.
+	 * 
+	 * @return [stdClass]|null
+	 */
+	abstract public function fetch();
+
+	/**
+	 * Get ids (real or generated) from fetched data.
 	 * 
 	 * @return \Illuminate\Support\Collection
 	 */
@@ -72,6 +112,17 @@ abstract class Importer
 		return collect($this->data)->map(function($item) use ($idKey) {
 			return $item->$idKey;
 		});
+	}
+
+	/**
+	 * Generate an id hash for the specified string.
+	 * 
+	 * @param  string $bits
+	 * @return string
+	 */
+	protected function generateId(string $bits)
+	{
+		return substr(md5($bits), 0, 8);
 	}
 
 	/**
@@ -94,6 +145,16 @@ abstract class Importer
 	abstract public function normalizeItem(\stdClass $item);
 
 	/**
+	 * Stop fetching after the current cycle.
+	 * 
+	 * @return void
+	 */
+	protected function end()
+	{
+		$this->hasMore = false;
+	}
+
+	/**
 	 * Get the Brand name.
 	 * 
 	 * @return string
@@ -114,13 +175,53 @@ abstract class Importer
 	}
 
 	/**
-	 * Get the downloaded data.
+	 * Get wheter the importer does one request per venue.
+	 * 
+	 * @var boolean
+	 */
+	public function cycles()
+	{
+		return $this->cycles;
+	}
+
+	/**
+	 * Set the fetch index.
+	 * 
+	 * @param int $index
+	 */
+	public function setIndex(int $index) {
+		$this->index = $index;
+	}
+
+	/**
+	 * Get the current fetch index.
+	 * 
+	 * @return integer
+	 */
+	public function getIndex()
+	{
+		// "+ 1" to take automatic increment into account
+		return $this->index;
+	}
+
+	/**
+	 * Get the fetched data.
 	 * 
 	 * @return array
 	 */
 	public function getData()
 	{
 		return $this->data;
+	}
+
+	/**
+	 * Determines if the importer has fetched all data.
+	 * 
+	 * @return array
+	 */
+	public function hasMore()
+	{
+		return $this->hasMore;
 	}
 
 	/**

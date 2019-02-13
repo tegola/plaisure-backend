@@ -25,10 +25,15 @@ class Cashino extends Importer
 	 * 
 	 * @return void
 	 */
-	public function load()
+	public function fetch()
 	{
 		$response = $this->client->get('https://venues.cashino.com/venues.json');
-		$this->data = json_decode($response->getBody());
+		$rows = json_decode($response->getBody());
+
+		// Mark as ended
+		$this->end();
+
+		return $rows;
 	}
 
 	/**
@@ -78,6 +83,7 @@ class Cashino extends Importer
 		if ($item->{'FEC Venue'}) $categories[] = ['machine_name' => 'family_entertainment_center'];
 
 		// FIXME: Trovare gli orari
+		// FIXME: Aggiungere la categoria principale
 
 		return (object) [
 			'name' => $item->{'Venue Name'},

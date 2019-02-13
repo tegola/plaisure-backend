@@ -25,12 +25,10 @@ class Ladbrokes extends Importer
 	 * 
 	 * @return void
 	 */
-	public function load()
+	public function fetch()
 	{
-		// https://viewer.blipstar.com/searchdbnew?uid=2470030&lat=51.494506&lng=-0.099973&value=50000&max=50000
-
 		// Get the data
-		$tempData = [];
+		$rows = [];
 		$centers = [
 			[57.4680424, -4.2919821],
 			[55.5269664, -3.3482706],
@@ -40,6 +38,7 @@ class Ladbrokes extends Importer
 		];
 
 		foreach ($centers as $coords) {
+			// https://viewer.blipstar.com/searchdbnew?uid=2470030&lat=51.494506&lng=-0.099973&value=50000&max=50000
 			$response = $this->client->get('https://viewer.blipstar.com/searchdbnew', [
 				'query' => [
 					'uid' => 2470030,
@@ -53,25 +52,27 @@ class Ladbrokes extends Importer
 			// Concatenate to data
 			$responseData = json_decode($response->getBody());
 			array_shift($responseData); // Remove totals
-			$tempData = array_merge($tempData, $responseData);
+			$rows = array_merge($rows, $responseData);
 		}
 
 		// Generate an id for each row
-		foreach ($tempData as $row) {
-			$row->generated_id = substr(md5($row->n . $row->pc), 0, 8);
+		foreach ($rows as $row) {
+			$row->generated_id = $this->generateId($row->n . $row->pc);
 		}
 
 		// Find unique venues by filtering their generated id
 		$uniqueIds = [];
-		$tempData = array_filter($tempData, function($row) use (&$uniqueIds) {
+		$rows = array_filter($rows, function($row) use (&$uniqueIds) {
 			if (!in_array($row->generated_id, $uniqueIds)) {
 				$uniqueIds[] = $row->generated_id;
 				return $row;
 			}
 		});
 
-		// Store data
-		$this->data = $tempData;
+		// Mark as ended
+		$this->end();
+
+		return $rows;
 	}
 
 	/**

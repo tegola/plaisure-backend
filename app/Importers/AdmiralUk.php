@@ -25,10 +25,15 @@ class AdmiralUk extends Importer
 	 * 
 	 * @return void
 	 */
-	public function load()
+	public function fetch()
 	{
 		$response = $this->client->get('https://www.admiralslots.co.uk/venues.json');
-		$this->data = json_decode($response->getBody());
+		$rows = json_decode($response->getBody());
+
+		// Mark as ended
+		$this->end();
+
+		return $rows;
 	}
 
 	/**

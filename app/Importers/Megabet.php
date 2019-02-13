@@ -25,14 +25,14 @@ class Megabet extends Importer
 	 * 
 	 * @return void
 	 */
-	public function load()
+	public function fetch()
 	{
-		// Get the data
+		// Get the page
 		$crawler = $this->browser->request('GET', 'http://www.megabet.co.uk/p/shop-locator/');
-		$tempData = [];
+		$rows = [];
 
 		// Loop through venue rows
-		$crawler->filter('#RightContainer .table tbody tr')->each(function($tr) use (&$tempData) {
+		$crawler->filter('#RightContainer .table tbody tr')->each(function($tr) use (&$rows) {
 			$row = new \stdClass();
 
 			// Loop through cells of each row
@@ -57,12 +57,15 @@ class Megabet extends Importer
 			});
 
 			// Generate an id for the row
-			$row->generated_id = substr(md5($row->name . $row->postcode), 0, 8);
+			$row->generated_id = $this->generateId($row->name . $row->postcode);
 
-			array_push($tempData, $row);
+			array_push($rows, $row);
 		});
 
-		$this->data = $tempData;
+		// Mark as ended
+		$this->end();
+
+		return $rows;
 	}
 
 	/**

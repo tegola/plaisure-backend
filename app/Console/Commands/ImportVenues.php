@@ -8,6 +8,7 @@ use App\Importers\AdmiralUk as AdmiralUkImporter;
 use App\Importers\Cashino as CashinoImporter;
 use App\Importers\Ladbrokes as LadbrokesImporter;
 use App\Importers\MegaBet as MegabetImporter;
+use App\Importers\WilliamHillUk as WilliamHillUkImporter;
 
 class ImportVenues extends Command
 {
@@ -16,7 +17,7 @@ class ImportVenues extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature = 'import-venues {brand}';
+	protected $signature = 'import-venues {brand} {--start=1} {--end=100000}';
 
 	/**
 	 * The console command description.
@@ -59,12 +60,16 @@ class ImportVenues extends Command
 	 */
 	public function handle()
 	{
-		// Init importer
+		$startIndex = $this->option('start');
+		$endIndex = $this->option('end');
+
+		// Create importer
 		switch ($this->argument('brand')) {
 			case 'admiral-uk': $this->importer = new AdmiralUkImporter(); break;
 			case 'cashino': $this->importer = new CashinoImporter(); break;
 			case 'megabet': $this->importer = new MegabetImporter(); break;
 			case 'ladbrokes': $this->importer = new LadbrokesImporter(); break;
+			case 'william-hill-uk': $this->importer = new WilliamHillUkImporter(); break;
 		}
 
 		// Stop if there's no importer
@@ -76,23 +81,39 @@ class ImportVenues extends Command
 		// Print intro
 		$this->line('');
 		$this->line('Importing venues from ' . $this->importer->getBrand() . '...');
-		$this->line('');
 
-		// Load importer data
-		$this->importer->load();
+		// Set initial index
+		if ($startIndex) $this->importer->setIndex($startIndex);
+
+		// Fetch data until end index has been reached and there's more
+		while (($this->importer->getIndex() <= $endIndex) && $this->importer->hasMore()) {
+			$this->importer->load();
+
+			if ($this->importer->cycles()) {
+				$index = $this->importer->getIndex() - 1;
+				$this->line("Fetching #{$index}");
+			}
+		}
+
+		$data = $this->importer->getData();
+		$rowCount = count($data);
+
+		// Print fetch intro
+		$this->line('');
+		$this->line("Fetched {$rowCount} venues.");
 
 		// Get property keys
 		$idKey = $this->importer->getIdKey();
 
 		// Add/update open venues
-		foreach ($this->importer->getData() as $item) {
+		foreach ($data as $item) {
 			// Search a previous import
 			$venueImport = VenueImport::firstOrNew([
 				'source_brand' => $this->importer->getVenueImportBrand(),
 				'source_id' => $item->$idKey
 			]);
 
-			$normalizedItem = json_decode(json_encode($this->importer->normalizeItem($item))); // Force cast object recursive
+			$normalizedItem = json_decode(json_encode($this->importer->normalizeItem($item))); // Recursive casting as object
 			$description = $this->importer->getDescriptionForItem($item);
 
 			if (!$venueImport->exists) {
@@ -119,19 +140,24 @@ class ImportVenues extends Command
 		}
 
 		// Delete closed venues (soft deleted)
-		$outdatedImports = VenueImport::query()
-			->where('source_brand', $this->importer->getVenueImportBrand())
-			->whereNotIn('source_id', $this->importer->getIds())
-			->get();
+		// We do this only when not index are not specified, because limiting
+		// downloaded data makes this cycle believe that does not exist anymore
+		// and needs to delete it.
+		if (!$startIndex && !$endIndex) {
+			$outdatedImports = VenueImport::query()
+				->where('source_brand', $this->importer->getVenueImportBrand())
+				->whereNotIn('source_id', $this->importer->getIds())
+				->get();
 
-		foreach ($outdatedImports as $outdatedImport) {
-			$sourceData = $outdatedImport->source_data;
-			$description = $this->importer->getDescriptionForItem($sourceData);
+			foreach ($outdatedImports as $outdatedImport) {
+				$sourceData = $outdatedImport->source_data;
+				$description = $this->importer->getDescriptionForItem($sourceData);
 
-			$outdatedImport->delete();
+				$outdatedImport->delete();
 
-			$this->error("Deleted {$outdatedImport->source_id}: {$description}");
-			$this->deleted++;
+				$this->error("Deleted {$outdatedImport->source_id}: {$description}");
+				$this->deleted++;
+			}
 		}
 
 		// Print summary
