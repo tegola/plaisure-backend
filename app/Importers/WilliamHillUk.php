@@ -57,7 +57,7 @@ class WilliamHillUk extends Importer
 			} else if ($prop == 'postalCode') {
 				$row->postcode = $node->text();
 			} else if ($prop == 'telephone') {
-				$row->telephone = $node->text();
+				$row->phone = $node->text();
 			} else if ($prop == 'email') {
 				$row->email = $node->text();
 			} else if ($prop == 'openingHours') {
@@ -113,7 +113,28 @@ class WilliamHillUk extends Importer
 	 */
 	public function normalizeItem(\stdClass $item)
 	{
-		// Prepare categories
+		// Find business hours
+		$business_hours = [];
+
+		foreach ($item->hours as $shortDay => $hours) {
+			switch ($shortDay) {
+				case 'Mo': $day = 1; break;
+				case 'Tu': $day = 2; break;
+				case 'We': $day = 3; break;
+				case 'Th': $day = 4; break;
+				case 'Fr': $day = 5; break;
+				case 'Sa': $day = 6; break;
+				case 'Su': $day = 0; break;
+			}
+
+			$hours = explode('-', $hours);
+			$opens = date('H:i', strtotime(trim($hours[0])));
+			$closes = date('H:i', strtotime(trim($hours[1])));
+
+			$business_hours[] = compact('day', 'opens', 'closes');
+		}
+
+		// Find categories
 		$categories = array_map(function($facility) {
 			$category = [];
 
@@ -133,6 +154,8 @@ class WilliamHillUk extends Importer
 		// Force a single category to be primary
 		if (count($categories) == 1) $categories[0]['primary'] = true;
 
+		// FIXME: Ripulire indirizzi (capitalize)
+
 		return (object) [
 			'name' => 'William Hill',
 			'address_line1' => $item->address,
@@ -141,6 +164,9 @@ class WilliamHillUk extends Importer
 			'country' => 'GB',
 			'geo_latitude' => round($item->latitude, 6),
 			'geo_longitude' => round($item->longitude, 6),
+			'contact_phone' => $item->phone,
+			'contact_email' => $item->email,
+			'business_hours' => $business_hours,
 			'categories' => $categories
 		];
 	}
