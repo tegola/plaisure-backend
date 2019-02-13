@@ -82,6 +82,12 @@ class ImportVenues extends Command
 		$this->line('');
 		$this->line('Importing venues from ' . $this->importer->getBrand() . '...');
 
+		// Print deletion disabled notice
+		if ($startIndex || $endIndex) {
+			$this->line('');
+			$this->comment('Automatic deletion of old imports is disabled: start or end specified.');
+		}
+
 		// Set initial index
 		if ($startIndex) $this->importer->setIndex($startIndex);
 
@@ -91,6 +97,7 @@ class ImportVenues extends Command
 
 			if ($this->importer->cycles()) {
 				$index = $this->importer->getIndex() - 1;
+				if ($index == 1) $this->line('');
 				$this->line("Fetching #{$index}");
 			}
 		}
