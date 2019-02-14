@@ -87,6 +87,7 @@ class WilliamHillUk extends Importer
 		});
 
 		// Generate an id for the row
+		$row->id = $this->getIndex();
 		$row->generated_id = $this->generateId($row->name . $row->postcode);
 
 		// Recursive casting as object
@@ -154,12 +155,10 @@ class WilliamHillUk extends Importer
 		// Force a single category to be primary
 		if (count($categories) == 1) $categories[0]['primary'] = true;
 
-		// FIXME: Ripulire indirizzi (capitalize)
-
 		return (object) [
 			'name' => 'William Hill',
-			'address_line1' => $item->address,
-			'address_city' => $item->city,
+			'address_line1' => ucwords(strtolower($item->address)),
+			'address_city' => ucwords(strtolower($item->city)),
 			'address_postcode' => $item->postcode,
 			'country' => 'GB',
 			'geo_latitude' => round($item->latitude, 6),
