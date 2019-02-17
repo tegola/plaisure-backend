@@ -140,7 +140,7 @@ class VenuesFromImports extends Command
 
 			} else {
 
-				// Handle creation of new 
+				// Handle creation of new venue
 				DB::transaction(function() use ($venueImport) {
 					$venue = new Venue();
 					$venue->save(); // So relations can be attached
@@ -227,7 +227,6 @@ class VenuesFromImports extends Command
 
 		// Delete business hours
 		$venue->businessHours()->delete();
-
 
 		// Add new business hours (if needed)
 		if (array_key_exists('business_hours', $source)) {

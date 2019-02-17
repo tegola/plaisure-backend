@@ -129,6 +129,10 @@ class WilliamHillUk extends Importer
 			}
 
 			$hours = explode('-', $hours);
+
+			// Skip day if there's no opens at/closes at hours
+			if (count($hours) < 2) continue;
+
 			$opens = date('H:i', strtotime(trim($hours[0])));
 			$closes = date('H:i', strtotime(trim($hours[1])));
 
@@ -157,14 +161,14 @@ class WilliamHillUk extends Importer
 
 		return (object) [
 			'name' => 'William Hill',
-			'address_line1' => ucwords(strtolower($item->address)),
-			'address_city' => ucwords(strtolower($item->city)),
-			'address_postcode' => $item->postcode,
+			'address_line1' => trim(ucwords(strtolower($item->address))),
+			'address_city' => trim(ucwords(strtolower($item->city))),
+			'address_postcode' => trim($item->postcode),
 			'country' => 'GB',
 			'geo_latitude' => round($item->latitude, 6),
 			'geo_longitude' => round($item->longitude, 6),
-			'contact_phone' => $item->phone,
-			'contact_email' => $item->email,
+			'contact_phone' => trim($item->phone),
+			'contact_email' => trim($item->email),
 			'business_hours' => $business_hours,
 			'categories' => $categories
 		];

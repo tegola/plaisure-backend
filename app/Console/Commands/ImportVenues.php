@@ -17,7 +17,11 @@ class ImportVenues extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature = 'import-venues {brand} {--start=1} {--end=100000}';
+	protected $signature = 'import-venues
+							{brand}
+							{--start=1}
+							{--end=100000}
+							{--D|delete-outdated : Whether venues not found on source should be deleted from imported ones}';
 
 	/**
 	 * The console command description.
@@ -82,12 +86,6 @@ class ImportVenues extends Command
 		$this->line('');
 		$this->line('Importing venues from ' . $this->importer->getBrand() . '...');
 
-		// Print deletion disabled notice
-		if ($startIndex || $endIndex) {
-			$this->line('');
-			$this->comment('Automatic deletion of old imports is disabled: start or end specified.');
-		}
-
 		// Set initial index
 		if ($startIndex) $this->importer->setIndex($startIndex);
 
@@ -146,11 +144,8 @@ class ImportVenues extends Command
 			}
 		}
 
-		// Delete closed venues (soft deleted)
-		// We do this only when not index are not specified, because limiting
-		// downloaded data makes this cycle believe that does not exist anymore
-		// and needs to delete it.
-		if (!$startIndex && !$endIndex) {
+		// Soft-delete closed venues (if specified)
+		if ($this->option('delete-outdated')) {
 			$outdatedImports = VenueImport::query()
 				->where('source_brand', $this->importer->getVenueImportBrand())
 				->whereNotIn('source_id', $this->importer->getIds())

@@ -82,7 +82,6 @@ class Cashino extends Importer
 		// if ($item->{'Cash Bingo'}) $categories[] = 'Cash Bingo';
 		if ($item->{'FEC Venue'}) $categories[] = ['machine_name' => 'family_entertainment_center'];
 
-		// FIXME: Trovare gli orari
 		// FIXME: Aggiungere la categoria principale
 
 		return (object) [
