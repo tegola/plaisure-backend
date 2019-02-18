@@ -76,7 +76,7 @@ class ExploreController extends Controller
 		}
 
 		// Start loading venues
-		$venues = Venue::with(['categories']);
+		$venues = Venue::with('categories');
 
 		// Find by bounds or center
 		if ($ne_lat && $ne_lng && $sw_lat && $sw_lng) {

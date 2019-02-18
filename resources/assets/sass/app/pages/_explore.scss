@@ -153,13 +153,6 @@
 		display: flex;
 		align-items: flex-start;
 	}
-	.map-infowindow-icon {
-		width: 48px;
-		padding: 3px;
-		margin-right: $spacer;
-		background-color: theme-color('accent');
-		border-radius: 50%;
-	}
 	.map-refresh-btn {
 		position: absolute;
 		top: 101px;

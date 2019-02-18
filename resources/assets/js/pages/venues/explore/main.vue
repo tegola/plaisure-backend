@@ -61,6 +61,9 @@ export default {
 		}, queryParams);
 
 		// Cleanup search params
+		if (!Array.isArray(searchParams.categories)) {
+			searchParams.categories = [searchParams.categories];
+		}
 		searchParams.categories = searchParams.categories
 			.map(category => parseInt(category))
 			.filter((category, index, arr) => arr.indexOf(category) === index);
@@ -75,10 +78,9 @@ export default {
 
 		return {
 			categories: [],
+			// amenities: [],
 
 			radiusOptions,
-			categoryOptions: [],
-			// amenityOptions: [],
 
 			loading: false,
 			locating: false,
@@ -118,15 +120,34 @@ export default {
 	},
 
 	computed: {
+		categoryOptions() {
+			return this.categories.map(category => ({
+				value: category.id,
+				label: this.$t(`data.categories.${category.machine_name}`)
+			}));
+		},
+
+		/*
+		amenityOptions() {
+			return this.amenities.map(amenity => ({
+				value: amenity.machine_name,
+				label: this.$t(`data.amenities.${amenity.machine_name}`)
+			}));
+		},
+		*/
+
 		hasMorePages() {
 			return this.venues ? this.venues.length >= 100 : false;
 		},
+
 		showRadiusFilter() {
 			return this.searchMode == 'center';
 		},
+
 		showList() {
 			return this.$mq.comfortable || this.currentView == 'list';
 		},
+
 		showMap() {
 			return this.$mq.comfortable || this.currentView == 'map';
 		}
@@ -150,16 +171,7 @@ export default {
 			return this.$axios.get('/venues/explore/data').then(response => {
 				// Fill data
 				this.categories = response.data.categories;
-				this.categoryOptions = response.data.categories.map(category => ({
-					value: category.id,
-					label: this.$t(`data.categories.${category.machine_name}`)
-				}));
-				/*
-				this.amenityOptions = response.data.amenities.map(amenity => ({
-					value: amenity.machine_name,
-					label: this.$t(`data.amenities.${amenity.machine_name}`)
-				}));
-				*/
+				// this amenities = response.data.amenities;
 
 				// Fill categories in search params
 				if (!this.searchParams.categories.length) {
@@ -313,7 +325,7 @@ export default {
 			const firstCategoryMachineName = this.venueFirstCategoryMachineName(venue);
 			const glyph = index < 25 && firstCategoryMachineName ? firstCategoryMachineName : 'collapsed';
 
-			return `/img/map/pin-${variant}-${glyph}.svg`;
+			return `/img/map/pin-${variant}/${glyph}.svg`;
 		},
 
 		onSearchBoundsClick() {
@@ -499,7 +511,6 @@ export default {
 				<pg-map-marker v-for="(venue, index) in venues" :key="venue.id" :position="venue.coords" :icon="mapMarkerIcon(venue, index)" @click="select(venue)">
 					<pg-map-info-window v-cloak :opened="venue.id == selectedVenueId" @closeclick="select(null)">
 						<div class="map-infowindow">
-							<img :src="`/img/avatars/${venueFirstCategoryMachineName(venue)}.svg`" class="map-infowindow-icon">
 							<div>
 								<h5 class="mb-0 font-weight-bold">
 									<router-link :to="`/venues/${venue.id}`">{{ venue.name }}</router-link>

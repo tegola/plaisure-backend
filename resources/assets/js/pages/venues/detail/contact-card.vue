@@ -90,7 +90,7 @@ export default {
 			class="contact-card-map"
 			content-class="contact-card-map-content">
 			<img
-				:src="`/img/map/pin-normal-${venue.categories[0].machine_name}.svg`"
+				:src="`/img/map/pin-normal/${venue.categories[0].machine_name}.svg`"
 				class="contact-card-map-marker">
 		</pg-image-frame>
 

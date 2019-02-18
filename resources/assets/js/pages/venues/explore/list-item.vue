@@ -2,22 +2,22 @@
 	<div :class="classes" class="list-group-item venue-list-item" @mouseover="onMouseOver" @mouseout="onMouseOut" @click="onClick">
 		<div class="row align-items-center">
 			<div class="col-3 pr-0">
-				<div class="embed-responsive embed-responsive-4by3">
+				<pg-image-frame
+					:src="photo ? photo.resized_url : null"
+					:content-class="photo ? null : 'pg-venue-grid-item__image-content'"
+					class="pg-venue-grid-item__image">
 					<div
-						v-if="photo"
-						:style="`background-image: url(${photo.resized_url})`"
-						class="embed-responsive-item venue-list-item-photo"
+						v-if="!photo"
+						class="pg-venue-grid-item__image-icon"
+						v-html="iconMarkup"
 					/>
-					<div v-else class="embed-responsive-item venue-list-item-photo">
-						<img :src="`/img/avatars/${firstCategoryMachineName}.svg`" class="venue-list-item-icon">
-					</div>
-				</div>
+				</pg-image-frame>
 			</div>
 			<div class="col-9">
 				<div class="d-flex w-100 justify-content-between">
-					<h5 class="mb-0 font-weight-bold">
+					<p class="mb-0 font-weight-bold">
 						<router-link :to="{ name: 'venues.detail', params: { venueId: venue.id } }" class="text-inherit">{{ venue.name }}</router-link>
-					</h5>
+					</p>
 					<div v-if="venue.distance" class="text-muted ml-3 text-nowrap">
 						{{ venue.distance | formatDistance }}<br>
 					</div>
@@ -31,9 +31,14 @@
 
 <script>
 import PgVenueItemMixin from '@/mixins/venue-collection-item';
+import PgImageFrame from '@/components/image-frame';
 import formatDistance from '@/utilities/format-distance';
 
 export default {
+	components: {
+		PgImageFrame
+	},
+
 	filters: {
 		formatDistance: formatDistance
 	},

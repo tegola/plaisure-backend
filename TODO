@@ -1,5 +1,5 @@
 Importanti:
-  ☐ Icone per le categorie GB sulla mappa
+  ✔ Icone per le categorie GB sulla mappa @done (19-02-18 23:21)
   ✔ Solo categorie GB nel sito GB, solo IT nel sito IT @done (19-02-11 21:32)
   ☐ Errore: si può scegliere il piano free su una sala appena reclamata
   ☐ Footer diverso in GB. Meglio: Footer semplice in tutti i casi
@@ -197,7 +197,7 @@ Dopo il deploy:
   ☐ Aggiornare i file .env
   ☐ Creare le chiavi (artisan passport:keys)
   ☐ Crere il client oauth (artisan passport:client --password)
-  ☐ Aggiornare il file .env con l'id e la chiave del client ouath
+  ☐ Aggiornare il file .env con l'id e la chiave del client oauth
 
   ☐ tabella venues: country passa da "Italia" a "IT"
   ☐ tabella users: country viene riempito con "IT"
