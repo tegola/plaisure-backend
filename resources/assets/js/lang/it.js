@@ -55,26 +55,10 @@ export default {
 		},
 
 		footer: {
-			venues: {
-				title: 'Sale ed esercizi',
-				search: 'Ricerca',
-				in: 'Esercizi a {city}',
-				promote: 'Promuovi la tua attività'
-			},
-			company: {
-				title: 'Azienda',
-				about: 'Chi siamo',
-				contact: 'Contatti'
-			},
-			gaming: {
-				title: 'Gioco responsabile',
-				responsibly: 'Gioca senza esagerare',
-				rules: 'Le regole',
-				myths: 'Miti e credenze',
-				help: 'Dove chiedere aiuto'
-			},
-			info: 'Informati sulle probabilità di vincita e sul regolamento di gioco sul sito {0}.',
-			rating: 'Il gioco è vietato{break}ai minori di {age} anni',
+			search: 'Cerca attività',
+			promote: 'Promuovi la tua attività',
+			about: "L'azienda",
+			responsible_gaming: 'Gioco responsabile',
 			copyright: 'Copyright {year} {company}',
 			vat: 'P. IVA {number}'
 		},

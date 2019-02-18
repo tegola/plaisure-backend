@@ -122,7 +122,7 @@ export default [
 	// Play responsibly -------------------------------------------------------
 	{
 		path: '/play-responsibly',
-		name: 'playResponsibly',
+		name: 'play-responsibly',
 		component: () => import('@/pages/play-responsibly')
 	},
 

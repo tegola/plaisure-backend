@@ -3,7 +3,9 @@
 	margin-bottom: map-get($spacers, 5);
 	color: $text-muted;
 	font-size: $font-size-sm;
+	text-align: center;
 
+	// Link color
 	a {
 		&:not(:hover) {
 			color: inherit;
@@ -13,23 +15,9 @@
 		}
 	}
 
-	// Headings
-	&__heading {
-		font-size: $font-size-xs;
-		letter-spacing: .025rem;
-		text-transform: uppercase;
-		color: inherit;
-		line-height: inherit;
-	}
-
 	// Logos and warning badge
-	&__aams-logo-list {
-		.list-inline-item:not(:last-child) {
-		  margin-right: $grid-gutter-width;
-		}
-		img {
-			height: 54px;
-		}
+	&__aams-img {
+		height: 54px;
 	}
 	&__age-badge {
 		background-color: gray('600');

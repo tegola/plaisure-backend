@@ -55,26 +55,10 @@ export default {
 		},
 
 		footer: {
-			venues: {
-				title: 'Venues',
-				search: 'Search',
-				in: 'Venues in {city}',
-				promote: 'Promote your venue'
-			},
-			company: {
-				title: 'Company',
-				about: 'About',
-				contact: 'Contact'
-			},
-			gaming: {
-				title: 'Responsible playing',
-				responsibly: 'Play responsibly',
-				rules: 'The rules',
-				myths: 'Myths',
-				help: 'Where to ask for help'
-			},
-			info: 'Informati sulle probabilità di vincita e sul regolamento di gioco sul sito {0}.', // FIXME
-			rating: 'Il gioco è vietato{break}ai minori di {age} anni', // FIXME
+			search: 'Search venues',
+			promote: 'Promote your venue',
+			about: 'About us',
+			responsible_gaming: 'Play responsibly',
 			copyright: 'Copyright {year} {company}',
 			vat: 'VAT {number}'
 		},
