@@ -27,9 +27,12 @@ Route::post('/auth/password/reset',  'Auth\ResetPasswordController@reset');
 
 // User data
 Route::get ('/user',                 'UserController@user');
-Route::post('/user',                 'userController@update');
+Route::post('/user',                 'UserController@update');
 
-Route::group(['namespace' => 'Site'], function() {
+Route::group([
+	'namespace' => 'Site',
+	'middleware' => 'throttle:60,1'
+], function() {
 	// Home page
 	Route::get('/', 'MainController@data');
 	
