@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use App\Models\VenueImport;
 use App\Models\Venue;
 use App\Models\VenueBusinessHour;
@@ -188,7 +189,7 @@ class VenuesFromImports extends Command
 		$venue->name = $source['name'];
 
 		// Store address
-		$venue->fill(array_only($source, [
+		$venue->fill(Arr::only($source, [
 			'address_line1',
 			'address_line2',
 			'address_city',
@@ -201,7 +202,7 @@ class VenuesFromImports extends Command
 		]));
 
 		// Store contacts
-		$venue->fill(array_only($source, [
+		$venue->fill(Arr::only($source, [
 			'contact_phone',
 			'url_site'
 		]));

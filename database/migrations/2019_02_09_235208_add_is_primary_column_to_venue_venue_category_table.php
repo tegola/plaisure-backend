@@ -14,7 +14,7 @@ class AddIsPrimaryColumnToVenueVenueCategoryTable extends Migration
 	public function up()
 	{
 		Schema::table('venue_venue_category', function (Blueprint $table) {
-			$table->boolean('is_primary');
+			$table->boolean('is_primary')->default(false);
 		});
 	}
 

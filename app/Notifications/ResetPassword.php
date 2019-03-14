@@ -40,11 +40,16 @@ class ResetPassword extends Notification
 	 */
 	public function toMail($notifiable)
 	{
+		$url = route('password.reset', [
+			'email' => $notifiable->email,
+			'token' => $this->token
+		]);
+
 		return (new MailMessage)
 			->subject(__('emails.reset_password.subject'))
 			->greeting(__('emails.common.greeting_name', ['name' => $notifiable->name]))
 			->line(__('emails.reset_password.intro'))
-			->action(__('emails.reset_password.action'), url("/password/reset/{$notifiable->email}/{$this->token}"))
+			->action(__('emails.reset_password.action'), $url)
 			->line(__('emails.reset_password.outro'));
 	}
 }

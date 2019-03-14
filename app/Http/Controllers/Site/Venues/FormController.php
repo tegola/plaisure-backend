@@ -57,6 +57,8 @@ class FormController extends Controller
 	 */
 	public function load(Venue $venue)
 	{
+		$user = auth()->user();
+
 		// Eager load relationships
 		$venue->load([
 			'businessHours',
@@ -77,7 +79,7 @@ class FormController extends Controller
 				'subscription'
 			]);
 
-		$country = locale_get_region(app()->getLocale());
+		$country = locale_get_region($user->locale);
 		$categories = VenueCategory::forCountry($country)
 			->select('id', 'machine_name')
 			->get();
@@ -194,7 +196,7 @@ class FormController extends Controller
 			'vlt_platform_ids'          => 'nullable|exists:vlt_platforms,id',
 			'pay_per_view_platform_ids' => 'nullable|exists:pay_per_view_platforms,id',
 
-			'business_hours'            => 'required|array|size:7', // Array of 7 elements
+			// 'business_hours'            => 'required|array|size:7', // Array of 7 elements
 			// 'business_hours.*'          => 'nullable|string', // FIXME: Use a time pattern (up to 24:00)
 			// 'business_hours.*.hours'    => 'sometimes|between:2,4' // FIXME: Use a time pattern (up to 24:00)
 			
@@ -206,10 +208,10 @@ class FormController extends Controller
 				// General pane
 				'name' => $request->input('name'),
 				'concessionaire_id' =>  $request->input('concessioniare_id'),
-				'description' =>  $request->input('description'),
-				'surface_size' =>  $request->input('surface_size'),
+				'description' =>  $request->input('description') ?: '',
+				'surface_size' =>  $request->input('surface_size') ?: 0,
 				'address_line1' => $request->input('address.line1'),
-				'address_line2' => $request->input('address.line2'),
+				'address_line2' => $request->input('address.line2') ?: '',
 				'address_city' => $request->input('address.city'),
 				'address_postcode' => $request->input('address.postcode'),
 				'address_province' => $request->input('address.province'),
@@ -221,10 +223,10 @@ class FormController extends Controller
 				'virtual_betting' => $request->input('virtual_betting'),
 				'horse_betting' => $request->input('horse_betting'),
 				'arcade_roulette' => $request->input('arcade_roulette'),
-				'vlt_machine_count' => $request->input('vlt_machine_count'),
-				'awp_machine_count' => $request->input('awp_machine_count'),
-				'seating_capacity' => $request->input('seating_capacity'),
-				'parking_capacity' => $request->input('parking_capacity'),
+				'vlt_machine_count' => $request->input('vlt_machine_count') ?: 0,
+				'awp_machine_count' => $request->input('awp_machine_count') ?: 0,
+				'seating_capacity' => $request->input('seating_capacity') ?: 0,
+				'parking_capacity' => $request->input('parking_capacity') ?: 0,
 				'amenity_atm' => $request->input('amenities.atm'),
 				'amenity_bar' => $request->input('amenities.bar'),
 				'amenity_pay_per_view' => $request->input('amenities.pay_per_view'),
@@ -236,22 +238,23 @@ class FormController extends Controller
 				'amenity_wifi' => $request->input('amenities.wifi'),
 
 				// Contacts pane
-				'contact_phone' => $request->input('contacts.phone'),
-				'contact_email' => $request->input('contacts.email'),
-				'contact_facebook' => $request->input('contacts.facebook'),
-				'contact_twitter' => $request->input('contacts.twitter'),
-				'url_site' => $request->input('urls.site'),
-				'url_online_casino' => $request->input('urls.online_casino'),
-				'url_facebook' => $request->input('urls.facebook'),
+				'contact_phone' => $request->input('contacts.phone') ?: '',
+				'contact_email' => $request->input('contacts.email') ?: '',
+				'contact_facebook' => $request->input('contacts.facebook') ?: '',
+				'contact_twitter' => $request->input('contacts.twitter') ?: '',
+				'url_site' => $request->input('urls.site') ?: '',
+				'url_online_casino' => $request->input('urls.online_casino') ?: '',
+				'url_facebook' => $request->input('urls.facebook') ?: '',
 
 				// Jackpots pane
-				'jackpot1_label' => $request->input('jackpots.1.label'),
-				'jackpot1_value' => $request->input('jackpots.1.value'),
-				'jackpot2_label' => $request->input('jackpots.2.label'),
-				'jackpot2_value' => $request->input('jackpots.2.value'),
-				'jackpot3_label' => $request->input('jackpots.3.label'),
-				'jackpot3_value' => $request->input('jackpots.3.value')
+				'jackpot1_label' => $request->input('jackpots.1.label') ?: '',
+				'jackpot1_value' => $request->input('jackpots.1.value') ?: 0,
+				'jackpot2_label' => $request->input('jackpots.2.label') ?: '',
+				'jackpot2_value' => $request->input('jackpots.2.value') ?: 0,
+				'jackpot3_label' => $request->input('jackpots.3.label') ?: '',
+				'jackpot3_value' => $request->input('jackpots.3.value') ?: 0
 			]);
+			$venue->save();
 
 			$venue->categories()->sync($request->category_ids);
 			$venue->vltPlatforms()->sync($request->vlt_platform_ids);
@@ -296,7 +299,7 @@ class FormController extends Controller
 				->each(function ($photo) use ($photoInputCollection, $venue) {
 					$input = $photoInputCollection->firstWhere('id', $photo->id);
 
-					$photo->caption = $input['caption'];
+					$photo->caption = $input['caption'] ?: '';
 					$photo->type = File::TYPE_VENUE_PHOTO;
 					$photo->filable()->associate($venue);
 					$photo->save();

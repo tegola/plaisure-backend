@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site\Venues;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use App\Models\Venue;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
@@ -105,7 +106,7 @@ class SubscriptionController extends Controller
 			// Update subscription data
 			$subscription->venue_id = $venue->id;
 			$subscription
-				->fill(array_only($subscriptionConfig, [
+				->fill(Arr::only($subscriptionConfig, [
 					'name',
 					'currency',
 					'price',

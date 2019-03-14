@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+// 	return $request->user();
+// });
+
 // File upload and view/download
 Route::post('/files',                      'FileController@upload');
 Route::get('/files/{file}/{size}/{token}', 'FileController@view')->name('files.show');
@@ -20,21 +24,23 @@ Route::get('/files/{file}/{size}/{token}', 'FileController@view')->name('files.s
 // Authorization
 Route::post('/auth/register',        'AuthController@register');
 Route::post('/auth/login',           'AuthController@login');
-Route::post('/auth/refresh',         'AuthController@refresh');
-Route::post('/auth/logout',          'Auth\LoginController@logout');
+// Route::post('/auth/refresh',         'AuthController@refresh');
+Route::post('/auth/logout',          'AuthController@logout');
 Route::post('/auth/password/forgot', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/auth/password/reset',  'Auth\ResetPasswordController@reset');
 
 // User data
-Route::get ('/user',                 'UserController@user');
-Route::post('/user',                 'UserController@update');
+Route::get ('/user',       'UserController@user');
+Route::get('/user/venues', 'UserController@venues');
+Route::get('/user/edit',   'UserController@edit');
+Route::post('/user',       'UserController@update');
 
 Route::group([
 	'namespace' => 'Site',
 	'middleware' => 'throttle:60,1'
 ], function() {
 	// Home page
-	Route::get('/', 'MainController@data');
+	Route::get('/home', 'HomeController@data'); // Had issues with '/'
 	
 	// Explore
 	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');

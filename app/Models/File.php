@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Storage;
 use Image;
 
@@ -20,6 +21,24 @@ class File extends Model
 	const TYPE_UNKNOWN     = 0;
 	const TYPE_VENUE_PHOTO = 1;
 	const TYPE_USER_PHOTO  = 2;
+
+	/**
+	 * The model's attributes.
+	 *
+	 * @var array
+	 */
+	protected $attributes = [
+		'type' => self::TYPE_UNKNOWN,
+		'filable_type' => '',
+		'filable_id' => 0,
+		'user_id' => null,
+		'token' => '',
+		'path' => '',
+		'name' => '',
+		'mime_type' => '',
+		'size' => 0,
+		'caption' => ''
+	];
 
 	/**
 	 * The attributes that aren't mass assignable.
@@ -54,7 +73,7 @@ class File extends Model
 		// Save the instance
 		$file = self::create([
 			'type' => $type,
-			'token' => str_random(5),
+			'token' => Str::random(5),
 			'path' => $storedFilePath,
 			'name' => $uploadedFile->getClientOriginalName(),
 			'mime_type' => $uploadedFile->getClientMimeType(),

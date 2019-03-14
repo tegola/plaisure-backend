@@ -19,8 +19,10 @@ class AuthController extends Controller
 			'verify' => false,
 
 			// Automatically handle errors
-			'http_errors' => false 
+			'http_errors' => false
 		]);
+
+		$this->middleware('guest')->except('logout');
 	}
 
 	/**
@@ -52,11 +54,12 @@ class AuthController extends Controller
 		// TODO: Send email confirmation
 
 		// Login using password grant client
+		/*
 		$response = $this->client->post(url('/oauth/token'), [
 			'form_params' => [
 				'grant_type' => 'password',
-				'client_id' => env('APP_CLIENT_ID'),
-				'client_secret' => env('APP_CLIENT_SECRET'),
+				'client_id' => env('OAUTH_CLIENT_ID'),
+				'client_secret' => env('OAUTH_CLIENT_SECRET'),
 				'username' => $request->email,
 				'password' => $request->password,
 				'scope' => ''
@@ -64,6 +67,7 @@ class AuthController extends Controller
 		]);
 
 		return json_decode($response->getBody(), true);
+		*/
 	}
 
 	/**
@@ -83,17 +87,15 @@ class AuthController extends Controller
 		$response = $this->client->post(url('/oauth/token'), [
 			'form_params' => [
 				'grant_type' => 'password',
-				'client_id' => env('APP_CLIENT_ID'),
-				'client_secret' => env('APP_CLIENT_SECRET'),
+				'client_id' => env('OAUTH_CLIENT_ID'),
+				'client_secret' => env('OAUTH_CLIENT_SECRET'),
 				'username' => $request->email,
 				'password' => $request->password,
 				'scope' => ''
 			]
 		]);
 
-		return $response->getBody();
-
-		return json_decode($response->getBody(), true);
+		return $response;
 	}
 
 	/**
@@ -102,17 +104,33 @@ class AuthController extends Controller
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function refresh(Request $request) {
 		// Refresh token using password grant client
 		$response = $this->client->post(url('/oauth/token'), [
 			'form_params' => [
 				'grant_type' => 'refresh_token',
-				'client_id' => env('APP_CLIENT_ID'),
-				'client_secret' => env('APP_CLIENT_SECRET'),
+				'client_id' => env('OAUTH_CLIENT_ID'),
+				'client_secret' => env('OAUTH_CLIENT_SECRET'),
 				'refresh_token' => $request->refresh_token,
 			]
 		]);
 
 		return json_decode($response->getBody(), true);
+	}
+	*/
+
+	/**
+	 * Log the user out of the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function logout(Request $request) {
+		$user = $request->user();
+
+		if ($user) $user->token()->revoke();
+
+	    return response(null, 200);
 	}
 }

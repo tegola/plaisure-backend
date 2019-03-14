@@ -10,40 +10,40 @@ use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
-	/**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		// Support utf8mb4 in MySQL <5.7.7
-		// https://laravel.com/docs/master/migrations#creating-indexes
-		Schema::defaultStringLength(191);
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
 
-		// Default nl2br in blade echo tags
-		Blade::setEchoFormat('nl2br(e(%s))');
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // Support utf8mb4 in MySQL <5.7.7
+        // https://laravel.com/docs/master/migrations#creating-indexes
+        Schema::defaultStringLength(191);
 
-		// Set locale for dates
-		Carbon::setLocale(app()->getLocale());
-		setlocale(LC_TIME, app()->getLocale());
+        // Default nl2br in blade echo tags
+        Blade::setEchoFormat('nl2br(e(%s))');
 
-		// Blade currency directive
-		Blade::directive('currency', function ($value, $decimals = 2) {
-			return "<?php echo '&euro; ' . number_format($value, $decimals, ',', '.'); ?>";
-		});
+        // Set locale for dates
+        Carbon::setLocale(app()->getLocale());
+        setlocale(LC_TIME, app()->getLocale());
 
-		// Cashier currency
-		Cashier::useCurrency('eur', '€');
-	}
+        // Blade currency directive
+        Blade::directive('currency', function ($value, $decimals = 2) {
+        	return "<?php echo '&euro; ' . number_format($value, $decimals, ',', '.'); ?>";
+        });
 
-	/**
-	 * Register any application services.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		//
-	}
+        // Cashier currency
+        Cashier::useCurrency('eur', '€');
+    }
 }

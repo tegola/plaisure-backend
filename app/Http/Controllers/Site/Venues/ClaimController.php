@@ -28,25 +28,27 @@ class ClaimController extends Controller
 			$query->take(1);
 		}]);
 
-		$codeRequired = $venue->aams_census_code ? true : false;
+		// $codeRequired = $venue->aams_census_code ? true : false;
 
 		// Prepare venue
 		$venue = fractal($venue, new VenueTransformer())
 			->includePhotos()
 			->includeCategories();
 
-		return compact('venue', 'codeRequired');
+		return compact('venue' /*, 'codeRequired'*/);
 	}
 
 	public function confirm(Venue $venue, Request $request) {
 		$this->authorize('claim', $venue);
 
 		// Validate aams census code if needed
+		/*
 		if ($venue->aams_census_code) {
 			$request->validate([
 				'code' => "required|in:{$venue->aams_census_code}"
 			]);
 		}
+		*/
 
 		// Assign venue to user
 		$venue->owner_id = auth()->user()->id;

@@ -1,46 +1,15 @@
 const mix = require('laravel-mix');
-const path = require('path');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const webpackConfig = {
-	resolve: {
-		alias: {
-			assets: path.resolve(__dirname, 'resources/assets/'),
-			'@': path.resolve(__dirname, 'resources/assets/js/')
-		}
-	},
-	plugins: [],
-	output: {
-		chunkFilename: 'js/chunks/[name].js',
-		publicPath: '/'
-	}
-};
+/*
+ |--------------------------------------------------------------------------
+ | Mix Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Mix provides a clean, fluent API for defining some Webpack build steps
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for the application as well as bundling up all the JS files.
+ |
+ */
 
-if (!mix.inProduction()) {
-	webpackConfig.plugins.push(
-		new BundleAnalyzerPlugin({
-			analyzerPort: 8889
-		})
-	);
-}
-
-mix.setPublicPath('public')
-	.autoload({
-		jquery: ['$', 'jQuery'], // Bootstrap
-		'popper.js': 'Popper' // Bootstrap
-	})
-	.babelConfig({
-		plugins: [
-			// 'transform-object-rest-spread',
-			'syntax-dynamic-import'
-		]
-	})
-	.webpackConfig(webpackConfig);
-
-// App
-mix.sass('resources/assets/sass/app/main.scss', 'css/app.css')
-	.js('resources/assets/js/index.js', 'js/app.js')
-	.version();
-
-// Mail (output to resources so the inliner works automatically)
-mix.sass('resources/assets/sass/mail/main.scss', '../resources/views/vendor/mail/html/themes/test.css');
+mix.js('resources/js/app.js', 'public/js')
+   .sass('resources/sass/app.scss', 'public/css');

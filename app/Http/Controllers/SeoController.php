@@ -16,25 +16,26 @@ class SeoController extends Controller
 	public function sitemap()
 	{
 		$sitemap = App::make('sitemap');
+		$frontendUrl = env('FRONTEND_URL');
 
-		// Set cache duration in minutes
-		$sitemap->setCache('laravel.sitemap', 60);
+		// Set cache duration
+		$sitemap->setCache('laravel.sitemap', now()->addHours(12));
 
 		// Build if not cached
 		if (!$sitemap->isCached()) {
 			// Home page
-			$sitemap->add(url('/'), null, '1.0', 'weekly');
+			$sitemap->add($frontendUrl, null, '1.0', 'weekly');
 
 			// Venues
 			$venues = Venue::all();
 			foreach ($venues as $venue) {
-				$sitemap->add(url("/venues/{$venue->id_hashed}"), $venue->updated_at, 0.9, 'daily');
+				$sitemap->add("{$frontendUrl}/venues/{$venue->id_hashed}", $venue->updated_at, 0.9, 'daily');
 			}
 
 			// About, Promote, Play responsibly
-			$sitemap->add(url('/about'), null, '0.9', 'monthly');
-			$sitemap->add(url('/promote'), null, '0.9', 'weekly');
-			$sitemap->add(url('/play-responsibly'), null, '0.9', 'weekly');
+			$sitemap->add("{$frontendUrl}/about", null, '0.9', 'monthly');
+			$sitemap->add("{$frontendUrl}/promote", null, '0.9', 'weekly');
+			$sitemap->add("{$frontendUrl}/play-responsibly", null, '0.9', 'weekly');
 		}
 
 		// Generate XML
@@ -48,10 +49,12 @@ class SeoController extends Controller
 	 */
 	public function robots()
 	{		
-		$sitemapUrl = url('/sitemap');
+		$sitemapUrl = url('/sitemap.xml');
 		$lines = [
 			"User-agent: *",
-			"Sitemap: {$sitemapUrl}"
+			"Sitemap: {$sitemapUrl}",
+			"Allow: {$sitemapUrl}",
+			"Disallow: /"
 		];
 
 		$text = implode(PHP_EOL, $lines);

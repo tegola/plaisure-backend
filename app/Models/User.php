@@ -14,6 +14,39 @@ class User extends Authenticatable
 	use HasApiTokens, Notifiable, Billable;
 
 	/**
+	 * The model's default attributes.
+	 *
+	 * @var array
+	 */
+	protected $attributes = [
+		'name' => '',
+		'legal_name' => '',
+		'email' => '',
+		'email_verified_at' => null,
+		'password' => '',
+		'remember_token' => null,
+		'locale' => '',
+		'address_line1' => '',
+		'address_line2' => '',
+		'address_city' => '',
+		'address_postcode' => '',
+		'address_region' => '',
+		'country' => '',
+		'vat_number' => '',
+		'aams_subject_enrollment_code' => '',
+		'stripe_id' => null,
+		'card_brand' => null,
+		'card_last_four' => null,
+		'card_expiry_month' => null,
+		'card_expiry_year' => null,
+		'card_holder_name' => null,
+		'trial_ends_at' => null,
+		'send_newsletter' => false,
+		'is_admin' => false,
+		'is_owner' => false
+	];
+
+	/**
 	 * The attributes that should be cast to native types.
 	 *
 	 * @var array
@@ -40,20 +73,6 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $guarded = [];
-
-	/**
-	 * Create a new User model instance.
-	 *
-	 * @param  array  $attributes
-	 * @return void
-	 */
-	public function __construct(array $attributes = [])
-	{
-		// Default country
-		$this->country = locale_get_region(app()->getLocale());
-
-		parent::__construct($attributes);
-	}
 
 	/**
 	 * Fills the model's properties with the source from Stripe.

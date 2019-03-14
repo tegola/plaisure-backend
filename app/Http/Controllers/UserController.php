@@ -27,24 +27,43 @@ class UserController extends Controller
 	 */
 	public function user(Request $request)
 	{
-		$user = $request->user();
-		$venues = $user
+		$user = auth()->user();
+		$user->venue_ids = $user->venues()->pluck('id_hashed')->all();
+
+		return compact('user');
+	}
+
+	/**
+	 * Get the venues for the logged in user.
+	 * 
+	 * @return \Illuminate\Http\Response
+	 */
+	public function venues()
+	{
+		$venues = auth()->user()
 			->venues()
-			->with([
-				'photos' => function($query) {
-					$query->first();
-				}
-			])
+			->with(['photos' => function($query) {
+				$query->first();
+			}])
 			->get()
 			->transformWith(new VenueTransformer())
 			->includeCategories()
 			->includePhotos()
 			->includePlan();
 
-		return [
-			'user' => $user,
-			'venues' => $venues
-		];
+		return compact('venues');
+	}
+
+	/**
+	 * Get the user data for the edit form.
+	 * 
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit()
+	{
+		$user = auth()->user();
+
+		return compact('user');
 	}
 
 	/**
@@ -55,12 +74,13 @@ class UserController extends Controller
 	 */
 	public function update(Request $request)
 	{
-		$user = $request->user();
+		$user = auth()->user();
 		$formValues = $request->all();
 
 		// Validate fields
 		$request->validate([
 			'name'             => 'required|string|max:255',
+			'locale'           => 'required',
 			'legal_name'       => 'nullable|'.$this->requiredLegalFieldsExcept('legal_name') .'|string',
 			'address_line1'    => 'nullable|'.$this->requiredLegalFieldsExcept('address_line1') .'|string',
 			'address_line2'    => 'nullable|string',
@@ -75,30 +95,26 @@ class UserController extends Controller
 
 		// Save user data
 		$user->fill([
-			'name' => $request->input('name'),
-			'legal_name' => $request->input('legal_name'),
-			'address_line1' => $request->input('address_line1'),
-			'address_line2' => $request->input('address_line2'),
-			'address_city' => $request->input('address_city'),
-			'address_postcode' => $request->input('address_postcode'),
-			'address_region' => $request->input('address_region'),
-			'country' => $request->input('country'),
-			'vat_number' => $request->input('vat_number'),
-			'send_newsletter' => $request->input('send_newsletter')
+			'name' => $request->name,
+			'locale' => $request->locale,
+			'legal_name' => $request->legal_name ?: '',
+			'address_line1' => $request->address_line1 ?: '',
+			'address_line2' => $request->address_line2 ?: '',
+			'address_city' => $request->address_city ?: '',
+			'address_postcode' => $request->address_postcode ?: '',
+			'address_region' => $request->address_region ?: '',
+			'country' => $request->country ?: '',
+			'vat_number' => $request->vat_number ?: '',
+			'send_newsletter' => $request->send_newsletter
 		]);
 
-		// Save new password
-		if ($request->has('new_password')) {
-			$user->password = bcrypt($request->input('new_password'));
+		// Save new password (if set)
+		if ($request->new_password) {
+			$user->password = bcrypt($request->new_password);
 		}
 
 		// Save user
 		$user->save();
-
-		// Return user data
-		return [
-			'user' => $request->user()
-		];
 	}
 
 	/**

@@ -11,6 +11,10 @@
 |
 */
 
+// Route::get('/', function () {
+// 	return view('welcome');
+// });
+
 // Auth -----------------------------------------------------------------------
 // Auth::routes();
 
@@ -27,8 +31,10 @@ Route::post('/stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookControl
 
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
-Route::get('/sitemap',       'SeoController@sitemap');
+Route::get('/sitemap.xml',   'SeoController@sitemap');
 Route::get('/robots.txt',    'SeoController@robots');
 
-// Single page app ------------------------------------------------------------
-Route::get('/{any}', 'Site\MainController@index')->where('any', '.*');
+// Frontend routes, used only for printing urls easily ------------------------
+Route::group(['domain' => env('FRONTEND_URL')], function() {
+	Route::get('/password/reset')->name('password.reset');
+});

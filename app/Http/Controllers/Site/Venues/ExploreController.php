@@ -30,11 +30,14 @@ class ExploreController extends Controller
 	/**
 	 * Load initial explore page data.
 	 * 
+	 * @param  Request $request
 	 * @return Illuminate\Http\Response
 	 */
-	public function data()
+	public function data(Request $request)
 	{
-		$categories = VenueCategory::forCountry(locale_get_region(app()->getLocale()))
+		$country = $this->extractCountry($request);
+
+		$categories = VenueCategory::forCountry($country)
 			->select('id', 'machine_name', 'name')
 			->get();
 		// $amenities = $this->amenities()->all();
@@ -51,12 +54,13 @@ class ExploreController extends Controller
 	 */
 	public function search(Request $request)
 	{
+		$country = $this->extractCountry($request);
 		// $query = $request->input('query');
 
 		if ($request->filled('categories')) {
 			$categories = $request->input('categories');
 		} else {
-			$categories = VenueCategory::forCountry(locale_get_region(app()->getLocale()))
+			$categories = VenueCategory::forCountry($country)
 				->pluck('id')
 				->all();
 		}
@@ -208,4 +212,18 @@ class ExploreController extends Controller
 		return $suggestions;
 	}
 	*/
+
+	/**
+	 * Find the country for the user, or use a default.
+	 * 
+	 * @param  Request $request
+	 * @return string
+	 */
+	private function extractCountry(Request $request)
+	{
+		$user = auth()->user();
+		$country = $user ? locale_get_region($user->locale) : $request->input('country', 'GB');
+
+		return $country;
+	}
 }

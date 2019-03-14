@@ -27,9 +27,6 @@ class DetailController extends Controller
 			'vltPlatforms'
 		]);
 
-		// Get structured data
-		$structuredData = $venue->structuredData();
-
 		// Get nearby venues (if the plan allows it)
 		$nearbyVenues = null;
 
@@ -53,6 +50,6 @@ class DetailController extends Controller
 				'vlt_platforms'
 			]);
 
-		return compact('venue', 'nearbyVenues', 'structuredData');
+		return compact('venue', 'nearbyVenues');
 	}
 }

@@ -19,7 +19,7 @@ class Venue extends Model
 	const MACHINE_TYPE_AB = 3;
 
 	/**
-	 * The model's attributes.
+	 * The model's default attributes.
 	 *
 	 * @var array
 	 */
@@ -119,8 +119,10 @@ class Venue extends Model
 	 */
 	public function __construct(array $attributes = [])
 	{
+		$user = auth()->user();
+
 		// Default country
-		$this->country = locale_get_region(app()->getLocale());
+		$this->country = $user && $user->locale ? locale_get_region($user->locale) : 'GB';
 
 		parent::__construct($attributes);
 	}
@@ -391,56 +393,6 @@ class Venue extends Model
 
 		// No match
 		return false;
-	}
-
-	/**
-	 * Prepare structured data schema.
-	 * 
-	 * @return Spatie\SchemaOrg\Schema
-	 */
-	public function structuredData()
-	{
-		// Data that doesn't need to be checked
-		$schema = Schema::entertainmentBusiness()
-			->name($this->name)
-			->url(url("/venues/{$this->id_hashed}"))
-			->address($this->long_address) // FIXME: Separare i campi?
-			->setProperty('geo', Schema::geoCoordinates()
-				->latitude($this->geo_latitude)
-				->longitude($this->geo_longitude)
-			);
-
-		// Data that need to be checked for existence
-		if ($this->description)   $schema->description($this->description);
-		if ($this->contact_phone) $schema->telephone($this->contact_phone);
-		if ($this->contact_email) $schema->email($this->contact_email);
-
-		// Image
-		$photo = $this->photos()->latest()->first();
-
-		$schema->image($photo ? $photo->thumbnail_url : [
-			asset('img/schema/16x9.png'),
-			asset('img/schema/4x3.png'),
-			asset('img/schema/1x1.png')
-		]);
-
-		// Opening hours
-		$hoursSchema = [];
-
-		foreach ($this->businessHours as $hours) {
-			$day = substr(date('D', strtotime("Sunday +{$hours->day} days")), 0, 2);
-
-			array_push(
-				$hoursSchema,
-				Schema::openingHoursSpecification()
-					->dayOfWeek($day)
-					->opens($hours->opens)
-					->closes($hours->closes)
-			);
-		}
-		if (count($hoursSchema)) $schema->setProperty('openingHoursSpecification', $hoursSchema);
-
-		return $schema;
 	}
 
 	/**
