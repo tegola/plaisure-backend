@@ -48,22 +48,22 @@ class HomeController extends Controller
 		});
 
 
-		// New - 8 taken from the latest 36 (1/4 chance to appear)
+		// New - 9 taken from the latest 36 (1/4 chance to appear)
 		$newVenues = Cache::remember('home.new', $cacheLimit, function() use($country) {
 			$venues = $this->initQuery($country)
 				->latest()
-				->take(36)
-				->get()
-				->random(9);
+				->take(36);
 
-			return $this->transformVenues($venues);
+			// Get exactly 9
+			if ($venues->count() >= 9) {
+				$venues = $venues->get()->random(9);
+				$venues = $this->transformVenues($venues);
+			} else {
+				$venues = [];
+			}
+
+			return $venues;
 		});
-
-		return compact(
-			'categories',
-			'highlightedVenues',
-			'newVenues'
-		);
 	}
 
 	/**
