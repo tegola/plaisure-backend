@@ -7,7 +7,7 @@ return [
 		'greeting_name' => 'Hello :name!',
 		'salutation' => 'Regards',
 		'salutation_name' => 'The team at :name',
-		'trouble' => "If you're having trouble clicking the “:action” button, copy and paste the URL below into your web browser:",
+		'action_trouble' => "If you're having trouble clicking the “:action” button, copy and paste the following URL below into your web browser:",
 		'rights' => 'All rights reserved',
 	],
 

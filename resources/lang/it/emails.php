@@ -7,7 +7,7 @@ return [
 		'greeting_name' => 'Ciao :name!',
 		'salutation' => 'Saluti',
 		'salutation_name' => 'Il team di :name',
-		'trouble' => "Se non riesci a cliccare il pulsante “:action”, copia e incolla il seguente URL nella barra indirizzi del tuo browser:",
+		'action_trouble' => "Se non riesci a cliccare il pulsante “:action”, copia e incolla il seguente URL nella barra indirizzi del tuo browser:",
 		'rights' => 'Tutti i diritti riservati',
 	],
 

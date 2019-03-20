@@ -31,9 +31,6 @@ class AppServiceProvider extends ServiceProvider
         // https://laravel.com/docs/master/migrations#creating-indexes
         Schema::defaultStringLength(191);
 
-        // Default nl2br in blade echo tags
-        Blade::setEchoFormat('nl2br(e(%s))');
-
         // Set locale for dates
         Carbon::setLocale(app()->getLocale());
         setlocale(LC_TIME, app()->getLocale());

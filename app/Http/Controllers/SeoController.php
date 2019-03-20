@@ -16,7 +16,6 @@ class SeoController extends Controller
 	public function sitemap()
 	{
 		$sitemap = App::make('sitemap');
-		$frontendUrl = env('FRONTEND_URL');
 
 		// Set cache duration
 		$sitemap->setCache('laravel.sitemap', now()->addHours(12));
@@ -24,18 +23,18 @@ class SeoController extends Controller
 		// Build if not cached
 		if (!$sitemap->isCached()) {
 			// Home page
-			$sitemap->add($frontendUrl, null, '1.0', 'weekly');
+			$sitemap->add(route('home'), null, '1.0', 'weekly');
 
 			// Venues
 			$venues = Venue::all();
 			foreach ($venues as $venue) {
-				$sitemap->add("{$frontendUrl}/venues/{$venue->id_hashed}", $venue->updated_at, 0.9, 'daily');
+				$sitemap->add(route('venues.detail', $venue), $venue->updated_at, 0.9, 'daily');
 			}
 
 			// About, Promote, Play responsibly
-			$sitemap->add("{$frontendUrl}/about", null, '0.9', 'monthly');
-			$sitemap->add("{$frontendUrl}/promote", null, '0.9', 'weekly');
-			$sitemap->add("{$frontendUrl}/play-responsibly", null, '0.9', 'weekly');
+			$sitemap->add(route('about'), null, 0.9, 'monthly');
+			$sitemap->add(route('promote'), null, 0.9, 'weekly');
+			$sitemap->add(route('play-responsibly'), null, 0.9, 'weekly');
 		}
 
 		// Generate XML

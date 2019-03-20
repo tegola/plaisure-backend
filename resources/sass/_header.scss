@@ -1,0 +1,11 @@
+.pg-header {
+	background-color: $palette-dark-green-100;
+	padding-top: $spacer * 1.5;
+	padding-bottom: $spacer;
+	margin-bottom: $spacer * 2;
+
+	&__logo {
+		width: 196px; // @2x
+		margin-left: -5px; // Visual align
+	}
+}

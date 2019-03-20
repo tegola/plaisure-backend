@@ -1,0 +1,15 @@
+.pg-body {
+	font-family: $font-family-base;
+	font-size: $font-size-base;
+	font-weight: $font-weight-base;
+	line-height: $line-height-base;
+	color: $body-color;
+	text-align: left;
+	background-color: $body-bg;
+}
+.pg-container {
+	margin: 0 auto;
+	max-width: 700px;
+	padding-left: $spacer;
+	padding-right: $spacer;
+}
