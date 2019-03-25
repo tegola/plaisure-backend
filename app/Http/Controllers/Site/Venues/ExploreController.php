@@ -29,7 +29,7 @@ class ExploreController extends Controller
 
 	/**
 	 * Load initial explore page data.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return Illuminate\Http\Response
 	 */
@@ -38,34 +38,23 @@ class ExploreController extends Controller
 		$country = $this->extractCountry($request);
 
 		$categories = VenueCategory::forCountry($country)
-			->select('id', 'machine_name', 'name')
+			->select('id', 'machine_name')
 			->get();
 		// $amenities = $this->amenities()->all();
-		
-		return compact('categories'/*, 'amenities'*/);
 
+		return compact('categories'/*, 'amenities'*/);
 	}
 
 	/**
 	 * Search for venues by given parameters.
-	 * 
+	 *
 	 * @param  Request
 	 * @return Illuminate\Http\Response
 	 */
 	public function search(Request $request)
 	{
 		$country = $this->extractCountry($request);
-		// $query = $request->input('query');
 
-		if ($request->filled('categories')) {
-			$categories = $request->input('categories');
-		} else {
-			$categories = VenueCategory::forCountry($country)
-				->pluck('id')
-				->all();
-		}
-		$categoryIds = array_map('intval', $categories);
-		// $amenityIds = $request->filled('amenities') ? $request->input('amenities') : [];
 		$radius = $request->filled('radius') ? intval($request->input('radius')) : 10;
 		$c_lat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
 		$c_lng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
@@ -80,31 +69,48 @@ class ExploreController extends Controller
 		}
 
 		// Start loading venues
-		$venues = Venue::with('categories');
+		$query = Venue::with('categories');
 
 		// Find by bounds or center
 		if ($ne_lat && $ne_lng && $sw_lat && $sw_lng) {
-			$venues->inBounds($ne_lat, $ne_lng, $sw_lat, $sw_lng);
+			$query->inBounds($ne_lat, $ne_lng, $sw_lat, $sw_lng);
+
+			// If center is also specified, find and order by distance too
+			if ($c_lat && $c_lng) {
+				$query->withDistanceFrom($c_lat, $c_lng);
+			}
 		} elseif ($c_lat && $c_lng) {
-			$venues->withDistanceFrom($c_lat, $c_lng);
+			$query->withDistanceFrom($c_lat, $c_lng);
 
 			// Limit by radius
 			if ($radius) {
-				$venues
+				$query
 					->having('distance', '<=', $radius)
 					->orHaving('distance_with_bonus', '<=', $radius);
 			}
 		}
 
 		// Filter by category
+		if ($request->filled('categories')) {
+			$categories = $request->input('categories');
+		} else {
+			$categories = VenueCategory::forCountry($country)
+				->pluck('id')
+				->all();
+		}
+
+		$categoryIds = array_map('intval', $categories);
+
 		if ($categoryIds) {
-			$venues->whereHas('categories', function($query) use ($categoryIds) {
+			$query->whereHas('categories', function($query) use ($categoryIds) {
 				$query->whereIn('id', $categoryIds);
 			});
 		}
 
 		// Filter by amenities
 		/*
+		$amenityIds = $request->filled('amenities') ? $request->input('amenities') : [];
+
 		if ($amenityIds) {
 			$amenities = $this->amenities();
 
@@ -115,13 +121,13 @@ class ExploreController extends Controller
 				// Skip if is not a valid amenity
 				if (!$currentAmenity) continue;
 
-				$venues->orWhere($currentAmenity['field'], true);
+				$query->orWhere($currentAmenity['field'], true);
 			}
 		}
 		*/
 
 		// Load first photo
-		$venues->with(['photos' => function($query) {
+		$query->with(['photos' => function($query) {
 			$query->take(1);
 		}]);
 
@@ -130,7 +136,7 @@ class ExploreController extends Controller
 		// number it can get. We did it to avoid using simplePaginate(), which
 		// is not supported by Fractal transformers, and to avoid paginate(),
 		// which don't work with MySQL HAVINGs
-		$venues = $venues
+		$venues = $query
 			->take(100)
 			->get()
 			->transformWith(new VenueTransformer())
@@ -143,7 +149,7 @@ class ExploreController extends Controller
 	/**
 	 * Prepare category and venue suggestions, the latter only if location data
 	 * is present.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return array
 	 */
@@ -215,7 +221,7 @@ class ExploreController extends Controller
 
 	/**
 	 * Find the country for the user, or use a default.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return string
 	 */

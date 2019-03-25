@@ -47,7 +47,6 @@ class HomeController extends Controller
 			return $venues;
 		});
 
-
 		// New - 9 taken from the latest 36 (1/4 chance to appear)
 		$newVenues = Cache::remember('home.new', $cacheLimit, function() use($country) {
 			$venues = $this->initQuery($country)
@@ -64,6 +63,8 @@ class HomeController extends Controller
 
 			return $venues;
 		});
+
+		return compact('categories', 'highlightedVenues', 'newVenues');
 	}
 
 	/**
