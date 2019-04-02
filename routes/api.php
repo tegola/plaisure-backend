@@ -43,10 +43,10 @@ Route::group([
 	Route::get('/home', 'HomeController@data'); // Had issues with '/'
 	
 	// Explore
-	Route::get ('/venues/explore/data',   'Venues\ExploreController@data');
-	Route::post('/venues/explore/search', 'Venues\ExploreController@search');
+	Route::get ('/venues/explore', 'Venues\ExploreController@data');
+	Route::post('/venues/explore', 'Venues\ExploreController@search');
 
-	// Venue edit + subscription
+	// Venue add/edit
 	Route::get ('/venues/add',          'Venues\FormController@create');
 	Route::post('/venues',              'Venues\FormController@store');
 	Route::get ('/venues/{venue}/edit', 'Venues\FormController@edit');

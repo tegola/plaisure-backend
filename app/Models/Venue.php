@@ -9,7 +9,6 @@ use App\Models\VenueBusinessHour;
 use DB;
 use Auth;
 use Carbon;
-use Spatie\SchemaOrg\Schema;
 use Hashids\Hashids;
 
 class Venue extends Model

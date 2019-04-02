@@ -19,17 +19,17 @@ return [
 		'stripe_plan' => 'plan_DhbCoKimOWGLU4', // FIXME: Specificarlo per ogni environment
 		'currency' => 'EUR',
 		'price' => 39,
-		'distance_bonus' => 20,
-		'photo_limit' => 50,
-		'hide_nearby_venues' => true
+		'distance_bonus' => 10,
+		'photo_limit' => 50, // FIXME: Rimuovere
+		'hide_nearby_venues' => false
 	],
 	'premium_2' => [
 		'name' => 'premium_2',
-		'stripe_plan' => 'plan_DhbDcA6Y1N408h', // FIXME: Specificarlo per ogni environment
+		'stripe_plan' => 'plan_EmwdZ3ELUNjJj3', // FIXME: Specificarlo per ogni environment
 		'currency' => 'EUR',
 		'price' => 79,
 		'distance_bonus' => 50,
-		'photo_limit' => 100,
+		'photo_limit' => 50, // FIXME: Rimuovere
 		'hide_nearby_venues' => true
 	]
 ];

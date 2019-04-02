@@ -75,7 +75,6 @@ class UserController extends Controller
 	public function update(Request $request)
 	{
 		$user = auth()->user();
-		$formValues = $request->all();
 
 		// Validate fields
 		$request->validate([

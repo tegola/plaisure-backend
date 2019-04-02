@@ -161,6 +161,7 @@ class FormController extends Controller
 			'address.postcode'          => 'required|string',
 			'address.province'          => 'required|string',
 			// 'address.region'            => 'required|string',
+			'country'                   => 'required|string',
 
 			'coords.lat'                => 'required|numeric|between:-90,90',
 			'coords.lng'                => 'required|numeric|between:-180,180',
@@ -215,6 +216,7 @@ class FormController extends Controller
 				'address_city' => $request->input('address.city'),
 				'address_postcode' => $request->input('address.postcode'),
 				'address_province' => $request->input('address.province'),
+				'country' => $request->input('country'),
 				'geo_latitude' => $request->input('coords.lat'),
 				'geo_longitude' => $request->input('coords.lng'),
 

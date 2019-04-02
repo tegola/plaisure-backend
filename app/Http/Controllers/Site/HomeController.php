@@ -19,8 +19,7 @@ class HomeController extends Controller
 	 */
 	public function data(Request $request)
 	{
-		$user = auth()->user();
-		$country = $user ? locale_get_region($user->locale) : $request->input('country', 'GB');
+		$country = $this->extractCountry($request);
 
 		$categories = VenueCategory::forCountry($country)
 			->select('id', 'machine_name')
@@ -95,5 +94,19 @@ class HomeController extends Controller
 				'photos',
 				'business_hours'
 			]);
+	}
+
+	/**
+	 * Find the country for the user, or use a default.
+	 *
+	 * @param  Request $request
+	 * @return string
+	 */
+	private function extractCountry(Request $request)
+	{
+		$user = auth()->user();
+		$country = $user ? locale_get_region($user->locale) : $request->input('country', 'GB');
+
+		return $country;
 	}
 }

@@ -272,7 +272,8 @@ class VenueTransformer extends TransformerAbstract
 				'distance_bonus',
 				'photo_limit',
 				'hide_nearby_venues',
-				'ends_at'
+				'ends_at',
+				'updated_at'
 			);
 		});
 	}

@@ -82,21 +82,21 @@ class User extends Authenticatable
 	 */
 	protected function fillCardDetails($card)
 	{
-	    if ($card instanceof StripeCard) {
-	        $this->card_brand = $card->brand;
-	        $this->card_last_four = $card->last4;
-	        $this->card_expiry_month = $card->exp_month;
-	        $this->card_expiry_year = $card->exp_year;
-	        $this->card_holder_name = $card->name;
-	    } elseif ($card instanceof StripeBankAccount) {
-	        $this->card_brand = 'Bank Account';
-	        $this->card_last_four = $card->last4;
-	        $this->card_expiry_month = null;
-	        $this->card_expiry_year = null;
-	        $this->card_holder_name = $card->account_holder_name;
-	    }
+		if ($card instanceof \Stripe\Card) {
+			$this->card_brand = $card->brand;
+			$this->card_last_four = $card->last4;
+			$this->card_expiry_month = $card->exp_month;
+			$this->card_expiry_year = $card->exp_year;
+			$this->card_holder_name = $card->name;
+		} else if ($card instanceof \Stripe\BankAccount) {
+			$this->card_brand = 'Bank Account';
+			$this->card_last_four = $card->last4;
+			$this->card_expiry_month = null;
+			$this->card_expiry_year = null;
+			$this->card_holder_name = $card->account_holder_name;
+		}
 
-	    return $this;
+		return $this;
 	}
 
 	/**

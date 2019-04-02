@@ -45,16 +45,9 @@ class SubscriptionController extends Controller
 
 		// Additional validations based on subscription name and user status
 		if ($subscriptionName != 'default') {
-			// Require token and credit card holder if there isn't a card registered
-			if (!$user->hasCardOnFile()) {
-				$validator->addRules([
-					'token_id' => 'required',
-					'card_holder_name' => 'required'
-				]);
-			}
-
-			// Require billing data if something is missing
-			if (!$user->hasBillingInfo()) {
+			// Require billing data if something is missing or user wants to
+			// use new billing info
+			if (!$user->hasBillingInfo() || $request->new_billing) {
 				$validator->addRules([
 					'legal_name' => 'required|string',
 					'address_line1' => 'required|string',
@@ -64,6 +57,15 @@ class SubscriptionController extends Controller
 					'address_postcode' => 'required|string',
 					'country' => 'required|string',
 					'vat_number' => 'required|string|max:20'
+				]);
+			}
+
+			// Require token and credit card holder if there isn't a card
+			// registered or user wants to use a new payment method
+			if (!$user->hasCardOnFile() || $request->new_payment) {
+				$validator->addRules([
+					'token_id' => 'required',
+					'card_holder_name' => 'required'
 				]);
 			}
 		}
@@ -82,8 +84,9 @@ class SubscriptionController extends Controller
 
 		} else {
 
-			// Premium subscription: if already subscribed, resume it if it's
-			// the same as the current one, or swap it with the new one.
+			// Paid subscription: if already subscribed, resume it if it's
+			// the same as the current one and on grace period, or swap it with
+			// the new one.
 			// If not subscribed, create the new subscription
 			if ($venue->subscribed()) {
 				if ($subscriptionName == $subscription->name) {
@@ -118,10 +121,10 @@ class SubscriptionController extends Controller
 
 		}
 
-		// Store billing info if needed
-		// > 1 means we have more than just the new subscription name
-		if ($request->count() > 1) {
+		// Store billing info if needed or user wanted new ones
+		if (!$user->hasBillingInfo() || $request->new_billing) {
 			$user
+				->updateCardFromStripe()
 				->fill($request->only([
 					'legal_name',
 					'address_line1',
@@ -133,6 +136,11 @@ class SubscriptionController extends Controller
 					'vat_number'
 				]))
 				->save();
+		}
+
+		// Update payment info if needed or user wanted a new one
+		if (!$user->hasCardOnFile() || $request->new_payment) {
+			$user->updateCardFromStripe();
 		}
 	}
 }
