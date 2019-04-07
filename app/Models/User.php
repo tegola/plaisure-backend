@@ -147,4 +147,45 @@ class User extends Authenticatable
 			&& $this->country
 			&& $this->vat_number);
 	}
+
+	/**
+	 * Updates the customer billing data on Stripe.
+	 * 
+	 * @return \Stripe\ApiResource
+	 */
+	public function updateStripeCustomer()
+	{
+		// Stop if user has no billing info or no Stripe id
+		if (!$this->hasStripeId()) return;
+
+		$customer = $this->asStripeCustomer();
+
+		// E-mail
+		$customer->email = $this->email;
+
+		// Billing address (is called Shipping on Stripe)
+		if ($this->legal_name && $this->address_line1) {
+			$customer->shipping = [
+				'name' => $this->legal_name,
+				'address' => [
+					'line1' => $this->address_line1,
+					'line2' => optional($this)->address_line2,
+					'city' => $this->address_city,
+					'postal_code' => $this->address_postcode,
+					'state' => $this->address_region,
+					'country' => $this->country
+				]
+			];
+		} else {
+			$customer->shipping = null;
+		}
+
+		// Tax info
+		$customer->tax_info = [
+			'tax_id' => $this->vat_number ?: null,
+			'type' => 'vat'
+		];
+
+		return $customer->save();
+	}
 }

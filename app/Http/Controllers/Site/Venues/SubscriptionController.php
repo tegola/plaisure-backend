@@ -124,7 +124,6 @@ class SubscriptionController extends Controller
 		// Store billing info if needed or user wanted new ones
 		if (!$user->hasBillingInfo() || $request->new_billing) {
 			$user
-				->updateCardFromStripe()
 				->fill($request->only([
 					'legal_name',
 					'address_line1',
@@ -136,6 +135,7 @@ class SubscriptionController extends Controller
 					'vat_number'
 				]))
 				->save();
+			$user->updateStripeCustomer();
 		}
 
 		// Update payment info if needed or user wanted a new one

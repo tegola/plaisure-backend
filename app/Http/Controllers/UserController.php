@@ -76,21 +76,44 @@ class UserController extends Controller
 	{
 		$user = auth()->user();
 
+		// Prepare validation rules
+		// Billing rules depend on active subscriptions. At least one active
+		// subscriptions means that the user cannot nullify its billing data.
+		// Otherwise, billing fields are only required if any one of them is
+		// present.
+		$rules = [
+			'name'            => 'required|string|max:255',
+			'locale'          => 'required',
+			'new_password'    => 'nullable|string|min:8|confirmed',
+			'send_newsletter' => 'boolean'
+		];
+
+		if ($user->subscriptions()->active()->count()) {
+			$rules = array_merge($rules, [
+				'legal_name'       => 'required|string',
+				'address_line1'    => 'required|string',
+				'address_line2'    => 'nullable|string',
+				'address_city'     => 'required|string',
+				'address_postcode' => 'required|string',
+				'address_region'   => 'required|string',
+				'country'          => 'required|string',
+				'vat_number'       => 'required|string|max:20',
+			]);
+		} else {
+			$rules = array_merge($rules, [
+				'legal_name'       => "nullable|{$this->prepareRequiredWithRule('legal_name')}|string",
+				'address_line1'    => "nullable|{$this->prepareRequiredWithRule('address_line1')}|string",
+				'address_line2'    => 'nullable|string',
+				'address_city'     => "nullable|{$this->prepareRequiredWithRule('address_city')}|string",
+				'address_postcode' => "nullable|{$this->prepareRequiredWithRule('address_postcode')}|string",
+				'address_region'   => "nullable|{$this->prepareRequiredWithRule('address_region')}|string",
+				'country'          => "nullable|{$this->prepareRequiredWithRule('country')}|string",
+				'vat_number'       => "nullable|{$this->prepareRequiredWithRule('vat_number')}|string|max:20",
+			]);
+		}
+
 		// Validate fields
-		$request->validate([
-			'name'             => 'required|string|max:255',
-			'locale'           => 'required',
-			'legal_name'       => 'nullable|'.$this->requiredLegalFieldsExcept('legal_name') .'|string',
-			'address_line1'    => 'nullable|'.$this->requiredLegalFieldsExcept('address_line1') .'|string',
-			'address_line2'    => 'nullable|string',
-			'address_city'     => 'nullable|'.$this->requiredLegalFieldsExcept('address_city') .'|string',
-			'address_postcode' => 'nullable|'.$this->requiredLegalFieldsExcept('address_postcode') .'|string',
-			'address_region'   => 'nullable|'.$this->requiredLegalFieldsExcept('address_region') .'|string',
-			'country'          => 'nullable|'.$this->requiredLegalFieldsExcept('country') .'|string',
-			'vat_number'       => 'nullable|'.$this->requiredLegalFieldsExcept('vat_number') .'|string|max:20',
-			'new_password'     => 'nullable|string|min:8|confirmed',
-			'send_newsletter'  => 'boolean'
-		]);
+		$request->validate($rules);
 
 		// Save user data
 		$user->fill([
@@ -112,17 +135,19 @@ class UserController extends Controller
 			$user->password = bcrypt($request->new_password);
 		}
 
-		// Save user
+		// Save user and Stripe customer
 		$user->save();
+		$user->updateStripeCustomer();
 	}
 
 	/**
-	 * Prepare the legal fields required_with validation rule.
+	 * Prepare the required_with validation rule for billing fields.
 	 * 
-	 * @param  string $name The field to exclude
+	 * @param  string $except The field to exclude
 	 * @return string "required_with:field1,field2,..."
 	 */
-	private function requiredLegalFieldsExcept($name) {
+	private function prepareRequiredWithRule(string $except)
+	{
 		$fields = [
 			'legal_name',
 			'address_line1',
@@ -133,10 +158,11 @@ class UserController extends Controller
 			'vat_number'
 		];
 
-		$filtered = array_filter($fields, function($field) use ($name) {
-			return $field != $name;
+		// Remove excepted field
+		$fields = array_filter($fields, function($field) use ($except) {
+			return $field !== $except;
 		});
 
-		return 'required_with:'. implode(',', $filtered);
+		return 'required_with:'. implode(',', $fields);
 	}
 }
