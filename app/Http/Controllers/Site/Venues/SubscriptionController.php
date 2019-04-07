@@ -7,7 +7,6 @@ use Illuminate\Support\Arr;
 use App\Models\Venue;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
-use Validator;
 
 class SubscriptionController extends Controller
 {
@@ -35,20 +34,20 @@ class SubscriptionController extends Controller
 		$invalidSubscriptionNames = $subscription ? [$subscription->name] : [];
 
 		// Prepare basic validations
-		$validator = Validator::make($request->all(), [
+		$rules = [
 			'subscription_name' => [
 				'required',
 				Rule::in($validSubscriptionNames), // Only valid subscriptions
 				Rule::notIn($invalidSubscriptionNames) // Don't allow picking the current subscription
 			]
-		]);
+		];
 
 		// Additional validations based on subscription name and user status
 		if ($subscriptionName != 'default') {
 			// Require billing data if something is missing or user wants to
 			// use new billing info
 			if (!$user->hasBillingInfo() || $request->new_billing) {
-				$validator->addRules([
+				$rules = array_merge($rules, [
 					'legal_name' => 'required|string',
 					'address_line1' => 'required|string',
 					'address_line2' => 'nullable|string',
@@ -63,15 +62,15 @@ class SubscriptionController extends Controller
 			// Require token and credit card holder if there isn't a card
 			// registered or user wants to use a new payment method
 			if (!$user->hasCardOnFile() || $request->new_payment) {
-				$validator->addRules([
+				$rules = array_merge($rules, [
 					'token_id' => 'required',
 					'card_holder_name' => 'required'
 				]);
 			}
 		}
 
-		// Validate
-		$validator->validate();
+		// Validate fields
+		$request->validate($rules);
 
 		// Set new subscription
 		if ($subscriptionName == 'default') {
@@ -123,18 +122,16 @@ class SubscriptionController extends Controller
 
 		// Store billing info if needed or user wanted new ones
 		if (!$user->hasBillingInfo() || $request->new_billing) {
-			$user
-				->fill($request->only([
-					'legal_name',
-					'address_line1',
-					'address_line2',
-					'address_city',
-					'address_region',
-					'address_postcode',
-					'country',
-					'vat_number'
-				]))
-				->save();
+			$user->update($request->only([
+				'legal_name',
+				'address_line1',
+				'address_line2',
+				'address_city',
+				'address_region',
+				'address_postcode',
+				'country',
+				'vat_number'
+			]));
 			$user->updateStripeCustomer();
 		}
 
