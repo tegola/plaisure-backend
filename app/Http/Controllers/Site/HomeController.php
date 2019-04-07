@@ -27,8 +27,9 @@ class HomeController extends Controller
 		$cacheLimit = now()->addHour();
 
 		// Highlights - 2 taken from the latest 20 (1/10 chance to appear)
-		$highlightedVenues = Cache::remember('home.highlights', $cacheLimit, function() use($country) {
+		$highlightedVenues = Cache::remember("{$country}.home.highlights.", $cacheLimit, function() use($country) {
 			$venues = $this->initQuery($country)
+				->has('photos')
 				->whereHas('subscriptions', function($query) {
 					$query->where('name', 'premium_2'); // FIXME: where subscription has a field "home_page_highlight"
 				})
@@ -37,7 +38,16 @@ class HomeController extends Controller
 
 			// Get at least 2
 			if ($venues->count() >= 2) {
-				$venues = $venues->get()->random(2);
+				$venues = $venues
+					->get()
+					->each(function($venue) {
+						$venue->load([
+							'photos' => function($query) {
+								return $query->take(1);
+							}
+						]);
+					})
+					->random(2);
 				$venues = $this->transformVenues($venues);
 			} else {
 				$venues = [];
@@ -47,14 +57,23 @@ class HomeController extends Controller
 		});
 
 		// New - 9 taken from the latest 36 (1/4 chance to appear)
-		$newVenues = Cache::remember('home.new', $cacheLimit, function() use($country) {
+		$newVenues = Cache::remember("{$country}.home.new", $cacheLimit, function() use($country) {
 			$venues = $this->initQuery($country)
 				->latest()
 				->take(36);
 
 			// Get exactly 9
 			if ($venues->count() >= 9) {
-				$venues = $venues->get()->random(9);
+				$venues = $venues
+					->get()
+					->each(function($venue) {
+						$venue->load([
+							'photos' => function($query) {
+								return $query->take(1);
+							}
+						]);
+					})
+					->random(9);
 				$venues = $this->transformVenues($venues);
 			} else {
 				$venues = [];
@@ -74,10 +93,7 @@ class HomeController extends Controller
 	private function initQuery($country) {
 		return Venue::query()
 			->where('country', $country)
-			->with('categories', 'businessHours')
-			->with(['photos' => function($query) {
-				$query->take(1);
-			}]);
+			->with('categories', 'businessHours');
 	}
 
 	/**

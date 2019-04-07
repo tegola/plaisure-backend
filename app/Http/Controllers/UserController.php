@@ -40,16 +40,20 @@ class UserController extends Controller
 	 */
 	public function venues()
 	{
-		$venues = auth()->user()
-			->venues()
-			->with(['photos' => function($query) {
-				$query->first();
-			}])
-			->get()
+		$venues = auth()->user()->venues
+			->each(function($venue) { // Load only first photo
+				$venue->load([
+					'photos' => function($query) {
+						$query->take(1);
+					}
+				]);
+			})
 			->transformWith(new VenueTransformer())
-			->includeCategories()
-			->includePhotos()
-			->includePlan();
+			->parseIncludes([
+				'categories',
+				'photos',
+				'subscription'
+			]);
 
 		return compact('venues');
 	}

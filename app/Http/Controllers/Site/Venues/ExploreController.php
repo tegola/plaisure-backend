@@ -126,12 +126,7 @@ class ExploreController extends Controller
 		}
 		*/
 
-		// Load first photo
-		$query->with(['photos' => function($query) {
-			$query->take(1);
-		}]);
-
-		// Return results
+		// Load venues with photos
 		// We take a maximum of 100 venues, and the client knows it's the max
 		// number it can get. We did it to avoid using simplePaginate(), which
 		// is not supported by Fractal transformers, and to avoid paginate(),
@@ -139,9 +134,21 @@ class ExploreController extends Controller
 		$venues = $query
 			->take(100)
 			->get()
+			->each(function($venue) {
+				$venue->load([
+					'photos' => function($query) {
+						$query->take(1);
+					}
+				]);
+			});
+
+		// Return results
+		$venues = $venues
 			->transformWith(new VenueTransformer())
-			->includeCategories()
-			->includePhotos();
+			->parseIncludes([
+				'categories',
+				'photos'
+			]);
 
 		return $venues;
 	}
