@@ -34,6 +34,7 @@ class AuthController extends Controller
 	public function register(Request $request) {
 		// Validate fields
 		$request->validate([
+			'locale' => 'required',
 			'name' => 'required|string|max:255',
 			'email' => 'required|string|email|max:255|unique:users',
 			'password' => 'required|string|min:8'
@@ -41,6 +42,7 @@ class AuthController extends Controller
 
 		// Register user
 		$user = User::create([
+			'locale' => $request->locale,
 			'name' => $request->name,
 			'email' => $request->email,
 			'password' => bcrypt($request->password),
