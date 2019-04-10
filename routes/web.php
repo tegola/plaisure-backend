@@ -11,15 +11,20 @@
 |
 */
 
-// Route::get('/', function () {
-// 	return view('welcome');
-// });
+Route::get('/mailtest', function () {
+	$user = App\Models\User::find(1);
+	return view('mail.billing.upcoming', [
+		'notifiable' => $user, 
+		'invoice' => new stdClass(),
+		'venue' => $user->venues()->first()
+	]);
+});
 
 // Auth -----------------------------------------------------------------------
 // Auth::routes();
 
 // Stripe webhooks ------------------------------------------------------------
-Route::post('/stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
+Route::post('/webhooks/stripe', 'Webhooks\StripeController@handleWebhook');
 
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it

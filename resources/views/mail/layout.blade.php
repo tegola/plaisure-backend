@@ -5,13 +5,13 @@
 	<link rel="stylesheet" href="{{ asset('css/mail.css') }}">
 </head>
 <body>
-	<div class="pg-body">
-		<div class="pg-header">
-			<div class="pg-container">
-				<img class="pg-header__logo" src="{{ asset('images/email/logo.png') }}" alt="{{ config('app.name') }}">
+	<div class="body">
+		<div class="container">
+			<div class="my-4 my-md-5">
+				<img class="logo" src="{{ asset('images/email/logo.png') }}" alt="{{ config('app.name') }}">
+				<hr>
 			</div>
-		</div>
-		<div class="pg-container">
+
 			@yield('content')
 		</div>
 	</div>

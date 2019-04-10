@@ -1,4 +1,4 @@
-.pg-body {
+.body {
 	font-family: $font-family-base;
 	font-size: $font-size-base;
 	font-weight: $font-weight-base;
@@ -7,7 +7,7 @@
 	text-align: left;
 	background-color: $body-bg;
 }
-.pg-container {
+.container {
 	margin: 0 auto;
 	max-width: 700px;
 	padding-left: $spacer;
