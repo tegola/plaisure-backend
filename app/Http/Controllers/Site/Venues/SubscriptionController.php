@@ -122,16 +122,16 @@ class SubscriptionController extends Controller
 
 		// Store billing info if needed or user wanted new ones
 		if (!$user->hasBillingInfo() || $request->new_billing) {
-			$user->update($request->only([
-				'legal_name',
-				'address_line1',
-				'address_line2',
-				'address_city',
-				'address_region',
-				'address_postcode',
-				'country',
-				'vat_number'
-			]));
+			$user->update([
+				'legal_name' => $request->legal_name,
+				'address_line1' => $request->address_line1,
+				'address_line2' => $request->address_line2 ?: '',
+				'address_city' => $request->address_city,
+				'address_postcode' => $request->address_postcode,
+				'address_region' => $request->address_region,
+				'country' => $request->country,
+				'vat_number' => $request->vat_number
+			]);
 			$user->updateStripeCustomer();
 		}
 

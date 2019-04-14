@@ -28,7 +28,7 @@ class Megabet extends Importer
 	public function fetch()
 	{
 		// Get the page
-		$crawler = $this->browser->request('GET', 'http://www.megabet.co.uk/p/shop-locator/');
+		$crawler = $this->browser->request('GET', 'http://www.megabetshops.com/p/shop-locator/');
 		$rows = [];
 
 		// Loop through venue rows

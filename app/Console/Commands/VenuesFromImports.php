@@ -66,11 +66,15 @@ class VenuesFromImports extends Command
 			->with('venues')
 			->withTrashed();
 
-		switch ($this->option('brand')) {
-			case 'admiral-uk': $query->where('source_brand', VenueImport::SOURCE_BRAND_ADMIRAL_UK); break;
-			case 'cashino': $query->where('source_brand', VenueImport::SOURCE_BRAND_CASHINO); break;
-			case 'megabet': $query->where('source_brand', VenueImport::SOURCE_BRAND_MEGABET); break;
-			case 'ladbrokes': $query->where('source_brand', VenueImport::SOURCE_BRAND_LADBROKES); break;
+		if ($this->hasOption('brand')) {
+			switch ($this->option('brand')) {
+				case 'admiral-uk': $query->where('source_brand', VenueImport::SOURCE_BRAND_ADMIRAL_UK); break;
+				case 'cashino': $query->where('source_brand', VenueImport::SOURCE_BRAND_CASHINO); break;
+				case 'megabet': $query->where('source_brand', VenueImport::SOURCE_BRAND_MEGABET); break;
+				case 'ladbrokes': $query->where('source_brand', VenueImport::SOURCE_BRAND_LADBROKES); break;
+				case 'william-hill-uk': $query->where('source_brand', VenueImport::SOURCE_BRAND_WILLIAM_HILL_UK); break;
+				default: throw new \Exception('The specified brand is not available.');
+			}
 		}
 
 		// Stop if there are no venue imports
@@ -85,7 +89,7 @@ class VenuesFromImports extends Command
 		$this->line('');
 
 		foreach ($query->get() as $venueImport) {
-			// Handle soft deleted imports: skip if still connected to a vanue,
+			// Handle soft deleted imports: skip if still connected to a venue,
 			// otherwise force delete them
 			if ($venueImport->trashed()) {
 				if ($venueImport->venues->count()) {

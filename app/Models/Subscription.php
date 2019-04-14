@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Laravel\Cashier\Subscription as CashierSubscription;
+use Carbon;
 
 class Subscription extends CashierSubscription
 {
-
 	/**
 	 * The model's attributes.
 	 *
@@ -23,10 +23,21 @@ class Subscription extends CashierSubscription
 	/**
 	 * Get the venue related to the subscription.
 	 *
-	 * @return \App1\Models\Venue
+	 * @return \App\Models\Venue
 	 */
 	public function venue()
 	{
 		return $this->belongsTo('App\Models\Venue');
+	}
+
+	public function getCurrentPeriodEndsAtAttribute()
+	{
+		try {
+			$stripeSubscription = $this->asStripeSubscription();
+
+			return Carbon::parse($stripeSubscription->current_period_end);
+		} catch (\Exception $e) {
+			return null;
+		}
 	}
 }

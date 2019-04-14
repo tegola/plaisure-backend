@@ -265,7 +265,9 @@ class VenueTransformer extends TransformerAbstract
 		}
 
 		return $this->item($subscription, function(Subscription $subscription) {
-			return $subscription->only(
+			// Select return keys. On a real subscription, also return the period
+			// end date
+			$keys = [
 				'name',
 				'currency',
 				'price',
@@ -274,7 +276,12 @@ class VenueTransformer extends TransformerAbstract
 				'hide_nearby_venues',
 				'ends_at',
 				'updated_at'
-			);
+			];
+			if ($subscription->name !== 'default') {
+				$keys[] = 'current_period_ends_at';
+			}
+
+			return $subscription->only($keys);
 		});
 	}
 }

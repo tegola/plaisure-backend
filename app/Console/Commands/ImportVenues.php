@@ -7,7 +7,7 @@ use App\Models\VenueImport;
 use App\Importers\AdmiralUk as AdmiralUkImporter;
 use App\Importers\Cashino as CashinoImporter;
 use App\Importers\Ladbrokes as LadbrokesImporter;
-use App\Importers\MegaBet as MegabetImporter;
+use App\Importers\Megabet as MegabetImporter;
 use App\Importers\WilliamHillUk as WilliamHillUkImporter;
 
 class ImportVenues extends Command
@@ -28,7 +28,7 @@ class ImportVenues extends Command
 	 *
 	 * @var string
 	 */
-	protected $description = 'Import venue data from theire respective websites.';
+	protected $description = 'Import venue data from their respective websites.';
 
 	/**
 	 * The Venue importer to use to get data.
