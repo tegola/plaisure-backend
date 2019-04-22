@@ -13,11 +13,17 @@
 
 Route::get('/mailtest', function () {
 	$user = App\Models\User::find(1);
+	$user->sendPasswordResetNotification('asd');
+
+	return 'fatto';
+
+	/*
 	return view('mail.billing.upcoming', [
 		'notifiable' => $user, 
 		'invoice' => new stdClass(),
 		'venue' => $user->venues()->first()
 	]);
+	*/
 });
 
 // Auth -----------------------------------------------------------------------
@@ -32,7 +38,7 @@ Route::get('/sitemap.xml',   'SeoController@sitemap');
 Route::get('/robots.txt',    'SeoController@robots');
 
 // Frontend routes, used only for printing urls easily ------------------------
-Route::group(['domain' => env('FRONTEND_URL')], function() {
+Route::group(['domain' => env('FRONTEND_URL'), 'prefix' => '/{locale?}'], function() {
 	Route::get('/')                ->name('home');
 	Route::get('/password/reset')  ->name('password.reset');
 	Route::get('/venues/{venue}')  ->name('venues.detail');

@@ -41,6 +41,7 @@ class ResetPassword extends Notification
 	public function toMail($notifiable)
 	{
 		$url = route('password.reset', [
+			'locale' => app()->getLocale(), // https://github.com/laravel/framework/pull/25752#issuecomment-453869887
 			'email' => $notifiable->email,
 			'token' => $this->token
 		]);

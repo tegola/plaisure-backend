@@ -6,10 +6,11 @@ use Laravel\Cashier\Billable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasLocalePreference
 {
 	use HasApiTokens, Notifiable, Billable;
 
@@ -73,6 +74,18 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $guarded = [];
+
+	/**
+	 * Get the preferred locale of this user.
+	 * 
+	 * @return string|null
+	 */
+	public function preferredLocale()
+	{
+		return $this->locale
+			? locale_get_primary_language($this->locale)
+			: null;
+	}
 
 	/**
 	 * Fills the model's properties with the source from Stripe.
