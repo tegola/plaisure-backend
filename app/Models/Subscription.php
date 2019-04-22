@@ -21,6 +21,19 @@ class Subscription extends CashierSubscription
 	];
 
 	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'trial_ends_at',
+		'current_period_ends_at',
+		'ends_at',
+	    'created_at',
+	    'updated_at'
+	];
+
+	/**
 	 * Get the venue related to the subscription.
 	 *
 	 * @return \App\Models\Venue
@@ -30,10 +43,23 @@ class Subscription extends CashierSubscription
 		return $this->belongsTo('App\Models\Venue');
 	}
 
-	public function getCurrentPeriodEndsAtAttribute()
+	/**
+	 * Get the end of the current period.
+	 * 
+	 * @param  Carbon $value
+	 * @return Carbon
+	 */
+	public function getCurrentPeriodEndsAtAttribute($value)
 	{
+		// Return cached value if present
+		if ($value) return Carbon::parse($value);
+
+		// Otherwise get value from stripe subscription (and cache it)
 		try {
 			$stripeSubscription = $this->asStripeSubscription();
+
+			$this->current_period_ends_at = $stripeSubscription->current_period_end;
+			$this->save();
 
 			return Carbon::parse($stripeSubscription->current_period_end);
 		} catch (\Exception $e) {

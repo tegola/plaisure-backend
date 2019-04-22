@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'ProntoGioco'),
+    'name' => env('APP_NAME', 'Plaisure'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://www.plaisure.com'),
 
     'asset_url' => env('ASSET_URL', null),
 

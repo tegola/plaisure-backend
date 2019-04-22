@@ -15,26 +15,34 @@ class StripeController extends WebhookController
 	 * @param  array  $payload
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	/*
 	protected function handleInvoiceUpcoming(array $payload)
 	{
 		$payload = json_decode(json_encode($payload)); // Array to object
 		$invoice = $payload->data->object;
 
 		// Get user and subscription
-		$invoice->customer = 'cus_EnKSgANzo3yERV'; // FIXME: remove
-		$invoice->subscription = 'sub_EnKTs7FVbHAUS5'; // FIXME: remove
+		if (app()->isLocal()) {
+			$invoice->customer = 'cus_EnKSgANzo3yERV'; // FIXME: remove
+			$invoice->subscription = 'sub_EnKTs7FVbHAUS5'; // FIXME: remove
+		}
+
+		// FIXME: Eccezione se non vengono trovati user e subscription?
 		$user = $this->getUserByStripeId($invoice->customer);
 		$subscription = $this->getSubscriptionByStripeId($invoice->subscription);
 
 		if ($user && $subscription) {
-			// FIXME: Eccezione se non vengon trovati?
+			$stripeSubscription = $subscription->asStripeSubscription();
+
+			// Store end of current period
+			$subscription->current_period_ends_at = $stripeSubscription->current_period_end;
+			$subscription->save();
+
+			// Notify user of upcoming billing
 			$user->notify(new BillingUpcomingNotification($invoice, $subscription));
 		}
 
 		return new Response('Webhook Handled', 200);
 	}
-	*/
 
 	/**
 	 * Get the subscription entity instance by Stripe ID.

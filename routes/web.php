@@ -43,6 +43,7 @@ Route::group([
 	'prefix' => '/{locale?}'
 ], function() {
 	Route::get('/')                ->name('home');
+	Route::get('/login')           ->name('login');
 	Route::get('/password/reset')  ->name('password.reset');
 	Route::get('/venues/{venue}')  ->name('venues.detail');
 	Route::get('/about')           ->name('about');

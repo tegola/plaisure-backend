@@ -35,11 +35,6 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale(app()->getLocale());
         setlocale(LC_TIME, app()->getLocale());
 
-        // Blade currency directive
-        Blade::directive('currency', function ($value, $decimals = 2) {
-        	return "<?php echo '&euro; ' . number_format($value, $decimals, ',', '.'); ?>";
-        });
-
         // Cashier currency
         Cashier::useCurrency('eur', '€');
     }

@@ -3,20 +3,18 @@
 @section('content')
 	<p><strong>{{ __('emails.common.greeting_name', ['name' => $notifiable->name]) }}</strong></p>
 
-	<p>Nei prossimi giorni sarà rinnovato l'abbonamento mensile per la tua attività</p>
-
-	<p>DATA</p>
+	<p>{{ __('emails.billing_upcoming.intro', ['date' => $subscription->current_period_ends_at->isoFormat('L')]) }}</p>
 
 	<table class="table">
 		<tbody>
 			{{-- Product --}}
 			<tr>
 				<td>
-					<div><strong>Premium subscription</strong></div>
-					<div class="small">Abbonamento mensile</div>
+					<div><strong>{{ __("data.subscriptions.{$subscription->name}")}}</strong></div>
+					<div class="small">{{ __('emails.billing_upcoming.type_monthly') }}</div>
 				</td>
 				<td class="text-right align-middle">
-					<strong>39,00 €</strong>
+					<strong>{{ strtoupper($subscription->currency) }} {{ number_format($subscription->price, 2) }}</strong>
 				</td>
 			</tr>
 
@@ -25,12 +23,12 @@
 				<td colspan="2" class="px-0 py-0">
 					<table class="table-borderless">
 						<tr>
-							<td class="align-middle">
-								@if ($venue->photos->count())
-									<img src="{{ $venue->photos->first()->resized_url }}" class="rounded" style="width: 100px">
-								@endif
-							</td>
-							<td class="align-middle small">
+							@if ($venue->photos->count())
+								<td class="align-middle">
+									<img src="{{ $venue->photos->first()->thumbnail_url }}" class="rounded" style="width: 100px">
+								</td>
+							@endif
+							<td class="align-middle small" @if (!$venue->photos->count()) colspan="2" @endif>
 								<div><strong>{{ $venue->name }}</strong></div>
 								<div>{{ $venue->address_line1 }}</div>
 								<div>{{ implode(', ', [$venue->address_city, $venue->address_province, $venue->address_postcode, $venue->country]) }}</div>
@@ -40,39 +38,16 @@
 				</td>
 			</tr>
 		</tbody>
-
-		{{-- Total --}}
-		<tfoot>
-			<tr>
-				<td class="text-right">Totale</td>
-				<td class="text-right"><strong>39,00 €</strong></td>
-			</tr>
-			<tr>
-				<td class="py-0"></td>
-				<td class="py-0"></td>
-			</tr>
-		</tfoot>
 	</table>
 
-	<p>Per modificare o annullare l'abbonamento, accedi su {{ config('app.name') }}. Se hai domande, contattaci. </p>
+	<p>
+		{!!
+			__('emails.billing_upcoming.outro', [
+				'login_link' => "<a href='{$loginUrl}'>" . config('app.name') . "</a>",
+				'contact_link' => "<a href='mailto:{$supportEmail}'>" . __('emails.billing_upcoming.outro_contact') . "</a>"
+			])
+		!!}
+	</p>
 
 	@include('mail/components/salutation')
-
-	<pre>{{ json_encode($invoice) }}</pre>
-	{{--
-	<p>{{ __('emails.reset_password.intro') }}</p>
-
-	@component('mail/components/action-button', ['url' => $url])
-		{{ __('emails.reset_password.action') }}
-	@endcomponent
-
-	<p>{{ __('emails.reset_password.outro') }}</p>
-
-	
-
-	@include('mail/components/action-footer', [
-		'action' => __('emails.reset_password.action'),
-		'url' => $url
-	])
-	--}}
 @endsection
