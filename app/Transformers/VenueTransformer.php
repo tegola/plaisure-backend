@@ -261,12 +261,12 @@ class VenueTransformer extends TransformerAbstract
 
 		// Use default subscription
 		if (!$subscription) {
-			$subscription = new Subscription(config('subscriptions.default'));
+			$subscription = new Subscription(config('subscriptions.default.base'));
 		}
 
 		return $this->item($subscription, function(Subscription $subscription) {
-			// Select return keys. On a real subscription, also return the period
-			// end date
+			// Select return keys. On a real subscription, also return the
+			// period's end date
 			$keys = [
 				'name',
 				'currency',

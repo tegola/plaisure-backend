@@ -133,11 +133,15 @@ class FormController extends Controller
 
 	public function save(Venue $venue, Request $request)
 	{
+		/*
 		if ($venue->subscribed()) {
 			$subscription = $venue->subscription();
 		} else {
-			$subscription = new Subscription(config('subscriptions.default'));
+			// $country = 
+			// $defaultSubscription
+			$subscription = new Subscription(config('subscriptions.default.base'));
 		}
+		*/
 
 		$request->validate([
 			'concessionaire_id'         => 'nullable|exists:concessionaires,id',
@@ -201,7 +205,7 @@ class FormController extends Controller
 			// 'business_hours.*'          => 'nullable|string', // FIXME: Use a time pattern (up to 24:00)
 			// 'business_hours.*.hours'    => 'sometimes|between:2,4' // FIXME: Use a time pattern (up to 24:00)
 			
-			'photos'                    => "array|max:{$subscription->photo_limit}"
+			'photos'                    => 'array|max:50' // "array|max:{$subscription->photo_limit}"
 		]);
 
 		DB::transaction(function() use($venue, $request) {

@@ -163,6 +163,11 @@ class User extends Authenticatable
 		// E-mail
 		$customer->email = $this->email;
 
+		// Language
+		$customer->preferred_locales = $this->locale
+			? [locale_get_primary_language($this->locale)]
+			: [];
+
 		// Billing address (is called Shipping on Stripe)
 		if ($this->legal_name && $this->address_line1) {
 			$customer->shipping = [

@@ -16,20 +16,22 @@ class SubscriptionController extends Controller
 	}
 
 	/**
-	 * Get the data to show the venue claim page.
+	 * Update the subscription for the specified venue.
 	 * 
 	 * @param  Venue  $venue
+	 * @param  Request $request
 	 * @return Illuminate\Http\Response
 	 */
-	public function update(Venue $venue, Request $request) {
+	public function update(Venue $venue, Request $request)
+	{
 		$this->authorize('update', $venue);
 
 		$user = auth()->user();
 		$subscription = $venue->subscribed() ? $venue->subscription() : null;
-		$subscriptions = config('subscriptions');
 		$subscriptionName = $request->input('subscription_name');
-		$subscriptionConfig = $subscriptions[$subscriptionName];
-		$planName = $subscriptionConfig['stripe_plan'];
+		$subscriptionConfig = $this->getSubscriptionConfig($subscriptionName, $venue);
+		$planId = app()->env == 'production' ? $subscriptionConfig['stripe_plan'] : $subscriptionConfig['stripe_test_plan'];
+		$subscriptions = config('subscriptions');
 		$validSubscriptionNames = array_keys($subscriptions);
 		$invalidSubscriptionNames = $subscription ? [$subscription->name] : [];
 
@@ -93,11 +95,11 @@ class SubscriptionController extends Controller
 						$subscription->resume();
 					}
 				} else {
-					$subscription->swap($planName);
+					$subscription->swap($planId);
 				}
 			} else {
 				$subscription = $user
-					->newSubscription($subscriptionName, $planName)
+					->newSubscription($subscriptionName, $planId)
 					->withMetadata([
 						'user_id' => $user->id,
 						'venue_id' => $venue->id
@@ -139,5 +141,30 @@ class SubscriptionController extends Controller
 		if (!$user->hasCardOnFile() || $request->new_payment) {
 			$user->updateCardFromStripe();
 		}
+	}
+	
+	/**
+	 * Returns the subscription configuration for the specified Venue, by
+	 * querying the venue country or user country.
+	 * 
+	 * @param  string $name
+	 * @param  Venue  $venue
+	 * @return array
+	 */
+	private function getSubscriptionConfig(string $name, Venue $venue)
+	{
+		$user = auth()->user();
+		$userCountry = $user->locale ? locale_get_region($user->locale) : null;
+		$config = config("subscriptions.{$name}");
+		$baseConfig = $config['base'];
+		$countryConfig = [];
+
+		if ($venue->country && array_key_exists($venue->country, $config)) {
+			$countryConfig = $config[$venue->country];
+		} else if ($userCountry && array_key_exists($userCountry, $config)) {
+			$countryConfig = $config[$userCountry];
+		}
+
+		return array_merge($baseConfig, $countryConfig);
 	}
 }
