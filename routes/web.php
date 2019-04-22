@@ -38,7 +38,10 @@ Route::get('/sitemap.xml',   'SeoController@sitemap');
 Route::get('/robots.txt',    'SeoController@robots');
 
 // Frontend routes, used only for printing urls easily ------------------------
-Route::group(['domain' => env('FRONTEND_URL'), 'prefix' => '/{locale?}'], function() {
+Route::group([
+	'domain' => env('FRONTEND_URL'),
+	'prefix' => '/{locale?}'
+], function() {
 	Route::get('/')                ->name('home');
 	Route::get('/password/reset')  ->name('password.reset');
 	Route::get('/venues/{venue}')  ->name('venues.detail');

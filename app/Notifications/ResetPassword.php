@@ -40,8 +40,10 @@ class ResetPassword extends Notification
 	 */
 	public function toMail($notifiable)
 	{
+		$locale = app()->getLocale() !== 'en' ? app()->getLocale() : null; // Only for locales different than en
+
 		$url = route('password.reset', [
-			'locale' => app()->getLocale(), // https://github.com/laravel/framework/pull/25752#issuecomment-453869887
+			'locale' => $locale, // https://github.com/laravel/framework/pull/25752#issuecomment-453869887
 			'email' => $notifiable->email,
 			'token' => $this->token
 		]);
