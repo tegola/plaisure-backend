@@ -28,7 +28,8 @@ class SeoController extends Controller
 			// Venues
 			$venues = Venue::all();
 			foreach ($venues as $venue) {
-				$sitemap->add(route('venues.detail', $venue), $venue->updated_at, 0.9, 'daily');
+				$route = route('venues.detail', compact('venue'));
+				$sitemap->add($route, $venue->updated_at, 0.9, 'daily');
 			}
 
 			// About, Promote, Play responsibly
