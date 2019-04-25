@@ -17,7 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Set custom storage page (if present)
+        $this->app->useStoragePath(env('APP_STORAGE', base_path('storage')));
     }
 
     /**
