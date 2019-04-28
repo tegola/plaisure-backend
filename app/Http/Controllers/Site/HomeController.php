@@ -29,10 +29,10 @@ class HomeController extends Controller
 		// Highlights - 2 taken from the latest 20 (1/10 chance to appear)
 		$highlightedVenues = Cache::remember("{$country}.home.highlights.", $cacheLimit, function() use($country) {
 			$venues = $this->initQuery($country)
-				->has('photos')
 				->whereHas('subscriptions', function($query) {
-					$query->where('name', 'premium_2'); // FIXME: where subscription has a field "home_page_highlight"
+					$query->where('name', 'premium_1'); // FIXME: where subscription has a field "home_page_highlight"
 				})
+				->has('photos')
 				->latest()
 				->take(20);
 
@@ -40,13 +40,6 @@ class HomeController extends Controller
 			if ($venues->count() >= 2) {
 				$venues = $venues
 					->get()
-					->each(function($venue) {
-						$venue->load([
-							'photos' => function($query) {
-								return $query->take(1);
-							}
-						]);
-					})
 					->random(2);
 				$venues = $this->transformVenues($venues);
 			} else {
@@ -66,13 +59,6 @@ class HomeController extends Controller
 			if ($venues->count() >= 9) {
 				$venues = $venues
 					->get()
-					->each(function($venue) {
-						$venue->load([
-							'photos' => function($query) {
-								return $query->take(1);
-							}
-						]);
-					})
 					->random(9);
 				$venues = $this->transformVenues($venues);
 			} else {
@@ -93,7 +79,10 @@ class HomeController extends Controller
 	private function initQuery($country) {
 		return Venue::query()
 			->where('country', $country)
-			->with('categories', 'businessHours');
+			->with('categories', 'businessHours')
+			->with(['photos' => function($query) {
+				return $query->take(1);
+			}]);
 	}
 
 	/**

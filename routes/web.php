@@ -11,21 +11,6 @@
 |
 */
 
-Route::get('/mailtest', function () {
-	$user = App\Models\User::find(1);
-	$user->sendPasswordResetNotification('asd');
-
-	return 'fatto';
-
-	/*
-	return view('mail.billing.upcoming', [
-		'notifiable' => $user, 
-		'invoice' => new stdClass(),
-		'venue' => $user->venues()->first()
-	]);
-	*/
-});
-
 // Auth -----------------------------------------------------------------------
 // Auth::routes();
 
