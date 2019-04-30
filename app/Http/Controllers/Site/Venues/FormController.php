@@ -8,7 +8,6 @@ use App\Models\Venue;
 use App\Models\VenueCategory;
 use App\Models\Concessionaire;
 use App\Models\VltPlatform;
-use App\Models\PayPerViewPlatform;
 use App\Models\VenueBusinessHour;
 use App\Models\File;
 use App\Models\Subscription;
@@ -63,7 +62,6 @@ class FormController extends Controller
 		$venue->load([
 			'businessHours',
 			'categories',
-			'payPerViewPlatforms',
 			'photos',
 			'vltPlatforms',
 			'subscriptions'
@@ -73,7 +71,6 @@ class FormController extends Controller
 			->parseIncludes([
 				'business_hours',
 				'category_ids',
-				'pay_per_view_platform_ids',
 				'photos',
 				'vlt_platform_ids',
 				'subscription'
@@ -89,16 +86,12 @@ class FormController extends Controller
 		$vltPlatforms = VltPlatform::forCountry($country)
 			->select('id', 'name')
 			->get();
-		$payPerViewPlatforms = PayPerViewPlatform::forCountry($country)
-			->select('id', 'name')
-			->get();
 
 		return compact(
 			'venue',
 			'categories',
 			'concessionaires',
-			'vltPlatforms',
-			'payPerViewPlatforms'
+			'vltPlatforms'
 		);
 	}
 
@@ -199,7 +192,6 @@ class FormController extends Controller
 
 			'category_ids'              => 'required|exists:venue_categories,id',
 			'vlt_platform_ids'          => 'nullable|exists:vlt_platforms,id',
-			'pay_per_view_platform_ids' => 'nullable|exists:pay_per_view_platforms,id',
 
 			// 'business_hours'            => 'required|array|size:7', // Array of 7 elements
 			// 'business_hours.*'          => 'nullable|string', // FIXME: Use a time pattern (up to 24:00)
@@ -264,7 +256,6 @@ class FormController extends Controller
 
 			$venue->categories()->sync($request->category_ids);
 			$venue->vltPlatforms()->sync($request->vlt_platform_ids);
-			$venue->payPerViewPlatforms()->sync($request->pay_per_view_platform_ids);
 
 			// Business hours
 			$venue->businessHours()->delete();

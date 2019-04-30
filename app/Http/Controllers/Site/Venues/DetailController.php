@@ -22,7 +22,6 @@ class DetailController extends Controller
 		$venue->load([
 			'businessHours',
 			'categories',
-			'payPerViewPlatforms',
 			'photos',
 			'vltPlatforms'
 		]);
@@ -45,7 +44,6 @@ class DetailController extends Controller
 			->parseIncludes([
 				'business_hours',
 				'categories',
-				'pay_per_view_platforms',
 				'photos',
 				'vlt_platforms'
 			]);

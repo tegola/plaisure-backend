@@ -7,7 +7,6 @@ use App\Models\Venue;
 use App\Models\VltPlatform;
 use App\Models\Subscription;
 use App\Models\VenueCategory;
-use App\Models\PayPerViewPlatform;
 use App\Transformers\FileTransformer;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -22,8 +21,6 @@ class VenueTransformer extends TransformerAbstract
 		'business_hours',
 		'categories',
 		'category_ids',
-		'pay_per_view_platforms',
-		'pay_per_view_platform_ids',
 		'photos',
 		'photo_ids',
 		'vlt_platforms',
@@ -170,32 +167,6 @@ class VenueTransformer extends TransformerAbstract
 	{
 		return $this->item($venue->categories, function(Collection $categories) {
 			return $categories->pluck('id')->all();
-		});
-	}
-
-	/**
-	 * Include pay per view platforms.
-	 *
-	 * @param Venue $venue
-	 * @return \League\Fractal\Resource\Collection
-	 */
-	public function includePayPerViewPlatforms(Venue $venue)
-	{
-		return $this->collection($venue->payPerViewPlatforms, function (PayPerViewPlatform $payPerViewPlatform) {
-			return $payPerViewPlatform->only('id', 'name');
-		});
-	}
-
-	/**
-	 * Include pay per view platform ids.
-	 *
-	 * @param Venue $venue
-	 * @return \League\Fractal\Resource\Item
-	 */
-	public function includePayPerViewPlatformIds(Venue $venue)
-	{
-		return $this->item($venue->payPerViewPlatforms, function(Collection $payPerViewPlatforms) {
-			return $payPerViewPlatforms->pluck('id')->all();
 		});
 	}
 

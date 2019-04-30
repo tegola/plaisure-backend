@@ -10,7 +10,6 @@ use App\Models\Venue;
 use App\Models\VenueCategory;
 use App\Models\Concessionaire;
 use App\Models\VltPlatform;
-use App\Models\PayPerViewPlatform;
 /*
 use App\Models\ImportedVenue;
 use App\Models\VenuePlan;
@@ -37,7 +36,6 @@ class FormController extends Controller
 		$venue->load([
 			'businessHours',
 			'categories',
-			'payPerViewPlatforms',
 			'photos',
 			'vltPlatforms',
 			'subscriptions',
@@ -60,18 +58,12 @@ class FormController extends Controller
 			->orderBy('country', 'asc')
 			->orderBy('name', 'asc')
 			->get();
-		$payPerViewPlatforms = PayPerViewPlatform::query()
-			->select('id', 'name', 'country')
-			->orderBy('country', 'asc')
-			->orderBy('name', 'asc')
-			->get();
 
 		return compact(
 			'venue',
 			'categories',
 			'concessionaires',
-			'vltPlatforms',
-			'payPerViewPlatforms'
+			'vltPlatforms'
 		);
 	}
 
@@ -162,13 +154,11 @@ class FormController extends Controller
 	{
 		$venueCategories = $venue->categories()->pluck('id');
 		$venueVltPlatforms = $venue->vltPlatforms()->pluck('id');
-		$venuePayPerViewPlatforms = $venue->payPerViewPlatforms()->pluck('id');
 		
 		$machineTypes = Venue::machineTypes();
 		$categories = VenueCategory::pluck('name', 'id')->all();
 		$concessionaires = Concessionaire::pluck('name', 'id')->all();
 		$vltPlatforms = VltPlatform::pluck('name', 'id')->all();
-		$payPerViewPlatforms = PayPerViewPlatform::pluck('name', 'id')->all();
 
 		$daysOfWeek = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
 		$subscriptions = config('subscriptions');
@@ -177,13 +167,11 @@ class FormController extends Controller
 			'venue',
 			'venueCategories',
 			'venueVltPlatforms',
-			'venuePayPerViewPlatforms',
 			'importedVenue',
 			'machineTypes',
 			'categories',
 			'concessionaires',
 			'vltPlatforms',
-			'payPerViewPlatforms',
 			'subscriptions'
 		));
 
@@ -210,9 +198,6 @@ class FormController extends Controller
 
 			// Save VLT platforms
 			$venue->vltPlatforms()->sync($request->vlt_platforms);
-
-			// Save pay per view Platforms
-			$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
 
 			// Save business hours
 			if ($request->business_hours) {
@@ -254,9 +239,6 @@ class FormController extends Controller
 
 			// Save VLT platforms
 			$venue->vltPlatforms()->sync($request->vlt_platforms);
-
-			// Save pay per view Platforms
-			$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
 
 			// Save business hours
 			$venue->businessHours()->delete();

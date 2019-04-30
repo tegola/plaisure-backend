@@ -287,16 +287,6 @@ class Venue extends Model
 	}
 
 	/**
-	 * Pay per view platforms available in this venue.
-	 * 
-	 * @return [\App\Models\PayPerViewPlatform]
-	 */
-	public function payPerViewPlatforms()
-	{
-		return $this->belongsToMany('App\Models\PayPerViewPlatform');
-	}
-
-	/**
 	 * Photos for this venue.
 	 */
 	public function photos()
