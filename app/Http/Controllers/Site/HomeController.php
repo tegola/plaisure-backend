@@ -30,7 +30,9 @@ class HomeController extends Controller
 		$highlightedVenues = Cache::remember("{$country}.home.highlights.", $cacheLimit, function() use($country) {
 			$venues = $this->initQuery($country)
 				->whereHas('subscriptions', function($query) {
-					$query->where('name', 'premium_1'); // FIXME: where subscription has a field "home_page_highlight"
+					$query
+						->active()
+						->where('name', 'silver'); // FIXME: where subscription has a field "home_page_highlight"
 				})
 				->has('photos')
 				->latest()

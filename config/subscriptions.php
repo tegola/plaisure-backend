@@ -20,9 +20,9 @@ return [
 	],
 
 	// Paid subscriptions -----------------------------------------------------
-	'premium_1' => [
+	'silver' => [
 		'base' => [
-			'name' => 'premium_1',
+			'name' => 'silver',
 			'currency' => 'EUR',
 			'price' => 39,
 			'distance_bonus' => 10,
@@ -40,9 +40,9 @@ return [
 		]
 	],
 
-	'premium_2' => [
+	'gold' => [
 		'base' => [
-			'name' => 'premium_2',
+			'name' => 'gold',
 			'currency' => 'EUR',
 			'price' => 79,
 			'distance_bonus' => 50,

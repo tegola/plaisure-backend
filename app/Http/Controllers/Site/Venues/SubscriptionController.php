@@ -30,7 +30,7 @@ class SubscriptionController extends Controller
 		$subscription = $venue->subscribed() ? $venue->subscription() : null;
 		$subscriptionName = $request->input('subscription_name');
 		$subscriptionConfig = $this->getSubscriptionConfig($subscriptionName, $venue);
-		$planId = app()->env == 'production' ? $subscriptionConfig['stripe_plan'] : $subscriptionConfig['stripe_test_plan'];
+		$planId = $subscriptionConfig['stripe_plan'];
 		$subscriptions = config('subscriptions');
 		$validSubscriptionNames = array_keys($subscriptions);
 		$invalidSubscriptionNames = $subscription ? [$subscription->name] : [];
