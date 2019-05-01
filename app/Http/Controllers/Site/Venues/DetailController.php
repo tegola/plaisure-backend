@@ -27,9 +27,9 @@ class DetailController extends Controller
 		]);
 
 		// Get nearby venues (if the plan allows it)
-		$nearbyVenues = null;
+		$nearbyVenues = [];
 
-		if (!$venue->plan || !$venue->plan->hide_nearby_venues) {
+		if (!$venue->subscription() || !$venue->subscription()->hide_nearby_venues) {
 			$nearbyVenues = Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
 				->where('id', '!=', $venue->id)
 				->with('categories')
