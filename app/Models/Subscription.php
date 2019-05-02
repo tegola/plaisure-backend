@@ -16,8 +16,8 @@ class Subscription extends CashierSubscription
 		'currency' => '',
 		'price' => 0,
 		'distance_bonus' => 0,
-		'photo_limit' => 50, // FIXME: Remove
-		'hide_nearby_venues' => false
+		'hide_nearby_venues' => false,
+		'home_page_highlight' => false
 	];
 
 	/**

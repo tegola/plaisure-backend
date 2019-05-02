@@ -32,7 +32,7 @@ class HomeController extends Controller
 				->whereHas('subscriptions', function($query) {
 					$query
 						->active()
-						->where('name', 'silver'); // FIXME: where subscription has a field "home_page_highlight"
+						->where('home_page_highlight', true);
 				})
 				->has('photos')
 				->latest()
@@ -51,11 +51,11 @@ class HomeController extends Controller
 			return $venues;
 		});
 
-		// New - 9 taken from the latest 36 (1/4 chance to appear)
+		// New - 9 taken from the latest 90 (1/10 chance to appear)
 		$newVenues = Cache::remember("{$country}.home.new", $cacheLimit, function() use($country) {
 			$venues = $this->initQuery($country)
 				->latest()
-				->take(36);
+				->take(90);
 
 			// Get exactly 9
 			if ($venues->count() >= 9) {

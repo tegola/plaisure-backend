@@ -115,8 +115,8 @@ class SubscriptionController extends Controller
 					'currency',
 					'price',
 					'distance_bonus',
-					'photo_limit',
-					'hide_nearby_venues'
+					'hide_nearby_venues',
+					'home_page_highlight'
 				]))
 				->save();
 

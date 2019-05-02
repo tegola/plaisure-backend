@@ -243,8 +243,8 @@ class VenueTransformer extends TransformerAbstract
 				'currency',
 				'price',
 				'distance_bonus',
-				'photo_limit',
 				'hide_nearby_venues',
+				'home_page_highlight',
 				'ends_at',
 				'updated_at'
 			];
