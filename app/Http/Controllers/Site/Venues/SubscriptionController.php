@@ -30,7 +30,7 @@ class SubscriptionController extends Controller
 		$subscription = $venue->subscribed() ? $venue->subscription() : null;
 		$subscriptionName = $request->input('subscription_name');
 		$subscriptionConfig = $this->getSubscriptionConfig($subscriptionName, $venue);
-		$planId = $subscriptionConfig['stripe_plan'];
+		$planId = app()->isLocal() ? $subscriptionConfig['stripe_test_plan'] : $subscriptionConfig['stripe_plan'];
 		$subscriptions = config('subscriptions');
 		$validSubscriptionNames = array_keys($subscriptions);
 		$invalidSubscriptionNames = $subscription ? [$subscription->name] : [];
@@ -140,6 +140,12 @@ class SubscriptionController extends Controller
 		// Update payment info if needed or user wanted a new one
 		if (!$user->hasCardOnFile() || $request->new_payment) {
 			$user->updateCardFromStripe();
+		}
+
+		if ($subscriptionName == 'default') {
+			return $subscription->only('ends_at');
+		} else {
+			return $subscription->only('current_period_ends_at');
 		}
 	}
 	
