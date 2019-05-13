@@ -128,10 +128,14 @@ class VenuesFromImports extends Command
 							try {
 								$this->fill($venue, $venueImport);
 							} catch (\Exception $e) {
+								// Show error and count skipped
 								$message = $e->getMessage();
 								$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: $message.");
 								$this->skipped++;
-								return;
+								
+								// Rollback transaction by throwing the
+								// original exception
+								throw $e;
 							}
 							// $venue->save();
 							$venue->touch(); // Like save, but forces update of timestamps when no attribute has changed
@@ -153,10 +157,14 @@ class VenuesFromImports extends Command
 					try {
 						$this->fill($venue, $venueImport);
 					} catch (\Exception $e) {
+						// Show error and count skipped
 						$message = $e->getMessage();
 						$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: $message().");
 						$this->skipped++;
-						return;
+
+						// Rollback transaction by throwing the
+						// original exception
+						throw $e;
 					}
 
 					$venueImport->venues()->save($venue);
