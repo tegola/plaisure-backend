@@ -126,8 +126,6 @@ class FormController extends Controller
 
 	public function save(Venue $venue, Request $request)
 	{
-		$user = auth()->user();
-
 		$request->validate([
 			'concessionaire_id'         => 'nullable|exists:concessionaires,id',
 			// 'aams_census_code'          => 'required|string',
@@ -193,8 +191,9 @@ class FormController extends Controller
 		]);
 
 		DB::transaction(function() use($venue, $request) {
-			// Associate to owner
-			$venue->owner()->associate($user);
+			// Associate to owner (if owner is not present)
+			$user = auth()->user();
+			if (!$venue->owner) $venue->owner()->associate($user);
 
 			$venue->fill([
 				// General pane
