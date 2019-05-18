@@ -126,15 +126,7 @@ class FormController extends Controller
 
 	public function save(Venue $venue, Request $request)
 	{
-		/*
-		if ($venue->subscribed()) {
-			$subscription = $venue->subscription();
-		} else {
-			// $country = 
-			// $defaultSubscription
-			$subscription = new Subscription(config('subscriptions.default.base'));
-		}
-		*/
+		$user = auth()->user();
 
 		$request->validate([
 			'concessionaire_id'         => 'nullable|exists:concessionaires,id',
@@ -201,6 +193,9 @@ class FormController extends Controller
 		]);
 
 		DB::transaction(function() use($venue, $request) {
+			// Associate to owner
+			$venue->owner()->associate($user);
+
 			$venue->fill([
 				// General pane
 				'name' => $request->input('name'),
