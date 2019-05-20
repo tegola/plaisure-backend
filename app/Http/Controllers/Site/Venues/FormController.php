@@ -12,6 +12,10 @@ use App\Models\VenueBusinessHour;
 use App\Models\File;
 use App\Models\Subscription;
 use App\Transformers\VenueTransformer;
+
+use App\Http\Resources\VenueCategory as VenueCategoryResource;
+use App\Http\Resources\Concessionaire as ConcessionaireResource;
+use App\Http\Resources\VltPlatform as VltPlatformResource;
 use DB;
 
 class FormController extends Controller
@@ -76,16 +80,9 @@ class FormController extends Controller
 				'subscription'
 			]);
 
-		$country = locale_get_region($user->locale);
-		$categories = VenueCategory::forCountry($country)
-			->select('id', 'machine_name')
-			->get();
-		$concessionaires = Concessionaire::forCountry($country)
-			->select('id', 'name')
-			->get();
-		$vltPlatforms = VltPlatform::forCountry($country)
-			->select('id', 'name')
-			->get();
+		$categories = VenueCategoryResource::collection(VenueCategory::all());
+		$concessionaires = ConcessionaireResource::collection(Concessionaire::all());
+		$vltPlatforms = VltPlatformResource::collection(VltPlatform::all());
 
 		return compact(
 			'venue',
