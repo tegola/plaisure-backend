@@ -269,11 +269,11 @@ class FormController extends Controller
 				}
 			}
 
-			// Delete old photos, then save new ones by using only orphan files
-			// or files already belonging to the venue
-			$photoInputCollection = collect($request->input('photos'));
-			$photoIds = $photoInputCollection->pluck('id')->all();
+			// Photos
+			$photosInput = collect($request->input('photos'));
+			$photoIds = $photosInput->pluck('id')->all();
 
+			// Delete photos not in post params (i.e. that were deleted)
 			$venue
 				->photos()
 				->whereNotIn('id', $photoIds)
@@ -281,20 +281,25 @@ class FormController extends Controller
 					$photo->delete(); // Delete model + files
 				});
 
-			$photos = File::whereIn('id', $photoIds)
-				->whereIn('type', [File::TYPE_UNKNOWN, File::TYPE_VENUE_PHOTO])
-				->whereIn('filable_id', [0, $venue->id])
-				->each(function ($photo) use ($photoInputCollection, $venue) {
-					$input = $photoInputCollection->firstWhere('id', $photo->id);
+			// Save new photos and update existing ones using only orphan files
+			// or files already belonging to the venue
+			foreach ($photosInput as $index => $photoInput) {
+				$photo = File::where('id', $photoInput['id'])
+					->whereIn('type', [File::TYPE_UNKNOWN, File::TYPE_VENUE_PHOTO])
+					->whereIn('filable_id', [0, $venue->id])
+					->first();
 
-					$photo->caption = $input['caption'] ?: '';
-					$photo->type = File::TYPE_VENUE_PHOTO;
-					$photo->filable()->associate($venue);
-					$photo->save();
+				$photo->fill([
+					'caption' => $photoInput['caption'] ?: '',
+					'type' => File::TYPE_VENUE_PHOTO,
+					'order' => $index
+				]);
+				$photo->filable()->associate($venue);
+				$photo->save();
 
-					// Make photo public
-					$photo->makePublic();
-				});
+				// Make photo public
+				$photo->makePublic();
+			}
 
 			// Save
 			$venue->save();

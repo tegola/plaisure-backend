@@ -292,7 +292,8 @@ class Venue extends Model
 	public function photos()
 	{
 		return $this->morphMany('App\Models\File', 'filable')
-				->where('type', File::TYPE_VENUE_PHOTO);
+				->where('type', File::TYPE_VENUE_PHOTO)
+				->orderBy('order');
 	}
 
 	/**
