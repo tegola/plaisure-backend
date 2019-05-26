@@ -3,10 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Resources\Json\Resource;
+use Laravel\Cashier\Cashier;
 use Schema;
 use Blade;
 use Carbon;
-use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
         // Set locale for dates
         Carbon::setLocale(app()->getLocale());
         setlocale(LC_TIME, app()->getLocale());
+
+        Resource::withoutWrapping();
 
         // Cashier currency
         Cashier::useCurrency('eur', '€');

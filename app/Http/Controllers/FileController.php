@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\File;
-use App\Transformers\FileTransformer;
+use App\Http\Resources\File as FileResource;
 use Storage;
 use Validator;
 
@@ -48,7 +48,7 @@ class FileController extends Controller
 		$file->user()->associate($user);
 		$file->save();
 
-		$file = fractal($file, new FileTransformer());
+		$file = new FileResource($file);
 		
 		return $file;
 	}
