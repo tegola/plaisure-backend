@@ -111,6 +111,20 @@ class Venue extends Model
 	protected $guarded = [];
 
 	/**
+	 * Utility function to decode a venue hashed id.
+	 * 
+	 * @param  string $id
+	 * @return integer
+	 */
+	public static function decodeHashedId(string $id)
+	{
+		$hasher = new Hashids(static::class, 10);
+		$decodedId = $hasher->decode($id);
+
+		return count($decodedId) ? $decodedId[0] : null;
+	}
+
+	/**
 	 * Create a new Venue model instance.
 	 *
 	 * @param  array  $attributes
@@ -294,6 +308,16 @@ class Venue extends Model
 		return $this->morphMany('App\Models\File', 'filable')
 				->where('type', File::TYPE_VENUE_PHOTO)
 				->orderBy('order');
+	}
+
+	/**
+	 * Users that favorited this venue.
+	 *
+	 * @return [\App\Models\User]
+	 */
+	public function favoritedBy()
+	{
+		return $this->belongsToMany('App\Models\User', 'user_favorite_venues');
 	}
 
 	/**

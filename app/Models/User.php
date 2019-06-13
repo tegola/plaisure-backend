@@ -123,6 +123,16 @@ class User extends Authenticatable implements HasLocalePreference
 	}
 
 	/**
+	 * Venues favorited by this user.
+	 *
+	 * @return [\App\Models\Venue]
+	 */
+	public function favorites()
+	{
+		return $this->belongsToMany('App\Models\Venue', 'user_favorite_venues');
+	}
+
+	/**
 	 * Get all this user's subscriptions.
 	 *
 	 * @return [App\Models\Subscription]

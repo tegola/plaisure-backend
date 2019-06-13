@@ -30,10 +30,13 @@ Route::post('/auth/password/forgot', 'Auth\ForgotPasswordController@sendResetLin
 Route::post('/auth/password/reset',  'Auth\ResetPasswordController@reset');
 
 // User data
-Route::get ('/user',       'UserController@user');
-Route::get('/user/venues', 'UserController@venues');
-Route::get('/user/edit',   'UserController@edit');
-Route::post('/user',       'UserController@update');
+// FIXME: Move mostly in the Site portion
+Route::get ('/user',          'UserController@user');
+Route::get('/user/venues',    'UserController@venues');
+Route::get('/user/edit',      'UserController@edit');
+Route::post('/user/info',     'UserController@info');
+Route::post('/user/billing',  'UserController@billing');
+Route::post('/user/password', 'UserController@password');
 
 Route::group([
 	'namespace' => 'Site',
@@ -41,6 +44,11 @@ Route::group([
 ], function() {
 	// Home page
 	Route::get('/home', 'HomeController@data'); // Had issues with '/'
+
+	// User
+	Route::get('/user/favorites',         'User\FavoritesController@load');
+	Route::post('/user/favorites/add',    'User\FavoritesController@add');
+	Route::post('/user/favorites/remove', 'User\FavoritesController@remove');
 	
 	// Explore
 	Route::get ('/venues/explore', 'Venues\ExploreController@data');

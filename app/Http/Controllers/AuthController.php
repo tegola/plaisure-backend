@@ -37,7 +37,8 @@ class AuthController extends Controller
 			'locale' => 'required',
 			'name' => 'required|string|max:255',
 			'email' => 'required|string|email|max:255|unique:users',
-			'password' => 'required|string|min:8'
+			'password' => 'required|string|min:8',
+			'is_owner' => 'boolean'
 		]);
 
 		// Register user
@@ -46,7 +47,7 @@ class AuthController extends Controller
 			'name' => $request->name,
 			'email' => $request->email,
 			'password' => bcrypt($request->password),
-			'is_owner' => true
+			'is_owner' => $request->is_owner || false
 		]);
 
 		// Send internal Slack notification
