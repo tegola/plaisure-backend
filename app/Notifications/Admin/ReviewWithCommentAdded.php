@@ -6,9 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\SlackMessage;
-use App\Models\User;
+use App\Models\Review;
 
-class UserRegistered extends Notification
+class ReviewWithCommentAdded extends Notification
 {
 	use Queueable;
 
@@ -17,9 +17,9 @@ class UserRegistered extends Notification
 	 *
 	 * @return void
 	 */
-	public function __construct(User $user)
+	public function __construct(Review $review)
 	{
-		$this->user = $user;
+		$this->review = $review;
 	}
 
 	/**
@@ -41,17 +41,19 @@ class UserRegistered extends Notification
 	 */
 	public function toSlack($notifiable)
 	{
-		$user = $this->user;
-
 		return (new SlackMessage)
-			->success()
-			->content('A new user has just registered')
-			->attachment(function($attachment) use ($user) {
+			->warning()
+			->content('A new review has been added and might need moderation.')
+			->attachment(function($attachment){
+				$venue = $this->review->venue;
+
 				$attachment
-					->title($user->name, config('app.url'))
+					->content($this->review->body)
 					->fields([
-						'Name' => $user->name,
-						'E-mail' => $user->email
+						'Venue' => "{$venue->name} ({$venue->id})",
+						'ID' => $this->review->id,
+						'User' => $this->review->user->name,
+						'Title' => $this->review->title
 					]);
 			});
 	}

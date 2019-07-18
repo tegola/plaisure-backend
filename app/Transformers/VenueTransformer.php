@@ -7,6 +7,7 @@ use App\Models\Venue;
 use App\Models\VltPlatform;
 use App\Models\Subscription;
 use App\Models\VenueCategory;
+use App\Models\Review;
 use App\Transformers\FileTransformer;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -25,7 +26,8 @@ class VenueTransformer extends TransformerAbstract
 		'photo_ids',
 		'vlt_platforms',
 		'vlt_platform_ids',
-		'subscription'
+		'subscription',
+		'reviews'
 	];
 
 	/**
@@ -42,6 +44,10 @@ class VenueTransformer extends TransformerAbstract
 	 */
 	public function transform(Venue $venue)
 	{
+		$reviewsQuery = $venue->reviews();
+		$ratings = $reviewsQuery->select('rating')->get();
+		$reviewCount = $reviewsQuery->withComment()->count();
+
 		return [
 			'id' => $venue->id_hashed,
 			// 'owner_id' => $venue->owner_id,
@@ -111,6 +117,16 @@ class VenueTransformer extends TransformerAbstract
 				'smoking_area' => $venue->amenity_smoking_area,
 				'wifi' => $venue->amenity_wifi
 			],
+			'rating' => [
+				'1_count' => $ratings->where('rating', 1)->count(),
+				'2_count' => $ratings->where('rating', 2)->count(),
+				'3_count' => $ratings->where('rating', 3)->count(),
+				'4_count' => $ratings->where('rating', 4)->count(),
+				'5_count' => $ratings->where('rating', 5)->count(),
+				'count' => $ratings->count(),
+				'average' => $venue->rating()
+			],
+			'review_count' => $reviewCount,
 			'distance' => $venue->distance,
 			'has_owner' => $venue->has_owner,
 			'created_at' => (string) $venue->created_at
@@ -253,6 +269,38 @@ class VenueTransformer extends TransformerAbstract
 			}
 
 			return $subscription->only($keys);
+		});
+	}
+
+	/**
+	 * Include reviews.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includeReviews(Venue $venue)
+	{
+		$venue->load([
+			'reviews' => function($query) {
+				$query->withComment();
+			},
+			'reviews.user'
+		]);
+
+		return $this->collection($venue->reviews, function(Review $review) {
+			return [
+				'id' => $review->id,
+				'title' => $review->title,
+				'body' => $review->body,
+				'rating' => $review->rating,
+				'language' => $review->language,
+				'reply' => $review->reply,
+				'created_at' => (string) $review->created_at,
+				'replied_at' => (string) $review->replied_at,
+				'user' => [
+					'name' => $review->user->name
+				]
+			];
 		});
 	}
 }

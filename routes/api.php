@@ -69,6 +69,12 @@ Route::group([
 
 	// Venue detail
 	Route::get ('/venues/{venue}',        'Venues\DetailController@detail');
+
+	// Venue detail -> reviews
+	Route::get('/venues/{venue}/reviews',                  'Venues\ReviewController@index');
+	Route::post('/venues/{venue}/reviews',                 'Venues\ReviewController@store');
+	Route::post('/venues/{venue}/reviews/{review}/reply',  'Venues\ReviewController@reply');
+	Route::post('/venues/{venue}/reviews/{review}/report', 'Venues\ReviewController@report');
 });
 
 Route::group([

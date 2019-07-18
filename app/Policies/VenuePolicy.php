@@ -15,23 +15,11 @@ class VenuePolicy
 	}
 
 	/**
-	 * Determine whether the user can view the venue.
-	 *
-	 * @param  \App\Models\User  $user
-	 * @param  \App\Venue  $venue
-	 * @return mixed
-	 */
-	public function view(User $user, Venue $venue)
-	{
-		//
-	}
-
-	/**
 	 * Determine whether the user can claim the venue.
 	 *
-	 * @param  \App\Models\User  $user
-	 * @param  \App\Venue  $venue
-	 * @return mixed
+	 * @param  User   $user
+	 * @param  Venue  $venue
+	 * @return boolean
 	 */
 	public function claim(User $user, Venue $venue)
 	{
@@ -41,8 +29,8 @@ class VenuePolicy
 	/**
 	 * Determine whether the user can create venues.
 	 *
-	 * @param  \App\Models\User  $user
-	 * @return mixed
+	 * @param  User   $user
+	 * @return boolean
 	 */
 	public function create(User $user)
 	{
@@ -52,9 +40,9 @@ class VenuePolicy
 	/**
 	 * Determine whether the user can update the venue.
 	 *
-	 * @param  \App\Models\User  $user
-	 * @param  \App\Venue  $venue
-	 * @return mixed
+	 * @param  User   $user
+	 * @param  Venue  $venue
+	 * @return boolean
 	 */
 	public function update(User $user, Venue $venue)
 	{
@@ -62,11 +50,24 @@ class VenuePolicy
 	}
 
 	/**
+	 * Determine whether the user can add a review for the venue.
+	 *
+	 * @param  User   $user
+	 * @param  Venue  $venue
+	 * @return boolean
+	 */
+	public function review(User $user, Venue $venue)
+	{
+		// An owner cannot review its own venue
+		return $user->id !== $venue->owner_id;
+	}
+
+	/**
 	 * Determine whether the user can delete the venue.
 	 *
-	 * @param  \App\Models\User  $user
-	 * @param  \App\Venue  $venue
-	 * @return mixed
+	 * @param  User   $user
+	 * @param  Venue  $venue
+	 * @return boolean
 	 */
 	public function delete(User $user, Venue $venue)
 	{

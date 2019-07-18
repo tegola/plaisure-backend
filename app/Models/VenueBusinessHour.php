@@ -91,7 +91,7 @@ class VenueBusinessHour extends Model
 	 */
 	public function isCurrent()
 	{
-		$now = Carbon::now();
+		$now = now();
 		$day = $now->dayOfWeek;
 		$time = $now->format('H:i:s');
 		$yesterday = $now->subDay()->dayOfWeek;

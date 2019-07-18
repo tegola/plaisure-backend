@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\File;
-use Carbon;
 
 class DeleteOrphanFiles extends Command
 {
@@ -29,7 +28,7 @@ class DeleteOrphanFiles extends Command
 	 */
 	public function handle()
 	{
-		$date = Carbon::now()->subDay(3);
+		$date = now()->subDay(3);
 		$files = File::orphans()->where('created_at', '<', $date);
 		$count = $files->count();
 

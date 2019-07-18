@@ -8,7 +8,6 @@ use App\Models\File;
 use App\Models\VenueBusinessHour;
 use DB;
 use Auth;
-use Carbon;
 use Hashids\Hashids;
 
 class Venue extends Model
@@ -321,6 +320,16 @@ class Venue extends Model
 	}
 
 	/**
+	 * Get all reviews for this venue.
+	 * 
+	 * @return [\App\Models\Review]
+	 */
+	public function reviews()
+	{
+		return $this->hasMany('App\Models\Review');
+	}
+
+	/**
 	 * Business hours for this venue.
 	 * 
 	 * @return [\App\Models\VenueBusinessHour]
@@ -371,7 +380,7 @@ class Venue extends Model
 	 */
 	public function isOpen()
 	{
-		$now = Carbon::now();
+		$now = now();
 		$day = $now->dayOfWeek;
 		$time = $now->format('H:i:s');
 
@@ -407,6 +416,18 @@ class Venue extends Model
 
 		// No match
 		return false;
+	}
+
+	/**
+	 * Get the average rating for this venue, based on user reviews.
+	 * 
+	 * @return float
+	 */
+	public function rating()
+	{
+		return $this->reviews()->exists()
+			? (float) $this->reviews()->average('rating')
+			: 0;
 	}
 
 	/**
@@ -511,7 +532,7 @@ class Venue extends Model
 	public function scopeOpen($query)
 	{
 		return $query->whereHas('businessHours', function($builder) {
-			$now = Carbon::now();
+			$now = now();
 			$day = $now->dayOfWeek;
 			$time = $now->format('H:i:s');
 			$yesterday = $now->subDay()->dayOfWeek;

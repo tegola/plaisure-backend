@@ -6,6 +6,11 @@ use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+use App\Models\Review;
+use App\Models\Venue;
+use App\Policies\ReviewPolicy;
+use App\Policies\VenuePolicy;
+
 class AuthServiceProvider extends ServiceProvider
 {
 	/**
@@ -14,7 +19,8 @@ class AuthServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected $policies = [
-		'App\Models\Venue' => 'App\Policies\VenuePolicy',
+		Review::class => ReviewPolicy::class,
+		Venue::class => VenuePolicy::class
 	];
 
 	/**

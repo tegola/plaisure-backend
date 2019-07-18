@@ -145,6 +145,16 @@ class User extends Authenticatable implements HasLocalePreference
 	}
 
 	/**
+	 * Get all reviews added by this user.
+	 * 
+	 * @return [\App\Models\Review]
+	 */
+	public function reviews()
+	{
+		return $this->hasMany('App\Models\Review');
+	}
+
+	/**
 	 * Send the password reset notification.
 	 *
 	 * @param  string  $token
@@ -187,8 +197,8 @@ class User extends Authenticatable implements HasLocalePreference
 		$customer->email = $this->email;
 
 		// Language
-		$customer->preferred_locales = $this->locale
-			? [locale_get_primary_language($this->locale)]
+		$customer->preferred_locales = $this->preferredLocale()
+			? [$this->preferredLocale()]
 			: [];
 
 		// Billing address (is called Shipping on Stripe)
