@@ -71,6 +71,8 @@ class AuthController extends Controller
 
 		return json_decode((string) $response->getBody(), true);
 		*/
+	
+		return $user; // FIXME: use JSON resource
 	}
 
 	/**
