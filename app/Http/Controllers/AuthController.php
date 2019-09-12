@@ -8,6 +8,7 @@ use App\Notifications\Admin\UserRegistered;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Resources\User as UserResource;
 
 class AuthController extends Controller
 {
@@ -72,7 +73,7 @@ class AuthController extends Controller
 		return json_decode((string) $response->getBody(), true);
 		*/
 	
-		return $user; // FIXME: use JSON resource
+		return new UserResource($user);
 	}
 
 	/**
