@@ -147,6 +147,7 @@ class WilliamHillUk extends Importer
 				case 'Gaming machines':
 					$category['machine_name'] = 'adult_gaming_center';
 					break;
+				case 'Self service betting terminals':
 				case 'WH Self-service betting terminals':
 					$category['machine_name'] = 'betting_shop';
 					$category['primary'] = 'true';
