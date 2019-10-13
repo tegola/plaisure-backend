@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Resources\User as UserResource;
+use Route;
 
 class AuthController extends Controller
 {
@@ -73,7 +74,7 @@ class AuthController extends Controller
 		return json_decode((string) $response->getBody(), true);
 		*/
 	
-		return new UserResource($user);
+		// return new UserResource($user);
 	}
 
 	/**
@@ -89,19 +90,24 @@ class AuthController extends Controller
 			'password' => 'required|string'
 		]);
 
-		// Login using password grant client
-		$response = $this->client->post(url('/oauth/token'), [
-			'form_params' => [
-				'grant_type' => 'password',
-				'client_id' => env('OAUTH_CLIENT_ID'),
-				'client_secret' => env('OAUTH_CLIENT_SECRET'),
-				'username' => $request->email,
-				'password' => $request->password,
-				'scope' => ''
-			]
+		// Login using the password grand client, by adding oauth params to the
+		// request original request (it won't work if we make a fresh one with
+		// Request::create())
+		$request->request->add([
+			'grant_type' => 'password',
+			'client_id' => env('OAUTH_CLIENT_ID'),
+			'client_secret' => env('OAUTH_CLIENT_SECRET'),
+			'username' => $request->email,
+			'password' => $request->password
 		]);
+		$response = Route::dispatch(Request::create('/oauth/token', 'POST'));
 
-		return json_decode((string) $response->getBody(), true);
+		// Abort with 401 (unauthorized) if login is unsuccessful
+		if (!$response->isSuccessful()) {
+			abort(401);
+		}
+
+		return $response->getContent();
 	}
 
 	/**

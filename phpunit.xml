@@ -30,6 +30,7 @@
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
         <server name="DB_DATABASE" value="plaisure_testing"/>
+        <server name="OAUTH_CLIENT_SECRET" value="123456" />
         <server name="SLACK_ACTIVITY_WEBHOOK_URL" value=""/>
     </php>
 </phpunit>
