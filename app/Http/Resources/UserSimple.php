@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VenueCategory extends JsonResource
+class UserSimple extends JsonResource
 {
 	/**
 	 * Transform the resource into an array.
@@ -16,8 +16,7 @@ class VenueCategory extends JsonResource
 	{
 		return [
 			'id' => $this->id,
-			'machine_name' => $this->machine_name,
-			'country' => $this->country // To limit them client/side depending on the language
+			'name' => $this->name
 		];
 	}
 }

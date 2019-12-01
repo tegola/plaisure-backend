@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Site\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Transformers\VenueTransformer;
-use Hashids\Hashids;
+use App\Http\Resources\Venue as VenueResource;
 use App\Models\Venue;
+use Illuminate\Http\Request;
 
 class FavoritesController extends Controller
 {
@@ -28,23 +27,19 @@ class FavoritesController extends Controller
 	 */
 	public function load(Request $request)
 	{
-		$venues = auth()->user()->favorites
-			// FIXME: Migliorare la query
-			->each(function($venue) { // Load only first photo
-				$venue->load([
-					'photos' => function($query) {
-						$query->take(1);
-					}
-				]);
-			})
-			->transformWith(new VenueTransformer())
-			->parseIncludes([
-				'categories',
-				'photos',
-				'subscription'
-			]);
+		$user = auth()->user();
+		$venues = $user->favorites()
+			->with([
+				'photos' => function($query) {
+					$query->take(1); // Only first photo
+				},
+				'categories'
+			])
+			->get();
 
-		return compact('venues');
+		return [
+			'venues' => VenueResource::collection($venues)
+		];
 	}
 
 	/**

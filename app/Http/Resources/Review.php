@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\UserSimple as UserSimpleResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Review extends JsonResource
@@ -22,12 +23,8 @@ class Review extends JsonResource
 			'language' => $this->language,
 			'reply' => $this->reply,
 			'created_at' => $this->created_at,
-			'replied_at' => $this->replied_at
-			/*
-			'user' => [
-				'name' => $this->user->name
-			]
-			*/
+			'replied_at' => $this->replied_at,
+			'user' => $this->whenLoaded('user', new UserSimpleResource($this->user))
 		];
 	}
 }

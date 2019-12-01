@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Review as ReviewResource;
 use App\Http\Resources\Subscription as SubscriptionResource;
+use App\Http\Resources\VenueCategory as VenueCategoryResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class Venue extends JsonResource
 {
@@ -88,6 +90,8 @@ class Venue extends JsonResource
 			'has_owner' => $this->has_owner,
 			'created_at' => $this->created_at,
 
+			'categories' => $this->whenLoaded('categories', VenueCategoryResource::collection($this->categories)),
+			'reviews' => $this->whenLoaded('reviews', ReviewResource::collection($this->reviews)),
 			'subscription' => $this->whenLoaded('subscriptions', new SubscriptionResource($this->resource->subscription()))
 		];
 	}

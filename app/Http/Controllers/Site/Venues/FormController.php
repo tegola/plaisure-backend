@@ -180,10 +180,16 @@ class FormController extends Controller
 			'category_ids'              => 'required|exists:venue_categories,id',
 			'vlt_platform_ids'          => 'nullable|exists:vlt_platforms,id',
 
-			// 'business_hours'            => 'required|array|size:7', // Array of 7 elements
-			// 'business_hours.*'          => 'nullable|string', // FIXME: Use a time pattern (up to 24:00)
-			// 'business_hours.*.hours'    => 'sometimes|between:2,4' // FIXME: Use a time pattern (up to 24:00)
-			
+			'business_hours'            => 'required|array|size:7', // Array of 7 elements
+			'business_hours.*'          => [
+				'array',
+				function($attribute, $value, $fail) {
+					if (!in_array(count($value), [0, 2, 4])) { // 0, 2 o 4 values
+						$fail("{$attribute} is invalid.");
+					}
+				}
+			],
+
 			'photos'                    => 'array|max:50'
 		]);
 

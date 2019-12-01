@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Site\Venues;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\Controller;
-use App\Models\Venue;
+use App\Http\Resources\Venue as VenueResource;
 use App\Models\Review;
-use App\Transformers\VenueTransformer;
+use App\Models\Venue;
 use App\Notifications\Admin\ReviewWithCommentAdded;
 use DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class ReviewController extends Controller
 {
@@ -34,13 +34,9 @@ class ReviewController extends Controller
 			}
 		]);
 
-		// Prepare venue
-		$venue = fractal($venue, new VenueTransformer())
-			->includePhotos()
-			->includeCategories()
-			->includeReviews();
-
-		return compact('venue');
+		return [
+			'venue' => new VenueResource($venue)
+		];
 	}
 
 	/**
