@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Site\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Transformers\VenueTransformer;
 use App\Http\Resources\User as UserResource;
 
-class UserController extends Controller
+class MainController extends Controller
 {
 	/**
 	 * Create a new controller instance.
@@ -68,9 +68,9 @@ class UserController extends Controller
 	 */
 	public function edit()
 	{
-		$user = new UserResource(auth()->user());
-
-		return compact('user');
+		return [
+			'user' => new UserResource(auth()->user())
+		];
 	}
 
 	/**

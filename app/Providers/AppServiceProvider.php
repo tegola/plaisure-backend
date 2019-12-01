@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale(app()->getLocale());
         setlocale(LC_TIME, app()->getLocale());
 
+        // Disable JSON resource wrapping
         Resource::withoutWrapping();
     }
 }

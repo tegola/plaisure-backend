@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -12,10 +10,6 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-// 	return $request->user();
-// });
 
 // File upload and view/download
 Route::post('/files',                      'FileController@upload');
@@ -29,15 +23,6 @@ Route::post('/auth/logout',          'AuthController@logout');
 Route::post('/auth/password/forgot', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/auth/password/reset',  'Auth\ResetPasswordController@reset');
 
-// User data
-// FIXME: Move mostly in the Site portion
-Route::get ('/user',          'UserController@user');
-Route::get('/user/venues',    'UserController@venues');
-Route::get('/user/edit',      'UserController@edit');
-Route::post('/user/info',     'UserController@info');
-Route::post('/user/billing',  'UserController@billing');
-Route::post('/user/password', 'UserController@password');
-
 Route::group([
 	'namespace' => 'Site',
 	'middleware' => 'throttle:60,1'
@@ -46,6 +31,14 @@ Route::group([
 	Route::get('/home', 'HomeController@data'); // Had issues with '/'
 
 	// User
+	Route::get ('/user',          'User\MainController@user');
+	Route::get('/user/venues',    'User\MainController@venues');
+	Route::get('/user/edit',      'User\MainController@edit');
+	Route::post('/user/info',     'User\MainController@info');
+	Route::post('/user/billing',  'User\MainController@billing');
+	Route::post('/user/password', 'User\MainController@password');
+
+	// User -> Favorites
 	Route::get('/user/favorites',         'User\FavoritesController@load');
 	Route::post('/user/favorites/add',    'User\FavoritesController@add');
 	Route::post('/user/favorites/remove', 'User\FavoritesController@remove');
