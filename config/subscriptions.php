@@ -2,6 +2,7 @@
 return [
 	// Default subscription ---------------------------------------------------
 	// Keep it forever, it's used throughout the app
+	/*
 	'default' => [
 		'base' => [
 			'name' => 'default',
@@ -18,6 +19,7 @@ return [
 			'currency' => 'GBP'
 		]
 	],
+	*/
 
 	// Paid subscriptions -----------------------------------------------------
 	'silver' => [

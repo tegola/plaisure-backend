@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Cashier::ignoreMigrations();
     }
 
     /**
@@ -36,8 +37,5 @@ class AppServiceProvider extends ServiceProvider
         setlocale(LC_TIME, app()->getLocale());
 
         Resource::withoutWrapping();
-
-        // Cashier currency
-        Cashier::useCurrency('eur', '€');
     }
 }

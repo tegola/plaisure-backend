@@ -21,8 +21,8 @@ class Review extends JsonResource
 			'rating' => $this->rating,
 			'language' => $this->language,
 			'reply' => $this->reply,
-			'created_at' => (string) $this->created_at,
-			'replied_at' => (string) $this->replied_at
+			'created_at' => $this->created_at,
+			'replied_at' => $this->replied_at
 			/*
 			'user' => [
 				'name' => $this->user->name

@@ -129,7 +129,7 @@ class VenueTransformer extends TransformerAbstract
 			'review_count' => $reviewCount,
 			'distance' => $venue->distance,
 			'has_owner' => $venue->has_owner,
-			'created_at' => (string) $venue->created_at
+			'created_at' => $venue->created_at
 		];
 	}
 
@@ -244,31 +244,23 @@ class VenueTransformer extends TransformerAbstract
 	 */
 	public function includeSubscription(Venue $venue)
 	{
-		$subscription = $venue->subscribed() ? $venue->subscription() : null;
+		$subscription = $venue->subscription();
 
-		// Use default subscription
-		if (!$subscription) {
-			$subscription = new Subscription(config('subscriptions.default.base'));
-		}
+		if (!$subscription) return null;
 
 		return $this->item($subscription, function(Subscription $subscription) {
-			// Select return keys. On a real subscription, also return the
-			// period's end date
-			$keys = [
-				'name',
-				'currency',
-				'price',
-				'distance_bonus',
-				'hide_nearby_venues',
-				'home_page_highlight',
-				'ends_at',
-				'updated_at'
+			return [
+				'name' => $subscription->name,
+				'currency' => $subscription->currency,
+				'price' => $subscription->price,
+				'distance_bonus' => $subscription->distance_bonus,
+				'hide_nearby_venues' => $subscription->hide_nearby_venues,
+				'home_page_highlight' => $subscription->home_page_highlight,
+				'ends_at' => $subscription->ends_at,
+				'updated_at' => $subscription->updated_at,
+				'current_period_ends_at' => $subscription->current_period_ends_at,
+				'needs_payment' => $subscription->hasIncompletePayment()
 			];
-			if ($subscription->name !== 'default') {
-				$keys[] = 'current_period_ends_at';
-			}
-
-			return $subscription->only($keys);
 		});
 	}
 
@@ -295,8 +287,8 @@ class VenueTransformer extends TransformerAbstract
 				'rating' => $review->rating,
 				'language' => $review->language,
 				'reply' => $review->reply,
-				'created_at' => (string) $review->created_at,
-				'replied_at' => (string) $review->replied_at,
+				'created_at' => $review->created_at,
+				'replied_at' => $review->replied_at,
 				'user' => [
 					'name' => $review->user->name
 				]

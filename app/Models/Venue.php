@@ -238,7 +238,7 @@ class Venue extends Model
 	}
 
 	/**
-	 * Get the subscription instance for this venue
+	 * Get the subscription instance for this venue.
 	 * 
 	 * @return \App\Models\Subscription
 	 */
@@ -256,7 +256,7 @@ class Venue extends Model
 	{
 		return $this
 			->hasMany('App\Models\Subscription')
-			->orderBy('created_at', 'desc');
+			->latest();
 	}
 
 	/**

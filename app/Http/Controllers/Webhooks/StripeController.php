@@ -41,7 +41,7 @@ class StripeController extends WebhookController
 			$user->notify(new BillingUpcomingNotification($invoice, $subscription));
 		}
 
-		return new Response('Webhook Handled', 200);
+		return $this->successMethod();
 	}
 
 	/**

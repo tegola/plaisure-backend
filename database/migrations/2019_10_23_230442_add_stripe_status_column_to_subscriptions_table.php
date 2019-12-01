@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIsPrimaryColumnToVenueVenueCategoryTable extends Migration
+class AddStripeStatusColumnToSubscriptionsTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -13,8 +13,8 @@ class AddIsPrimaryColumnToVenueVenueCategoryTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::table('venue_venue_category', function (Blueprint $table) {
-			$table->boolean('is_primary')->default(false);
+		Schema::table('subscriptions', function (Blueprint $table) {
+			$table->string('stripe_status')->nullable()->after('stripe_plan');
 		});
 	}
 
@@ -25,8 +25,8 @@ class AddIsPrimaryColumnToVenueVenueCategoryTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::table('venue_venue_category', function (Blueprint $table) {
-			$table->dropColumn('is_primary');
+		Schema::table('subscriptions', function (Blueprint $table) {
+			$table->dropColumn('stripe_status');
 		});
 	}
 }

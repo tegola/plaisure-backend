@@ -61,7 +61,8 @@ Route::group([
 	Route::post('/venues/{venue}',      'Venues\FormController@update');
 
 	// Venue subscription
-	Route::post('/venues/{venue}/subscribe', 'Venues\SubscriptionController@update');
+	Route::get('/venues/{venue}/subscription',         'Venues\SubscriptionController@edit');
+	Route::post('/venues/{venue}/subscription',        'Venues\SubscriptionController@update');
 
 	// Venue claim
 	Route::get ('/venues/{venue}/claim',  'Venues\ClaimController@load');

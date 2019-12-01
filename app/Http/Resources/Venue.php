@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Subscription as SubscriptionResource;
 
 class Venue extends JsonResource
 {
@@ -85,7 +86,9 @@ class Venue extends JsonResource
 			],
 			'distance' => $this->distance,
 			'has_owner' => $this->has_owner,
-			'created_at' => (string) $this->created_at
+			'created_at' => $this->created_at,
+
+			'subscription' => $this->whenLoaded('subscriptions', new SubscriptionResource($this->resource->subscription()))
 		];
 	}
 }

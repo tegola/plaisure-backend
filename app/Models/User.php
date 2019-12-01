@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Laravel\Cashier\Billable;
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Laravel\Cashier\Billable;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable implements HasLocalePreference
@@ -88,25 +88,19 @@ class User extends Authenticatable implements HasLocalePreference
 	}
 
 	/**
-	 * Fills the model's properties with the source from Stripe.
+	 * Fills the model's properties with the payment method from Stripe.
 	 *
-	 * @param  \Stripe\Card|\Stripe\BankAccount|null  $card
+	 * @param  \Laravel\Cashier\PaymentMethod|\Stripe\PaymentMethod|null  $paymentMethod
 	 * @return $this
 	 */
-	protected function fillCardDetails($card)
+	protected function fillPaymentMethodDetails($paymentMethod)
 	{
-		if ($card instanceof \Stripe\Card) {
-			$this->card_brand = $card->brand;
-			$this->card_last_four = $card->last4;
-			$this->card_expiry_month = $card->exp_month;
-			$this->card_expiry_year = $card->exp_year;
-			$this->card_holder_name = $card->name;
-		} else if ($card instanceof \Stripe\BankAccount) {
-			$this->card_brand = 'Bank Account';
-			$this->card_last_four = $card->last4;
-			$this->card_expiry_month = null;
-			$this->card_expiry_year = null;
-			$this->card_holder_name = $card->account_holder_name;
+		if ($paymentMethod->type === 'card') {
+			$this->card_brand = $paymentMethod->card->brand;
+			$this->card_last_four = $paymentMethod->card->last4;
+			$this->card_expiry_month = $paymentMethod->card->exp_month;
+			$this->card_expiry_year = $paymentMethod->card->exp_year;
+			// $this->card_holder_name = $paymentMethod->card->name; // FIXME: mi sa che non c'è più
 		}
 
 		return $this;
