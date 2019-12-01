@@ -17,9 +17,8 @@ class BillingUpcoming extends Notification
 	 *
 	 * @return void
 	 */
-	public function __construct($invoice, $subscription)
+	public function __construct($subscription)
 	{
-		$this->invoice = $invoice;
 		$this->subscription = $subscription;
 	}
 
@@ -42,13 +41,14 @@ class BillingUpcoming extends Notification
 	 */
 	public function toMail($notifiable)
 	{
-		$routeLocale = app()->getLocale() !== 'en' ? app()->getLocale() : null; // Only for locales different than en
+		$routeLocale = app()->getLocale() !== 'en' // Only for locales different than "en"
+			? app()->getLocale()
+			: null;
 
 		return (new MailMessage)
 			->subject(__('emails.billing_upcoming.subject'))
 			->view('mail.billing.upcoming', [
 				'notifiable' => $notifiable,
-				'invoice' => $this->invoice,
 				'subscription' => $this->subscription,
 				'venue' => $this->subscription->venue,
 				'loginUrl' => route('login', ['locale' => $routeLocale]), // https://github.com/laravel/framework/pull/25752#issuecomment-453869887

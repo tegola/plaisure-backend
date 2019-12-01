@@ -19,14 +19,6 @@ class StripeController extends WebhookController
 	{
 		$payload = json_decode(json_encode($payload)); // Array to object
 		$invoice = $payload->data->object;
-
-		// Get user and subscription
-		if (app()->isLocal()) {
-			$invoice->customer = 'cus_EnKSgANzo3yERV'; // FIXME: remove
-			$invoice->subscription = 'sub_EnKTs7FVbHAUS5'; // FIXME: remove
-		}
-
-		// FIXME: Eccezione se non vengono trovati user e subscription?
 		$user = $this->getUserByStripeId($invoice->customer);
 		$subscription = $this->getSubscriptionByStripeId($invoice->subscription);
 
@@ -38,7 +30,7 @@ class StripeController extends WebhookController
 			$subscription->save();
 
 			// Notify user of upcoming billing
-			$user->notify(new BillingUpcomingNotification($invoice, $subscription));
+			$user->notify(new BillingUpcomingNotification($subscription));
 		}
 
 		return $this->successMethod();
