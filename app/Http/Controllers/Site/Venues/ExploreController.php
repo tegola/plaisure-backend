@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Site\Venues;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\Venue as VenueResource;
+use App\Http\Resources\VenueCategory as VenueCategoryResource;
 use App\Models\Venue;
 use App\Models\VenueCategory;
-use App\Transformers\VenueTransformer;
-use App;
+use Illuminate\Http\Request;
 
 class ExploreController extends Controller
 {
@@ -31,25 +31,26 @@ class ExploreController extends Controller
 	 * Load initial explore page data.
 	 *
 	 * @param  Request $request
-	 * @return Illuminate\Http\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function data(Request $request)
 	{
 		$country = $this->extractCountry($request);
 
-		$categories = VenueCategory::forCountry($country)
-			->select('id', 'machine_name')
-			->get();
+		$categories = VenueCategory::forCountry($country)->get();
 		// $amenities = $this->amenities()->all();
 
-		return compact('categories'/*, 'amenities'*/);
+		return [
+			'categories' => VenueCategoryResource::collection($categories),
+			// 'amenities' => $amenities
+		];
 	}
 
 	/**
 	 * Search for venues by given parameters.
 	 *
 	 * @param  Request
-	 * @return Illuminate\Http\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function search(Request $request)
 	{
@@ -126,7 +127,7 @@ class ExploreController extends Controller
 		}
 		*/
 
-		// Load venues with photos
+		// Load venues
 		// We take a maximum of 100 venues, and the client knows it's the max
 		// number it can get. We did it to avoid using simplePaginate(), which
 		// is not supported by Fractal transformers, and to avoid paginate(),
@@ -134,97 +135,16 @@ class ExploreController extends Controller
 		$venues = $query
 			->take(100)
 			->get()
-			->each(function($venue) {
-				$venue->load([
-					'photos' => function($query) {
-						$query->take(1);
-					}
-				]);
+			->each(function($venue) { // Load first photo (limit/take doesn't work with eager loading)
+				$venue->load(['photos' => function($query) {
+					$query->take(1);
+				}]);
 			});
 
-		// Return results
-		$venues = $venues
-			->transformWith(new VenueTransformer())
-			->parseIncludes([
-				'categories',
-				'photos'
-			]);
-
-		return $venues;
+		return [
+			'venues' => VenueResource::collection($venues)
+		];
 	}
-
-	/**
-	 * Prepare category and venue suggestions, the latter only if location data
-	 * is present.
-	 *
-	 * @param  Request $request
-	 * @return array
-	 */
-	/*
-	public function suggestions(Request $request)
-	{
-		$query = trim($request->input('query'));
-		$venues = [];
-		$categories = [];
-		$suggestions = [];
-
-		// Find venues and categories
-		if ($query) {
-			$tokens = explode(' ', $query);
-
-			// Venues
-			$venuesQuery = Venue::with('categories');
-
-			// Find in venue name
-			foreach ($tokens as $token) {
-				$venuesQuery->where('name', 'like', "%{$token}%");
-			}
-
-			// Find in categories name
-			$venuesQuery->orWhereHas('categories', function($query) use ($tokens) {
-				foreach ($tokens as $token) {
-					$query->where('name', 'like', "%{$token}%");
-				}
-			});
-
-			$venues = $venuesQuery
-				->latest()
-				->take(5)
-				->get();
-
-			// Categories
-			$categoriesQuery = VenueCategory::query();
-			foreach ($tokens as $token) {
-				$categoriesQuery->orWhere('name', 'like', "%{$token}%");
-			}
-			$categories = $categoriesQuery->take(5)->get();
-		} else {
-			// Just categories
-			$categories = VenueCategory::take(5)->get();
-		}
-
-		// Prepare suggestions (categories first)
-		foreach ($categories as $c) {
-			array_push($suggestions, [
-				'type' => 'category',
-				'id' => $c->id,
-				'name' => $c->name
-			]);
-		}
-		foreach ($venues as $v) {
-			array_push($suggestions, [
-				'type' => 'venue',
-				'id' => $v->id,
-				'name' => $v->name,
-				'category' => $v->categories()->first()->name,
-				'city' => $v->address_city,
-				'url' => "/venues/{$v->id_hashed}"
-			]);
-		}
-
-		return $suggestions;
-	}
-	*/
 
 	/**
 	 * Find the country for the user, or use a default.

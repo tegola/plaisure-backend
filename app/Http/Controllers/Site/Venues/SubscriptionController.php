@@ -55,7 +55,7 @@ class SubscriptionController extends Controller
 	 *
 	 * @param  Venue  $venue
 	 * @param  Request $request
-	 * @return Illuminate\Http\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Venue $venue, Request $request)
 	{

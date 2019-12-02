@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\VenueCategory as VenueCategoryResource;
 use App\Models\Venue;
 use App\Models\VenueCategory;
 use App\Transformers\VenueTransformer;
@@ -21,13 +22,11 @@ class HomeController extends Controller
 	{
 		$country = $this->extractCountry($request);
 
-		$categories = VenueCategory::forCountry($country)
-			->select('id', 'machine_name')
-			->get();
+		$categories = VenueCategory::forCountry($country)->get();
 		$cacheLimit = now()->addHour();
 
 		// Highlights - 2 taken from the latest 20 (1/10 chance to appear)
-		$highlightedVenues = Cache::remember("{$country}.home.highlights.", $cacheLimit, function() use($country) {
+		$highlightedVenues = Cache::remember("{$country}.home.highlights", $cacheLimit, function() use($country) {
 			$venues = $this->initQuery($country)
 				->whereHas('subscriptions', function($query) {
 					$query
@@ -70,7 +69,11 @@ class HomeController extends Controller
 			return $venues;
 		});
 
-		return compact('categories', 'highlightedVenues', 'newVenues');
+		return [
+			'categories' => VenueCategoryResource::collection($categories),
+			'highlightedVenues' => $highlightedVenues,
+			'newVenues' => $newVenues
+		];
 	}
 
 	/**
@@ -81,10 +84,7 @@ class HomeController extends Controller
 	private function initQuery($country) {
 		return Venue::query()
 			->where('country', $country)
-			->with('categories', 'businessHours')
-			->with(['photos' => function($query) {
-				return $query->take(1);
-			}]);
+			->with('categories', 'businessHours');
 	}
 
 	/**
@@ -95,6 +95,11 @@ class HomeController extends Controller
 	 */
 	private function transformVenues($venues) {
 		return $venues
+			->each(function($venue) { // Load first photo (limit/take doesn't work with eager loading)
+				$venue->load(['photos' => function($query) {
+					$query->take(1);
+				}]);
+			})
 			->transformWith(new VenueTransformer())
 			->parseIncludes([
 				'categories',

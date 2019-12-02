@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\File as FileResource;
 use App\Http\Resources\Review as ReviewResource;
 use App\Http\Resources\Subscription as SubscriptionResource;
 use App\Http\Resources\VenueCategory as VenueCategoryResource;
@@ -90,6 +91,7 @@ class Venue extends JsonResource
 			'has_owner' => $this->has_owner,
 			'created_at' => $this->created_at,
 
+			'photos' => $this->whenLoaded('photos', FileResource::collection($this->photos)),
 			'categories' => $this->whenLoaded('categories', VenueCategoryResource::collection($this->categories)),
 			'reviews' => $this->whenLoaded('reviews', ReviewResource::collection($this->reviews)),
 			'subscription' => $this->whenLoaded('subscriptions', new SubscriptionResource($this->resource->subscription()))

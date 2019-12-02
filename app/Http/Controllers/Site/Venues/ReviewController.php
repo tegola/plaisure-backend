@@ -20,16 +20,21 @@ class ReviewController extends Controller
 			->except('index', 'report');
 	}
 
+	/**
+	 * Load the reviews page data.
+	 *
+	 * @param  Venue   $venue
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
 	public function index(Venue $venue, Request $request)
 	{
-		$venue->with([
+		$venue->load([
 			'photos' => function($query) {
-				// First photo
 				$query->take(1);
 			},
 			'categories',
 			'reviews' => function($query) {
-				// Latest 5 reviews
 				$query->latest()->take(5);
 			}
 		]);
@@ -45,7 +50,7 @@ class ReviewController extends Controller
 	 * 
 	 * @param  Venue  $venue
 	 * @param  Request $request
-	 * @return Illuminate\Http\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Venue $venue, Request $request) {
 		$this->authorize('review', $venue);

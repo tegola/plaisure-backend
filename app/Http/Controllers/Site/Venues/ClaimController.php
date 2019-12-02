@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Site\Venues;
 
-use Illuminate\Http\Request;
-use App\Models\Venue;
 use App\Http\Controllers\Controller;
-use App\Transformers\VenueTransformer;
+use App\Http\Resources\Venue as VenueResource;
+use App\Models\Venue;
+use Illuminate\Http\Request;
 
 class ClaimController extends Controller
 {
@@ -18,24 +18,24 @@ class ClaimController extends Controller
 	 * Get the data to show the venue claim page.
 	 * 
 	 * @param  Venue  $venue
-	 * @return Illuminate\Http\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function load(Venue $venue) {
 		$this->authorize('claim', $venue);
 
-		// Load first photo
-		$venue->with(['photos' => function($query) {
-			$query->take(1);
-		}]);
+		// Load relationships
+		$venue->load([
+			'categories',
+			'photos' => function($query) {
+				$query->take(1);
+			}
+		]);
 
 		// $codeRequired = $venue->aams_census_code ? true : false;
 
-		// Prepare venue
-		$venue = fractal($venue, new VenueTransformer())
-			->includePhotos()
-			->includeCategories();
-
-		return compact('venue' /*, 'codeRequired'*/);
+		return [
+			'venue' => new VenueResource($venue)
+		];
 	}
 
 	public function confirm(Venue $venue, Request $request) {

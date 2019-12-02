@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Site\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Transformers\VenueTransformer;
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Venue as VenueResource;
 
 class MainController extends Controller
 {
@@ -42,23 +42,22 @@ class MainController extends Controller
 	 */
 	public function venues()
 	{
-		$venues = auth()->user()->venues
-			// FIXME: Migliorare la query
-			->each(function($venue) { // Load only first photo
-				$venue->load([
-					'photos' => function($query) {
-						$query->take(1);
-					}
-				]);
-			})
-			->transformWith(new VenueTransformer())
-			->parseIncludes([
+		$user = auth()->user();
+		$venues = $user->venues()
+			->with([
 				'categories',
-				'photos',
-				'subscription'
-			]);
+				'subscriptions'
+			])
+			->get()
+			->each(function($venue) { // Load first photo (limit/take doesn't work with eager loading)
+				$venue->load(['photos' => function($query) {
+					$query->take(1);
+				}]);
+			});
 
-		return compact('venues');
+		return [
+			'venues' => VenueResource::collection($venues)
+		];
 	}
 
 	/**

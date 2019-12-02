@@ -29,13 +29,13 @@ class FavoritesController extends Controller
 	{
 		$user = auth()->user();
 		$venues = $user->favorites()
-			->with([
-				'photos' => function($query) {
-					$query->take(1); // Only first photo
-				},
-				'categories'
-			])
-			->get();
+			->with('categories')
+			->get()
+			->each(function($venue) { // Load first photo (limit/take doesn't work with eager loading)
+				$venue->load(['photos' => function($query) {
+					$query->take(1);
+				}]);
+			});
 
 		return [
 			'venues' => VenueResource::collection($venues)

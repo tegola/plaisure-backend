@@ -15,7 +15,7 @@ class DetailController extends Controller
 	 * Get the data to show the venue detail page.
 	 * 
 	 * @param  Venue  $venue
-	 * @return Illuminate\Http\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function detail(Venue $venue) {
 		// Eager load relationships
