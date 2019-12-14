@@ -81,11 +81,13 @@ class Venue extends JsonResource
 			'has_owner' => $this->has_owner,
 			'created_at' => $this->created_at,
 
-			'photos' => $this->whenLoaded('photos', FileResource::collection($this->photos)),
-			'amenities' => $this->whenLoaded('amenities', AmenityResource::collection($this->amenities)),
-			'categories' => $this->whenLoaded('categories', VenueCategoryResource::collection($this->categories)),
-			'reviews' => $this->whenLoaded('reviews', ReviewResource::collection($this->reviews)),
-			'subscription' => $this->whenLoaded('subscriptions', new SubscriptionResource($this->resource->subscription()))
+			'photos' => FileResource::collection($this->whenLoaded('photos')),
+			'amenities' => AmenityResource::collection($this->whenLoaded('amenities')),
+			'categories' => VenueCategoryResource::collection($this->whenLoaded('categories')),
+			'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
+			'subscription' => $this->whenLoaded('subscriptions', function() {
+				return new SubscriptionResource($this->subscription());
+			})
 		];
 	}
 }

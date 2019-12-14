@@ -17,7 +17,7 @@ class VenueCategory extends JsonResource
 		return [
 			'id' => $this->id,
 			'machine_name' => $this->machine_name,
-			'country' => $this->country // To limit them client/side depending on the language
+			'country' => $this->country
 		];
 	}
 }

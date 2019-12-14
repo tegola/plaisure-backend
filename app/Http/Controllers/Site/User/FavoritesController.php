@@ -16,7 +16,7 @@ class FavoritesController extends Controller
 	 */
 	public function __construct()
 	{
-	    $this->middleware('auth:api');
+		$this->middleware('auth:api');
 	}
 
 	/**

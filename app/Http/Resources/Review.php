@@ -24,7 +24,9 @@ class Review extends JsonResource
 			'reply' => $this->reply,
 			'created_at' => $this->created_at,
 			'replied_at' => $this->replied_at,
-			'user' => $this->whenLoaded('user', new UserSimpleResource($this->user))
+			'user' => $this->whenLoaded('user', function() {
+				return new UserSimpleResource($this->user);
+			})
 		];
 	}
 }

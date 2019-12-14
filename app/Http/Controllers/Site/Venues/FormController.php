@@ -172,16 +172,7 @@ class FormController extends Controller
 			'jackpots.3.label'          => 'nullable|string',
 			'jackpots.3.value'          => 'nullable|numeric|min:0',
 
-			'amenities.atm'             => 'boolean',
-			'amenities.bar'             => 'boolean',
-			'amenities.pay_per_view'    => 'boolean',
-			'amenities.pos'             => 'boolean',
-			'amenities.private_parking' => 'boolean',
-			'amenities.restaurant'      => 'boolean',
-			'amenities.security'        => 'boolean',
-			'amenities.smoking_area'    => 'boolean',
-			'amenities.wifi'            => 'boolean',
-
+			'amenity_ids'               => 'required|exists:amenities,id',
 			'category_ids'              => 'required|exists:venue_categories,id',
 			'vlt_platform_ids'          => 'nullable|exists:vlt_platforms,id',
 

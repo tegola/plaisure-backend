@@ -17,7 +17,7 @@ class MainController extends Controller
 	 */
 	public function __construct()
 	{
-	    $this->middleware('auth:api');
+		$this->middleware('auth:api');
 	}
 
 	/**
@@ -44,10 +44,7 @@ class MainController extends Controller
 	{
 		$user = auth()->user();
 		$venues = $user->venues()
-			->with([
-				'categories',
-				'subscriptions'
-			])
+			->with('categories', 'subscriptions')
 			->get()
 			->each(function($venue) { // Load first photo (limit/take doesn't work with eager loading)
 				$venue->load(['photos' => function($query) {

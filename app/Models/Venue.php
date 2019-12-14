@@ -210,7 +210,7 @@ class Venue extends Model
 	 */
 	public function getHasOwnerAttribute()
 	{
-	    return $this->owner_id ? true : false;
+		return $this->owner_id ? true : false;
 	}
 
 	/**
