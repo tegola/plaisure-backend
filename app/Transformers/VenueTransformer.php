@@ -2,14 +2,15 @@
 
 namespace App\Transformers;
 
-use League\Fractal\TransformerAbstract;
-use App\Models\Venue;
-use App\Models\VltPlatform;
-use App\Models\Subscription;
-use App\Models\VenueCategory;
+use App\Models\Amenity;
 use App\Models\Review;
+use App\Models\Subscription;
+use App\Models\Venue;
+use App\Models\VenueCategory;
+use App\Models\VltPlatform;
 use App\Transformers\FileTransformer;
 use Illuminate\Database\Eloquent\Collection;
+use League\Fractal\TransformerAbstract;
 
 class VenueTransformer extends TransformerAbstract
 {
@@ -20,6 +21,8 @@ class VenueTransformer extends TransformerAbstract
 	 */
 	protected $availableIncludes = [
 		'business_hours',
+		'amenities',
+		'amenity_ids',
 		'categories',
 		'category_ids',
 		'photos',
@@ -106,17 +109,6 @@ class VenueTransformer extends TransformerAbstract
 					'value' => $venue->jackpot3_value,
 				]
 			],
-			'amenities' => [
-				'atm' => $venue->amenity_atm,
-				'bar' => $venue->amenity_bar,
-				'pay_per_view' => $venue->amenity_pay_per_view,
-				'pos' => $venue->amenity_pos,
-				'private_parking' => $venue->amenity_private_parking,
-				'restaurant' => $venue->amenity_restaurant,
-				'security' => $venue->amenity_security,
-				'smoking_area' => $venue->amenity_smoking_area,
-				'wifi' => $venue->amenity_wifi
-			],
 			'rating' => [
 				'1_count' => $ratings->where('rating', 1)->count(),
 				'2_count' => $ratings->where('rating', 2)->count(),
@@ -161,6 +153,32 @@ class VenueTransformer extends TransformerAbstract
 	}
 
 	/**
+	 * Include amenities.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Collection
+	 */
+	public function includeAmenities(Venue $venue)
+	{
+		return $this->collection($venue->amenities, function(Amenity $amenity) {
+			return $amenity->only('id', 'machine_name', 'country');
+		});
+	}
+
+	/**
+	 * Include amenity ids.
+	 *
+	 * @param Venue $venue
+	 * @return \League\Fractal\Resource\Item
+	 */
+	public function includeAmenityIds(Venue $venue)
+	{
+		return $this->item($venue->amenities, function(Collection $amenities) {
+			return $amenities->pluck('id')->all();
+		});
+	}
+
+	/**
 	 * Include categories.
 	 *
 	 * @param Venue $venue
@@ -169,7 +187,7 @@ class VenueTransformer extends TransformerAbstract
 	public function includeCategories(Venue $venue)
 	{
 		return $this->collection($venue->categories, function(VenueCategory $category) {
-			return $category->only('id', 'machine_name', 'name');
+			return $category->only('id', 'machine_name', 'name', 'country');
 		});
 	}
 
@@ -219,7 +237,7 @@ class VenueTransformer extends TransformerAbstract
 	public function includeVltPlatforms(Venue $venue)
 	{
 		return $this->collection($venue->vltPlatforms, function(VltPlatform $vltPlatform) {
-			return $vltPlatform->only('id', 'name');
+			return $vltPlatform->only('id', 'name', 'country');
 		});
 	}
 

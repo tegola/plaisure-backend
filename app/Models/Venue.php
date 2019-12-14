@@ -290,6 +290,16 @@ class Venue extends Model
 	}
 
 	/**
+	 * Amenities offered by the venue.
+	 *
+	 * @return [\App\Models\Amenity]
+	 */
+	public function amenities()
+	{
+		return $this->belongsToMany('App\Models\Amenity', 'venue_amenity');
+	}
+
+	/**
 	 * VLT platoform this venue belongs to.
 	 * 
 	 * @return [\App\Models\VltPlatform]

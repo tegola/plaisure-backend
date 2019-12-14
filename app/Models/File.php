@@ -89,7 +89,7 @@ class File extends Model
 	/**
 	 * Get the user that has uploaded this file.
 	 * 
-	 * @return App\Models\User
+	 * @return \App\Models\User
 	 */
 	public function user()
 	{

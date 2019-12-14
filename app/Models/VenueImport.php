@@ -82,7 +82,7 @@ class VenueImport extends Model
 	/**
 	 * Venue that get their data from this import.
 	 *
-	 * @return [App\Models\Venue]
+	 * @return [\App\Models\Venue]
 	 */
 	public function venues()
 	{

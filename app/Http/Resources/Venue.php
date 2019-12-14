@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Amenity as AmenityResource;
 use App\Http\Resources\File as FileResource;
 use App\Http\Resources\Review as ReviewResource;
 use App\Http\Resources\Subscription as SubscriptionResource;
@@ -76,22 +77,12 @@ class Venue extends JsonResource
 					'value' => $this->jackpot3_value,
 				]
 			],
-			'amenities' => [
-				'atm' => $this->amenity_atm,
-				'bar' => $this->amenity_bar,
-				'pay_per_view' => $this->amenity_pay_per_view,
-				'pos' => $this->amenity_pos,
-				'private_parking' => $this->amenity_private_parking,
-				'restaurant' => $this->amenity_restaurant,
-				'security' => $this->amenity_security,
-				'smoking_area' => $this->amenity_smoking_area,
-				'wifi' => $this->amenity_wifi
-			],
 			'distance' => $this->distance,
 			'has_owner' => $this->has_owner,
 			'created_at' => $this->created_at,
 
 			'photos' => $this->whenLoaded('photos', FileResource::collection($this->photos)),
+			'amenities' => $this->whenLoaded('amenities', AmenityResource::collection($this->amenities)),
 			'categories' => $this->whenLoaded('categories', VenueCategoryResource::collection($this->categories)),
 			'reviews' => $this->whenLoaded('reviews', ReviewResource::collection($this->reviews)),
 			'subscription' => $this->whenLoaded('subscriptions', new SubscriptionResource($this->resource->subscription()))

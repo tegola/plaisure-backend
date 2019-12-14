@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VenueCategory extends Model
+class Amenity extends Model
 {
 	/**
 	 * The attributes that aren't mass assignable.
@@ -14,13 +14,13 @@ class VenueCategory extends Model
 	protected $guarded = [];
 
 	/**
-	 * Venues belonging to this category.
+	 * Venues offering this amenity.
 	 *
 	 * @return [\App\Models\Venue]
 	 */
 	public function venues()
 	{
-		return $this->belongsToMany('App\Models\Venue');
+		return $this->belongsToMany('App\Models\Venue', 'venue_amenity');
 	}
 
 	/**

@@ -16,7 +16,7 @@ class VltPlatform extends Model
 	/**
 	 * Venues belonging to this platform.
 	 *
-	 * @return [App\Models\Venue]
+	 * @return [\App\Models\Venue]
 	 */
 	public function venues()
 	{

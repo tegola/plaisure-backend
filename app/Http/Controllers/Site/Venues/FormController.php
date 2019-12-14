@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Site\Venues;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Venue;
-use App\Models\VenueCategory;
+use App\Http\Resources\Amenity as AmenityResource;
+use App\Http\Resources\Concessionaire as ConcessionaireResource;
+use App\Http\Resources\VenueCategory as VenueCategoryResource;
+use App\Http\Resources\VltPlatform as VltPlatformResource;
+use App\Models\Amenity;
 use App\Models\Concessionaire;
-use App\Models\VltPlatform;
-use App\Models\VenueBusinessHour;
 use App\Models\File;
 use App\Models\Subscription;
+use App\Models\Venue;
+use App\Models\VenueBusinessHour;
+use App\Models\VenueCategory;
+use App\Models\VltPlatform;
 use App\Transformers\VenueTransformer;
-
-use App\Http\Resources\VenueCategory as VenueCategoryResource;
-use App\Http\Resources\Concessionaire as ConcessionaireResource;
-use App\Http\Resources\VltPlatform as VltPlatformResource;
 use DB;
+use Illuminate\Http\Request;
 
 class FormController extends Controller
 {
@@ -66,6 +67,7 @@ class FormController extends Controller
 		$venue->load([
 			'businessHours',
 			'categories',
+			'amenities',
 			'photos',
 			'vltPlatforms',
 			'subscriptions'
@@ -75,6 +77,7 @@ class FormController extends Controller
 			->parseIncludes([
 				'business_hours',
 				'category_ids',
+				'amenity_ids',
 				'photos',
 				'vlt_platform_ids',
 				'subscription'
@@ -83,12 +86,14 @@ class FormController extends Controller
 		$categories = VenueCategoryResource::collection(VenueCategory::all());
 		$concessionaires = ConcessionaireResource::collection(Concessionaire::all());
 		$vltPlatforms = VltPlatformResource::collection(VltPlatform::all());
+		$amenities = AmenityResource::collection(Amenity::all());
 
 		return compact(
 			'venue',
 			'categories',
 			'concessionaires',
-			'vltPlatforms'
+			'vltPlatforms',
+			'amenities'
 		);
 	}
 
@@ -222,15 +227,6 @@ class FormController extends Controller
 				'awp_machine_count' => $request->input('awp_machine_count') ?: 0,
 				'seating_capacity' => $request->input('seating_capacity') ?: 0,
 				'parking_capacity' => $request->input('parking_capacity') ?: 0,
-				'amenity_atm' => $request->input('amenities.atm'),
-				'amenity_bar' => $request->input('amenities.bar'),
-				'amenity_pay_per_view' => $request->input('amenities.pay_per_view'),
-				'amenity_pos' => $request->input('amenities.pos'),
-				'amenity_private_parking' => $request->input('amenities.private_parking'),
-				'amenity_restaurant' => $request->input('amenities.restaurant'),
-				'amenity_security' => $request->input('amenities.security'),
-				'amenity_smoking_area' => $request->input('amenities.smoking_area'),
-				'amenity_wifi' => $request->input('amenities.wifi'),
 
 				// Contacts pane
 				'contact_phone' => $request->input('contacts.phone') ?: '',
@@ -251,6 +247,7 @@ class FormController extends Controller
 			]);
 			$venue->save();
 
+			$venue->amenities()->sync($request->amenity_ids);
 			$venue->categories()->sync($request->category_ids);
 			$venue->vltPlatforms()->sync($request->vlt_platform_ids);
 

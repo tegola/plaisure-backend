@@ -21,6 +21,7 @@ class DetailController extends Controller
 		// Eager load relationships
 		$venue->load([
 			'businessHours',
+			'amenities',
 			'categories',
 			'photos',
 			'vltPlatforms',
@@ -55,6 +56,7 @@ class DetailController extends Controller
 		$venue = fractal($venue, new VenueTransformer())
 			->parseIncludes([
 				'business_hours',
+				'amenities',
 				'categories',
 				'photos',
 				'vlt_platforms',

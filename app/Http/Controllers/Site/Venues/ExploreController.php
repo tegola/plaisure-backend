@@ -11,22 +11,6 @@ use Illuminate\Http\Request;
 
 class ExploreController extends Controller
 {
-	/*
-	private function amenities() {
-		return collect([
-			['field' => 'amenity_atm',             'machine_name' => 'atm'],
-			['field' => 'amenity_bar',             'machine_name' => 'bar'],
-			['field' => 'amenity_pay_per_view',    'machine_name' => 'pay_per_view'],
-			['field' => 'amenity_pos',             'machine_name' => 'pos'],
-			['field' => 'amenity_private_parking', 'machine_name' => 'private_parking'],
-			['field' => 'amenity_restaurant',      'machine_name' => 'restaurant'],
-			['field' => 'amenity_security',        'machine_name' => 'security'],
-			['field' => 'amenity_smoking_area',    'machine_name' => 'smoking_area'],
-			['field' => 'amenity_wifi',            'machine_name' => 'wifi']
-		]);
-	}
-	*/
-
 	/**
 	 * Load initial explore page data.
 	 *
@@ -38,11 +22,9 @@ class ExploreController extends Controller
 		$country = $this->extractCountry($request);
 
 		$categories = VenueCategory::forCountry($country)->get();
-		// $amenities = $this->amenities()->all();
 
 		return [
-			'categories' => VenueCategoryResource::collection($categories),
-			// 'amenities' => $amenities
+			'categories' => VenueCategoryResource::collection($categories)
 		];
 	}
 

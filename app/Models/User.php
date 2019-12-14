@@ -129,7 +129,7 @@ class User extends Authenticatable implements HasLocalePreference
 	/**
 	 * Get all this user's subscriptions.
 	 *
-	 * @return [App\Models\Subscription]
+	 * @return [\App\Models\Subscription]
 	 */
 	public function subscriptions()
 	{

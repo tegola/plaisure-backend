@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\Resource;
 use Laravel\Cashier\Cashier;
 use Schema;
-use Blade;
 use Carbon;
 
 class AppServiceProvider extends ServiceProvider
