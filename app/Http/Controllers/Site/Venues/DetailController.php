@@ -46,7 +46,7 @@ class DetailController extends Controller
 			$nearbyVenues = Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
 				->where('id', '!=', $venue->id)
 				->with('categories')
-				->take(3)
+				->take(4)
 				->get()
 				->transformWith(new VenueTransformer())
 				->includeCategories()
