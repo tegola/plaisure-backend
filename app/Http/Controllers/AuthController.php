@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+// use App\Http\Resources\User as UserResource;
 use App\Models\User;
 use App\Notifications\Admin\UserRegistered;
-use GuzzleHttp\Client;
+// use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
-use App\Http\Resources\User as UserResource;
 use Route;
 
 class AuthController extends Controller
 {
 	public function __construct()
 	{
+		/*
 		$this->client = new Client([
 			// Allow it to work even in testing environments, where we don't
 			// have ssl certificates
@@ -23,6 +24,7 @@ class AuthController extends Controller
 			// Automatically handle errors
 			'http_errors' => false
 		]);
+		*/
 
 		$this->middleware('guest')->except('logout');
 	}
