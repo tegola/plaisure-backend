@@ -172,15 +172,15 @@ class FormController extends Controller
 			'jackpots.3.label'          => 'nullable|string',
 			'jackpots.3.value'          => 'nullable|numeric|min:0',
 
-			'amenity_ids'               => 'required|exists:amenities,id',
-			'category_ids'              => 'required|exists:venue_categories,id',
-			'vlt_platform_ids'          => 'nullable|exists:vlt_platforms,id',
+			'amenity_ids'               => 'array|exists:amenities,id',
+			'category_ids'              => 'required|array|exists:venue_categories,id',
+			'vlt_platform_ids'          => 'array|exists:vlt_platforms,id',
 
-			'business_hours'            => 'required|array|size:7', // Array of 7 elements
+			'business_hours'            => 'array|size:7', // Array of 7 elements
 			'business_hours.*'          => [
 				'array',
 				function($attribute, $value, $fail) {
-					if (!in_array(count($value), [0, 2, 4])) { // 0, 2 o 4 values
+					if (!in_array(count($value), [0, 2, 4])) { // 0, 2 or 4 values
 						$fail("{$attribute} is invalid.");
 					}
 				}
@@ -210,10 +210,10 @@ class FormController extends Controller
 				'geo_longitude' => $request->input('coords.lng'),
 
 				// Services pane
-				'sports_betting' => $request->input('sports_betting'),
-				'virtual_betting' => $request->input('virtual_betting'),
-				'horse_betting' => $request->input('horse_betting'),
-				'arcade_roulette' => $request->input('arcade_roulette'),
+				'sports_betting' => $request->input('sports_betting', false),
+				'virtual_betting' => $request->input('virtual_betting', false),
+				'horse_betting' => $request->input('horse_betting', false),
+				'arcade_roulette' => $request->input('arcade_roulette', false),
 				'vlt_machine_count' => $request->input('vlt_machine_count') ?: 0,
 				'awp_machine_count' => $request->input('awp_machine_count') ?: 0,
 				'seating_capacity' => $request->input('seating_capacity') ?: 0,
@@ -244,22 +244,25 @@ class FormController extends Controller
 
 			// Business hours
 			$venue->businessHours()->delete();
-			foreach ($request->input('business_hours') as $day => $hours) {
-				if (count($hours) > 0) {
-					$split1 = new VenueBusinessHour([
-						'day' => $day,
-						'opens' => $hours[0],
-						'closes' => $hours[1]
-					]);
-					$venue->businessHours()->save($split1);
-				}
-				if (count($hours) > 2) {
-					$split2 = new VenueBusinessHour([
-						'day' => $day,
-						'opens' => $hours[2],
-						'closes' => $hours[3]
-					]);
-					$venue->businessHours()->save($split2);
+
+			if ($request->business_hours) {
+				foreach ($request->input('business_hours') as $day => $hours) {
+					if (count($hours) > 0) {
+						$split1 = new VenueBusinessHour([
+							'day' => $day,
+							'opens' => $hours[0],
+							'closes' => $hours[1]
+						]);
+						$venue->businessHours()->save($split1);
+					}
+					if (count($hours) > 2) {
+						$split2 = new VenueBusinessHour([
+							'day' => $day,
+							'opens' => $hours[2],
+							'closes' => $hours[3]
+						]);
+						$venue->businessHours()->save($split2);
+					}
 				}
 			}
 
