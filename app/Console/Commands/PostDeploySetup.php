@@ -42,7 +42,7 @@ class PostDeploySetup extends Command
 			$sharedStoragePath = base_path('storage_bkp');
 		} else {
 			$php = '/opt/plesk/php/7.2/bin/php';
-			$composer = "{$php} /usr/lib64/plesk-9.0/composer.phar}";
+			$composer = "{$php} /usr/lib64/plesk-9.0/composer.phar";
 			$sharedStoragePath = '/var/www/vhosts/plaisure.com/storage/';
 		}
 		$storagePath = storage_path();

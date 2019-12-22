@@ -210,7 +210,7 @@ class File extends Model
 	{
 		$path = $this->pathForSize($size);
 
-		return storage_path("app/{$path}");
+		return Storage::path($path);
 	}
 
 	/**
@@ -247,25 +247,25 @@ class File extends Model
 	}
 
 	/**
-	 * Check whether the file is public (=it's in the public dir) or not.
+	 * Check whether the file is in the public disk.
 	 * 
 	 * @return boolean
 	 */
 	public function isPublic()
 	{
-		$pathArray = explode('/', $this->path);
+		$internalFilename = pathinfo($this->path)['basename'];
 
-		return count($pathArray) && $pathArray[0] == self::PUBLIC_DIR ? true : false;
+		return Storage::disk('public')->exists($internalFilename);
 	}
 
 	/**
-	 * Moves the file in the public directory and updates the model.
+	 * Moves the file in the public disk and updates the model.
 	 * 
 	 * @return bool
 	 */
 	public function makePublic()
 	{
-		if ($this->isPublic()) return $this;
+		if ($this->isPublic()) return true;
 
 		// Move files
 		$publicDir = self::PUBLIC_DIR;
@@ -275,10 +275,10 @@ class File extends Model
 			self::SIZE_THUMBNAIL => $this->pathForSize(self::SIZE_THUMBNAIL)
 		];
 
-		foreach($originalPaths as $size => $path) {
+		foreach ($originalPaths as $size => $path) {
 			$oldPath = $path;
-			$fileName = basename($oldPath);
-			$newPath = "{$publicDir}/{$fileName}";
+			$filename = basename($oldPath);
+			$newPath = "{$publicDir}/{$filename}";
 			if ($size == self::SIZE_ORIGINAL) $originalNewPath = $newPath;
 
 			Storage::move($oldPath, $newPath);
