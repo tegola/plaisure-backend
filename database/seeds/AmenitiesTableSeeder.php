@@ -24,6 +24,10 @@ class AmenitiesTableSeeder extends Seeder
 
 	private $amenities = [
 		[
+			'machine_name' => 'air_conditioning',
+			'country' => ''
+		],
+		[
 			'machine_name' => 'atm',
 			'country' => ''
 		],
@@ -41,6 +45,10 @@ class AmenitiesTableSeeder extends Seeder
 		],
 		[
 			'machine_name' => 'private_parking',
+			'country' => ''
+		],
+		[
+			'machine_name' => 'private_room',
 			'country' => ''
 		],
 		[
