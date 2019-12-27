@@ -92,6 +92,8 @@ class VenuesFromImports extends Command
 		foreach ($query->get() as $venueImport) {
 			// Handle soft deleted imports: skip if still connected to a venue,
 			// otherwise force delete them
+			// FIXME: Maybe move into the import command and remove handle of
+			// trashed imports here?
 			if ($venueImport->trashed()) {
 				if ($venueImport->venues->count()) {
 					$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: is deleted but still connected to one or more venues. Needs admin intervention.");

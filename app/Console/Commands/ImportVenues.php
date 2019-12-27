@@ -68,6 +68,10 @@ class ImportVenues extends Command
 		$startIndex = $this->option('start');
 		$endIndex = $this->option('end');
 
+		if ($this->option('delete-outdated' && ($startIndex || $endIndex)) {
+			throw new \Exception('Cannot delete outdated imports when using start/end pointers, the importer would not be able to compare with the full set of source venues.');
+		}
+
 		// Create importer
 		switch ($this->argument('brand')) {
 			case 'aams': $this->importer = new AAMSImporter(); break;
@@ -147,7 +151,7 @@ class ImportVenues extends Command
 		}
 
 		// Soft-delete closed venues (if specified)
-		if ($this->option('delete-outdated')) {
+		if ($this->option('delete-outdated') && !$startIndex && $endIndex) {
 			$outdatedImports = VenueImport::query()
 				->where('source_brand', $this->importer->getVenueImportBrand())
 				->whereNotIn('source_id', $this->importer->getIds())
