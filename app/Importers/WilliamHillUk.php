@@ -21,7 +21,7 @@ class WilliamHillUk extends Importer
 	protected $venueImportBrand = VenueImport::SOURCE_BRAND_WILLIAM_HILL_UK;
 
 	/**
-	 * Whether the importer does one request per venue.
+	 * Whether the importer needs to to multiple requests to finish
 	 * 
 	 * @var boolean
 	 */

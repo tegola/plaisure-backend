@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Non-destructive seeders
         $this->call([
         	AmenitiesTableSeeder::class,
         	VenueCategoriesTableSeeder::class

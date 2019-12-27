@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\VenueImport;
+use App\Importers\AAMS as AAMSImporter;
 use App\Importers\AdmiralUk as AdmiralUkImporter;
 use App\Importers\Cashino as CashinoImporter;
 use App\Importers\Ladbrokes as LadbrokesImporter;
@@ -17,7 +18,7 @@ class ImportVenues extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature = 'import-venues
+	protected $signature = 'venues:import
 							{brand}
 							{--start=1}
 							{--end=100000}
@@ -69,6 +70,7 @@ class ImportVenues extends Command
 
 		// Create importer
 		switch ($this->argument('brand')) {
+			case 'aams': $this->importer = new AAMSImporter(); break;
 			case 'admiral-uk': $this->importer = new AdmiralUkImporter(); break;
 			case 'cashino': $this->importer = new CashinoImporter(); break;
 			case 'megabet': $this->importer = new MegabetImporter(); break;
@@ -131,7 +133,7 @@ class ImportVenues extends Command
 				$this->info("Added {$item->$idKey}: {$description}");
 				$this->added++;
 
-			} else if ($venueImport->source_data != $item || $venueImport->normalized_data != $normalizedItem) {
+			} else if ($venueImport->source_data != $item/* || $venueImport->normalized_data != $normalizedItem*/) { // normalized check disabled because it may be modified by the geolocalization process
 
 				// Update when data is different
 				$venueImport->source_data = $item;

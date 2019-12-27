@@ -22,7 +22,7 @@ abstract class Importer
 	protected $venueImportBrand;
 
 	/**
-	 * Whether the importer does one request per venue.
+	 * Whether the importer needs to to multiple requests to finish.
 	 * 
 	 * @var boolean
 	 */
@@ -103,15 +103,15 @@ abstract class Importer
 	/**
 	 * Get ids (real or generated) from fetched data.
 	 * 
-	 * @return \Illuminate\Support\Collection
+	 * @return array
 	 */
 	public function getIds()
 	{
 		$idKey = $this->getIdKey();
 
-		return collect($this->data)->map(function($item) use ($idKey) {
+		return array_map(function($item) use ($idKey) {
 			return $item->$idKey;
-		});
+		}, $this->data);
 	}
 
 	/**
@@ -175,7 +175,7 @@ abstract class Importer
 	}
 
 	/**
-	 * Get wheter the importer does one request per venue.
+	 * Get whether the importer needs to to multiple requests to finish.
 	 * 
 	 * @var boolean
 	 */
@@ -200,7 +200,6 @@ abstract class Importer
 	 */
 	public function getIndex()
 	{
-		// "+ 1" to take automatic increment into account
 		return $this->index;
 	}
 

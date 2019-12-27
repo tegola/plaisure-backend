@@ -17,7 +17,7 @@ class VenuesFromImports extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature = 'venues-from-imports {--brand=}';
+	protected $signature = 'venues:from-imports {--brand=}';
 
 	/**
 	 * The console command description.
@@ -68,6 +68,7 @@ class VenuesFromImports extends Command
 
 		if ($this->hasOption('brand')) {
 			switch ($this->option('brand')) {
+				case 'aams': $query->where('source_brand', VenueImport::SOURCE_BRAND_AAMS); break;
 				case 'admiral-uk': $query->where('source_brand', VenueImport::SOURCE_BRAND_ADMIRAL_UK); break;
 				case 'cashino': $query->where('source_brand', VenueImport::SOURCE_BRAND_CASHINO); break;
 				case 'megabet': $query->where('source_brand', VenueImport::SOURCE_BRAND_MEGABET); break;

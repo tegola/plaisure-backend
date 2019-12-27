@@ -14,6 +14,7 @@ class VenueImport extends Model
 	const SOURCE_BRAND_MEGABET          = 3;
 	const SOURCE_BRAND_LADBROKES        = 4;
 	const SOURCE_BRAND_WILLIAM_HILL_UK  = 5;
+	const SOURCE_BRAND_AAMS             = 6;
 	
 	/**
 	 * The attributes that aren't mass assignable.
@@ -70,13 +71,28 @@ class VenueImport extends Model
 	public function readableSourceBrand()
 	{
 		switch ($this->source_brand) {
+			case self::SOURCE_BRAND_AAMS: return 'AAMS';
 			case self::SOURCE_BRAND_ADMIRAL_UK: return 'Admiral UK';
 			case self::SOURCE_BRAND_CASHINO: return 'Cashino';
-			case self::SOURCE_BRAND_MEGABET: return 'Megabet';
 			case self::SOURCE_BRAND_LADBROKES: return 'Ladbrokes';
+			case self::SOURCE_BRAND_MEGABET: return 'Megabet';
 			case self::SOURCE_BRAND_WILLIAM_HILL_UK: return 'William Hill UK';
 		}
-		
+	}
+
+	/**
+	 * Prepare the address for using it for geocoding purposes.
+	 *
+	 * @return string
+	 */
+	public function addressForGeocode()
+	{
+		$sourceData = $this->source_data;
+
+		switch ($this->source_brand) {
+			case self::SOURCE_BRAND_AAMS: return "{$sourceData->indirizzo}, {$sourceData->comune_e_provincia}";
+			default: '';
+		}
 	}
 
 	/**
