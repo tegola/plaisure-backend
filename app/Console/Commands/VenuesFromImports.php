@@ -133,7 +133,7 @@ class VenuesFromImports extends Command
 							} catch (\Exception $e) {
 								// Show error and count skipped
 								$message = $e->getMessage();
-								$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: $message.");
+								$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: {$message}.");
 								$this->skipped++;
 								
 								// Rollback transaction by throwing the
@@ -162,7 +162,7 @@ class VenuesFromImports extends Command
 					} catch (\Exception $e) {
 						// Show error and count skipped
 						$message = $e->getMessage();
-						$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: $message().");
+						$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: {$message}.");
 						$this->skipped++;
 
 						// Rollback transaction by throwing the
