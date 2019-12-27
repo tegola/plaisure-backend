@@ -68,7 +68,7 @@ class ImportVenues extends Command
 		$startIndex = $this->option('start');
 		$endIndex = $this->option('end');
 
-		if ($this->option('delete-outdated' && ($startIndex || $endIndex)) {
+		if ($this->option('delete-outdated') && ($startIndex || $endIndex)) {
 			throw new \Exception('Cannot delete outdated imports when using start/end pointers, the importer would not be able to compare with the full set of source venues.');
 		}
 
