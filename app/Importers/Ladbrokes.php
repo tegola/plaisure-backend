@@ -106,8 +106,8 @@ class Ladbrokes extends Importer
 	{
 		// Find address
 		$address = explode(',', $item->ad);
-		$address_line1 = '';
-		$address_city = '';
+		$addressLine1 = '';
+		$addressCity = '';
 
 		foreach ($address as $index => $component) {
 			$component = trim($component);
@@ -115,7 +115,7 @@ class Ladbrokes extends Importer
 			if ($component != $item->pc && $component == strtoupper($component)) {
 
 				// City
-				$address_city = trim($component);
+				$addressCity = trim($component);
 				unset($address[$index]);
 
 			} else if ($component == $item->pc) {
@@ -126,7 +126,7 @@ class Ladbrokes extends Importer
 			}
 		}
 
-		$address_line1 = implode(',', $address);
+		$addressLine1 = implode(',', $address);
 
 		// Find business hours
 		$daysKeys = [
@@ -138,28 +138,32 @@ class Ladbrokes extends Importer
 			6 => 'sat',
 			0 => 'sun'
 		];
-		$business_hours = [];
+		$businessHours = [];
 
 		foreach ($daysKeys as $day => $name) {
 			// Skip day if empty
 			if (!$item->$name) continue;
 
 			$hours = explode('-', $item->$name);
+			
+			// Skip day if it's closed
+			if ($hours[0] === 'CLOSED') continue;
+
 			$opens = date('H:i', strtotime(trim($hours[0])));
 			$closes = date('H:i', strtotime(trim($hours[1])));
 
-			$business_hours[] = compact('day', 'opens', 'closes');
+			$businessHours[] = compact('day', 'opens', 'closes');
 		}
 
 		return (object) [
 			'name' => $item->n,
-			'address_line1' => $address_line1,
-			'address_city' => $address_city,
+			'address_line1' => $addressLine1,
+			'address_city' => $addressCity,
 			'address_postcode' => $item->pc,
 			'country' => 'GB',
 			'geo_latitude' => round($item->lat, 6),
 			'geo_longitude' => round($item->lng, 6),
-			'business_hours' => $business_hours,
+			'business_hours' => $businessHours,
 			'categories' => [
 				['machine_name' => 'betting_shop', 'is_primary' => true]
 			]
