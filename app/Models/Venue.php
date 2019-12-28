@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\File;
 use App\Models\VenueBusinessHour;
-use DB;
 use Auth;
+use DB;
 use Hashids\Hashids;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Venue extends Model
 {
 	const MACHINE_TYPE_A  = 1;
 	const MACHINE_TYPE_B  = 2;
 	const MACHINE_TYPE_AB = 3;
+
+	use SoftDeletes;
 
 	/**
 	 * The model's default attributes.
@@ -111,7 +114,7 @@ class Venue extends Model
 
 	/**
 	 * Utility function to decode a venue hashed id.
-	 * 
+	 *
 	 * @param  string $id
 	 * @return integer
 	 */
@@ -181,7 +184,7 @@ class Venue extends Model
 	/**
 	 * By default, load all venue data on new queries.
 	 * https://theokouzelis.com/php/laravel-eloquent-calculated-fields.html
-	 * 
+	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
 	public function newQuery()
@@ -191,7 +194,7 @@ class Venue extends Model
 
 	/**
 	 * List of machine types.
-	 * 
+	 *
 	 * @return array
 	 */
 	static function machineTypes()
@@ -205,7 +208,7 @@ class Venue extends Model
 
 	/**
 	 * Determine if this venue has a owner without exposing the owner id.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function getHasOwnerAttribute()
@@ -215,7 +218,7 @@ class Venue extends Model
 
 	/**
 	 * User that claimed this venue.
-	 * 
+	 *
 	 * @return \App\Models\User
 	 */
 	public function owner()
@@ -239,7 +242,7 @@ class Venue extends Model
 
 	/**
 	 * Get the subscription instance for this venue.
-	 * 
+	 *
 	 * @return \App\Models\Subscription
 	 */
 	public function subscription()
@@ -271,7 +274,7 @@ class Venue extends Model
 
 	/**
 	 * Concessionaire this venue is affiliate to.
-	 * 
+	 *
 	 * @return \App\Models\Concessionaire
 	 */
 	public function concessionaire()
@@ -301,7 +304,7 @@ class Venue extends Model
 
 	/**
 	 * VLT platoform this venue belongs to.
-	 * 
+	 *
 	 * @return [\App\Models\VltPlatform]
 	 */
 	public function vltPlatforms()
@@ -331,7 +334,7 @@ class Venue extends Model
 
 	/**
 	 * Get all reviews for this venue.
-	 * 
+	 *
 	 * @return [\App\Models\Review]
 	 */
 	public function reviews()
@@ -341,7 +344,7 @@ class Venue extends Model
 
 	/**
 	 * Business hours for this venue.
-	 * 
+	 *
 	 * @return [\App\Models\VenueBusinessHour]
 	 */
 	public function businessHours()
@@ -353,7 +356,7 @@ class Venue extends Model
 
 	/**
 	 * Business hours for this venue, grouped by day and exceptions.
-	 * 
+	 *
 	 * @param  boolean $includeClosedDays Whether to include days when the venue is closed
 	 * @return array
 	 */
@@ -385,7 +388,7 @@ class Venue extends Model
 
 	/**
 	 * Finds out if the venue is open right now.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isOpen()
@@ -430,7 +433,7 @@ class Venue extends Model
 
 	/**
 	 * Get the average rating for this venue, based on user reviews.
-	 * 
+	 *
 	 * @return float
 	 */
 	public function rating()
@@ -462,7 +465,7 @@ class Venue extends Model
 
 	/**
 	 * Venues with a distance radius from a given location.
-	 * 
+	 *
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
 	 *
 	 * @param  Illuminate\Database\Query\Builder  $query   Query builder instance
@@ -494,9 +497,9 @@ class Venue extends Model
 
 	/**
 	 * Order venues by distance from a given location.
-	 * 
+	 *
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
-	 * 
+	 *
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
 	 * @param  mixed                              $lat    Latitude of given location
 	 * @param  mixed                              $lng    Longitude of given location
@@ -535,7 +538,7 @@ class Venue extends Model
 
 	/**
 	 * Venues that are open right now.
-	 * 
+	 *
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
 	 * @return Illuminate\Database\Query\Builder          Modified query builder
 	 */
@@ -574,7 +577,7 @@ class Venue extends Model
 
 	/**
 	 * Venues that don't have an owner.
-	 * 
+	 *
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
 	 * @return Illuminate\Database\Query\Builder          Modified query builder
 	 */
