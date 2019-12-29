@@ -39,6 +39,14 @@ class ClaimController extends Controller
 	public function confirm(Venue $venue, Request $request) {
 		$this->authorize('claim', $venue);
 
+		$user = auth()->user();
+
+		// Make user an owner if it isn't already
+		if (!$user->is_owner) {
+			$user->is_owner = true;
+			$user->save();
+		}
+
 		// Assign venue to user
 		$venue->owner_id = auth()->user()->id;
 		$venue->save();
