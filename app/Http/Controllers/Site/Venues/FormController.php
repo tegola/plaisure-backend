@@ -130,7 +130,6 @@ class FormController extends Controller
 	{
 		$request->validate([
 			'concessionaire_id'         => 'nullable|exists:concessionaires,id',
-			// 'aams_census_code'          => 'required|string',
 			'name'                      => 'required|string',
 			'description'               => 'nullable|string',
 			'surface_size'              => 'nullable|numeric|min:0',
@@ -142,7 +141,6 @@ class FormController extends Controller
 			'virtual_betting'           => 'boolean',
 			'horse_betting'             => 'boolean',
 			'arcade_roulette'           => 'boolean',
-			// 'machine_type'              => 'nullable|numeric',
 
 			'address.line1'             => 'required|string',
 			'address.line2'             => 'nullable|string',

@@ -31,8 +31,6 @@ class ClaimController extends Controller
 			}
 		]);
 
-		// $codeRequired = $venue->aams_census_code ? true : false;
-
 		return [
 			'venue' => new VenueResource($venue)
 		];
@@ -40,15 +38,6 @@ class ClaimController extends Controller
 
 	public function confirm(Venue $venue, Request $request) {
 		$this->authorize('claim', $venue);
-
-		// Validate aams census code if needed
-		/*
-		if ($venue->aams_census_code) {
-			$request->validate([
-				'code' => "required|in:{$venue->aams_census_code}"
-			]);
-		}
-		*/
 
 		// Assign venue to user
 		$venue->owner_id = auth()->user()->id;

@@ -66,10 +66,10 @@ class ListController extends Controller
 	public function obsolete()
 	{
 		// Get current venues' aams census codes
-		$importedVenuesCensusCodes = ImportedVenue::pluck('aams_census_code')->all();
+		$importedVenuesCensusCodes = ImportedVenue::pluck('_____')->all();
 
 		// Find obsolete venues
-		$venues = Venue::whereNotIn('aams_census_code', $importedVenuesCensusCodes);
+		$venues = Venue::whereNotIn('_____', $importedVenuesCensusCodes);
 
 		// Paginate
 		$venues = $venues->paginate(50);

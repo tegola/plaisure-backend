@@ -55,8 +55,6 @@ class VenueTransformer extends TransformerAbstract
 			'id' => $venue->id_hashed,
 			// 'owner_id' => $venue->owner_id,
 			'concessionaire_id' => $venue->concessionaire_id,
-			// 'aams_census_code' => '',
-			// 'aams_subject_enrollment_code' => '',
 
 			'name' => $venue->name,
 			'description' => $venue->description,
@@ -69,7 +67,6 @@ class VenueTransformer extends TransformerAbstract
 			'virtual_betting' => $venue->virtual_betting,
 			'horse_betting' => $venue->horse_betting,
 			'arcade_roulette' => $venue->arcade_roulette,
-			'machine_type' => $venue->machine_type,
 			'address' => [
 				'line1' => $venue->address_line1,
 				'line2' => $venue->address_line2,

@@ -48,6 +48,8 @@ class DetailController extends Controller
 			if ($user) {
 				$userReview = $venue->reviews->where('user_id', $user->id)->first();
 				if ($userReview) $userReview = new ReviewResource($userReview);
+			} else {
+				$userReview = null;
 			}
 
 			// Get nearby venues (if the plan allows it)

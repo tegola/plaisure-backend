@@ -23,8 +23,6 @@ class Venue extends JsonResource
 			'id' => $this->id_hashed,
 			// 'owner_id' => $this->owner_id,
 			'concessionaire_id' => $this->concessionaire_id,
-			// 'aams_census_code' => '',
-			// 'aams_subject_enrollment_code' => '',
 
 			'name' => $this->name,
 			'description' => $this->description,
@@ -37,7 +35,6 @@ class Venue extends JsonResource
 			'virtual_betting' => $this->virtual_betting,
 			'horse_betting' => $this->horse_betting,
 			'arcade_roulette' => $this->arcade_roulette,
-			'machine_type' => $this->machine_type,
 			'address' => [
 				'line1' => $this->address_line1,
 				'line2' => $this->address_line2,

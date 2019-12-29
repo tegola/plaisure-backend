@@ -34,7 +34,6 @@ class User extends Authenticatable implements HasLocalePreference
 		'address_region' => '',
 		'country' => '',
 		'vat_number' => '',
-		'aams_subject_enrollment_code' => '',
 		'stripe_id' => null,
 		'card_brand' => null,
 		'card_last_four' => null,

@@ -13,10 +13,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Venue extends Model
 {
-	const MACHINE_TYPE_A  = 1;
-	const MACHINE_TYPE_B  = 2;
-	const MACHINE_TYPE_AB = 3;
-
 	use SoftDeletes;
 
 	/**
@@ -27,8 +23,6 @@ class Venue extends Model
 	protected $attributes = [
 		'owner_id' => null,
 		'concessionaire_id' => null,
-		'aams_census_code' => '',
-		'aams_subject_enrollment_code' => '',
 
 		'name' => '',
 		'description' => '',
@@ -41,7 +35,6 @@ class Venue extends Model
 		'virtual_betting' => false,
 		'horse_betting' => false,
 		'arcade_roulette' => false,
-		'machine_type' => self::MACHINE_TYPE_A,
 
 		'address_line1' => '',
 		'address_line2' => '',
@@ -70,17 +63,7 @@ class Venue extends Model
 		'jackpot2_label' => '',
 		'jackpot2_value' => 0,
 		'jackpot3_label' => '',
-		'jackpot3_value' => 0,
-
-		'amenity_atm' => false,
-		'amenity_bar' => false,
-		'amenity_pay_per_view' => false,
-		'amenity_pos' => false,
-		'amenity_private_parking' => false,
-		'amenity_restaurant' => false,
-		'amenity_security' => false,
-		'amenity_smoking_area' => false,
-		'amenity_wifi' => false
+		'jackpot3_value' => 0
 	];
 
 	/**
@@ -92,17 +75,7 @@ class Venue extends Model
 		'sports_betting' => 'boolean',
 		'virtual_betting' => 'boolean',
 		'horse_betting' => 'boolean',
-		'arcade_roulette' => 'boolean',
-
-		'amenity_atm' => 'boolean',
-		'amenity_bar' => 'boolean',
-		'amenity_pay_per_view' => 'boolean',
-		'amenity_pos' => 'boolean',
-		'amenity_private_parking' => 'boolean',
-		'amenity_restaurant' => 'boolean',
-		'amenity_security' => 'boolean',
-		'amenity_smoking_area' => 'boolean',
-		'amenity_wifi' => 'boolean'
+		'arcade_roulette' => 'boolean'
 	];
 
 	/**
@@ -190,20 +163,6 @@ class Venue extends Model
 	public function newQuery()
 	{
 		return parent::newQuery()->select('venues.*');
-	}
-
-	/**
-	 * List of machine types.
-	 *
-	 * @return array
-	 */
-	static function machineTypes()
-	{
-		return [
-			self::MACHINE_TYPE_A => 'A',
-			self::MACHINE_TYPE_B => 'B',
-			self::MACHINE_TYPE_AB => 'A/B'
-		];
 	}
 
 	/**

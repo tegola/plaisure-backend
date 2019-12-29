@@ -197,8 +197,6 @@ class AAMS extends Importer
 		}
 
 		return (object) [
-			'aams_census_code' => $item->codice_censimento_esercizio,
-			'aams_subject_enrollment_code' => $item->codice_iscrizione_oggetto,
 			'name' => $item->denominazione,
 			'country' => 'IT',
 			'surface_size' => $item->superficie_del_locale_in_mq,

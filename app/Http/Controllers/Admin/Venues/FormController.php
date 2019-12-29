@@ -98,17 +98,9 @@ class FormController extends Controller
 			$venue->fill(old());
 		} else {
 			$venue->fill([
-				'aams_census_code' => $importedVenue->aams_census_code,
-				'aams_subject_enrollment_code' => $importedVenue->aams_subject_enrollment_code,
 				'name' => $importedVenue->name,
 				'surface_size' => $importedVenue->surface_size
 			]);
-			
-			switch ($importedVenue->machine_type) {
-				case 'A': $venue->machine_type = Venue::MACHINE_TYPE_A; break;
-				case 'B': $venue->machine_type = Venue::MACHINE_TYPE_B; break;
-				case 'A/B': $venue->machine_type = Venue::MACHINE_TYPE_AB; break;
-			}
 		}
 
 		return $this->showForm($venue, $importedVenue);
@@ -133,8 +125,8 @@ class FormController extends Controller
 		]);
 
 		// If the venus has no geo or address, data, get the original Imported venue
-		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venue->address_line1) && $venue->aams_census_code) {
-			$importedVenue = ImportedVenue::where('aams_census_code', $venue->aams_census_code)->first();
+		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venue->address_line1) && $venue->_____) {
+			$importedVenue = ImportedVenue::where('_____', $venue->_____)->first();
 		} else {
 			$importedVenue = null;
 		}
