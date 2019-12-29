@@ -21,7 +21,7 @@ class ImportVenues extends Command
 	protected $signature = 'venues:import
 							{brand}
 							{--start=1}
-							{--end=100000}
+							{--end=999999}
 							{--D|delete-outdated : Whether venues not found on source should be deleted from imported ones}';
 
 	/**
@@ -65,11 +65,14 @@ class ImportVenues extends Command
 	 */
 	public function handle()
 	{
-		$startIndex = $this->option('start');
-		$endIndex = $this->option('end');
+		$startIndex = (int) $this->option('start');
+		$endIndex = (int) $this->option('end');
 
-		if ($this->option('delete-outdated') && ($startIndex || $endIndex)) {
-			throw new \Exception('Cannot delete outdated imports when using start/end pointers, the importer would not be able to compare with the full set of source venues.');
+		if ($this->option('delete-outdated') && ($startIndex !== 1 || $endIndex !== 999999)) {
+			$startIndex = 1;
+			$endIndex = 999999;
+
+			$this->comment('Resetting start and end to {$startIndex} and {$endIndex} because --delete-outdated, otherwise the importer would not be able to compare with the full set of source venues.');
 		}
 
 		// Create importer
@@ -119,10 +122,13 @@ class ImportVenues extends Command
 		// Add/update open venues
 		foreach ($data as $item) {
 			// Search a previous import
-			$venueImport = VenueImport::firstOrNew([
+			$venueImport = VenueImport::withTrashed()->firstOrNew([
 				'source_brand' => $this->importer->getVenueImportBrand(),
 				'source_id' => $item->$idKey
 			]);
+
+			// Restore it if it was soft deleted
+			if ($venueImport->trashed()) $venueImport->restore();
 
 			$normalizedItem = json_decode(json_encode($this->importer->normalizeItem($item))); // Recursive casting as object
 			$description = $this->importer->getDescriptionForItem($item);
@@ -151,7 +157,7 @@ class ImportVenues extends Command
 		}
 
 		// Soft-delete closed venues (if specified)
-		if ($this->option('delete-outdated') && !$startIndex && $endIndex) {
+		if ($this->option('delete-outdated')) {
 			$outdatedImports = VenueImport::query()
 				->where('source_brand', $this->importer->getVenueImportBrand())
 				->whereNotIn('source_id', $this->importer->getIds())

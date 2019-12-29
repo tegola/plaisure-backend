@@ -89,8 +89,10 @@ class GeolocalizeVenueImports extends Command
 				continue;
 			}
 
-			// Get address for geocoding purposes
+			// Get venue data for geocoding purposes
 			$address = $venueImport->addressForGeocode();
+			$country = data_get($venueImport->normalized_data, 'country')
+				?: data_get($venueImport->source_data, 'country');
 
 			// Skip if address is not available
 			if (!$address) {
@@ -102,10 +104,18 @@ class GeolocalizeVenueImports extends Command
 			// Limit to 10 requests per second
 			usleep(0.1 * 1000000); // 0.1 seconds, sleep(0.1) won't work
 
+			// Pick the language for the geocoder
+			switch ($country) {
+				case 'IT': $geocodeLanguage = 'it'; break;
+				case 'GB': $geocodeLanguage = 'en-GB'; break;
+				default: $geocodeLanguage = 'en';
+			}
+
 			// Geocode using Google Maps
 			$request = $client->request('get', 'https://maps.googleapis.com/maps/api/geocode/json', [
 				'query' => [
 					'key' => env('GOOGLE_MAPS_KEY'),
+					'language' => $geocodeLanguage,
 					'address' => $address
 				]
 			]);
@@ -151,6 +161,11 @@ class GeolocalizeVenueImports extends Command
 				}
 			}
 
+			// Remove "Provincia di" from italian provinces
+			if (data_get($normalizedData, 'country') === 'IT' && data_get($normalizedData, 'address_province')) {
+				$normalizedData->address_province = str_replace('Provincia di ', '', $normalizedData->address_province);
+			}
+
 			if ($streetNumber) {
 				$normalizedData->address_line1 .= ", {$streetNumber}";
 			}
@@ -165,7 +180,10 @@ class GeolocalizeVenueImports extends Command
 			$venueImport->normalized_data = $normalizedData;
 			$venueImport->save();
 
-			$this->info("Added {$venueImport->readableSourceBrand()} {$venueImport->source_id}: {$normalizedData->address_line1}, {$normalizedData->address_city}.");
+			$addressLine1 = data_get($normalizedData, 'address_line1');
+			$addressCity = data_get($normalizedData, 'address_city');
+
+			$this->info("Added {$venueImport->readableSourceBrand()} {$venueImport->source_id}: {$addressLine1}, {$addressCity}.");
 			$this->added++;
 		}
 

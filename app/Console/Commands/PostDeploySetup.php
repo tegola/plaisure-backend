@@ -43,7 +43,7 @@ class PostDeploySetup extends Command
 		} else {
 			$php = '/opt/plesk/php/7.2/bin/php';
 			$composer = "{$php} /usr/lib64/plesk-9.0/composer.phar";
-			$sharedStoragePath = '/var/www/vhosts/plaisure.com/storage/';
+			$sharedStoragePath = '/var/www/vhosts/plaisure.com/storage/'; // FIXME: Use env variable
 		}
 		$storagePath = storage_path();
 
@@ -52,11 +52,11 @@ class PostDeploySetup extends Command
 			new Process([$composer, 'help']),
 			new Process(['rm', '-rf', $storagePath]),
 			new Process(['ln', '-s', $sharedStoragePath, $storagePath]),
-			new Process([$php, 'artisan', 'migrate', '--force'])
+			new Process([$php, 'artisan', 'migrate', '--force', '--seed']),
 		];
 
+		// Run commands
 		try {
-			// Run commands
 			foreach ($processes as $process) {
 				$this->info("Running {$process->getCommandLine()}...");
 				$process->mustRun();
