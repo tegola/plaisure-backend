@@ -19,9 +19,7 @@ class ExploreController extends Controller
 	 */
 	public function data(Request $request)
 	{
-		$country = $this->extractCountry($request);
-
-		$categories = VenueCategory::forCountry($country)->get();
+		$categories = VenueCategory::all();
 
 		return [
 			'categories' => VenueCategoryResource::collection($categories)
@@ -36,8 +34,7 @@ class ExploreController extends Controller
 	 */
 	public function search(Request $request)
 	{
-		$country = $this->extractCountry($request);
-
+		$country = $request->country;
 		$radius = $request->filled('radius') ? intval($request->input('radius')) : 10;
 		$c_lat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
 		$c_lng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
@@ -126,19 +123,5 @@ class ExploreController extends Controller
 		return [
 			'venues' => VenueResource::collection($venues)
 		];
-	}
-
-	/**
-	 * Find the country for the user, or use a default.
-	 *
-	 * @param  Request $request
-	 * @return string
-	 */
-	private function extractCountry(Request $request)
-	{
-		$user = auth()->user();
-		$country = $user ? locale_get_region($user->locale) : $request->input('country', 'GB');
-
-		return $country;
 	}
 }

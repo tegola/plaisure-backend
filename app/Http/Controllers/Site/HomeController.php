@@ -20,7 +20,7 @@ class HomeController extends Controller
 	 */
 	public function data(Request $request)
 	{
-		$country = $this->extractCountry($request);
+		$country = $request->country;
 
 		$categories = VenueCategory::forCountry($country)->get();
 		$cacheLimit = now()->addHour();
@@ -106,19 +106,5 @@ class HomeController extends Controller
 				'photos',
 				'business_hours'
 			]);
-	}
-
-	/**
-	 * Find the country for the user, or use a default.
-	 *
-	 * @param  Request $request
-	 * @return string
-	 */
-	private function extractCountry(Request $request)
-	{
-		$user = auth()->user();
-		$country = $user ? locale_get_region($user->locale) : $request->input('country', 'GB');
-
-		return $country;
 	}
 }
