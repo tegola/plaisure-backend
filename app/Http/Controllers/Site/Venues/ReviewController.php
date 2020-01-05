@@ -36,12 +36,11 @@ class ReviewController extends Controller
 			'categories',
 			'reviews' => function($query) {
 				$query->latest()->take(5);
-			}
+			},
+			'reviews.user'
 		]);
 
-		return [
-			'venue' => new VenueResource($venue)
-		];
+		return new VenueResource($venue);
 	}
 
 	/**

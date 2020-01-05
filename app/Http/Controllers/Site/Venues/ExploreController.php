@@ -36,15 +36,16 @@ class ExploreController extends Controller
 	{
 		$country = $request->country;
 		$radius = $request->filled('radius') ? intval($request->input('radius')) : 10;
-		$c_lat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
-		$c_lng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
-		$ne_lat = $request->filled('ne_lat') ? floatval($request->input('ne_lat')) : null;
-		$ne_lng = $request->filled('ne_lng') ? floatval($request->input('ne_lng')) : null;
-		$sw_lat = $request->filled('sw_lat') ? floatval($request->input('sw_lat')) : null;
-		$sw_lng = $request->filled('sw_lng') ? floatval($request->input('sw_lng')) : null;
+		$cLat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
+		$cLng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
+		$neLat = $request->filled('ne_lat') ? floatval($request->input('ne_lat')) : null;
+		$neLng = $request->filled('ne_lng') ? floatval($request->input('ne_lng')) : null;
+		$swLat = $request->filled('sw_lat') ? floatval($request->input('sw_lat')) : null;
+		$swLng = $request->filled('sw_lng') ? floatval($request->input('sw_lng')) : null;
+		$inBounds = ($neLat && $neLng && $swLat && $swLng);
 
 		// Make sure we have all location data
-		if (!$c_lat && !$c_lng && !$ne_lat && !$ne_lng && !$sw_lat && !$sw_lng) {
+		if (!$cLat && !$cLng && !$neLat && !$neLng && !$swLat && !$swLng) {
 			return response()->json([]);
 		}
 
@@ -52,15 +53,15 @@ class ExploreController extends Controller
 		$query = Venue::with('categories');
 
 		// Find by bounds or center
-		if ($ne_lat && $ne_lng && $sw_lat && $sw_lng) {
-			$query->inBounds($ne_lat, $ne_lng, $sw_lat, $sw_lng);
+		if ($inBounds) {
+			$query->inBounds($neLat, $neLng, $swLat, $swLng);
 
 			// If center is also specified, find and order by distance too
-			if ($c_lat && $c_lng) {
-				$query->withDistanceFrom($c_lat, $c_lng);
+			if ($cLat && $cLng) {
+				$query->withDistanceFrom($cLat, $cLng);
 			}
-		} elseif ($c_lat && $c_lng) {
-			$query->withDistanceFrom($c_lat, $c_lng);
+		} else if ($cLat && $cLng) {
+			$query->withDistanceFrom($cLat, $cLng);
 
 			// Limit by radius
 			if ($radius) {
@@ -106,22 +107,16 @@ class ExploreController extends Controller
 		}
 		*/
 
-		// Load venues
-		// We take a maximum of 100 venues, and the client knows it's the max
-		// number it can get. We did it to avoid using simplePaginate(), which
-		// is not supported by Fractal transformers, and to avoid paginate(),
-		// which don't work with MySQL HAVINGs
-		$venues = $query
-			->take(100)
-			->get()
-			->each(function($venue) { // Load first photo (limit/take doesn't work with eager loading)
-				$venue->load(['photos' => function($query) {
-					$query->take(1);
-				}]);
-			});
+		// Paginate venues ($page is inferred automatically)
+		$venues = $query->paginate($inBounds ? 200 : 20);
 
-		return [
-			'venues' => VenueResource::collection($venues)
-		];
+		// Load first photo (limit/take doesn't work with eager loading)
+		$venues->getCollection()->each(function($venue) {
+			$venue->load(['photos' => function($query) {
+				$query->take(1);
+			}]);
+		});
+
+		return VenueResource::collection($venues);
 	}
 }

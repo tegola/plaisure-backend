@@ -52,9 +52,7 @@ class MainController extends Controller
 				}]);
 			});
 
-		return [
-			'venues' => VenueResource::collection($venues)
-		];
+		return VenueResource::collection($venues);
 	}
 
 	/**
@@ -64,9 +62,7 @@ class MainController extends Controller
 	 */
 	public function edit()
 	{
-		return [
-			'user' => new UserResource(auth()->user())
-		];
+		return new UserResource(auth()->user());
 	}
 
 	/**

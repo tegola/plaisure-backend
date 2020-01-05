@@ -34,8 +34,5 @@ class AppServiceProvider extends ServiceProvider
         // Set locale for dates
         Carbon::setLocale(app()->getLocale());
         setlocale(LC_TIME, app()->getLocale());
-
-        // Disable JSON resource wrapping
-        Resource::withoutWrapping();
     }
 }

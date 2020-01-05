@@ -31,9 +31,7 @@ class ClaimController extends Controller
 			}
 		]);
 
-		return [
-			'venue' => new VenueResource($venue)
-		];
+		return new VenueResource($venue);
 	}
 
 	public function confirm(Venue $venue, Request $request) {

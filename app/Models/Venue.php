@@ -10,10 +10,11 @@ use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
 class Venue extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, PaginationWithHavings;
 
 	/**
 	 * The model's default attributes.

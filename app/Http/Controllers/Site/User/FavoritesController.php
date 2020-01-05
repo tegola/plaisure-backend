@@ -37,9 +37,7 @@ class FavoritesController extends Controller
 				}]);
 			});
 
-		return [
-			'venues' => VenueResource::collection($venues)
-		];
+		return VenueResource::collection($venues);
 	}
 
 	/**
