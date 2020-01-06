@@ -50,7 +50,7 @@ class ExploreController extends Controller
 		}
 
 		// Start loading venues
-		$query = Venue::with('categories');
+		$query = Venue::with('categories', 'amenities');
 
 		// Find by bounds or center
 		if ($inBounds) {

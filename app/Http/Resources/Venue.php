@@ -19,6 +19,10 @@ class Venue extends JsonResource
 	 */
 	public function toArray($request)
 	{
+		$reviewsQuery = $this->reviews(); // Loads but doesn't attach reviews to the resource
+		$ratings = $reviewsQuery->select('rating')->get();
+		$reviewCount = $reviewsQuery->withComment()->count();
+
 		return [
 			'id' => $this->id_hashed,
 			// 'owner_id' => $this->owner_id,
@@ -74,6 +78,16 @@ class Venue extends JsonResource
 					'value' => $this->jackpot3_value,
 				]
 			],
+			'rating' => [
+				'1_count' => $ratings->where('rating', 1)->count(),
+				'2_count' => $ratings->where('rating', 2)->count(),
+				'3_count' => $ratings->where('rating', 3)->count(),
+				'4_count' => $ratings->where('rating', 4)->count(),
+				'5_count' => $ratings->where('rating', 5)->count(),
+				'count' => $ratings->count(),
+				'average' => $this->rating()
+			],
+			'review_count' => $reviewCount,
 			'distance' => $this->distance,
 			'has_owner' => $this->has_owner,
 			'created_at' => $this->created_at,

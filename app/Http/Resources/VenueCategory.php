@@ -17,7 +17,13 @@ class VenueCategory extends JsonResource
 		return [
 			'id' => $this->id,
 			'machine_name' => $this->machine_name,
-			'country' => $this->country
+			'country' => $this->country,
+
+			// Only when loaded with venue
+			'is_primary' => $this->whenPivotLoaded('venue_venue_category', function() {
+				// As bool to avoid creating a pivot model just for casting
+				return (bool) $this->pivot->is_primary;
+			})
 		];
 	}
 }

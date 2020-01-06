@@ -249,7 +249,10 @@ class Venue extends Model
 	 */
 	public function categories()
 	{
-		return $this->belongsToMany('App\Models\VenueCategory');
+		return $this
+			->belongsToMany('App\Models\VenueCategory')
+			->withPivot('is_primary')
+			->orderByDesc('venue_venue_category.is_primary');
 	}
 
 	/**
