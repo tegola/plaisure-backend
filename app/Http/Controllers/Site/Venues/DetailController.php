@@ -37,6 +37,7 @@ class DetailController extends Controller
 				'photos',
 				'vltPlatforms',
 				'reviews' => function($query) {
+					// FIXME: Occhio che non funziona (v. parseIncludes più giù)
 					return $query->latest()->take(2);
 				},
 				'reviews.user'
