@@ -3,32 +3,83 @@
 namespace App\Http\Controllers\Admin\Venues;
 
 use App\Http\Controllers\Controller;
+/*
 use App\Http\Requests\StoreVenue;
+*/
 use App\Models\Venue;
-use App\Models\ImportedVenue;
-use App\Models\VenuePlan;
-use App\Models\VenueBusinessHour;
 use App\Models\VenueCategory;
 use App\Models\Concessionaire;
 use App\Models\VltPlatform;
-use App\Models\PayPerViewPlatform;
+/*
+use App\Models\ImportedVenue;
+use App\Models\VenuePlan;
+use App\Models\VenueBusinessHour;
 use App\Models\File;
 use JavaScript;
 use DB;
+*/
 
 class FormController extends Controller
 {
+	/**
+	 * Get the data to show the venue form.
+	 * 
+	 * @param  Venue  $venue
+	 * @return Illuminate\Http\Response
+	 */
+	public function load(Venue $venue = null)
+	{
+		// Add venue if none is specified
+		if (!$venue) $venue = new Venue();
+
+		// Eager load relationships
+		$venue->load([
+			'businessHours',
+			'categories',
+			'photos',
+			'vltPlatforms',
+			'subscriptions',
+			'import'
+		]);
+
+		// Load satellite data
+		$categories = VenueCategory::query()
+			->select('id', 'name', 'country')
+			->orderBy('country', 'asc')
+			->orderBy('name', 'asc')
+			->get();
+		$concessionaires = Concessionaire::query()
+			->select('id', 'name', 'country')
+			->orderBy('country', 'asc')
+			->orderBy('name', 'asc')
+			->get();
+		$vltPlatforms = VltPlatform::query()
+			->select('id', 'name', 'country')
+			->orderBy('country', 'asc')
+			->orderBy('name', 'asc')
+			->get();
+
+		return compact(
+			'venue',
+			'categories',
+			'concessionaires',
+			'vltPlatforms'
+		);
+	}
+
 	/**
 	 * Create a new venue.
 	 * 
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function create()
 	{
 		$venue = new Venue(old());
 
 		return $this->showForm($venue);
 	}
+	*/
 
 	/**
 	 * Create a new venue from an imported venue.
@@ -36,6 +87,7 @@ class FormController extends Controller
 	 * @param  ImportedVenue $importedVenue
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function promote(ImportedVenue $importedVenue)
 	{
 		// Create the new venue
@@ -46,21 +98,14 @@ class FormController extends Controller
 			$venue->fill(old());
 		} else {
 			$venue->fill([
-				'aams_census_code' => $importedVenue->aams_census_code,
-				'aams_subject_enrollment_code' => $importedVenue->aams_subject_enrollment_code,
 				'name' => $importedVenue->name,
 				'surface_size' => $importedVenue->surface_size
 			]);
-			
-			switch ($importedVenue->machine_type) {
-				case 'A': $venue->machine_type = Venue::MACHINE_TYPE_A; break;
-				case 'B': $venue->machine_type = Venue::MACHINE_TYPE_B; break;
-				case 'A/B': $venue->machine_type = Venue::MACHINE_TYPE_AB; break;
-			}
 		}
 
 		return $this->showForm($venue, $importedVenue);
 	}
+	*/
 
 	/**
 	 * Edit an existing venue.
@@ -68,6 +113,7 @@ class FormController extends Controller
 	 * @param  Venue  $venue
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function edit(Venue $venue)
 	{
 		if (old()) $venue->fill(old());
@@ -79,14 +125,15 @@ class FormController extends Controller
 		]);
 
 		// If the venus has no geo or address, data, get the original Imported venue
-		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venue->address_line1) && $venue->aams_census_code) {
-			$importedVenue = ImportedVenue::where('aams_census_code', $venue->aams_census_code)->first();
+		if ((!$venue->geo_latitude || $venue->geo_latitude || !$venue->address_city || !$venue->address_line1) && $venue->_____) {
+			$importedVenue = ImportedVenue::where('_____', $venue->_____)->first();
 		} else {
 			$importedVenue = null;
 		}
 
 		return $this->showForm($venue, $importedVenue);
 	}
+	*/
 
 	/**
 	 * Actually shows the form view to add/edit a venue.
@@ -94,37 +141,35 @@ class FormController extends Controller
 	 * @param  Venue $venue
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	private function showForm(Venue $venue, ImportedVenue $importedVenue = null)
 	{
 		$venueCategories = $venue->categories()->pluck('id');
 		$venueVltPlatforms = $venue->vltPlatforms()->pluck('id');
-		$venuePayPerViewPlatforms = $venue->payPerViewPlatforms()->pluck('id');
 		
 		$machineTypes = Venue::machineTypes();
 		$categories = VenueCategory::pluck('name', 'id')->all();
 		$concessionaires = Concessionaire::pluck('name', 'id')->all();
 		$vltPlatforms = VltPlatform::pluck('name', 'id')->all();
-		$payPerViewPlatforms = PayPerViewPlatform::pluck('name', 'id')->all();
 
 		$daysOfWeek = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-		$plans = config('plans');
+		$subscriptions = config('subscriptions');
 
 		JavaScript::put(compact(
 			'venue',
 			'venueCategories',
 			'venueVltPlatforms',
-			'venuePayPerViewPlatforms',
 			'importedVenue',
 			'machineTypes',
 			'categories',
 			'concessionaires',
 			'vltPlatforms',
-			'payPerViewPlatforms',
-			'plans'
+			'subscriptions'
 		));
 
 		return view('admin.venues.form', compact('venue', 'daysOfWeek'));
 	}
+	*/
 
 	/**
 	 * Save a new venue.
@@ -132,6 +177,7 @@ class FormController extends Controller
 	 * @param  StoreVenue $request
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function store(StoreVenue $request)
 	{
 		DB::transaction(function() use($request) {
@@ -144,9 +190,6 @@ class FormController extends Controller
 
 			// Save VLT platforms
 			$venue->vltPlatforms()->sync($request->vlt_platforms);
-
-			// Save pay per view Platforms
-			$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
 
 			// Save business hours
 			if ($request->business_hours) {
@@ -166,6 +209,7 @@ class FormController extends Controller
 
 		return redirect()->route('admin.venues.index');
 	}
+	*/
 
 	/**
 	 * Save over an existing venue.
@@ -174,6 +218,7 @@ class FormController extends Controller
 	 * @param  Venue $venue
 	 * @return \Illuminate\Http\Response
 	 */
+	/*
 	public function update(StoreVenue $request, Venue $venue)
 	{
 		DB::transaction(function() use ($request, $venue) {
@@ -186,9 +231,6 @@ class FormController extends Controller
 
 			// Save VLT platforms
 			$venue->vltPlatforms()->sync($request->vlt_platforms);
-
-			// Save pay per view Platforms
-			$venue->payPerViewPlatforms()->sync($request->pay_per_view_platforms);
 
 			// Save business hours
 			$venue->businessHours()->delete();
@@ -238,4 +280,5 @@ class FormController extends Controller
 
 		return redirect()->route('admin.venues.index');
 	}
+	*/
 }

@@ -2,196 +2,121 @@
 
 namespace App\Http\Controllers\Site\Venues;
 
-use JavaScript;
-use Illuminate\Http\Request;
-
-use App;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Venue as VenueResource;
+use App\Http\Resources\VenueCategory as VenueCategoryResource;
 use App\Models\Venue;
 use App\Models\VenueCategory;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Transformers\VenueTransformer;
-use App\Transformers\VenueCategoryTransformer;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use Illuminate\Http\Request;
 
 class ExploreController extends Controller
 {
-	public function __construct(Request $request) {
-		$this->query = $request->input('query');
-
-		$categories = $request->filled('categories') ? $request->input('categories') : VenueCategory::pluck('id')->all();
-		$this->categories = array_map(function($id) { // pluck() returns IDs as strings
-			return (int) $id;
-		}, $categories);
-
-		// $this->amenities = $request->filled('amenities') ? $request->input('amenities') : [];
-		$this->radius = $request->filled('radius') ? intval($request->input('radius')) : config('constants.search_radiuses')[0];
-		$this->c_lat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
-		$this->c_lng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
-		$this->ne_lat = $request->filled('ne_lat') ? floatval($request->input('ne_lat')) : null;
-		$this->ne_lng = $request->filled('ne_lng') ? floatval($request->input('ne_lng')) : null;
-		$this->sw_lat = $request->filled('sw_lat') ? floatval($request->input('sw_lat')) : null;
-		$this->sw_lng = $request->filled('sw_lng') ? floatval($request->input('sw_lng')) : null;
-	}
-
-	/*
-	private function amenities() {
-		return collect([
-			['field' => 'amenity_atm',             'machine_name' => 'atm',             'name' => 'Totem Bancomat'],
-			['field' => 'amenity_bar',             'machine_name' => 'bar',             'name' => 'Bar'],
-			['field' => 'amenity_pay_per_view',    'machine_name' => 'pay_per_view',    'name' => 'Pay per view'],
-			['field' => 'amenity_pos',             'machine_name' => 'pos',             'name' => 'POS'],
-			['field' => 'amenity_private_parking', 'machine_name' => 'private_parking', 'name' => 'Parcheggio privato'],
-			['field' => 'amenity_restaurant',      'machine_name' => 'restaurant',      'name' => 'Ristorante'],
-			['field' => 'amenity_security',        'machine_name' => 'security',        'name' => 'Servizio di sicurezza'],
-			['field' => 'amenity_smoking_area',    'machine_name' => 'smoking_area',    'name' => 'Area fumatori'],
-			['field' => 'amenity_wifi',            'machine_name' => 'wifi',            'name' => 'Wi-Fi']
-		]);
-	}
-	*/
-
-	public function index()
+	/**
+	 * Load initial explore page data.
+	 *
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function data(Request $request)
 	{
-		// Prepare initial data
-		$searchParams = [
-			'query' => $this->query,
-			'categories' => $this->categories,
-			// 'amenities' => $this->amenities,
-			'radius' => $this->radius,
-			'c_lat' => $this->c_lat,
-			'c_lng' => $this->c_lng,
-			'ne_lat' => $this->ne_lat,
-			'ne_lng' => $this->ne_lng,
-			'sw_lat' => $this->sw_lat,
-			'sw_lng' => $this->sw_lng,
-		];
-
-		$radiuses = config('constants.search_radiuses');
 		$categories = VenueCategory::all();
-		// $amenities = $this->amenities()->all();
 
-		// Pass initial data to view
-		Javascript::put(compact('searchParams', 'radiuses', 'categories'/*, 'amenities'*/));
-
-		return view('site.venues.explore', [
-			'query' => $this->query,
-			'categories' => $categories
-		]);
+		return [
+			'categories' => VenueCategoryResource::collection($categories)
+		];
 	}
 
-	public function search()
+	/**
+	 * Search for venues by given parameters.
+	 *
+	 * @param  Request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function search(Request $request)
 	{
+		$country = $request->country;
+		$radius = $request->filled('radius') ? intval($request->input('radius')) : 10;
+		$cLat = $request->filled('c_lat') ? floatval($request->input('c_lat')) : null;
+		$cLng = $request->filled('c_lng') ? floatval($request->input('c_lng')) : null;
+		$neLat = $request->filled('ne_lat') ? floatval($request->input('ne_lat')) : null;
+		$neLng = $request->filled('ne_lng') ? floatval($request->input('ne_lng')) : null;
+		$swLat = $request->filled('sw_lat') ? floatval($request->input('sw_lat')) : null;
+		$swLng = $request->filled('sw_lng') ? floatval($request->input('sw_lng')) : null;
+		$inBounds = ($neLat && $neLng && $swLat && $swLng);
+
 		// Make sure we have all location data
-		if (!$this->hasCenter() && !$this->hasBounds()) return response()->json([]);
+		if (!$cLat && !$cLng && !$neLat && !$neLng && !$swLat && !$swLng) {
+			return response()->json([]);
+		}
 
 		// Start loading venues
-		$venues = Venue::with(['categories']);
+		$query = Venue::with('categories', 'amenities');
 
 		// Find by bounds or center
-		if ($this->hasBounds()) {
-			$venues->inBounds($this->ne_lat, $this->ne_lng, $this->sw_lat, $this->sw_lng);
-		} elseif ($this->hasCenter()) {
-			$venues->withDistanceFrom($this->c_lat, $this->c_lng);
+		if ($inBounds) {
+			$query->inBounds($neLat, $neLng, $swLat, $swLng);
+
+			// If center is also specified, find and order by distance too
+			if ($cLat && $cLng) {
+				$query->withDistanceFrom($cLat, $cLng);
+			}
+		} else if ($cLat && $cLng) {
+			$query->withDistanceFrom($cLat, $cLng);
 
 			// Limit by radius
-			if ($this->radius) {
-				$venues
-					->having('distance', '<=', $this->radius)
-					->orHaving('distance_with_bonus', '<=', $this->radius);
+			if ($radius) {
+				$query
+					->having('distance', '<=', $radius)
+					->orHaving('distance_with_bonus', '<=', $radius);
 			}
 		}
 
 		// Filter by category
-		if ($this->categories) {
-			$venues->whereHas('categories', function($query) {
-				$query->whereIn('id', $this->categories);
+		if ($request->filled('categories')) {
+			$categories = $request->input('categories');
+		} else {
+			$categories = VenueCategory::forCountry($country)
+				->pluck('id')
+				->all();
+		}
+
+		$categoryIds = array_map('intval', $categories);
+
+		if ($categoryIds) {
+			$query->whereHas('categories', function($query) use ($categoryIds) {
+				$query->whereIn('id', $categoryIds);
 			});
 		}
 
 		// Filter by amenities
 		/*
-		if ($this->amenities) {
+		$amenityIds = $request->filled('amenities') ? $request->input('amenities') : [];
+
+		if ($amenityIds) {
 			$amenities = $this->amenities();
 
-			foreach ($this->amenities as $amenity) {
+			foreach ($amenities as $amenity) {
 				// Get amenity object
 				$currentAmenity = $amenities->where('machine_name', $amenity)->first();
 
 				// Skip if is not a valid amenity
 				if (!$currentAmenity) continue;
 
-				$venues->orWhere($currentAmenity['field'], true);
+				$query->orWhere($currentAmenity['field'], true);
 			}
 		}
 		*/
 
-		// Load first photo
-		$venues->with(['photos' => function($query) {
-			$query->take(1);
-		}]);
+		// Paginate venues ($page is inferred automatically)
+		$venues = $query->paginate($inBounds ? 200 : 20);
 
-		// Return results
-		// We take a maximum of 100 venues, and the client knows it's the max
-		// number it can get. We did it to avoid using simplePaginate(), which
-		// is not supported by Fractal transformers, and to avoid paginate(),
-		// which don't work with MySQL HAVINGs
-		$venues = $venues
-			->take(100)
-			->get()
-			->transformWith(new VenueTransformer())
-			->includeCategories()
-			->includePhotos();
+		// Load first photo (limit/take doesn't work with eager loading)
+		$venues->getCollection()->each(function($venue) {
+			$venue->load(['photos' => function($query) {
+				$query->take(1);
+			}]);
+		});
 
-		return $venues;
-	}
-
-	private function hasCenter()
-	{
-		return $this->c_lat && $this->c_lng;
-	}
-
-	private function hasBounds()
-	{
-		return $this->ne_lat && $this->ne_lng && $this->sw_lat && $this->sw_lng;
-	}
-
-	/**
-	 * Get center and bounds with Google Maps geocoder
-	 *
-	 * @return boolean
-	 */
-	private function geocode()
-	{
-		// Stop if no location name is provided
-		if (!$this->query) return false;
-
-		// Ask Google Maps
-		$api_url = "https://maps.googleapis.com/maps/api/geocode/json";
-		$querystring = http_build_query(array(
-			'key' => config('constants.google_maps_api_key'),
-			'address' => $this->query,
-			'language' => App::getLocale(),
-			'region' => App::getLocale()
-		));
-
-		// Stop if it didn't work
-		$response = file_get_contents("{$api_url}?$querystring");
-		if (!$response) return false;
-
-		// Check geocode results
-		$geocode = json_decode($response);
-		if ($geocode->status != 'OK') return false;
-
-		// Find coords
-		$geometry = $geocode->results[0]->geometry;
-
-		$this->c_lat = $geometry->location->lat;
-		$this->c_lng = $geometry->location->lng;
-		$this->ne_lat = $geometry->bounds->northeast->lat;
-		$this->ne_lng = $geometry->bounds->northeast->lng;
-		$this->sw_lat = $geometry->bounds->southwest->lat;
-		$this->sw_lng = $geometry->bounds->southwest->lng;
-
-		return true;
+		return VenueResource::collection($venues);
 	}
 }

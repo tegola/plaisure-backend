@@ -1,0 +1,150 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+// use App\Http\Resources\User as UserResource;
+use App\Models\User;
+use App\Notifications\Admin\UserRegistered;
+// use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use Route;
+
+class AuthController extends Controller
+{
+	public function __construct()
+	{
+		/*
+		$this->client = new Client([
+			// Allow it to work even in testing environments, where we don't
+			// have ssl certificates
+			'verify' => false,
+
+			// Automatically handle errors
+			'http_errors' => false
+		]);
+		*/
+
+		$this->middleware('guest')->except('logout');
+	}
+
+	/**
+	 * Register a new user.
+	 * 
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function register(Request $request) {
+		// Validate fields
+		$request->validate([
+			'locale' => 'required',
+			'name' => 'required|string|max:255',
+			'email' => 'required|string|email|max:255|unique:users',
+			'password' => 'required|string|min:8',
+			'is_owner' => 'boolean'
+		]);
+
+		// Register user
+		$user = User::create([
+			'locale' => $request->locale,
+			'name' => $request->name,
+			'email' => $request->email,
+			'password' => bcrypt($request->password),
+			'is_owner' => $request->is_owner || false
+		]);
+
+		// Send internal Slack notification
+		$notification = new UserRegistered($user);
+		Notification::route('slack', env('SLACK_ACTIVITY_WEBHOOK_URL'))->notify($notification);
+
+		// TODO: Send email confirmation
+
+		// Login using password grant client
+		/*
+		$response = $this->client->post(url('/oauth/token'), [
+			'form_params' => [
+				'grant_type' => 'password',
+				'client_id' => env('OAUTH_CLIENT_ID'),
+				'client_secret' => env('OAUTH_CLIENT_SECRET'),
+				'username' => $request->email,
+				'password' => $request->password,
+				'scope' => ''
+			]
+		]);
+
+		return json_decode((string) $response->getBody(), true);
+		*/
+	
+		// return new UserResource($user);
+	}
+
+	/**
+	 * Login with email/password and receive access and refresh tokens.
+	 * 
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function login(Request $request) {
+		// Validate fields
+		$request->validate([
+			'email' => 'required|string|email',
+			'password' => 'required|string'
+		]);
+
+		// Login using the password grand client, by adding oauth params to the
+		// request original request (it won't work if we make a fresh one with
+		// Request::create())
+		$request->request->add([
+			'grant_type' => 'password',
+			'client_id' => env('OAUTH_CLIENT_ID'),
+			'client_secret' => env('OAUTH_CLIENT_SECRET'),
+			'username' => $request->email,
+			'password' => $request->password
+		]);
+		$response = Route::dispatch(Request::create('/oauth/token', 'POST'));
+
+		// Abort with 401 (unauthorized) if login is unsuccessful
+		if (!$response->isSuccessful()) {
+			abort(401);
+		}
+
+		return $response->getContent();
+	}
+
+	/**
+	 * Refresh tokens using the old refresh token.
+	 * 
+	 * @param  Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	/*
+	public function refresh(Request $request) {
+		// Refresh token using password grant client
+		$response = $this->client->post(url('/oauth/token'), [
+			'form_params' => [
+				'grant_type' => 'refresh_token',
+				'client_id' => env('OAUTH_CLIENT_ID'),
+				'client_secret' => env('OAUTH_CLIENT_SECRET'),
+				'refresh_token' => $request->refresh_token,
+			]
+		]);
+
+		return json_decode((string) $response->getBody(), true);
+	}
+	*/
+
+	/**
+	 * Log the user out of the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function logout(Request $request) {
+		$user = $request->user();
+
+		if ($user) $user->token()->revoke();
+
+	    return response(null, 200);
+	}
+}

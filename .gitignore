@@ -2,25 +2,15 @@
 ._*
 .DS_Store
 
-# Laravel and libs
+# Laravel ignores
 /node_modules
 /public/hot
 /public/storage
 /storage/*.key
 /vendor
-/.idea
-/.vscode
-/.vagrant
+.env
+.phpunit.result.cache
 Homestead.json
 Homestead.yaml
-.env
-
-# Built css and js
-.sass-cache
-/public/js/*
-/public/css/*
-/public/mix-manifest.json
-
-# Logs
-npm-debug.log*
+npm-debug.log
 yarn-error.log

@@ -15,30 +15,54 @@ class SeoController extends Controller
 	 */
 	public function sitemap()
 	{
-		$sitemap = App::make("sitemap");
+		$sitemap = App::make('sitemap');
 
-		// Set cache duration in minutes
-		$sitemap->setCache('laravel.sitemap', 60);
+		// Set cache duration
+		$sitemap->setCache('laravel.sitemap', now()->addHours(12));
 
 		// Build if not cached
 		if (!$sitemap->isCached()) {
 			// Home page
-			$sitemap->add(route('site.home'), null, '1.0', 'weekly');
+			$sitemap->add(route('home'), null, '1.0', 'weekly', [], null, $this->sitemapTranslatedUrls('home'));
 
 			// Venues
-			$venues = Venue::all();
-			foreach ($venues as $venue) {
-				$sitemap->add(route('site.venues.detail', ['venue' => $venue]), $venue->updated_at, 0.9, 'daily');
+			foreach (Venue::all() as $venue) {
+				$name = 'venues.detail';
+				$params = compact('venue');
+				$sitemap->add(route($name, $params), $venue->updated_at, 0.9, 'daily', [], null, $this->sitemapTranslatedUrls($name, $params));
 			}
 
-			// About, Promote, Play responsibly
-			$sitemap->add(route('site.about'), null, '0.9', 'monthly');
-			$sitemap->add(route('site.promote'), null, '0.9', 'weekly');
-			$sitemap->add(route('site.about'), null, '0.9', 'weekly');
+			// About, Promote
+			$sitemap->add(route('about'), null, 0.9, 'monthly', [], null, $this->sitemapTranslatedUrls('about'));
+			$sitemap->add(route('promote'), null, 0.9, 'weekly', [], null, $this->sitemapTranslatedUrls('promote'));
+			$sitemap->add(route('play-responsibly'), null, 0.9, 'weekly', [], null, $this->sitemapTranslatedUrls('play-responsibly'));
 		}
 
 		// Generate XML
-		return $sitemap->render('xml', null);
+		return $sitemap->render('xml');
+	}
+
+	/**
+	 * Build the translated urls of the specified route for all supported
+	 * languages.
+	 *
+	 * @param  string $name
+	 * @param  array  $params
+	 * @return array
+	 */
+	private function sitemapTranslatedUrls(string $name, $params = [])
+	{
+		$additionalLocales = ['it'];
+		$urls = [];
+
+		foreach ($additionalLocales as $locale) {
+			$urls[] = [
+				'language' => $locale,
+				'url' => route($name, array_merge(['locale' => $locale], $params))
+			];
+		}
+
+		return $urls;
 	}
 
 	/**
@@ -48,17 +72,13 @@ class SeoController extends Controller
 	 */
 	public function robots()
 	{		
+		$sitemapUrl = url('/sitemap.xml');
 		$lines = [
 			"User-agent: *",
-			"Disallow: /admin"
+			"Sitemap: {$sitemapUrl}",
+			"Allow: {$sitemapUrl}",
+			"Disallow: /"
 		];
-
-		if (App::environment('production')) {
-			$sitemapUrl = route('sitemap');
-			array_push($lines, "Sitemap: {$sitemapUrl}");
-		} else {
-			array_push($lines, "Disallow: *");
-		}
 
 		$text = implode(PHP_EOL, $lines);
 

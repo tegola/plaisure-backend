@@ -2,62 +2,101 @@
 
 namespace App\Http\Controllers\Site\Venues;
 
-use Illuminate\Http\Request;
-
-use App\Models\Venue;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use JavaScript;
+use Illuminate\Http\Request;
+use App\Models\Venue;
+use App\Transformers\VenueTransformer;
+
+use App\Http\Resources\Review as ReviewResource;
 
 class DetailController extends Controller
 {
 	/**
-	 * Redirect /venues/{id} to /venues/{id_hashed} or shows the 404 page.
-	 * FIXME: Remove whene there are no more hits.
+	 * Get the data to show the venue detail page.
 	 * 
-	 * @param  int $id The venue id
-	 * @return Illuminate\Http\Response
+	 * @param  Venue  $venue
+	 * @return \Illuminate\Http\Response
 	 */
-	public function redirect($id) {
-		$venue = Venue::find($id);
+	public function detail($venueId)
+	{
+		// Find venue either normal or deleted
+		$venue = Venue::withTrashed()
+			->where('id_hashed', $venueId)
+			->firstOrFail();
 
-		// Stop if venue doesn't exist
-		abort_if(!$venue, 404);
+		if (!$venue->trashed()) {
 
-		// Redirect to venue with hashed id
-		return redirect(route('site.venues.detail', $venue), 301);
+			// Venue is still present, return it along with reviews, the user
+			// review and nearby venues
+
+			// Eager load relationships
+			$venue->load([
+				'businessHours',
+				'amenities',
+				'categories',
+				'photos',
+				'vltPlatforms',
+				'reviews' => function($query) {
+					// FIXME: Occhio che non funziona (v. parseIncludes più giù)
+					return $query->latest()->take(2);
+				},
+				'reviews.user'
+			]);
+
+			// Get the review for the current user
+			$user = auth()->guard('api')->user(); // Guard needed since we don't have the auth:api middleware set here
+
+			if ($user) {
+				$userReview = $venue->reviews->where('user_id', $user->id)->first();
+				if ($userReview) $userReview = new ReviewResource($userReview);
+			} else {
+				$userReview = null;
+			}
+
+			// Get nearby venues (if the plan allows it)
+			if (!$venue->subscription() || !$venue->subscription()->hide_nearby_venues) {
+				$nearbyVenues = $this->getNearby($venue);
+			} else {
+				$nearbyVenues = [];
+			}
+
+			$venue = fractal($venue, new VenueTransformer())
+				->parseIncludes([
+					'business_hours',
+					'amenities',
+					'categories',
+					'photos',
+					'vlt_platforms',
+					'reviews'
+				]);
+
+			return compact('venue', 'userReview', 'nearbyVenues');
+
+		} else {
+
+			// Venue was deleted, return 404 with the nearby venues
+			return response([
+				'nearbyVenues' => $this->getNearby($venue)
+			], 404);
+
+		}
 	}
 
 	/**
-	 * Show the venue detail page.
-	 * 
-	 * @param  Venue  $venue [description]
-	 * @return Illuminate\Http\Response
+	 * Get venues nearby the specified one within 5km of radius.
+	 *
+	 * @param  Venue $venue
+	 * @return [Venue]
 	 */
-	public function index(Venue $venue) {
-		// Load venue photos
-		$venue->load('photos');
-
-		// Get nearby venues (if the plan allows it)
-		if (!$venue->plan || !$venue->plan->hide_nearby_venues) {
-			$nearbyVenues = Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
-				->where('id', '!=', $venue->id)
-				->take(3)
-				->get();
-		} else {
-			$nearbyVenues = null;
-		}
-
-		// Prepare categories string
-		$venueCategoryString = $venue->categories->slice(0, 2)->pluck('name')->implode(', ');
-
-		// Send data to javascript
-		JavaScript::put(compact('venue'));
-
-		return view('site.venues.detail', compact(
-			'venue',
-			'venueCategoryString',
-			'nearbyVenues'
-		));
+	private function getNearby(Venue $venue)
+	{
+		return Venue::near($venue->geo_latitude, $venue->geo_longitude, 5)
+			->where('id', '!=', $venue->id)
+			->with('categories')
+			->take(4)
+			->get()
+			->transformWith(new VenueTransformer())
+			->includeCategories()
+			->toArray();
 	}
 }

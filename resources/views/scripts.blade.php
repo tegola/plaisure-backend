@@ -1,1 +1,0 @@
-{{-- Common Javascript view for values passed by JavascriptProvider --}}

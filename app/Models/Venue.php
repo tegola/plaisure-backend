@@ -2,36 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\File;
 use App\Models\VenueBusinessHour;
-use DB;
 use Auth;
-use Carbon;
-use Spatie\SchemaOrg\Schema;
+use DB;
 use Hashids\Hashids;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use JustBetter\PaginationWithHavings\PaginationWithHavings;
 
 class Venue extends Model
 {
-	const SURFACE_TO_MACHINE_MULTIPLIER = 0.15;
-
-	const MACHINE_TYPE_A  = 1;
-	const MACHINE_TYPE_B  = 2;
-	const MACHINE_TYPE_AB = 3;
+	use SoftDeletes, PaginationWithHavings;
 
 	/**
-	 * Default attributes. This is needed to pass the empty object to Vue's
-	 * 'data' object, so it can be reactive. Setting a default on the migration
-	 * does not prefill the model.
-	 * 
+	 * The model's default attributes.
+	 *
 	 * @var array
 	 */
 	protected $attributes = [
 		'owner_id' => null,
 		'concessionaire_id' => null,
-		'aams_census_code' => '',
-		'aams_subject_enrollment_code' => '',
 
 		'name' => '',
 		'description' => '',
@@ -44,7 +36,6 @@ class Venue extends Model
 		'virtual_betting' => false,
 		'horse_betting' => false,
 		'arcade_roulette' => false,
-		'machine_type' => self::MACHINE_TYPE_A,
 
 		'address_line1' => '',
 		'address_line2' => '',
@@ -52,7 +43,8 @@ class Venue extends Model
 		'address_postcode' => '',
 		'address_province' => '',
 		'address_region' => '',
-		'address_country' => '',
+
+		'country' => '', // See constructor
 
 		'geo_latitude' => null,
 		'geo_longitude' => null,
@@ -72,80 +64,57 @@ class Venue extends Model
 		'jackpot2_label' => '',
 		'jackpot2_value' => 0,
 		'jackpot3_label' => '',
-		'jackpot3_value' => 0,
-
-		'amenity_atm' => false,
-		'amenity_bar' => false,
-		'amenity_pay_per_view' => false,
-		'amenity_pos' => false,
-		'amenity_private_parking' => false,
-		'amenity_restaurant' => false,
-		'amenity_security' => false,
-		'amenity_smoking_area' => false,
-		'amenity_wifi' => false
+		'jackpot3_value' => 0
 	];
 
 	/**
-	 * The attributes that should be hidden for arrays.
+	 * The attributes that should be cast to native types.
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['id']; // Only use id_hashed
+	protected $casts = [
+		'sports_betting' => 'boolean',
+		'virtual_betting' => 'boolean',
+		'horse_betting' => 'boolean',
+		'arcade_roulette' => 'boolean'
+	];
 
 	/**
 	 * The attributes that aren't mass assignable.
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'concessionaire_id',
-		'aams_census_code',
-		'aams_subject_enrollment_code',
-		'name',
-		'description',
-		'surface_size',
-		'vlt_machine_count',
-		'awp_machine_count',
-		'seating_capacity',
-		'parking_capacity',
-		'sports_betting',
-		'virtual_betting',
-		'horse_betting',
-		'arcade_roulette',
-		'machine_type',
-		'address_line1',
-		'address_line2',
-		'address_city',
-		'address_postcode',
-		'address_province',
-		'address_region',
-		'address_country',
-		'geo_latitude',
-		'geo_longitude',
-		'contact_phone',
-		'contact_email',
-		'contact_facebook',
-		'contact_twitter',
-		'url_site',
-		'url_online_casino',
-		'url_facebook',
-		'url_tripadvisor',
-		'jackpot1_label',
-		'jackpot1_value',
-		'jackpot2_label',
-		'jackpot2_value',
-		'jackpot3_label',
-		'jackpot3_value',
-		'amenity_atm',
-		'amenity_bar',
-		'amenity_pay_per_view',
-		'amenity_pos',
-		'amenity_private_parking',
-		'amenity_restaurant',
-		'amenity_security',
-		'amenity_smoking_area',
-		'amenity_wifi'
-	];
+	protected $guarded = [];
+
+	/**
+	 * Utility function to decode a venue hashed id.
+	 *
+	 * @param  string $id
+	 * @return integer
+	 */
+	public static function decodeHashedId(string $id)
+	{
+		$hasher = new Hashids(static::class, 10);
+		$decodedId = $hasher->decode($id);
+
+		return count($decodedId) ? $decodedId[0] : null;
+	}
+
+	/**
+	 * Create a new Venue model instance.
+	 *
+	 * @param  array  $attributes
+	 * @return void
+	 */
+	public function __construct(array $attributes = [])
+	{
+		$user = auth()->user();
+
+		// Default country
+		$this->country = $user && $user->locale ? locale_get_region($user->locale) : 'GB';
+
+		parent::__construct($attributes);
+	}
 
 	/**
 	 * The "booting" method of the model.
@@ -189,7 +158,7 @@ class Venue extends Model
 	/**
 	 * By default, load all venue data on new queries.
 	 * https://theokouzelis.com/php/laravel-eloquent-calculated-fields.html
-	 * 
+	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
 	public function newQuery()
@@ -198,180 +167,18 @@ class Venue extends Model
 	}
 
 	/**
-	 * List of machine types.
-	 * 
-	 * @return array
-	 */
-	static function machineTypes()
-	{
-		return [
-			self::MACHINE_TYPE_A => 'A',
-			self::MACHINE_TYPE_B => 'B',
-			self::MACHINE_TYPE_AB => 'A/B'
-		];
-	}
-
-	/**
-	 * Determine if this venue is being managed by an owner.
-	 * 
+	 * Determine if this venue has a owner without exposing the owner id.
+	 *
 	 * @return boolean
 	 */
-	public function isManaged()
+	public function getHasOwnerAttribute()
 	{
-	    return $this->owner_id ? true : false;
-	}
-
-	/**
-	 * Build an address array, useful for dividing it in multiple lines.
-	 * 
-	 * @return array
-	 */
-	public function addressComponents()
-	{
-		$components = [];
-
-		$components[] = $this->address_line1;
-		if ($this->address_line2) {
-			$components[] = $this->address_line2;
-		}
-		$components[] = $this->address_city;
-		$components[] = $this->address_postcode . ' ' . $this->address_province;
-
-		return $components;
-	}
-
-	/**
-	 * Get the estimated number of machines based on surface size.
-	 *
-	 * @return integer  The estimated number
-	 */
-	public function getEstimatedMachineCountAttribute()
-	{
-		return $this->surface_size ? round($this->surface_size * self::SURFACE_TO_MACHINE_MULTIPLIER) : 0;
-	}
-
-	/**
-	 * Get the short address.
-	 *
-	 * @return string
-	 */
-	public function getShortAddressAttribute()
-	{
-		return trim("{$this->address_line1} {$this->address_line2}") . ", {$this->address_city }";
-	}
-
-	/**
-	 * Get the long address.
-	 *
-	 * @return string
-	 */
-	public function getLongAddressAttribute()
-	{
-		return trim("{$this->address_line1} {$this->address_line2}") . ", {$this->address_postcode} {$this->address_city } {$this->address_region}, {$this->address_country}";
-	}
-
-	/**
-	 * Get the distance in readable format.
-	 *
-	 * 0.8123 becomes 800 m
-	 * 1.2455 becomes 1.2 km
-	 * 10.245 becomes 10 km
-	 *
-	 * @return string Distance in meters or kilometers
-	 */
-	// FIXME: Move to a Helper
-	public function getFormattedDistanceAttribute()
-	{
-		if (!$this->distance) return;
-		if ($this->distance > 10) return round($this->distance) . ' km';
-		if ($this->distance > 1) return round($this->distance, 1) . ' km';
-		if ($this->distance < 1) return round($this->distance * 100) . ' m';
-	}
-
-	/**
-	 * Get the machine name for the first venue category.
-	 * 
-	 * @return string
-	 */
-	public function getFirstCategoryMachineNameAttribute()
-	{
-		$categories = $this->categories();
-
-		return $categories->count() ? $categories->first()->machine_name : '';
-	}
-
-	/**
-	 * Get the Google Maps URL.
-	 * 
-	 * @return string
-	 */
-	public function googleMapsUrl() {
-		$base_url = 'https://www.google.com/maps/dir/?api=1&map_action=map&destination=';
-		$address = join(', ', [
-			$this->address_line1,
-			$this->address_line2,
-			$this->address_city,
-			$this->address_postcode,
-			$this->address_province,
-			$this->address_region,
-			$this->address_country
-		]);
-		$address_encoded = urlencode($address);
-		$final_url = "{$base_url}{$address_encoded}";
-
-		return $final_url;
-	}
-
-	/**
-	 * Get the readable (domain only) site URL.
-	 * 
-	 * @return string|null
-	 */
-	public function readableSiteUrl() {
-		if (!$this->url_site) return null;
-
-		$parsed = parse_url($this->url_site);
-		$domain = str_replace('www.', '', $parsed['host']);
-
-		return $domain ?: null;
-	}
-
-	/**
-	 * Get the generated Facebook Messenger URL.
-	 * 
-	 * @return string|null
-	 */
-	public function facebookMessengerUrl() {
-		if (!$this->contact_facebook) return null;
-
-		return implode('', ['https://www.messenger.com/t/', $this->contact_facebook]);
-	}
-
-	/**
-	 * Get the generated Twitter URL.
-	 * 
-	 * @return string|null
-	 */
-	public function twitterUrl() {
-		if (!$this->contact_twitter) return null;
-
-		return implode('', ['https://www.twitter.com/', $this->contact_twitter]);
-	}
-
-	/**
-	 * Checks if this venue has is in the specified category.
-	 * 
-	 * @param  string  $machine_name
-	 * @return boolean
-	 */
-	public function isInCategory($machine_name)
-	{
-		return $this->categories()->where('machine_name', $machine_name)->count() ? true : false;
+		return $this->owner_id ? true : false;
 	}
 
 	/**
 	 * User that claimed this venue.
-	 * 
+	 *
 	 * @return \App\Models\User
 	 */
 	public function owner()
@@ -380,8 +187,54 @@ class Venue extends Model
 	}
 
 	/**
+	 * Determine if the Stripe model has a given subscription.
+	 *
+	 * @param  string  $subscription
+	 * @param  string|null  $plan
+	 * @return bool
+	 */
+	public function subscribed()
+	{
+		$subscription = $this->subscription();
+
+		return $subscription && $subscription->valid();
+	}
+
+	/**
+	 * Get the subscription instance for this venue.
+	 *
+	 * @return \App\Models\Subscription
+	 */
+	public function subscription()
+	{
+		return $this->subscriptions->first();
+	}
+
+	/**
+	 * Get all subscriptions for this venue.
+	 *
+	 * @return \App\Models\Subscription
+	 */
+	public function subscriptions()
+	{
+		return $this
+			->hasMany('App\Models\Subscription')
+			->latest();
+	}
+
+	/**
+	 * Imported venue data to get data from.
+	 *
+	 * @return \App\Models\VenueImport|null
+	 */
+	public function venueImport()
+	{
+		return $this->belongsTo('App\Models\VenueImport');
+	}
+
+	/**
 	 * Concessionaire this venue is affiliate to.
-	 * 
+	 *
 	 * @return \App\Models\Concessionaire
 	 */
 	public function concessionaire()
@@ -396,12 +249,25 @@ class Venue extends Model
 	 */
 	public function categories()
 	{
-		return $this->belongsToMany('App\Models\VenueCategory');
+		return $this
+			->belongsToMany('App\Models\VenueCategory')
+			->withPivot('is_primary')
+			->orderByDesc('venue_venue_category.is_primary');
+	}
+
+	/**
+	 * Amenities offered by the venue.
+	 *
+	 * @return [\App\Models\Amenity]
+	 */
+	public function amenities()
+	{
+		return $this->belongsToMany('App\Models\Amenity', 'venue_amenity');
 	}
 
 	/**
 	 * VLT platoform this venue belongs to.
-	 * 
+	 *
 	 * @return [\App\Models\VltPlatform]
 	 */
 	public function vltPlatforms()
@@ -410,37 +276,38 @@ class Venue extends Model
 	}
 
 	/**
-	 * Pay per view platforms available in this venue.
-	 * 
-	 * @return [\App\Models\PayPerViewPlatform]
-	 */
-	public function payPerViewPlatforms()
-	{
-		return $this->belongsToMany('App\Models\PayPerViewPlatform');
-	}
-
-	/**
-	 * Plan this venue is on.
-	 * 
-	 * @return \App\Models\VenuePlan
-	 */
-	public function plan()
-	{
-		return $this->hasOne('App\Models\VenuePlan');
-	}
-
-	/**
 	 * Photos for this venue.
 	 */
 	public function photos()
 	{
 		return $this->morphMany('App\Models\File', 'filable')
-				->where('type', File::TYPE_VENUE_PHOTO);
+				->where('type', File::TYPE_VENUE_PHOTO)
+				->orderBy('order');
+	}
+
+	/**
+	 * Users that favorited this venue.
+	 *
+	 * @return [\App\Models\User]
+	 */
+	public function favoritedBy()
+	{
+		return $this->belongsToMany('App\Models\User', 'user_favorite_venues');
+	}
+
+	/**
+	 * Get all reviews for this venue.
+	 *
+	 * @return [\App\Models\Review]
+	 */
+	public function reviews()
+	{
+		return $this->hasMany('App\Models\Review');
 	}
 
 	/**
 	 * Business hours for this venue.
-	 * 
+	 *
 	 * @return [\App\Models\VenueBusinessHour]
 	 */
 	public function businessHours()
@@ -452,21 +319,13 @@ class Venue extends Model
 
 	/**
 	 * Business hours for this venue, grouped by day and exceptions.
-	 * 
+	 *
 	 * @param  boolean $includeClosedDays Whether to include days when the venue is closed
 	 * @return array
 	 */
 	public function businessHoursByDay($includeClosedDays = false)
 	{
-		$days = [
-			1 => [],
-			2 => [],
-			3 => [],
-			4 => [],
-			5 => [],
-			6 => [],
-			0 => []
-		];
+		$days = [[], [], [], [], [], [], []];
 
 		// Copy business hours in every day
 		foreach($this->businessHours as $hours) {
@@ -492,12 +351,12 @@ class Venue extends Model
 
 	/**
 	 * Finds out if the venue is open right now.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isOpen()
 	{
-		$now = Carbon::now();
+		$now = now();
 		$day = $now->dayOfWeek;
 		$time = $now->format('H:i:s');
 
@@ -536,53 +395,15 @@ class Venue extends Model
 	}
 
 	/**
-	 * Prepare structured data schema.
-	 * 
-	 * @return Spatie\SchemaOrg\Schema
+	 * Get the average rating for this venue, based on user reviews.
+	 *
+	 * @return float
 	 */
-	public function structuredData()
+	public function rating()
 	{
-		// Data that doesn't need to be checked
-		$schema = Schema::entertainmentBusiness()
-			->name($this->name)
-			->url(route('site.venues.detail', $this))
-			->address($this->long_address) // FIXME: Separare i campi?
-			->setProperty('geo', Schema::geoCoordinates()
-				->latitude($this->geo_latitude)
-				->longitude($this->geo_longitude)
-			);
-
-		// Data that need to be checked for existence
-		if ($this->description)   $schema->description($this->description);
-		if ($this->contact_phone) $schema->telephone($this->contact_phone);
-		if ($this->contact_email) $schema->email($this->contact_email);
-
-		// Image
-		$photo = $this->photos()->latest()->take(1)->first();
-
-		$schema->image($photo ? $photo->thumbnail_url : [
-			asset('img/schema/16x9.png'),
-			asset('img/schema/4x3.png'),
-			asset('img/schema/1x1.png')
-		]);
-
-		// Opening hours
-		$hoursSchema = [];
-
-		foreach ($this->businessHours as $hours) {
-			$day = substr(date('D', strtotime("Sunday +{$hours->day} days")), 0, 2);
-
-			array_push(
-				$hoursSchema,
-				Schema::openingHoursSpecification()
-					->dayOfWeek($day)
-					->opens($hours->opens)
-					->closes($hours->closes)
-			);
-		}
-		if (count($hoursSchema)) $schema->setProperty('openingHoursSpecification', $hoursSchema);
-
-		return $schema;
+		return $this->reviews()->exists()
+			? (float) $this->reviews()->average('rating')
+			: 0;
 	}
 
 	/**
@@ -607,7 +428,7 @@ class Venue extends Model
 
 	/**
 	 * Venues with a distance radius from a given location.
-	 * 
+	 *
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
 	 *
 	 * @param  Illuminate\Database\Query\Builder  $query   Query builder instance
@@ -623,15 +444,15 @@ class Venue extends Model
 		$lat = (float) $lat;
 		$lng = (float) $lng;
 		$radius = (double) $radius;
-		$lat_column = 'geo_latitude';
-		$lng_column = 'geo_longitude';
+		$latColumn = 'geo_latitude';
+		$lngColumn = 'geo_longitude';
 
 		return $query
 			->addSelect(DB::raw("($units * ACOS(COS(RADIANS($lat))
-							  * COS(RADIANS($lat_column))
-							  * COS(RADIANS($lng) - RADIANS($lng_column))
+							  * COS(RADIANS($latColumn))
+							  * COS(RADIANS($lng) - RADIANS($lngColumn))
 							  + SIN(RADIANS($lat))
-							  * SIN(RADIANS($lat_column)))) AS distance")
+							  * SIN(RADIANS($latColumn)))) AS distance")
 			)
 			->having('distance', '<=' ,$radius)
 			->orderBy('distance','asc');
@@ -639,9 +460,9 @@ class Venue extends Model
 
 	/**
 	 * Order venues by distance from a given location.
-	 * 
+	 *
 	 * https://gist.github.com/stevenmaguire/3ada3f73f1ad03356cf5
-	 * 
+	 *
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
 	 * @param  mixed                              $lat    Latitude of given location
 	 * @param  mixed                              $lng    Longitude of given location
@@ -653,23 +474,23 @@ class Venue extends Model
 		$units = ($units === "km") ? 6378.10 : 3963.17;
 		$lat = (float) $lat;
 		$lng = (float) $lng;
-		$lat_column = 'geo_latitude';
-		$lng_column = 'geo_longitude';
+		$latColumn = 'geo_latitude';
+		$lngColumn = 'geo_longitude';
 
-		// Join with venue_plans to get the distance bonus
-		$query->leftJoin('venue_plans', 'venues.id', 'venue_plans.venue_id');
+		// Join with subscriptions to get the distance bonus
+		$query->leftJoin('subscriptions', 'venues.id', 'subscriptions.venue_id');
 
 		// Add distance field
-		$distance_raw = "$units * ACOS(
-							COS(RADIANS($lat)) * COS(RADIANS($lat_column))
-							* COS(RADIANS($lng) - RADIANS($lng_column))
-							+ SIN(RADIANS($lat)) * SIN(RADIANS($lat_column))
+		$distanceRaw = "$units * ACOS(
+							COS(RADIANS($lat)) * COS(RADIANS($latColumn))
+							* COS(RADIANS($lng) - RADIANS($lngColumn))
+							+ SIN(RADIANS($lat)) * SIN(RADIANS($latColumn))
 						) AS distance";
-		$query->selectRaw($distance_raw);
+		$query->selectRaw($distanceRaw);
 
-		// Add distance_with_bonus field by looking at the plans' distance_bonus
-		$distance_with_bonus_raw = "(SELECT (distance - (distance / 100 * distance_bonus))) as distance_with_bonus";
-		$query->selectRaw($distance_with_bonus_raw);
+		// Add distance_with_bonus field by looking at the subscription'a distance_bonus
+		$distanceWithBonusRaw = "(SELECT (distance - (distance / 100 * distance_bonus))) as distance_with_bonus";
+		$query->selectRaw($distanceWithBonusRaw);
 
 		// Sort by distance
 		$query->orderBy('distance_with_bonus', 'desc');
@@ -680,14 +501,14 @@ class Venue extends Model
 
 	/**
 	 * Venues that are open right now.
-	 * 
+	 *
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
 	 * @return Illuminate\Database\Query\Builder          Modified query builder
 	 */
 	public function scopeOpen($query)
 	{
 		return $query->whereHas('businessHours', function($builder) {
-			$now = Carbon::now();
+			$now = now();
 			$day = $now->dayOfWeek;
 			$time = $now->format('H:i:s');
 			$yesterday = $now->subDay()->dayOfWeek;
@@ -715,5 +536,16 @@ class Venue extends Model
 					['closes', '>=', $time]
 				]);
 		});
+	}
+
+	/**
+	 * Venues that don't have an owner.
+	 *
+	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
+	 * @return Illuminate\Database\Query\Builder          Modified query builder
+	 */
+	public function scopeUnclaimed($query)
+	{
+		return $query->whereNull('owner_id');
 	}
 }

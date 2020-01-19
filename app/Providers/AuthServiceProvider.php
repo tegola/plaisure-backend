@@ -2,33 +2,42 @@
 
 namespace App\Providers;
 
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Gate;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
+
+use App\Models\Review;
+use App\Models\Venue;
+use App\Policies\ReviewPolicy;
+use App\Policies\VenuePolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    /**
-     * The policy mappings for the application.
-     *
-     * @var array
-     */
-    protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
-    ];
+	/**
+	 * The policy mappings for the application.
+	 *
+	 * @var array
+	 */
+	protected $policies = [
+		Review::class => ReviewPolicy::class,
+		Venue::class => VenuePolicy::class
+	];
 
-    /**
-     * Register any application authentication / authorization services.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
-     * @return void
-     */
-    public function boot()
-    {
-        $this->registerPolicies();
+	/**
+	 * Register any authentication / authorization services.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
+		$this->registerPolicies();
 
-        Gate::define('administer', function($user){
-            return $user->is_admin;
-        });
-    }
+		Passport::routes();
+
+		// Passport::tokensExpireIn(now()->addSeconds(3));
+
+		Gate::define('administer', function($user) {
+			return $user->is_admin;
+		});
+	}
 }

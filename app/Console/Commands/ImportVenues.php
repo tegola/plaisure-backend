@@ -1,0 +1,183 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use App\Models\VenueImport;
+use App\Importers\AAMS as AAMSImporter;
+use App\Importers\AdmiralUk as AdmiralUkImporter;
+use App\Importers\Cashino as CashinoImporter;
+use App\Importers\Ladbrokes as LadbrokesImporter;
+use App\Importers\Megabet as MegabetImporter;
+use App\Importers\WilliamHillUk as WilliamHillUkImporter;
+
+class ImportVenues extends Command
+{
+	/**
+	 * The name and signature of the console command.
+	 *
+	 * @var string
+	 */
+	protected $signature = 'venues:import
+							{brand}
+							{--start=1}
+							{--end=999999}
+							{--D|delete-outdated : Whether venues not found on source should be deleted from imported ones}';
+
+	/**
+	 * The console command description.
+	 *
+	 * @var string
+	 */
+	protected $description = 'Import venue data from their respective websites.';
+
+	/**
+	 * The Venue importer to use to get data.
+	 * 
+	 * @var \App\Import\Importers\Importer
+	 */
+	protected $importer = null;
+
+	/**
+	 * Newly added venue import count.
+	 * 
+	 * @var integer
+	 */
+	protected $added = 0;
+
+	/**
+	 * Updated venue import count.
+	 * 
+	 * @var integer
+	 */
+	protected $updated = 0;
+
+	/**
+	 * Deleted venue import count.
+	 * @var integer
+	 */
+	protected $deleted = 0;
+
+	/**
+	 * Execute the console command.
+	 *
+	 * @return mixed
+	 */
+	public function handle()
+	{
+		$startIndex = (int) $this->option('start');
+		$endIndex = (int) $this->option('end');
+
+		if ($this->option('delete-outdated') && ($startIndex !== 1 || $endIndex !== 999999)) {
+			$startIndex = 1;
+			$endIndex = 999999;
+
+			$this->comment('Resetting start and end to {$startIndex} and {$endIndex} because --delete-outdated, otherwise the importer would not be able to compare with the full set of source venues.');
+		}
+
+		// Create importer
+		switch ($this->argument('brand')) {
+			case 'aams': $this->importer = new AAMSImporter(); break;
+			case 'admiral-uk': $this->importer = new AdmiralUkImporter(); break;
+			case 'cashino': $this->importer = new CashinoImporter(); break;
+			case 'megabet': $this->importer = new MegabetImporter(); break;
+			case 'ladbrokes': $this->importer = new LadbrokesImporter(); break;
+			case 'william-hill-uk': $this->importer = new WilliamHillUkImporter(); break;
+		}
+
+		// Stop if there's no importer
+		if (!$this->importer) {
+			$this->error("Error: the specified brand ({$this->argument('brand')}) is not supported.");
+			return;
+		}
+
+		// Print intro
+		$this->line('');
+		$this->line('Importing venues from ' . $this->importer->getBrand() . '...');
+
+		// Set initial index
+		if ($startIndex) $this->importer->setIndex($startIndex);
+
+		// Fetch data until end index has been reached and there's more
+		while (($this->importer->getIndex() <= $endIndex) && $this->importer->hasMore()) {
+			$this->importer->load();
+
+			if ($this->importer->cycles()) {
+				$index = $this->importer->getIndex() - 1;
+				if ($index == 1) $this->line('');
+				$this->line("Fetching #{$index}");
+			}
+		}
+
+		$data = $this->importer->getData();
+		$rowCount = count($data);
+
+		// Print fetch intro
+		$this->line('');
+		$this->line("Fetched {$rowCount} venues.");
+
+		// Get property keys
+		$idKey = $this->importer->getIdKey();
+
+		// Add/update open venues
+		foreach ($data as $item) {
+			// Search a previous import
+			$venueImport = VenueImport::withTrashed()->firstOrNew([
+				'source_brand' => $this->importer->getVenueImportBrand(),
+				'source_id' => $item->$idKey
+			]);
+
+			// Restore it if it was soft deleted
+			if ($venueImport->trashed()) $venueImport->restore();
+
+			$normalizedItem = json_decode(json_encode($this->importer->normalizeItem($item))); // Recursive casting as object
+			$description = $this->importer->getDescriptionForItem($item);
+
+			if (!$venueImport->exists) {
+
+				// Add
+				$venueImport->source_data = $item;
+				$venueImport->normalized_data = $normalizedItem;
+				$venueImport->save();
+
+				$this->info("Added {$item->$idKey}: {$description}");
+				$this->added++;
+
+			} else if ($venueImport->source_data != $item/* || $venueImport->normalized_data != $normalizedItem*/) { // normalized check disabled because it may be modified by the geolocalization process
+
+				// Update when data is different
+				$venueImport->source_data = $item;
+				$venueImport->normalized_data = $normalizedItem;
+				$venueImport->save();
+
+				$this->comment("Updated {$item->$idKey}: {$description}");
+				$this->updated++;
+
+			}
+		}
+
+		// Soft-delete closed venues (if specified)
+		if ($this->option('delete-outdated')) {
+			$outdatedImports = VenueImport::query()
+				->where('source_brand', $this->importer->getVenueImportBrand())
+				->whereNotIn('source_id', $this->importer->getIds())
+				->get();
+
+			foreach ($outdatedImports as $outdatedImport) {
+				$sourceData = $outdatedImport->source_data;
+				$description = $this->importer->getDescriptionForItem($sourceData);
+
+				$outdatedImport->delete();
+
+				$this->error("Deleted {$outdatedImport->source_id}: {$description}");
+				$this->deleted++;
+			}
+		}
+
+		// Print summary
+		$this->line('');
+		$this->line('Import done!');
+		$this->line("{$this->added} added, {$this->updated} updated, {$this->deleted} deleted.");
+		$this->line('');
+	}
+}

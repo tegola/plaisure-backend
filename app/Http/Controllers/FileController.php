@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\File;
+use App\Http\Resources\File as FileResource;
 use Storage;
-use Auth;
 use Validator;
 
 class FileController extends Controller
 {
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('auth:api')->only('upload');
+	}
+
 	/**
 	 * Upload a new file.
 	 *
@@ -18,10 +28,10 @@ class FileController extends Controller
 	 */
 	public function upload(Request $request)
 	{
-		$user = Auth::user();
+		$user = auth()->user();
 		$uploadedFile = $request->file('file');
 
-		// Stope if file is too big, and force json response, since it is most
+		// Stop if file is too big, and force json response, since it is most
 		// probably a normal request
 		$validator = Validator::make($request->all(), [
 			'file' => 'bail|required|file|max:5192'
@@ -37,6 +47,8 @@ class FileController extends Controller
 		$file = File::createFromUpload($uploadedFile);
 		$file->user()->associate($user);
 		$file->save();
+
+		$file = new FileResource($file);
 		
 		return $file;
 	}
@@ -44,8 +56,8 @@ class FileController extends Controller
 	/**
 	 * View/download a file.
 	 *
-	 * @param File $file
 	 * @param Request $request
+	 * @param File $file
 	 * @param string $size The size from File's size constants
 	 * @param string $token The file token (for security reasons)
 	 * @return \Illuminate\Http\Response

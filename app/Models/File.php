@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Storage;
 use Image;
 
@@ -22,19 +23,29 @@ class File extends Model
 	const TYPE_USER_PHOTO  = 2;
 
 	/**
+	 * The model's attributes.
+	 *
+	 * @var array
+	 */
+	protected $attributes = [
+		'type' => self::TYPE_UNKNOWN,
+		'filable_type' => '',
+		'filable_id' => 0,
+		'user_id' => null,
+		'token' => '',
+		'path' => '',
+		'name' => '',
+		'mime_type' => '',
+		'size' => 0,
+		'caption' => ''
+	];
+
+	/**
 	 * The attributes that aren't mass assignable.
 	 *
 	 * @var array
 	 */
 	protected $guarded = [];
-
-	/**
-	 * Get all of the owning filable models.
-	 */
-	public function filable()
-	{
-		return $this->morphTo();
-	}
 
 	/**
 	 * Cretes a new File from a Request's uploaded file, fills it with the file
@@ -62,7 +73,7 @@ class File extends Model
 		// Save the instance
 		$file = self::create([
 			'type' => $type,
-			'token' => str_random(5),
+			'token' => Str::random(5),
 			'path' => $storedFilePath,
 			'name' => $uploadedFile->getClientOriginalName(),
 			'mime_type' => $uploadedFile->getClientMimeType(),
@@ -78,7 +89,7 @@ class File extends Model
 	/**
 	 * Get the user that has uploaded this file.
 	 * 
-	 * @return App\Models\User
+	 * @return \App\Models\User
 	 */
 	public function user()
 	{
@@ -86,13 +97,11 @@ class File extends Model
 	}
 
 	/**
-	 * Get the venue that this file was uploaded for.
-	 * 
-	 * @return App\Models\Venue
+	 * Get all of the owning filable models.
 	 */
-	public function venue()
+	public function filable()
 	{
-		return $this->belongsTo('App\Models\Venue');
+		return $this->morphTo();
 	}
 
 	/**
@@ -201,7 +210,7 @@ class File extends Model
 	{
 		$path = $this->pathForSize($size);
 
-		return storage_path("app/{$path}");
+		return Storage::path($path);
 	}
 
 	/**
@@ -238,24 +247,26 @@ class File extends Model
 	}
 
 	/**
-	 * Check whether the file is public (=it's in the public dir) or not.
+	 * Check whether the file is in the public disk.
 	 * 
 	 * @return boolean
 	 */
 	public function isPublic()
 	{
-		$pathArray = explode('/', $this->path);
+		$internalFilename = pathinfo($this->path)['basename'];
 
-		return count($pathArray) && $pathArray[0] == self::PUBLIC_DIR ? true : false;
+		return Storage::disk('public')->exists($internalFilename);
 	}
 
 	/**
-	 * Moves the file in the public directory and updates the model.
+	 * Moves the file in the public disk and updates the model.
 	 * 
 	 * @return bool
 	 */
 	public function makePublic()
 	{
+		if ($this->isPublic()) return true;
+
 		// Move files
 		$publicDir = self::PUBLIC_DIR;
 		$originalPaths = [
@@ -264,10 +275,10 @@ class File extends Model
 			self::SIZE_THUMBNAIL => $this->pathForSize(self::SIZE_THUMBNAIL)
 		];
 
-		foreach($originalPaths as $size => $path) {
+		foreach ($originalPaths as $size => $path) {
 			$oldPath = $path;
-			$fileName = basename($oldPath);
-			$newPath = "{$publicDir}/{$fileName}";
+			$filename = basename($oldPath);
+			$newPath = "{$publicDir}/{$filename}";
 			if ($size == self::SIZE_ORIGINAL) $originalNewPath = $newPath;
 
 			Storage::move($oldPath, $newPath);
