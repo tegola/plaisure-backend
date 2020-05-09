@@ -306,6 +306,16 @@ class Venue extends Model
 	}
 
 	/**
+	 * Get the visits for this venue.
+	 *
+	 * @return [\App\Models\Visit]
+	 */
+	public function visits()
+	{
+		return $this->hasMany('App\Models\Visit');
+	}
+
+	/**
 	 * Business hours for this venue.
 	 *
 	 * @return [\App\Models\VenueBusinessHour]

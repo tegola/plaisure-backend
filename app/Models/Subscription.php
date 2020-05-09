@@ -21,16 +21,14 @@ class Subscription extends CashierSubscription
 	];
 
 	/**
-	 * The attributes that should be mutated to dates.
+	 * The attributes that should be cast to native types.
 	 *
 	 * @var array
 	 */
-	protected $dates = [
-		'trial_ends_at',
-		'current_period_ends_at',
-		'ends_at',
-	    'created_at',
-	    'updated_at'
+	protected $casts = [
+		'hide_nearby_venues' => 'boolean',
+		'home_page_highlight' => 'boolean',
+		'current_period_ends_at' => 'datetime'
 	];
 
 	/**

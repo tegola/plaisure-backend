@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\UserSimple as UserSimpleResource;
+use App\Http\Resources\UserSimple;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Review extends JsonResource
@@ -17,6 +17,9 @@ class Review extends JsonResource
 	{
 		return [
 			'id' => $this->id,
+			$this->mergeWhen(!$this->relationLoaded('venue'), [
+				'venue_id' => $this->venue_id
+			]),
 			'title' => $this->title,
 			'body' => $this->body,
 			'rating' => $this->rating,
@@ -25,7 +28,7 @@ class Review extends JsonResource
 			'created_at' => $this->created_at,
 			'replied_at' => $this->replied_at,
 			'user' => $this->whenLoaded('user', function() {
-				return new UserSimpleResource($this->user);
+				return new UserSimple($this->user);
 			})
 		];
 	}

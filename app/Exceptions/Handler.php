@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
 	public function report(Exception $exception)
 	{
 		// Route notifications via email
-		if ($this->shouldReport($exception)) {
+		if ($this->shouldReport($exception) && !app()->isLocal()) {
 			$notification = new ExceptionOccurredNotification($exception); 
 			Notification::route('mail', 'alan@qreate.it')->notify($notification);
 		}

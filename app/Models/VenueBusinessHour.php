@@ -16,13 +16,13 @@ class VenueBusinessHour extends Model
 	protected $guarded = [];
 
 	/**
-	 * The attributes that should be mutated to dates.
+	 * The attributes that should be cast to native types.
 	 *
 	 * @var array
 	 */
-	protected $dates = [
-		'valid_from',
-		'valid_to'
+	protected $casts = [
+		'valid_from' => 'date',
+		'valid_to' => 'date'
 	];
 
 	/**
@@ -31,13 +31,6 @@ class VenueBusinessHour extends Model
 	 * @var bool
 	 */
 	public $timestamps = false;
-
-	/**
-	 * The storage format of the model's date columns.
-	 *
-	 * @var string
-	 */
-	protected $dateFormat = 'Y-m-d';
 
 	/**
 	 * Venue which this business hour is set for.

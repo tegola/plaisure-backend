@@ -32,11 +32,29 @@ Route::group([
 
 	// User
 	Route::get ('/user',          'User\MainController@user');
-	Route::get('/user/venues',    'User\MainController@venues');
 	Route::get('/user/edit',      'User\MainController@edit');
 	Route::post('/user/info',     'User\MainController@info');
 	Route::post('/user/billing',  'User\MainController@billing');
 	Route::post('/user/password', 'User\MainController@password');
+
+	// User -> Venues
+	Route::get('/user/venues',                      'User\Venues\ListController@load');
+	Route::get('/user/venues/add',                  'User\Venues\AddController@load');
+	Route::post('/user/venues',                     'User\Venues\AddController@save');
+	Route::get('/user/venues/{venue}',              'User\Venues\DetailController@load');
+	Route::get('/user/venues/{venue}/overview',     'User\Venues\DetailController@overview');
+	Route::get('/user/venues/{venue}/general',      'User\Venues\DetailController@general');
+	Route::post('/user/venues/{venue}/general',     'User\Venues\DetailController@saveGeneral');
+	Route::get('/user/venues/{venue}/services',     'User\Venues\DetailController@services');
+	Route::post('/user/venues/{venue}/services',    'User\Venues\DetailController@saveServices');
+	Route::post('/user/venues/{venue}/contacts',    'User\Venues\DetailController@saveContacts');
+	Route::post('/user/venues/{venue}/hours',       'User\Venues\DetailController@saveBusinessHours');
+	Route::get('/user/venues/{venue}/photos',       'User\Venues\DetailController@photos');
+	Route::post('/user/venues/{venue}/photos',      'User\Venues\DetailController@savePhotos');
+	Route::get('/user/venues/{venue}/reviews',      'User\Venues\DetailController@reviews');
+	Route::post('/user/venues/{venue}/jackpots',    'User\Venues\DetailController@saveJackpots');
+	Route::get('/user/venues/{venue}/subscription', 'User\Venues\SubscriptionController@edit');
+	Route::post('/user/venues/{venue}/subscription','User\Venues\SubscriptionController@update');
 
 	// User -> Favorites
 	Route::get('/user/favorites',         'User\FavoritesController@load');
@@ -52,10 +70,6 @@ Route::group([
 	Route::post('/venues',              'Venues\FormController@store');
 	Route::get ('/venues/{venue}/edit', 'Venues\FormController@edit');
 	Route::post('/venues/{venue}',      'Venues\FormController@update');
-
-	// Venue subscription
-	Route::get('/venues/{venue}/subscription',         'Venues\SubscriptionController@edit');
-	Route::post('/venues/{venue}/subscription',        'Venues\SubscriptionController@update');
 
 	// Venue claim
 	Route::get ('/venues/{venue}/claim',  'Venues\ClaimController@load');

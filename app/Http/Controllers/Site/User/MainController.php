@@ -36,26 +36,6 @@ class MainController extends Controller
 	}
 
 	/**
-	 * Get the venues for the logged in user.
-	 * 
-	 * @return \Illuminate\Http\Response
-	 */
-	public function venues()
-	{
-		$user = auth()->user();
-		$venues = $user->venues()
-			->with('categories', 'subscriptions')
-			->get()
-			->each(function($venue) { // Load first photo (limit/take doesn't work with eager loading)
-				$venue->load(['photos' => function($query) {
-					$query->take(1);
-				}]);
-			});
-
-		return VenueResource::collection($venues);
-	}
-
-	/**
 	 * Get the user data for the edit form.
 	 * 
 	 * @return \Illuminate\Http\Response

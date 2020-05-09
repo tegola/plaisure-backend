@@ -103,7 +103,7 @@ class RegisterAndLoginTest extends TestCase
 	{
 		$userData = [
 			'locale' => 'en-GB',
-			'name' => $hasOwner ? 'Owner user' : 'Test user',
+			'name' => $asOwner ? 'Owner user' : 'Test user',
 			'email' => 'owner@email.com',
 			'password' => '12345678'
 		];

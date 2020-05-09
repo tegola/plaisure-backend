@@ -26,18 +26,15 @@ class Review extends Model
 	 *
 	 * @var array
 	 */
-	protected $guarded = [];
+	protected $guarded = [];	
 
 	/**
-	 * The attributes that should be mutated to dates.
+	 * The attributes that should be cast to native types.
 	 *
 	 * @var array
 	 */
-	protected $dates = [
-		'created_at',
-		'updated_at',
-		'replied_at',
-		'deleted_at'
+	protected $casts = [
+		'replied_at' => 'datetime'
 	];
 
 	/**

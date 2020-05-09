@@ -24,9 +24,14 @@ class Kernel extends ConsoleKernel
 	 */
 	protected function schedule(Schedule $schedule)
 	{
+		// Update visits count every day at 02:00
+		$schedule
+			->command('analytics:import')
+			->dailyAt('02:00');
+
+		// Delete orphaned files every day at 04:00
 		$schedule
 			->command('files:delete-orphans')
-			->withoutOverlapping()
 			->dailyAt('04:00')
 			->appendOutputTo(storage_path('logs/delete-file-orphans-command.log'));
 	}

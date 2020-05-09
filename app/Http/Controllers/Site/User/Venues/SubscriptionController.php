@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Site\Venues;
+namespace App\Http\Controllers\Site\User\Venues;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Payment as PaymentResource;
@@ -17,9 +17,15 @@ use Stripe\Invoice as StripeInvoice;
 
 class SubscriptionController extends Controller
 {
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
 	public function __construct()
 	{
 		$this->middleware('auth:api');
+
 		$this->middleware(function($request, $next) {
 			$this->authorize('update', $request->venue);
 
@@ -31,22 +37,21 @@ class SubscriptionController extends Controller
 	 * Load data for the venue subscription page.
 	 *
 	 * @param  Venue  $venue
-	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(Venue $venue, Request $request) {
+	public function edit(Venue $venue) {
 		$user = auth()->user();
 
 		// Create a payment intent in case the user wants to update its
 		// payment method
 		$paymentIntent = $user->createSetupIntent();
 
-		// Load venue subscriptions
-		$venue->load('subscriptions');
+		// Load venue subscription (either active, pending payment or canceled)
+		$subscription = $venue->subscription();
 
 		return [
-			'venue' => new VenueResource($venue),
-			'paymentIntentSecret' => $paymentIntent->client_secret
+			'paymentIntentSecret' => $paymentIntent->client_secret,
+			'subscription' => $subscription ? new SubscriptionResource($subscription) : null
 		];
 	}
 

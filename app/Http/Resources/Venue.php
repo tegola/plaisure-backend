@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\Amenity as AmenityResource;
-use App\Http\Resources\File as FileResource;
-use App\Http\Resources\Review as ReviewResource;
-use App\Http\Resources\Subscription as SubscriptionResource;
-use App\Http\Resources\VenueCategory as VenueCategoryResource;
+use App\Http\Resources\Amenity;
+use App\Http\Resources\File;
+use App\Http\Resources\Review;
+use App\Http\Resources\Subscription;
+use App\Http\Resources\VenueCategory;
+use App\Http\Resources\VltPlatform;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Venue extends JsonResource
@@ -19,13 +20,13 @@ class Venue extends JsonResource
 	 */
 	public function toArray($request)
 	{
+		// FIXME: Move review loading outside the resource
 		$reviewsQuery = $this->reviews(); // Loads but doesn't attach reviews to the resource
 		$ratings = $reviewsQuery->select('rating')->get();
 		$reviewCount = $reviewsQuery->withComment()->count();
 
 		return [
 			'id' => $this->id_hashed,
-			// 'owner_id' => $this->owner_id,
 			'concessionaire_id' => $this->concessionaire_id,
 
 			'name' => $this->name,
@@ -92,13 +93,24 @@ class Venue extends JsonResource
 			'has_owner' => $this->has_owner,
 			'created_at' => $this->created_at,
 
-			'photos' => FileResource::collection($this->whenLoaded('photos')),
-			'amenities' => AmenityResource::collection($this->whenLoaded('amenities')),
-			'categories' => VenueCategoryResource::collection($this->whenLoaded('categories')),
-			'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
+			'photos' => File::collection($this->whenLoaded('photos')),
+			'amenities' => Amenity::collection($this->whenLoaded('amenities')),
+			'categories' => VenueCategory::collection($this->whenLoaded('categories')),
+			'reviews' => Review::collection($this->whenLoaded('reviews')),
+			'vlt_platforms' => VltPlatform::collection($this->whenLoaded('vltPlatforms')),
 			'subscription' => $this->whenLoaded('subscriptions', function() {
-				return new SubscriptionResource($this->subscription());
-			})
+				return new Subscription($this->subscription());
+			}),
+			'business_hours' => $this->whenLoaded('businessHours', function() {
+				$days = [[], [], [], [], [], [], []];
+
+				// Copy business hours in every day
+				$this->businessHours->each(function($hours) use (&$days) {
+					array_push($days[$hours->day], $hours->opens, $hours->closes);
+				});
+
+				return $days;
+			}),
 		];
 	}
 }

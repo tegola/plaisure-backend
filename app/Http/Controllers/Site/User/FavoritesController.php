@@ -21,11 +21,10 @@ class FavoritesController extends Controller
 
 	/**
 	 * Load the user's list of favorite venues.
-	 * 
-	 * @param  Request $request
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function load(Request $request)
+	public function load()
 	{
 		$user = auth()->user();
 		$venues = $user->favorites()
@@ -42,7 +41,7 @@ class FavoritesController extends Controller
 
 	/**
 	 * Add a favorite.
-	 * 
+	 *
 	 * @param Request $request
 	 * @return \Illuminate\Http\Response
 	 */
@@ -60,7 +59,7 @@ class FavoritesController extends Controller
 
 	/**
 	 * Remove a favorite.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
