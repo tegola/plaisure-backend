@@ -21,9 +21,8 @@ class HomeController extends Controller
 	public function data(Request $request)
 	{
 		$country = $request->country;
-
 		$categories = VenueCategory::forCountry($country)->get();
-		$cacheLimit = now()->addHour();
+		$cacheLimit = 3600;
 
 		// Highlights - 2 taken from the latest 20 (1/10 chance to appear)
 		$highlightedVenues = Cache::remember("{$country}.home.highlights", $cacheLimit, function() use($country) {
@@ -78,7 +77,7 @@ class HomeController extends Controller
 
 	/**
 	 * Init venue query with satellite data.
-	 * 
+	 *
 	 * @param  \Illuminate\Database\Builder
 	 */
 	private function initQuery($country) {
@@ -89,7 +88,7 @@ class HomeController extends Controller
 
 	/**
 	 * Transform venues using VenueTransformer.
-	 * 
+	 *
 	 * @param  \Illuminate\Support\Collection $venues
 	 * @return array
 	 */

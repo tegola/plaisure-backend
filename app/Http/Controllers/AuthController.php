@@ -31,7 +31,7 @@ class AuthController extends Controller
 
 	/**
 	 * Register a new user.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
@@ -75,13 +75,13 @@ class AuthController extends Controller
 
 		return json_decode((string) $response->getBody(), true);
 		*/
-	
+
 		// return new UserResource($user);
 	}
 
 	/**
 	 * Login with email/password and receive access and refresh tokens.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
@@ -114,7 +114,7 @@ class AuthController extends Controller
 
 	/**
 	 * Refresh tokens using the old refresh token.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */

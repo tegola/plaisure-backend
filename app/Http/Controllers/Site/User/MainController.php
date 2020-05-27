@@ -22,7 +22,7 @@ class MainController extends Controller
 
 	/**
 	 * Get the logged in user data.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
@@ -37,7 +37,7 @@ class MainController extends Controller
 
 	/**
 	 * Get the user data for the edit form.
-	 * 
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit()
@@ -47,7 +47,7 @@ class MainController extends Controller
 
 	/**
 	 * Update the logged in user's personal information.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
@@ -76,7 +76,7 @@ class MainController extends Controller
 
 	/**
 	 * Update the logged in user's billing information.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
@@ -115,7 +115,7 @@ class MainController extends Controller
 
 	/**
 	 * Change the logged in user's password.
-	 * 
+	 *
 	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
 	 */
