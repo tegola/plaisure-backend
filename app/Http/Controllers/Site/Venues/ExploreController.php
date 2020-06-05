@@ -72,8 +72,10 @@ class ExploreController extends Controller
 		}
 
 		// Filter by category
-		if ($request->filled('categories')) {
-			$categories = $request->input('categories');
+		// if ($request->filled('categories')) {
+			// $categories = $request->input('categories');
+		if ($request->category) {
+			$categories = [$request->category];
 		} else {
 			$categories = VenueCategory::forCountry($country)
 				->pluck('id')

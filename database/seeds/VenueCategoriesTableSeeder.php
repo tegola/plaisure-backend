@@ -43,6 +43,14 @@ class VenueCategoriesTableSeeder extends Seeder
 		[
 			'machine_name' => 'family_entertainment_center',
 			'country' => 'GB'
+		],
+		[
+			'machine_name' => 'casino',
+			'country' => ''
+		],
+		[
+			'machine_name' => 'card_room',
+			'country' => ''
 		]
 	];
 }

@@ -9,13 +9,14 @@ class VenueImport extends Model
 {
 	use SoftDeletes;
 
-	const SOURCE_BRAND_ADMIRAL_UK       = 1;
-	const SOURCE_BRAND_CASHINO          = 2;
-	const SOURCE_BRAND_MEGABET          = 3;
-	const SOURCE_BRAND_LADBROKES        = 4;
-	const SOURCE_BRAND_WILLIAM_HILL_UK  = 5;
-	const SOURCE_BRAND_AAMS             = 6;
-	
+	const SOURCE_BRAND_ADMIRAL_UK           = 1;
+	const SOURCE_BRAND_CASHINO              = 2;
+	const SOURCE_BRAND_MEGABET              = 3;
+	const SOURCE_BRAND_LADBROKES            = 4;
+	const SOURCE_BRAND_WILLIAM_HILL_UK      = 5;
+    const SOURCE_BRAND_AAMS                 = 6;
+    const SOURCE_BRAND_GAMING_DIRECTORY_COM = 7;
+
 	/**
 	 * The attributes that aren't mass assignable.
 	 *
@@ -36,7 +37,7 @@ class VenueImport extends Model
 	/**
 	 * Checks whether the import has the minimum requirements to create a new
 	 * venue.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isReadyForVenue()
@@ -65,7 +66,7 @@ class VenueImport extends Model
 
 	/**
 	 * Get readable source brand name.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function readableSourceBrand()
@@ -76,7 +77,8 @@ class VenueImport extends Model
 			case self::SOURCE_BRAND_CASHINO: return 'Cashino';
 			case self::SOURCE_BRAND_LADBROKES: return 'Ladbrokes';
 			case self::SOURCE_BRAND_MEGABET: return 'Megabet';
-			case self::SOURCE_BRAND_WILLIAM_HILL_UK: return 'William Hill UK';
+            case self::SOURCE_BRAND_WILLIAM_HILL_UK: return 'William Hill UK';
+            case self::SOURCE_BRAND_GAMING_DIRECTORY_COM: return 'GamingDirectory.com';
 		}
 	}
 

@@ -17,7 +17,9 @@ class VenuesFromImports extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature = 'venues:from-imports {--brand=}';
+	protected $signature = 'venues:from-imports
+							{--brand=}
+							{--T|skip-timestamps : Whether to disable timestamp checks (import data older than venue data is skipped by default)}';
 
 	/**
 	 * The console command description.
@@ -73,7 +75,8 @@ class VenuesFromImports extends Command
 				case 'cashino': $query->where('source_brand', VenueImport::SOURCE_BRAND_CASHINO); break;
 				case 'megabet': $query->where('source_brand', VenueImport::SOURCE_BRAND_MEGABET); break;
 				case 'ladbrokes': $query->where('source_brand', VenueImport::SOURCE_BRAND_LADBROKES); break;
-				case 'william-hill-uk': $query->where('source_brand', VenueImport::SOURCE_BRAND_WILLIAM_HILL_UK); break;
+                case 'william-hill-uk': $query->where('source_brand', VenueImport::SOURCE_BRAND_WILLIAM_HILL_UK); break;
+                case 'gaming-directory-com': $query->where('source_brand', VenueImport::SOURCE_BRAND_GAMING_DIRECTORY_COM); break;
 				default: throw new \Exception('The specified brand is not available.');
 			}
 		}
@@ -123,7 +126,7 @@ class VenuesFromImports extends Command
 					if ($venue->owner_id) {
 						$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: needs admin intervention to be updated.");
 						$this->skipped++;
-					} else if ($venueImport->updated_at <= $venue->updated_at) {
+					} else if ($venueImport->updated_at <= $venue->updated_at && !$this->option('skip-timestamps')) {
 						$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: venue data is newer than imported data.");
 						$this->skipped++;
 					} else {
@@ -135,7 +138,7 @@ class VenuesFromImports extends Command
 								$message = $e->getMessage();
 								$this->warn("Skipped {$venueImport->readableSourceBrand()} {$venueImport->source_id}: {$message}.");
 								$this->skipped++;
-								
+
 								// Rollback transaction by throwing the
 								// original exception
 								throw $e;
@@ -200,34 +203,41 @@ class VenuesFromImports extends Command
 		// Just casting wouldn't cast sub arrays
 		$source = json_decode(json_encode($venueImport->normalized_data), true);
 
-		// Store name
-		$venue->name = $source['name'];
+		// Name
+		$venue->name = data_get($source, 'name');
 
-		// Store address
-		$venue->fill(Arr::only($source, [
-			'address_line1',
-			'address_line2',
-			'address_city',
-			'address_postcode',
-			'address_province',
-			'address_region',
-			'country',
-			'geo_latitude',
-			'geo_longitude'
-		]));
+		// Address
+		$venue->address_line1 = data_get($source, 'address_line1') ?: '';
+		$venue->address_line2 = data_get($source, 'address_line2') ?: '';
+		$venue->address_city = data_get($source, 'address_city') ?: '';
+		$venue->address_postcode = data_get($source, 'address_postcode') ?: '';
+		$venue->address_province = data_get($source, 'address_province') ?: '';
+		$venue->address_region = data_get($source, 'address_region') ?: '';
+		$venue->country = data_get($source, 'country') ?: '';
+		$venue->geo_latitude = data_get($source, 'geo_latitude') ?: null;
+		$venue->geo_longitude = data_get($source, 'geo_longitude') ?: null;
 
-		// Store contacts
-		$venue->fill(Arr::only($source, [
-			'contact_phone',
-			'url_site'
-		]));
+		// Contacts
+		$venue->contact_phone = data_get($source, 'contact_phone') ?: '';
+		$venue->contact_email = data_get($source, 'contact_email') ?: '';
+
+		// Urls
+		$venue->url_site = data_get($source, 'url_site') ?: '';
+		$venue->url_facebook = data_get($source, 'url_facebook') ?: '';
+
+		// Misc data
+		$venue->surface_size = data_get($source, 'surface_size', 0);
+		$venue->vlt_machine_count = (int) data_get($source, 'vlt_machine_count', 0);
+		$venue->parking_capacity = (int) data_get($source, 'parking_capacity', 0);
+		$venue->sports_betting = (bool) data_get($source, 'sports_betting');
+		$venue->horse_betting = (bool) data_get($source, 'horse_betting');
 
 		// Remove categories
 		$venue->categories()->detach();
 
 		foreach ($source['categories'] as $category) {
 			$machineName = $category['machine_name'];
-			$isPrimary = array_key_exists('is_primary', $category) ? (bool) $category['is_primary'] : false;
+			$isPrimary = (bool) data_get($category, 'is_primary', false);
 
 			// Find the category by its machine name
 			$venueCategory = VenueCategory::where('machine_name', $machineName)->first();

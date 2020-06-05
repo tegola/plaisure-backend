@@ -10,6 +10,7 @@ use App\Importers\Cashino as CashinoImporter;
 use App\Importers\Ladbrokes as LadbrokesImporter;
 use App\Importers\Megabet as MegabetImporter;
 use App\Importers\WilliamHillUk as WilliamHillUkImporter;
+use App\Importers\GamingDirectoryCom as GamingDirectoryComImporter;
 
 class ImportVenues extends Command
 {
@@ -29,25 +30,25 @@ class ImportVenues extends Command
 	 *
 	 * @var string
 	 */
-	protected $description = 'Import venue data from their respective websites.';
+	protected $description = 'Import venue data from their respective sources.';
 
 	/**
 	 * The Venue importer to use to get data.
-	 * 
+	 *
 	 * @var \App\Import\Importers\Importer
 	 */
 	protected $importer = null;
 
 	/**
 	 * Newly added venue import count.
-	 * 
+	 *
 	 * @var integer
 	 */
 	protected $added = 0;
 
 	/**
 	 * Updated venue import count.
-	 * 
+	 *
 	 * @var integer
 	 */
 	protected $updated = 0;
@@ -83,6 +84,7 @@ class ImportVenues extends Command
 			case 'megabet': $this->importer = new MegabetImporter(); break;
 			case 'ladbrokes': $this->importer = new LadbrokesImporter(); break;
 			case 'william-hill-uk': $this->importer = new WilliamHillUkImporter(); break;
+			case 'gaming-directory-com': $this->importer = new GamingDirectoryComImporter(); break;
 		}
 
 		// Stop if there's no importer
@@ -125,13 +127,13 @@ class ImportVenues extends Command
 			$venueImport = VenueImport::withTrashed()->firstOrNew([
 				'source_brand' => $this->importer->getVenueImportBrand(),
 				'source_id' => $item->$idKey
-			]);
+            ]);
 
 			// Restore it if it was soft deleted
 			if ($venueImport->trashed()) $venueImport->restore();
 
 			$normalizedItem = json_decode(json_encode($this->importer->normalizeItem($item))); // Recursive casting as object
-			$description = $this->importer->getDescriptionForItem($item);
+            $description = $this->importer->getDescriptionForItem($item);
 
 			if (!$venueImport->exists) {
 
@@ -143,7 +145,8 @@ class ImportVenues extends Command
 				$this->info("Added {$item->$idKey}: {$description}");
 				$this->added++;
 
-			} else if ($venueImport->source_data != $item/* || $venueImport->normalized_data != $normalizedItem*/) { // normalized check disabled because it may be modified by the geolocalization process
+			// normalized check disabled because it may be modified by the geolocalization process
+			} else if ($venueImport->source_data != $item/* || $venueImport->normalized_data != $normalizedItem*/) {
 
 				// Update when data is different
 				$venueImport->source_data = $item;
