@@ -15,8 +15,7 @@
     RewriteRule ^ %1 [L,R=301]
 
     # Redirect robots.txt file
-    RewriteCond %robots.txt -f [NC]
-    RewriteRule ^ index.php [L]
+	RewriteRule ^robots.txt$ /index.php [L]
 
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
