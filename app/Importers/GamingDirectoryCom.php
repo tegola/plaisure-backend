@@ -213,7 +213,12 @@ class GamingDirectoryCom extends Importer
 		}
 
 		// Website or facebook url
-		if ($website = $item->WebSite) {
+		if ($website = trim($item->WebSite)) {
+			// Force add http
+			if (!preg_match('/^http(s?):\/\//i', $website)) {
+				$website = "http://{$website}";
+			}
+
 			if (stripos($website, 'facebook.com') !== false) {
 				$data['url_facebook'] = $website;
 			} else {
