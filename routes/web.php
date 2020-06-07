@@ -21,7 +21,6 @@ Route::post('/webhooks/stripe', 'Webhooks\StripeController@handleWebhook');
 
 // SEO ------------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
-Route::get('/sitemap.xml',   'SeoController@sitemap');
 Route::get('/robots.txt',    'SeoController@robots');
 
 // Frontend routes, used only for printing urls easily ------------------------
