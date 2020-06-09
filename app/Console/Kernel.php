@@ -32,7 +32,8 @@ class Kernel extends ConsoleKernel
 		// Generate sitemaps every day at 06:00
 		$schedule
 			->command('sitemap:generate')
-			->dailyAt('06:00');
+			->dailyAt('06:00')
+			->appendOutputTo(storage_path('logs/generate-sitemaps.log'));
 
 		// Delete orphaned files every day at 04:00
 		$schedule

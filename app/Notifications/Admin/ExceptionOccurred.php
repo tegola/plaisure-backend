@@ -2,13 +2,13 @@
 
 namespace App\Notifications\Admin;
 
-use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Symfony\Component\Debug\Exception\FlattenException;
-use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
+use Illuminate\Notifications\Notification;
+use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
+use Throwable;
 
 class ExceptionOccurred extends Notification
 {
@@ -17,10 +17,10 @@ class ExceptionOccurred extends Notification
 	/**
 	 * Create a new notification instance.
 	 *
-	 * @param Exception $exception [description]
+	 * @param Throwable $exception
 	 * @return void
 	 */
-	public function __construct(Exception $exception)
+	public function __construct(Throwable $exception)
 	{
 		$this->exception = $exception;
 	}
@@ -45,11 +45,12 @@ class ExceptionOccurred extends Notification
 	public function toMail($notifiable)
 	{
 		$exception = FlattenException::create($this->exception);
-        $handler = new SymfonyExceptionHandler();
-        $html = $handler->getHtml($exception);
+		$handler = new HtmlErrorRenderer(true);
+		$css = $handler->getStylesheet();
+		$content = $handler->getBody($exception);
 
 		return (new MailMessage)
 			->subject("Exception: {$exception->getMessage()}")
-			->view('mail.admin.exception', compact('html'));
+			->view('mail.admin.exception', compact('css', 'content'));
 	}
 }

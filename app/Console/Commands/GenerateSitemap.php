@@ -40,7 +40,7 @@ class GenerateSitemap extends Command
      */
     public function handle()
     {
-		File::makeDirectory(public_path('sitemaps'));
+		File::ensureDirectoryExists(public_path('sitemaps'));
 
 		// Make the sitemap index
 		$sitemap = app()->make('sitemap');
