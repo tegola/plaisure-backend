@@ -24,7 +24,6 @@
         "laravel/slack-notification-channel": "^2.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "laravelium/sitemap": "^7.0",
         "spatie/laravel-analytics": "^3.9",
         "spatie/laravel-fractal": "^5.7",
         "umpirsky/country-list": "^2.0"
