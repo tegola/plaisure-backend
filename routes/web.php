@@ -13,17 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Auth -----------------------------------------------------------------------
+// Auth ------------------------------------------------------------------------
 // Auth::routes();
 
-// Stripe webhooks ------------------------------------------------------------
+// Stripe webhooks -------------------------------------------------------------
 Route::post('/webhooks/stripe', 'Webhooks\StripeController@handleWebhook');
 
-// SEO ------------------------------------------------------------------------
+// Sitemap ---------------------------------------------------------------------
 // FIXME: These still load the 'web' middleware, find a way to remove it
-Route::get('/robots.txt',    'SeoController@robots');
+Route::get('/sitemap/countries', 'SeoController@countries');
+Route::get('/sitemap/venues',    'SeoController@venues');
 
-// Frontend routes, used only for printing urls easily ------------------------
+// Frontend routes, used only for printing urls easily -------------------------
 Route::group([
 	'domain' => env('FRONTEND_URL'),
 	'prefix' => '/{locale?}'
