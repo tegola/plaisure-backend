@@ -50,7 +50,7 @@ class File extends Model
 	/**
 	 * Cretes a new File from a Request's uploaded file, fills it with the file
 	 * data and saves it on the filesystem.
-	 * 
+	 *
 	 * @param  UploadedFile $file
 	 * @param  int $type The type from the list of known attachment types.
 	 * @return self
@@ -77,7 +77,7 @@ class File extends Model
 			'path' => $storedFilePath,
 			'name' => $uploadedFile->getClientOriginalName(),
 			'mime_type' => $uploadedFile->getClientMimeType(),
-			'size' => $uploadedFile->getClientSize()
+			'size' => $uploadedFile->getSize()
 		]);
 
 		// Resize
@@ -88,7 +88,7 @@ class File extends Model
 
 	/**
 	 * Get the user that has uploaded this file.
-	 * 
+	 *
 	 * @return \App\Models\User
 	 */
 	public function user()
@@ -106,7 +106,7 @@ class File extends Model
 
 	/**
 	 * Get the url for the original file.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getOriginalUrlAttribute()
@@ -116,7 +116,7 @@ class File extends Model
 
 	/**
 	 * Get the url for the resized file.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getResizedUrlAttribute()
@@ -126,7 +126,7 @@ class File extends Model
 
 	/**
 	 * Get the url for the thumbnail file.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getThumbnailUrlAttribute()
@@ -148,7 +148,7 @@ class File extends Model
 
 	/**
 	 * Build the file name for the specified image size.
-	 * 
+	 *
 	 * @param  string $size One of the sizes specified in the constants.
 	 * @return string
 	 */
@@ -180,7 +180,7 @@ class File extends Model
 
 	/**
 	 * Build the path for the specified image size.
-	 * 
+	 *
 	 * @param  string $size One of the sizes specified in the constants.
 	 * @return string
 	 */
@@ -202,7 +202,7 @@ class File extends Model
 
 	/**
 	 * Build the path starting from root for the specified image size.
-	 * 
+	 *
 	 * @param  string $size One of the sizes specified in the constants.
 	 * @return string
 	 */
@@ -215,7 +215,7 @@ class File extends Model
 
 	/**
 	 * Resizes the file ('resized' and 'thumbnail'), but only if it's an image.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function resize()
@@ -248,7 +248,7 @@ class File extends Model
 
 	/**
 	 * Check whether the file is in the public disk.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isPublic()
@@ -260,7 +260,7 @@ class File extends Model
 
 	/**
 	 * Moves the file in the public disk and updates the model.
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function makePublic()
@@ -292,7 +292,7 @@ class File extends Model
 
 	/**
 	 * Build the public url for the specified image size.
-	 * 
+	 *
 	 * @param  string $size One of the sizes specified in the constants.
 	 * @return string
 	 */
@@ -332,7 +332,7 @@ class File extends Model
 
 	/**
 	 * Files that aren't attached to any element.
-	 * 
+	 *
 	 * @param  Illuminate\Database\Query\Builder  $query  Query builder instance
 	 * @return Illuminate\Database\Query\Builder          Modified query builder
 	 */
