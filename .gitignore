@@ -17,3 +17,6 @@ yarn-error.log
 
 # Private files
 /storage/analytics-credentials.json
+
+# Docker files
+/db_data

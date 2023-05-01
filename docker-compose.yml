@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: backend
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+      target: develop
+    volumes:
+      - .:/var/www/html
+    environment:
+      - VIRTUAL_HOST=backend.plaisure.loc
+    labels:
+      com.dnsdock.alias: backend.plaisure.loc
+  
+  db:
+    container_name: db
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=plaisure
+      - MYSQL_USER=plaisure
+      - MYSQL_PASSWORD=secret
+      - VIRTUAL_HOST=db.plaisure.loc
+    labels:
+      com.dnsdock.alias: db.plaisure.loc
